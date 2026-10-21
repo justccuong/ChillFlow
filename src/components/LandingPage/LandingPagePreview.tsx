@@ -20,6 +20,9 @@ import { TerminalCodeSection } from './sections/TerminalCodeSection';
 import { ExecutivePitchesSection } from './sections/ExecutivePitchesSection';
 import { CreativeMasonrySection } from './sections/CreativeMasonrySection';
 import { AcademySyllabusSection } from './sections/AcademySyllabusSection';
+import { StickyFomoBar } from './StickyFomoBar';
+import { ExitIntentModal } from './ExitIntentModal';
+import { SocialProofTicker } from './SocialProofTicker';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { Sparkles, ArrowUp, BarChart3, Edit3, Palette } from 'lucide-react';
 
@@ -208,6 +211,14 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         </div>
       </div>
 
+      {/* ConvertFlow Sticky FOMO Bar */}
+      <StickyFomoBar
+        targetDate={input.eventDate}
+        onCtaClick={scrollToRegistration}
+        earlyBirdBadge={content.earlyBirdBadge}
+        ticketsLeft={38}
+      />
+
       {/* Visual CMS Helper Banner */}
       {isEditMode && (
         <div className="bg-emerald-600 text-white px-4 py-2 text-center text-xs font-medium flex items-center justify-center gap-2 shadow-sm animate-in fade-in duration-200">
@@ -390,6 +401,15 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         sponsors={input.sponsors || []}
         onSaveSponsors={handleSaveSponsors}
       />
+
+      {/* ConvertFlow Exit-Intent Retention Modal */}
+      <ExitIntentModal
+        eventName={input.eventName}
+        onClaimOffer={scrollToRegistration}
+      />
+
+      {/* ConvertFlow Social Proof Live Ticker */}
+      <SocialProofTicker />
     </div>
   );
 };
