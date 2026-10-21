@@ -1,0 +1,303 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #1E3A5F;
+    --color-secondary: #2563EB;
+    --color-accent: #D97706;
+  }
+}
+
+/* Authentic Dots Texture from awesome-landing-pages */
+.dots-bg {
+  background-image: url('/backgrounds/dots-dark.svg');
+  background-position: center;
+  background-repeat: repeat;
+  background-size: 400px;
+}
+
+/* Starfield / Constellation background effect */
+.starfield-bg {
+  background-image: 
+    radial-gradient(1.5px 1.5px at 20px 30px, rgba(255, 255, 255, 0.8), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, rgba(255, 255, 255, 0.5), rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 40px, rgba(255, 255, 255, 0.7), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 160px 120px, rgba(255, 255, 255, 0.4), rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 220px 80px, rgba(255, 255, 255, 0.6), rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 280px 160px, rgba(255, 255, 255, 0.75), rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 320px 320px;
+}
+
+/* Subtle glowing grid lines */
+.bg-grid-lines {
+  background-size: 60px 60px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* 3D Perspective Tilt Showcase (Inspired by SaaSyDark #dashboard) */
+.perspective-container {
+  perspective: 1200px;
+}
+
+.perspective-card {
+  transform: rotateX(15deg) scale(0.96);
+  transform-origin: top center;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
+}
+
+.perspective-card:hover {
+  transform: rotateX(0deg) scale(1);
+  box-shadow: 0 25px 60px -15px rgba(99, 102, 241, 0.35);
+}
+
+/* Multi-stop glowing border gradient (Inspired by awesome-landing-pages) */
+.border-gradient-glow {
+  position: relative;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(99,102,241,0.4) 50%, rgba(217,119,6,0.3) 100%);
+  padding: 1px;
+}
+
+.border-gradient-glow > div {
+  border-radius: inherit;
+  background: #090d16;
+}
+
+/* Infinite Marquee for Sponsors / Brands with edge masks */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.marquee-container {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  width: 100%;
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+.marquee-content {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-width: 100%;
+  gap: 3.5rem;
+  padding-right: 3.5rem;
+  animation: marquee 24s linear infinite;
+  will-change: transform;
+}
+
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused !important;
+}
+
+/* Sponsor logo brand card */
+.brand-logo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  min-width: 130px;
+  filter: grayscale(100%) opacity(45%);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.brand-logo-item:hover {
+  filter: grayscale(0%) opacity(100%) drop-shadow(0 0 12px rgba(99, 102, 241, 0.45));
+  transform: translateY(-2px) scale(1.12);
+}
+
+/* Borderless Subtle Divider */
+.hairline-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+}
+
+/* Ambient glow orb behind sections */
+.ambient-glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Shimmer animation for early bird pill */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+/* Text Gradients */
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #a5f3fc 0%, #38bdf8 50%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-amber {
+  background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #ea580c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-purple {
+  background: linear-gradient(135deg, #f5d0fe 0%, #c084fc 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #090d16;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll Reveal Entrance Effect (from awesome-landing-pages) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(4px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+[data-reveal].reveal-active {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0px);
+}
+
+/* Light Mode Overrides for High-Contrast Clean Editorial Appearance */
+html.light {
+  color-scheme: light;
+}
+
+html.light body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+html.light .dots-bg {
+  background-image: url('/backgrounds/dots.svg');
+}
+
+html.light .starfield-bg {
+  background-image: none;
+}
+
+html.light .bg-grid-lines {
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+}
+
+html.light header {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-bottom-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light header span.font-heading {
+  color: #0f172a !important;
+}
+
+html.light .sticky.top-16 {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  border-bottom-color: #e2e8f0 !important;
+}
+
+html.light section {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light section h1,
+html.light section h2,
+html.light section h3,
+html.light section h4 {
+  color: #0f172a !important;
+}
+
+html.light section p {
+  color: #475569 !important;
+}
+
+html.light .brand-logo-item img {
+  filter: none !important;
+}
+
+html.light .hairline-divider {
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+}
+
+html.light .hero-bg-gradient {
+  background: linear-gradient(to bottom, rgba(248, 250, 252, 0.92) 0%, rgba(248, 250, 252, 0.98) 70%, #f8fafc 100%) !important;
+}
+
+html.light .tabular-nums {
+  color: #0f172a !important;
+  text-shadow: none !important;
+}
+
+html.light .tabular-nums.animate-pulse-subtle {
+  color: #059669 !important;
+}
+
+html.light .font-mono {
+  color: #0f172a !important;
+}
+
+html.light .border-gradient-glow > div {
+  background: #ffffff !important;
+}
+
+html.light .border-gradient-glow {
+  background: linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(99,102,241,0.5) 50%, rgba(217,119,6,0.4) 100%);
+}
