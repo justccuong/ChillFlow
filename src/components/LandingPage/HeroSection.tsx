@@ -16,6 +16,9 @@ interface HeroSectionProps {
   registeredCount: number;
   onOpenHeroImagePicker: () => void;
   onOpenSpeakerImagePicker: () => void;
+  isEditMode?: boolean;
+  onUpdateContentField?: (field: keyof GeneratedContent, val: any) => void;
+  onUpdateInputField?: (field: keyof EventInput, val: any) => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
@@ -27,6 +30,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   registeredCount,
   onOpenHeroImagePicker,
   onOpenSpeakerImagePicker,
+  isEditMode = false,
+  onUpdateContentField,
+  onUpdateInputField,
 }) => {
   const heroPhoto = input.heroImageUrl || theme.heroImage;
 
@@ -99,6 +105,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             registeredCount={registeredCount}
             onOpenHeroImagePicker={onOpenHeroImagePicker}
             onOpenSpeakerImagePicker={onOpenSpeakerImagePicker}
+            isEditMode={isEditMode}
+            onUpdateContentField={onUpdateContentField}
+            onUpdateInputField={onUpdateInputField}
           />
         );
     }

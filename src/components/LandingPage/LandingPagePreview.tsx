@@ -35,6 +35,7 @@ interface LandingPagePreviewProps {
   isAlreadyOptimized: boolean;
   onEditForm: () => void;
   onUpdateInput: (updatedInput: EventInput) => void;
+  onUpdateContent?: (updatedContent: GeneratedContent) => void;
 }
 
 export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
@@ -49,10 +50,25 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   isAlreadyOptimized,
   onEditForm,
   onUpdateInput,
+  onUpdateContent,
 }) => {
   const [headlineVariant, setHeadlineVariant] = useState<'A' | 'B'>('A');
   const [showCRODrawer, setShowCRODrawer] = useState<boolean>(false);
   const [currentCategory, setCurrentCategory] = useState<EventCategory>(input.category || 'ai-tech');
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
+
+  // In-place Visual CMS field update handlers
+  const handleUpdateContentField = (field: keyof GeneratedContent, val: any) => {
+    const updated = { ...content, [field]: val };
+    if (onUpdateContent) onUpdateContent(updated);
+    saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleUpdateInputField = (field: keyof EventInput, val: any) => {
+    const updated: EventInput = { ...input, category: currentCategory, [field]: val };
+    onUpdateInput(updated);
+    saveCurrentEventState(updated, content, cro);
+  };
 
   // Luôn reset cuộn lên đầu trang khi vào preview
   useEffect(() => {
@@ -156,13 +172,28 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Visual CMS In-place Edit Toggle */}
+            <button
+              type="button"
+              onClick={() => setIsEditMode(!isEditMode)}
+              className={`px-3 py-1 rounded-lg border font-semibold flex items-center gap-1.5 cursor-pointer transition-all ${
+                isEditMode
+                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600 shadow-sm'
+                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+              }`}
+              title="Bật/Tắt chế độ nhấp chuột trực tiếp lên trang để sửa chữ"
+            >
+              <Edit3 className="w-3.5 h-3.5" />
+              <span>{isEditMode ? 'Visual CMS (Đang bật)' : 'Sửa trực tiếp'}</span>
+            </button>
+
             <button
               type="button"
               onClick={() => setShowCRODrawer(!showCRODrawer)}
               className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
             >
               <BarChart3 className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
-              <span>{showCRODrawer ? 'Ẩn báo cáo CRO' : 'Hiện báo cáo CRO'}</span>
+              <span>{showCRODrawer ? 'Ẩn báo cáo' : 'Điểm CRO'}</span>
             </button>
 
             <button
@@ -176,6 +207,16 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Visual CMS Helper Banner */}
+      {isEditMode && (
+        <div className="bg-emerald-600 text-white px-4 py-2 text-center text-xs font-medium flex items-center justify-center gap-2 shadow-sm animate-in fade-in duration-200">
+          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+          <span>
+            <strong>Chế độ Visual CMS đang hoạt động:</strong> Rê chuột vào các tiêu đề, địa điểm hoặc tên diễn giả để sửa chữ trực tiếp. Mọi thay đổi sẽ tự động lưu!
+          </span>
+        </div>
+      )}
 
       {/* Expandable CRO Panel */}
       {showCRODrawer && (
@@ -205,6 +246,9 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           registeredCount={registeredCount}
           onOpenHeroImagePicker={handleOpenHeroPicker}
           onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
+          isEditMode={isEditMode}
+          onUpdateContentField={handleUpdateContentField}
+          onUpdateInputField={handleUpdateInputField}
         />
 
         {/* 2. Trust Bar / Social Proof Logos (Interactive SVG with Marquee & Editability) */}

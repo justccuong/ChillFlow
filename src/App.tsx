@@ -205,6 +205,7 @@ export function App() {
             isAlreadyOptimized={isAlreadyOptimized}
             onEditForm={() => setCurrentTab('form')}
             onUpdateInput={setEventInput}
+            onUpdateContent={setContent}
           />
         )}
       </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
+import { InlineEditable } from '../InlineEditable';
 import { formatEventDate } from '../../../utils/date';
 import { Calendar, MapPin, ArrowRight, Flame, Camera, Sparkles, Star, ShieldCheck } from 'lucide-react';
 
@@ -13,6 +14,9 @@ interface HeroProps {
   registeredCount: number;
   onOpenHeroImagePicker?: () => void;
   onOpenSpeakerImagePicker?: () => void;
+  isEditMode?: boolean;
+  onUpdateContentField?: (field: keyof GeneratedContent, val: any) => void;
+  onUpdateInputField?: (field: keyof EventInput, val: any) => void;
 }
 
 export const ConferenceHero: React.FC<HeroProps> = ({
@@ -23,6 +27,9 @@ export const ConferenceHero: React.FC<HeroProps> = ({
   onScrollToRegister,
   registeredCount,
   onOpenSpeakerImagePicker,
+  isEditMode = false,
+  onUpdateContentField,
+  onUpdateInputField,
 }) => {
   const speakerPhoto =
     input.speakerAvatarUrl ||
@@ -44,19 +51,34 @@ export const ConferenceHero: React.FC<HeroProps> = ({
           {/* Early bird pill with Shimmer effect */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/30 text-xs font-semibold backdrop-blur-sm shadow-sm animate-shimmer">
             <Flame className="w-4 h-4 text-amber-500 animate-bounce" />
-            <span className="text-indigo-700 dark:text-indigo-300 font-bold">
-              {content.earlyBirdBadge || 'Ưu đãi đăng ký sớm'}
-            </span>
+            <InlineEditable
+              value={content.earlyBirdBadge || 'Ưu đãi đăng ký sớm'}
+              onSave={(val) => onUpdateContentField?.('earlyBirdBadge', val)}
+              isEditMode={isEditMode}
+              as="span"
+              className="text-indigo-700 dark:text-indigo-300 font-bold"
+            />
           </div>
 
           {/* Majestic, Un-cramped Headline */}
           <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.25rem] font-extrabold tracking-tight font-heading leading-[1.18] text-slate-900 dark:text-white max-w-4xl drop-shadow-sm">
-            {headlineToDisplay}
+            <InlineEditable
+              value={headlineToDisplay}
+              onSave={(val) => onUpdateContentField?.('headline', val)}
+              isEditMode={isEditMode}
+              as="span"
+            />
           </h1>
 
           {/* Sub-headline */}
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl">
-            {content.subHeadline}
+            <InlineEditable
+              value={content.subHeadline}
+              onSave={(val) => onUpdateContentField?.('subHeadline', val)}
+              isEditMode={isEditMode}
+              as="span"
+              multiline
+            />
           </p>
 
           {/* Event Key Badges: Date & Location */}
@@ -67,7 +89,13 @@ export const ConferenceHero: React.FC<HeroProps> = ({
             </div>
             <div className="flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
               <MapPin className={`w-4 h-4 ${theme.accentColor}`} />
-              <span className="font-semibold">{input.location}</span>
+              <InlineEditable
+                value={input.location}
+                onSave={(val) => onUpdateInputField?.('location', val)}
+                isEditMode={isEditMode}
+                as="span"
+                className="font-semibold"
+              />
             </div>
           </div>
 
@@ -79,7 +107,12 @@ export const ConferenceHero: React.FC<HeroProps> = ({
                 onClick={onScrollToRegister}
                 className={`px-8 py-3.5 rounded-xl text-base shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group ${theme.btnPrimary}`}
               >
-                <span>{content.ctaButtonText || 'Giữ Chỗ Tham Gia Ngay'}</span>
+                <InlineEditable
+                  value={content.ctaButtonText || 'Giữ Chỗ Tham Gia Ngay'}
+                  onSave={(val) => onUpdateContentField?.('ctaButtonText', val)}
+                  isEditMode={isEditMode}
+                  as="span"
+                />
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
               <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 px-2">
@@ -156,8 +189,20 @@ export const ConferenceHero: React.FC<HeroProps> = ({
                     <span>4.98 / 5.0</span>
                   </div>
                 </div>
-                <h4 className="text-lg font-bold text-white tracking-tight">{input.speakerName}</h4>
-                <p className="text-xs text-slate-300 line-clamp-1">{input.speakerRole}</p>
+                <InlineEditable
+                  value={input.speakerName}
+                  onSave={(val) => onUpdateInputField?.('speakerName', val)}
+                  isEditMode={isEditMode}
+                  as="h4"
+                  className="text-lg font-bold text-white tracking-tight"
+                />
+                <InlineEditable
+                  value={input.speakerRole}
+                  onSave={(val) => onUpdateInputField?.('speakerRole', val)}
+                  isEditMode={isEditMode}
+                  as="p"
+                  className="text-xs text-slate-300 line-clamp-1"
+                />
               </div>
             </div>
           </div>
@@ -166,3 +211,4 @@ export const ConferenceHero: React.FC<HeroProps> = ({
     </div>
   );
 };
+
