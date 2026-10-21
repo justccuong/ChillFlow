@@ -142,3 +142,31 @@ export interface ThemeConfig {
     topics: string[];
   }[];
 }
+
+export type UserTier = 'free' | 'pro' | 'vip';
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  name: string;
+  avatarUrl?: string;
+  tier: UserTier;
+  freePagesLimit: number;
+  extraCredits: number; // e.g. from watching rewarded ads
+  publishedPageSlugs: string[];
+  createdAt: string;
+}
+
+export interface PublishedPageRecord {
+  slug: string;
+  eventName: string;
+  input: EventInput;
+  content: GeneratedContent;
+  theme: ThemeConfig;
+  userTier: UserTier;
+  publishedAt: string;
+  customDomain?: string;
+  viewsCount: number;
+  conversionsCount: number;
+}
+
