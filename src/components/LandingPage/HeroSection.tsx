@@ -26,6 +26,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onScrollToRegister,
   registeredCount,
   onOpenHeroImagePicker,
+  onOpenSpeakerImagePicker,
 }) => {
   const heroPhoto = input.heroImageUrl || theme.heroImage;
 
@@ -97,6 +98,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             onScrollToRegister={onScrollToRegister}
             registeredCount={registeredCount}
             onOpenHeroImagePicker={onOpenHeroImagePicker}
+            onOpenSpeakerImagePicker={onOpenSpeakerImagePicker}
           />
         );
     }
