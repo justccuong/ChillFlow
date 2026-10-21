@@ -23,8 +23,13 @@ import { AcademySyllabusSection } from './sections/AcademySyllabusSection';
 import { StickyFomoBar } from './StickyFomoBar';
 import { ExitIntentModal } from './ExitIntentModal';
 import { SocialProofTicker } from './SocialProofTicker';
+import { PublishModal } from './PublishModal';
+import { CustomDomainModal } from '../CustomDomainModal';
+import { publishEvent } from '../../services/publishService';
+import { exportStandaloneHtml } from '../../utils/sourceExporter';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
-import { Sparkles, ArrowUp, BarChart3, Edit3, Palette } from 'lucide-react';
+import { Sparkles, ArrowUp, BarChart3, Edit3, Palette, Globe, Send, Download } from 'lucide-react';
+import type { UserProfile, PublishedPageRecord } from '../../types';
 
 interface LandingPagePreviewProps {
   input: EventInput;
@@ -39,6 +44,8 @@ interface LandingPagePreviewProps {
   onEditForm: () => void;
   onUpdateInput: (updatedInput: EventInput) => void;
   onUpdateContent?: (updatedContent: GeneratedContent) => void;
+  userProfile?: UserProfile;
+  onTriggerUpgrade?: (reason: string) => void;
 }
 
 export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
@@ -54,11 +61,18 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   onEditForm,
   onUpdateInput,
   onUpdateContent,
+  userProfile,
+  onTriggerUpgrade,
 }) => {
   const [headlineVariant, setHeadlineVariant] = useState<'A' | 'B'>('A');
   const [showCRODrawer, setShowCRODrawer] = useState<boolean>(false);
   const [currentCategory, setCurrentCategory] = useState<EventCategory>(input.category || 'ai-tech');
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
+
+  // Publishing & Domain Modals State
+  const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
+  const [publishedRecord, setPublishedRecord] = useState<PublishedPageRecord | null>(null);
+  const [isCustomDomainOpen, setIsCustomDomainOpen] = useState(false);
 
   // In-place Visual CMS field update handlers
   const handleUpdateContentField = (field: keyof GeneratedContent, val: any) => {
@@ -90,6 +104,34 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
   // Deterministic Theme Engine mapping
   const theme = getThemeForCategory(currentCategory);
+
+  const handlePublishOnline = () => {
+    const result = publishEvent(
+      { ...input, category: currentCategory },
+      content,
+      theme,
+      userProfile?.tier || 'free'
+    );
+
+    if (!result.success) {
+      if (onTriggerUpgrade) {
+        onTriggerUpgrade(result.error || 'Đã hết hạn mức trang miễn phí. Vui lòng nâng cấp gói!');
+      }
+      return;
+    }
+
+    setPublishedRecord(result.record || null);
+    setIsPublishModalOpen(true);
+  };
+
+  const handleExportSource = () => {
+    exportStandaloneHtml(
+      { ...input, category: currentCategory },
+      content,
+      theme,
+      userProfile?.tier || 'free'
+    );
+  };
 
   const activeHeadline =
     headlineVariant === 'A' ? content.headline : content.alternativeHeadline || content.headline;
@@ -206,6 +248,28 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             >
               <Edit3 className="w-3.5 h-3.5" />
               <span>Sửa form</span>
+            </button>
+
+            {/* 1-Click Online Publishing Button */}
+            <button
+              type="button"
+              onClick={handlePublishOnline}
+              className="px-3.5 py-1 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold flex items-center gap-1.5 cursor-pointer shadow-sm transition-all hover:scale-105"
+              title="Xuất bản online và lấy link chia sẻ"
+            >
+              <Send className="w-3.5 h-3.5" />
+              <span>Xuất bản</span>
+            </button>
+
+            {/* VIP Quick HTML Export */}
+            <button
+              type="button"
+              onClick={handleExportSource}
+              className="hidden lg:flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-xs font-semibold cursor-pointer transition-colors"
+              title="Tải mã nguồn HTML trọn gói"
+            >
+              <Download className="w-3.5 h-3.5 text-amber-500" />
+              <span>Tải HTML</span>
             </button>
           </div>
         </div>
@@ -410,6 +474,22 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
       {/* ConvertFlow Social Proof Live Ticker */}
       <SocialProofTicker />
+
+      {/* 1-Click Publish Success & Share Modal */}
+      <PublishModal
+        isOpen={isPublishModalOpen}
+        onClose={() => setIsPublishModalOpen(false)}
+        record={publishedRecord}
+        onOpenCustomDomain={() => setIsCustomDomainOpen(true)}
+        onExportSource={handleExportSource}
+      />
+
+      {/* Custom Domain Setup Guide Modal */}
+      <CustomDomainModal
+        isOpen={isCustomDomainOpen}
+        onClose={() => setIsCustomDomainOpen(false)}
+        eventName={input.eventName}
+      />
     </div>
   );
 };

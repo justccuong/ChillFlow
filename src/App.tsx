@@ -7,8 +7,11 @@ import { AttendeeListModal } from './components/AttendeeListModal';
 import { ApiKeyModal } from './components/ApiKeyModal';
 import { AuthModal } from './components/AuthModal';
 import { PricingModal } from './components/PricingModal';
+import { PublicStandalonePage } from './components/LandingPage/PublicStandalonePage';
 import { generateLandingPageContent, PRESETS } from './services/aiService';
 import { useThemeMode } from './hooks/useThemeMode';
+import { extractSlugFromLocation, getPublishedEvent } from './services/publishService';
+import { Globe } from 'lucide-react';
 import {
   getCurrentUser,
   subscribeAuthChange,
@@ -38,6 +41,9 @@ export function App() {
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
   const [apiKey, setApiKey] = useState('');
 
+  // Public Standalone Route State
+  const [publicSlug, setPublicSlug] = useState<string | null>(() => extractSlugFromLocation());
+
   // Auth & Pricing state
   const [userProfile, setUserProfile] = useState<UserProfile>(getCurrentUser());
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -45,6 +51,19 @@ export function App() {
   const [pricingReason, setPricingReason] = useState<string | undefined>(undefined);
 
   const { mode: themeMode, toggleMode } = useThemeMode();
+
+  // Listen to routing changes (hash, history popstate)
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setPublicSlug(extractSlugFromLocation());
+    };
+    window.addEventListener('hashchange', handleLocationChange);
+    window.addEventListener('popstate', handleLocationChange);
+    return () => {
+      window.removeEventListener('hashchange', handleLocationChange);
+      window.removeEventListener('popstate', handleLocationChange);
+    };
+  }, []);
 
   // Initial load from localStorage & subscribe to auth updates
   useEffect(() => {
@@ -69,6 +88,36 @@ export function App() {
 
     return () => unsubscribe();
   }, []);
+
+  // If viewing a public published standalone route (/p/:slug or #/p/:slug)
+  if (publicSlug) {
+    const published = getPublishedEvent(publicSlug);
+    if (published) {
+      return <PublicStandalonePage page={published} />;
+    }
+    return (
+      <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 mb-4 shadow-xl">
+          <Globe className="w-8 h-8" />
+        </div>
+        <h1 className="text-2xl font-bold font-heading">Không tìm thấy trang sự kiện</h1>
+        <p className="text-sm text-slate-400 mt-2 max-w-md">
+          Trang <code className="text-indigo-400 font-mono">/p/{publicSlug}</code> chưa được xuất bản hoặc liên kết không chính xác.
+        </p>
+        <a
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.hash = '';
+            setPublicSlug(null);
+          }}
+          className="mt-6 px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-lg hover:shadow-indigo-500/25"
+        >
+          Quay lại trang chủ tạo sự kiện
+        </a>
+      </div>
+    );
+  }
 
   // Form submit handler: AI Generates copy & CRO score
   const handleFormSubmit = async (input: EventInput) => {
@@ -206,6 +255,11 @@ export function App() {
             onEditForm={() => setCurrentTab('form')}
             onUpdateInput={setEventInput}
             onUpdateContent={setContent}
+            userProfile={userProfile}
+            onTriggerUpgrade={(reason) => {
+              setPricingReason(reason);
+              setIsPricingModalOpen(true);
+            }}
           />
         )}
       </div>

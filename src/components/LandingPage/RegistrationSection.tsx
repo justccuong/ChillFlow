@@ -9,7 +9,7 @@ interface RegistrationSectionProps {
   theme: ThemeConfig;
   registeredCount: number;
   onRegisterSuccess: (attendee: Omit<Attendee, 'id' | 'registeredAt'>) => void;
-  onOpenAttendeeList: () => void;
+  onOpenAttendeeList?: () => void;
 }
 
 export const RegistrationSection: React.FC<RegistrationSectionProps> = ({

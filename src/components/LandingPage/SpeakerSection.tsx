@@ -5,7 +5,7 @@ import { Camera, Award, CheckCircle } from 'lucide-react';
 interface SpeakerSectionProps {
   input: EventInput;
   theme: ThemeConfig;
-  onOpenSpeakerImagePicker: () => void;
+  onOpenSpeakerImagePicker?: () => void;
 }
 
 export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
