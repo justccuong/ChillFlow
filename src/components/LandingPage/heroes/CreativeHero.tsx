@@ -1,7 +1,8 @@
 import React from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
-import { Calendar, MapPin, ArrowRight, Palette, Sparkles, Layers, PenTool, Eye, Star, Zap } from 'lucide-react';
+import { formatEventDate } from '../../../utils/date';
+import { Calendar, MapPin, ArrowRight, Palette, Sparkles, PenTool, Zap } from 'lucide-react';
 
 interface HeroProps {
   input: EventInput;
@@ -23,7 +24,7 @@ export const CreativeHero: React.FC<HeroProps> = ({
   const tags = theme.creativeTags || ['Design Systems', 'Micro-Interactions', 'Spline 3D', 'Spatial UI'];
 
   return (
-    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-left space-y-8 font-sans">
+    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-left space-y-7 font-sans">
       {/* Avant-Garde Sticker Header */}
       <div className="flex flex-wrap items-center gap-3">
         <span className="-rotate-2 inline-flex items-center gap-1.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black px-3.5 py-1.5 rounded-lg text-xs uppercase tracking-wider shadow-lg">
@@ -60,13 +61,13 @@ export const CreativeHero: React.FC<HeroProps> = ({
       </div>
 
       {/* 2-Column Creative Flow: Details & Visual Canvas */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-2">
-        {/* Left Column: Dates, Countdown & CTA (lg:col-span-7) */}
-        <div className="lg:col-span-7 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-1">
+        {/* Left Column: Dates, CTA & Compact Countdown (lg:col-span-7) */}
+        <div className="lg:col-span-7 space-y-4">
           <div className="flex flex-wrap items-center gap-3 text-xs text-slate-700 dark:text-slate-300">
             <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
               <Calendar className="w-4 h-4 text-pink-500" />
-              <span className="font-semibold">{input.eventDate}</span>
+              <span className="font-semibold">{formatEventDate(input.eventDate)}</span>
             </div>
             <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
               <MapPin className="w-4 h-4 text-purple-500" />
@@ -74,13 +75,11 @@ export const CreativeHero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-          <CountdownTimer targetDate={input.eventDate} />
-
-          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
             <button
               type="button"
               onClick={onScrollToRegister}
-              className={`px-8 py-4 rounded-xl text-base font-bold shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group uppercase tracking-wide ${theme.btnPrimary}`}
+              className={`px-8 py-3.5 rounded-xl text-base font-bold shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group uppercase tracking-wide ${theme.btnPrimary}`}
             >
               <span>{content.ctaButtonText || 'Đăng Ký Tham Gia Studio'}</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -89,6 +88,11 @@ export const CreativeHero: React.FC<HeroProps> = ({
               <Zap className="w-4 h-4 text-amber-400 fill-amber-400" />
               1-on-1 Portfolio Critique cùng Design Director
             </span>
+          </div>
+
+          {/* Compact Countdown (No overflow into right card!) */}
+          <div className="pt-2">
+            <CountdownTimer targetDate={input.eventDate} size="compact" align="left" />
           </div>
         </div>
 

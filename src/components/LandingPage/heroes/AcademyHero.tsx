@@ -1,7 +1,8 @@
 import React from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
-import { Calendar, MapPin, ArrowRight, GraduationCap, Star, Award, CheckCircle, ShieldCheck, BookOpen, Layers } from 'lucide-react';
+import { formatEventDate } from '../../../utils/date';
+import { Calendar, MapPin, ArrowRight, GraduationCap, Star, Award, ShieldCheck, BookOpen, Layers } from 'lucide-react';
 
 interface HeroProps {
   input: EventInput;
@@ -34,10 +35,10 @@ export const AcademyHero: React.FC<HeroProps> = ({
   ];
 
   return (
-    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-6">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
         {/* Left Column: Un-cramped Academy Copy (lg:col-span-8) */}
-        <div className="lg:col-span-8 text-left space-y-6">
+        <div className="lg:col-span-8 text-left space-y-5">
           {/* Rating & Accreditation Badge */}
           <div className="flex flex-wrap items-center gap-3">
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-xs font-bold text-blue-600 dark:text-blue-400">
@@ -64,7 +65,7 @@ export const AcademyHero: React.FC<HeroProps> = ({
           <div className="flex flex-wrap items-center gap-3 text-xs text-slate-700 dark:text-slate-300">
             <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
               <Calendar className="w-4 h-4 text-blue-500" />
-              <span className="font-semibold">{input.eventDate}</span>
+              <span className="font-semibold">{formatEventDate(input.eventDate)}</span>
             </div>
             <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
               <MapPin className="w-4 h-4 text-blue-500" />
@@ -76,17 +77,12 @@ export const AcademyHero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-          {/* Floating Countdown */}
-          <div className="pt-2">
-            <CountdownTimer targetDate={input.eventDate} />
-          </div>
-
-          {/* CTA Button */}
-          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+          {/* CTA Button Row */}
+          <div className="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
             <button
               type="button"
               onClick={onScrollToRegister}
-              className={`px-8 py-4 rounded-xl text-base shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group ${theme.btnPrimary}`}
+              className={`px-8 py-3.5 rounded-xl text-base shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group ${theme.btnPrimary}`}
             >
               <span>{content.ctaButtonText || 'Nhận Giáo Trình & Giữ Chỗ'}</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -95,6 +91,11 @@ export const AcademyHero: React.FC<HeroProps> = ({
               <ShieldCheck className="w-4 h-4 text-emerald-500" />
               Cấp chứng chỉ và tài liệu độc quyền trọn đời
             </span>
+          </div>
+
+          {/* Compact Countdown (No column overflow!) */}
+          <div className="pt-2">
+            <CountdownTimer targetDate={input.eventDate} size="compact" align="left" />
           </div>
         </div>
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
-import { Calendar, MapPin, ArrowRight, Flame, ShieldCheck, Ticket, Users, CheckCircle2, TrendingUp, Sparkles, BarChart2 } from 'lucide-react';
+import { formatEventDate } from '../../../utils/date';
+import { Calendar, MapPin, ArrowRight, Flame, Users, TrendingUp, BarChart2 } from 'lucide-react';
 
 interface HeroProps {
   input: EventInput;
@@ -31,14 +32,14 @@ export const MasterclassHero: React.FC<HeroProps> = ({
     'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80';
 
   return (
-    <div className="relative z-10 max-w-5xl mx-auto text-center space-y-8 px-4 sm:px-6">
+    <div className="relative z-10 max-w-5xl mx-auto text-center space-y-7 px-4 sm:px-6">
       {/* FOMO Urgent Pill */}
       <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-xs font-bold text-amber-700 dark:text-amber-400 backdrop-blur-sm animate-shimmer">
         <Flame className="w-4 h-4 text-amber-500 animate-pulse" />
         <span>{content.earlyBirdBadge || 'ƯU ĐÃI EARLY BIRD - CHỈ CÒN SỐ LƯỢNG CÓ HẠN'}</span>
       </div>
 
-      {/* Full-Bleed Grand Headline (Zero Column Squishing!) */}
+      {/* Full-Bleed Grand Headline */}
       <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-heading leading-[1.16] text-slate-900 dark:text-white max-w-4xl mx-auto drop-shadow-sm">
         {headlineToDisplay}
       </h1>
@@ -50,23 +51,18 @@ export const MasterclassHero: React.FC<HeroProps> = ({
 
       {/* Event Key Badges: Date & Location */}
       <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-slate-700 dark:text-slate-300">
-        <div className="flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-4 py-2 rounded-xl shadow-sm">
+        <div className="flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
           <Calendar className="w-4 h-4 text-amber-500" />
-          <span className="font-semibold">{input.eventDate}</span>
+          <span className="font-semibold">{formatEventDate(input.eventDate)}</span>
         </div>
-        <div className="flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-4 py-2 rounded-xl shadow-sm">
+        <div className="flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
           <MapPin className="w-4 h-4 text-amber-500" />
           <span className="font-semibold">{input.location}</span>
         </div>
       </div>
 
-      {/* Centered Floating Countdown */}
-      <div className="pt-2 pb-1">
-        <CountdownTimer targetDate={input.eventDate} />
-      </div>
-
-      {/* CTA Button & Seat Scarcity Bar */}
-      <div className="space-y-4 max-w-md mx-auto">
+      {/* CTA Button Row (Above Fold) */}
+      <div className="space-y-3 max-w-md mx-auto pt-1">
         <button
           type="button"
           onClick={onScrollToRegister}
@@ -94,8 +90,13 @@ export const MasterclassHero: React.FC<HeroProps> = ({
         </div>
       </div>
 
+      {/* Centered Floating Countdown */}
+      <div className="pt-2">
+        <CountdownTimer targetDate={input.eventDate} size="compact" />
+      </div>
+
       {/* Panoramic Horizon Stage Ribbon (3D Tilt) */}
-      <div className="pt-6 max-w-4xl mx-auto [perspective:1200px]">
+      <div className="pt-4 max-w-4xl mx-auto [perspective:1200px]">
         <div className="relative mx-auto rounded-2xl p-1.5 border border-amber-500/30 bg-gradient-to-b from-amber-500/10 to-transparent shadow-2xl transition-all duration-700 hover:[transform:rotateX(0deg)] [transform:rotateX(8deg)]">
           <div className="relative rounded-xl overflow-hidden bg-slate-950 aspect-[16/8] sm:aspect-[21/9]">
             <img

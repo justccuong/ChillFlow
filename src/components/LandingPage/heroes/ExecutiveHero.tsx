@@ -1,7 +1,8 @@
 import React from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
-import { Calendar, MapPin, ArrowRight, Briefcase, DollarSign, Building2, Shield, Award, CheckCircle2, Users, Star } from 'lucide-react';
+import { formatEventDate } from '../../../utils/date';
+import { Calendar, MapPin, ArrowRight, Briefcase, DollarSign, Shield, Award, CheckCircle2 } from 'lucide-react';
 
 interface HeroProps {
   input: EventInput;
@@ -27,9 +28,9 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
   };
 
   return (
-    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-left space-y-8 font-sans">
+    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-left space-y-7 font-sans">
       {/* Top Section: Full-Width Grand Executive Typography */}
-      <div className="space-y-5 max-w-4xl">
+      <div className="space-y-4 max-w-4xl">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-300">
           <Briefcase className="w-3.5 h-3.5 text-amber-500" />
           <span>SERIES A & SEED DEMO DAY // PRIVATE VENTURE SUMMIT</span>
@@ -47,7 +48,7 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
         <div className="flex flex-wrap items-center gap-3 text-xs text-slate-700 dark:text-slate-300 pt-1">
           <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
             <Calendar className="w-4 h-4 text-amber-500" />
-            <span className="font-semibold">{input.eventDate}</span>
+            <span className="font-semibold">{formatEventDate(input.eventDate)}</span>
           </div>
           <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
             <MapPin className="w-4 h-4 text-amber-500" />
@@ -59,14 +60,14 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
           </div>
         </div>
 
-        {/* Floating Countdown in Full Width Flow */}
-        <div className="pt-2">
-          <CountdownTimer targetDate={input.eventDate} />
+        {/* Floating Countdown */}
+        <div className="pt-1">
+          <CountdownTimer targetDate={input.eventDate} size="compact" align="left" />
         </div>
       </div>
 
       {/* Bottom Section: Asymmetric 3-Column Bento Poster Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 pt-2">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 pt-1">
         {/* Bento 1: Deal Metrics (Col-span 4) */}
         <div className="md:col-span-4 rounded-2xl p-5 bg-gradient-to-b from-slate-900 to-slate-950 border border-amber-400/20 text-white space-y-4 shadow-xl">
           <div className="flex items-center justify-between pb-3 border-b border-slate-800 text-xs font-bold tracking-wider text-amber-400">

@@ -1,7 +1,8 @@
 import React from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
-import { Calendar, MapPin, ArrowRight, Flame, Camera, Sparkles, Star, ShieldCheck, Users } from 'lucide-react';
+import { formatEventDate } from '../../../utils/date';
+import { Calendar, MapPin, ArrowRight, Flame, Camera, Sparkles, Star, ShieldCheck } from 'lucide-react';
 
 interface HeroProps {
   input: EventInput;
@@ -10,7 +11,7 @@ interface HeroProps {
   headlineToDisplay: string;
   onScrollToRegister: () => void;
   registeredCount: number;
-  onOpenHeroImagePicker: () => void;
+  onOpenHeroImagePicker?: () => void;
   onOpenSpeakerImagePicker?: () => void;
 }
 
@@ -23,23 +24,6 @@ export const ConferenceHero: React.FC<HeroProps> = ({
   registeredCount,
   onOpenSpeakerImagePicker,
 }) => {
-  const formattedDate = () => {
-    try {
-      const d = new Date(input.eventDate);
-      if (isNaN(d.getTime())) return input.eventDate;
-      return d.toLocaleDateString('vi-VN', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-    } catch {
-      return input.eventDate;
-    }
-  };
-
   const speakerPhoto =
     input.speakerAvatarUrl ||
     theme.speakerImage ||
@@ -53,10 +37,10 @@ export const ConferenceHero: React.FC<HeroProps> = ({
   ];
 
   return (
-    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-6">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
         {/* Left Column: Un-cramped Editorial Headline & Copy (Matches User Sketch 'text' with 66% width) */}
-        <div className="lg:col-span-8 text-left space-y-6">
+        <div className="lg:col-span-8 text-left space-y-5">
           {/* Early bird pill with Shimmer effect */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/30 text-xs font-semibold backdrop-blur-sm shadow-sm animate-shimmer">
             <Flame className="w-4 h-4 text-amber-500 animate-bounce" />
@@ -79,7 +63,7 @@ export const ConferenceHero: React.FC<HeroProps> = ({
           <div className="flex flex-wrap items-center gap-3 text-xs text-slate-700 dark:text-slate-300">
             <div className="flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
               <Calendar className={`w-4 h-4 ${theme.accentColor}`} />
-              <span className="font-semibold">{formattedDate()}</span>
+              <span className="font-semibold">{formatEventDate(input.eventDate)}</span>
             </div>
             <div className="flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
               <MapPin className={`w-4 h-4 ${theme.accentColor}`} />
@@ -87,18 +71,13 @@ export const ConferenceHero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-          {/* Floating Borderless Countdown */}
-          <div className="pt-2">
-            <CountdownTimer targetDate={input.eventDate} />
-          </div>
-
-          {/* CTA Button & Social Proof */}
-          <div className="space-y-4 pt-2">
+          {/* CTA Button & Social Proof - Placed Above Countdown for High Conversion */}
+          <div className="space-y-3.5 pt-1">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
               <button
                 type="button"
                 onClick={onScrollToRegister}
-                className={`px-8 py-4 rounded-xl text-base shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group ${theme.btnPrimary}`}
+                className={`px-8 py-3.5 rounded-xl text-base shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group ${theme.btnPrimary}`}
               >
                 <span>{content.ctaButtonText || 'Giữ Chỗ Tham Gia Ngay'}</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -110,14 +89,14 @@ export const ConferenceHero: React.FC<HeroProps> = ({
             </div>
 
             {/* Live Social Proof Badge */}
-            <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 pt-1">
+            <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
               <div className="flex -space-x-2">
                 {attendeeAvatars.map((src, i) => (
                   <img
                     key={i}
                     src={src}
                     alt="Attendee"
-                    className="w-7 h-7 rounded-full border-2 border-white dark:border-slate-900 object-cover"
+                    className="w-6 h-6 rounded-full border-2 border-white dark:border-slate-900 object-cover"
                   />
                 ))}
               </div>
@@ -128,6 +107,11 @@ export const ConferenceHero: React.FC<HeroProps> = ({
               <span className="text-emerald-600 dark:text-emerald-400 font-medium">Chỉ còn 38 vé Early Bird</span>
             </div>
           </div>
+
+          {/* Compact Floating Borderless Countdown (No column overflow!) */}
+          <div className="pt-2">
+            <CountdownTimer targetDate={input.eventDate} size="compact" align="left" />
+          </div>
         </div>
 
         {/* Right Column: Organic Cutout Visual (Matches User Sketch 'ảnh' with 33% width) */}
@@ -136,7 +120,7 @@ export const ConferenceHero: React.FC<HeroProps> = ({
           <div className="absolute -inset-4 bg-gradient-to-tr from-indigo-500/25 via-cyan-500/20 to-purple-500/20 rounded-[3rem] blur-3xl opacity-75 pointer-events-none"></div>
 
           {/* Organic Portrait Cutout Canvas */}
-          <div className="relative w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/30 dark:border-white/10 bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-950 group">
+          <div className="relative w-full max-w-sm rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/30 dark:border-white/10 bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-950 group">
             {/* Speaker Image */}
             <div className="relative aspect-[4/5] sm:aspect-[3/4] w-full overflow-hidden">
               <img

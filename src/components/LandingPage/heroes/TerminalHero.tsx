@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
+import { formatEventDate } from '../../../utils/date';
 import { Calendar, MapPin, ArrowRight, Terminal, Copy, Check, Code2, Cpu, GitBranch, Layers, CheckCircle2 } from 'lucide-react';
 
 interface HeroProps {
@@ -31,9 +32,9 @@ export const TerminalHero: React.FC<HeroProps> = ({
   };
 
   return (
-    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-left space-y-8 font-sans">
+    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-left space-y-7 font-sans">
       {/* Top Telemetry Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-4 font-mono text-xs">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3 font-mono text-xs">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
           <Terminal className="w-3.5 h-3.5 text-emerald-500" />
@@ -86,40 +87,39 @@ export const TerminalHero: React.FC<HeroProps> = ({
         </button>
       </div>
 
-      {/* Event Details: Date, Location & Countdown */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-4xl pt-2">
-        <div className="space-y-3 font-mono text-xs">
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm text-slate-700 dark:text-slate-300">
-              <Calendar className="w-4 h-4 text-emerald-500" />
-              <span>{input.eventDate}</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm text-slate-700 dark:text-slate-300">
-              <MapPin className="w-4 h-4 text-emerald-500" />
-              <span>{input.location}</span>
-            </div>
+      {/* Event Details: Date, Location, CTA & Compact Countdown */}
+      <div className="space-y-4 max-w-4xl pt-1">
+        <div className="flex flex-wrap items-center gap-3 font-mono text-xs">
+          <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm text-slate-700 dark:text-slate-300">
+            <Calendar className="w-4 h-4 text-emerald-500" />
+            <span>{formatEventDate(input.eventDate)}</span>
           </div>
-          <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+          <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm text-slate-700 dark:text-slate-300">
+            <MapPin className="w-4 h-4 text-emerald-500" />
+            <span>{input.location}</span>
+          </div>
+        </div>
+
+        {/* CTA & Registered Engineer Count */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+          <button
+            type="button"
+            onClick={onScrollToRegister}
+            className={`px-8 py-4 rounded-xl text-base shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group font-mono ${theme.btnPrimary}`}
+          >
+            <span>{content.ctaButtonText || 'git checkout --register-vip'}</span>
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </button>
+          <div className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
             <span>Đã cấp vé tham dự cho {registeredCount > 0 ? registeredCount : 96}+ kỹ sư</span>
           </div>
         </div>
 
-        <div>
-          <CountdownTimer targetDate={input.eventDate} />
+        {/* Compact Countdown */}
+        <div className="pt-2">
+          <CountdownTimer targetDate={input.eventDate} size="compact" align="left" />
         </div>
-      </div>
-
-      {/* Primary CTA */}
-      <div className="pt-2">
-        <button
-          type="button"
-          onClick={onScrollToRegister}
-          className={`px-8 py-4 rounded-xl text-base shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center gap-2.5 group font-mono ${theme.btnPrimary}`}
-        >
-          <span>{content.ctaButtonText || 'git checkout --register-vip'}</span>
-          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-        </button>
       </div>
 
       {/* Horizontal Developer Telemetry Bar (4-Col Grid) */}
