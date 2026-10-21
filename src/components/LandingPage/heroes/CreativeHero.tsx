@@ -38,7 +38,7 @@ export const CreativeHero: React.FC<HeroProps> = ({
 
       {/* Bold, Un-cramped Neo-Brutalist Headline */}
       <div className="space-y-4 max-w-4xl">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight font-heading leading-[1.14] text-slate-900 dark:text-white uppercase drop-shadow-sm">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight font-heading leading-[1.22] text-slate-900 dark:text-white drop-shadow-sm">
           {headlineToDisplay}
         </h1>
 

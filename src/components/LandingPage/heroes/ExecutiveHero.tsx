@@ -1,7 +1,7 @@
 import React from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
-import { Calendar, MapPin, ArrowRight, Briefcase, DollarSign, Building2, Shield, Award, CheckCircle2, Users } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, Briefcase, DollarSign, Building2, Shield, Award, CheckCircle2, Users, Star } from 'lucide-react';
 
 interface HeroProps {
   input: EventInput;
@@ -29,13 +29,13 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
   return (
     <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-left space-y-8 font-sans">
       {/* Top Section: Full-Width Grand Executive Typography */}
-      <div className="space-y-4 max-w-4xl">
+      <div className="space-y-5 max-w-4xl">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-300">
           <Briefcase className="w-3.5 h-3.5 text-amber-500" />
           <span>SERIES A & SEED DEMO DAY // PRIVATE VENTURE SUMMIT</span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight font-serif text-slate-900 dark:text-amber-100 leading-[1.16]">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white leading-[1.16]">
           {headlineToDisplay}
         </h1>
 
@@ -43,7 +43,7 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
           {content.subHeadline}
         </p>
 
-        {/* Date & Location Pill */}
+        {/* Date & Location & NDA Pills */}
         <div className="flex flex-wrap items-center gap-3 text-xs text-slate-700 dark:text-slate-300 pt-1">
           <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
             <Calendar className="w-4 h-4 text-amber-500" />
@@ -57,6 +57,11 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
             <Shield className="w-4 h-4 text-emerald-500" />
             <span>Tiêu chuẩn bảo mật NDA quốc tế</span>
           </div>
+        </div>
+
+        {/* Floating Countdown in Full Width Flow */}
+        <div className="pt-2">
+          <CountdownTimer targetDate={input.eventDate} />
         </div>
       </div>
 
@@ -90,21 +95,19 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
           </div>
         </div>
 
-        {/* Bento 2: Primary VIP Registration & Countdown (Col-span 5) */}
+        {/* Bento 2: Primary VIP Registration & Inclusions (Col-span 5) */}
         <div className="md:col-span-5 rounded-2xl p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 shadow-xl flex flex-col justify-between">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                Thời Hạn Đăng Ký Thẩm Định
+                QUYỀN LỢI THÀNH VIÊN VIP
               </span>
               <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">
                 CÒN 14 SUẤT
               </span>
             </div>
 
-            <CountdownTimer targetDate={input.eventDate} />
-
-            <div className="space-y-2 pt-1 text-xs text-slate-600 dark:text-slate-300">
+            <div className="space-y-2.5 pt-1 text-xs text-slate-600 dark:text-slate-300">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
                 <span>Nhận trọn bộ 16 Pitch Decks & Báo cáo Thẩm định</span>
@@ -112,6 +115,10 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
                 <span>Tham dự Private Networking Dinner cùng các General Partners</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                <span>Q&A 1-1 riêng biệt cùng Founder & Đồng sáng lập</span>
               </div>
             </div>
           </div>
