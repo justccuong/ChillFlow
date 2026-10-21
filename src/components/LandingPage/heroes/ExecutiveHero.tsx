@@ -1,7 +1,7 @@
 import React from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
-import { Calendar, MapPin, ArrowRight, Briefcase, DollarSign, Building2, Shield, Award } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, Briefcase, DollarSign, Building2, Shield, Award, CheckCircle2, Users } from 'lucide-react';
 
 interface HeroProps {
   input: EventInput;
@@ -18,6 +18,7 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
   theme,
   headlineToDisplay,
   onScrollToRegister,
+  registeredCount,
 }) => {
   const metrics = theme.dealMetrics || {
     capitalPool: '$5,000,000+',
@@ -26,102 +27,120 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
   };
 
   return (
-    <div className="relative z-10 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center text-left">
-      {/* Left Column: Refined Executive Copy */}
-      <div className="lg:col-span-7 space-y-6">
-        {/* Elite Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-xs font-bold uppercase tracking-widest text-amber-500 dark:text-amber-300">
-          <Briefcase className="w-3.5 h-3.5 text-amber-400" />
-          <span>SERIES A & SEED DEMO DAY // PRIVATE SUMMIT</span>
+    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-left space-y-8 font-sans">
+      {/* Top Section: Full-Width Grand Executive Typography */}
+      <div className="space-y-4 max-w-4xl">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-300">
+          <Briefcase className="w-3.5 h-3.5 text-amber-500" />
+          <span>SERIES A & SEED DEMO DAY // PRIVATE VENTURE SUMMIT</span>
         </div>
 
-        {/* Headline */}
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-heading leading-tight text-slate-900 dark:text-white">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight font-serif text-slate-900 dark:text-amber-100 leading-[1.16]">
           {headlineToDisplay}
         </h1>
 
-        {/* Sub-headline */}
-        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-sans leading-relaxed">
+        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl">
           {content.subHeadline}
         </p>
 
         {/* Date & Location Pill */}
-        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-700 dark:text-slate-300">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-700 dark:text-slate-300 pt-1">
           <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
-            <Calendar className="w-4 h-4 text-amber-400" />
+            <Calendar className="w-4 h-4 text-amber-500" />
             <span className="font-semibold">{input.eventDate}</span>
           </div>
           <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
-            <MapPin className="w-4 h-4 text-amber-400" />
+            <MapPin className="w-4 h-4 text-amber-500" />
             <span className="font-semibold">{input.location}</span>
           </div>
-        </div>
-
-        {/* Floating Countdown */}
-        <div className="pt-2">
-          <CountdownTimer targetDate={input.eventDate} />
-        </div>
-
-        {/* CTA */}
-        <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-          <button
-            type="button"
-            onClick={onScrollToRegister}
-            className={`px-8 py-4 rounded-xl text-base shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2 group ${theme.btnPrimary}`}
-          >
-            <span>{content.ctaButtonText || 'Nhận Hồ Sơ Thẩm Định & Vé Mời'}</span>
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </button>
-          <span className="text-xs text-slate-500 flex items-center gap-1.5">
-            <Shield className="w-4 h-4 text-amber-400" />
-            Bảo mật thông tin dự án theo chuẩn NDA
-          </span>
+          <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
+            <Shield className="w-4 h-4 text-emerald-500" />
+            <span>Tiêu chuẩn bảo mật NDA quốc tế</span>
+          </div>
         </div>
       </div>
 
-      {/* Right Column: Term Sheet & Deal Summary Card */}
-      <div className="lg:col-span-5">
-        <div className="rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border border-amber-400/30 p-6 sm:p-7 shadow-2xl text-white space-y-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-            <span className="text-xs uppercase font-bold tracking-widest text-amber-300">EXECUTIVE DEAL SHEET</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-amber-400/10 text-amber-300 text-[10px] font-bold border border-amber-400/30">
-              INVITE ONLY
-            </span>
+      {/* Bottom Section: Asymmetric 3-Column Bento Poster Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 pt-2">
+        {/* Bento 1: Deal Metrics (Col-span 4) */}
+        <div className="md:col-span-4 rounded-2xl p-5 bg-gradient-to-b from-slate-900 to-slate-950 border border-amber-400/20 text-white space-y-4 shadow-xl">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-800 text-xs font-bold tracking-wider text-amber-400">
+            <span>QUỸ ĐẦU TƯ & DEALFLOW</span>
+            <span className="px-2 py-0.5 rounded bg-amber-400/20 text-[10px]">INVITE ONLY</span>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-slate-850 p-4 rounded-xl border border-slate-800 space-y-1">
-              <span className="text-[11px] text-slate-400 flex items-center gap-1">
-                <DollarSign className="w-3.5 h-3.5 text-amber-400" /> Quỹ Đầu Tư Dự Kiến
-              </span>
+          <div className="space-y-3">
+            <div className="bg-slate-850 p-3.5 rounded-xl border border-slate-800">
+              <div className="text-[11px] text-slate-400 flex items-center gap-1 mb-1">
+                <DollarSign className="w-3.5 h-3.5 text-amber-400" /> Vốn Cam Kết Đầu Tư
+              </div>
               <div className="text-2xl font-bold font-heading text-amber-300">{metrics.capitalPool}</div>
             </div>
-            <div className="bg-slate-850 p-4 rounded-xl border border-slate-800 space-y-1">
-              <span className="text-[11px] text-slate-400 flex items-center gap-1">
-                <Building2 className="w-3.5 h-3.5 text-cyan-400" /> Startup Chọn Lọc
+
+            <div className="grid grid-cols-2 gap-2.5">
+              <div className="bg-slate-850 p-3 rounded-xl border border-slate-800">
+                <div className="text-[10px] text-slate-400">Startup Pitching</div>
+                <div className="text-lg font-bold text-slate-100">{metrics.startupsCount} Doanh nghiệp</div>
+              </div>
+              <div className="bg-slate-850 p-3 rounded-xl border border-slate-800">
+                <div className="text-[10px] text-slate-400">Quỹ VC Tham Dự</div>
+                <div className="text-lg font-bold text-slate-100">{metrics.investorCount}+ Quỹ VC</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bento 2: Primary VIP Registration & Countdown (Col-span 5) */}
+        <div className="md:col-span-5 rounded-2xl p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 shadow-xl flex flex-col justify-between">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                Thời Hạn Đăng Ký Thẩm Định
               </span>
-              <div className="text-2xl font-bold font-heading text-white">{metrics.startupsCount} Teams</div>
+              <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">
+                CÒN 14 SUẤT
+              </span>
+            </div>
+
+            <CountdownTimer targetDate={input.eventDate} />
+
+            <div className="space-y-2 pt-1 text-xs text-slate-600 dark:text-slate-300">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                <span>Nhận trọn bộ 16 Pitch Decks & Báo cáo Thẩm định</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                <span>Tham dự Private Networking Dinner cùng các General Partners</span>
+              </div>
             </div>
           </div>
 
-          <div className="space-y-3 bg-slate-850 p-4 rounded-xl border border-slate-800 text-xs text-slate-300">
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Hội Đồng Quỹ Tham Gia:</span>
-              <span className="font-bold text-white">{metrics.investorCount}+ VCs & Thiên Thần</span>
+          <button
+            type="button"
+            onClick={onScrollToRegister}
+            className={`w-full mt-3 px-6 py-3.5 rounded-xl text-sm font-semibold shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2 ${theme.btnPrimary}`}
+          >
+            <span>{content.ctaButtonText || 'Đăng Ký Tham Dự Summit'}</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Bento 3: Accreditation Seal & Investor Tier (Col-span 3) */}
+        <div className="md:col-span-3 rounded-2xl p-5 bg-gradient-to-br from-amber-500/10 via-slate-900 to-slate-950 border border-amber-500/30 text-white space-y-4 shadow-xl flex flex-col justify-between">
+          <div className="space-y-2 text-center pt-2">
+            <div className="w-12 h-12 mx-auto rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center shadow-lg">
+              <Award className="w-6 h-6 text-amber-400" />
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Hình Thức Pitching:</span>
-              <span className="font-bold text-white">5 Phút Pitch + 5 Phút Q&A Thẩm Định</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Quyền Lợi VIP:</span>
-              <span className="font-bold text-amber-300">Deal Room 1-1 & Tiệc Tối Networking</span>
-            </div>
+            <div className="font-heading font-bold text-sm text-amber-200">ACCREDITED INVESTOR</div>
+            <p className="text-[11px] text-slate-300 leading-relaxed">
+              Dành riêng cho các nhà đầu tư thiên thần, quỹ mạo hiểm và các nhà sáng lập.
+            </p>
           </div>
 
-          <div className="text-[11px] text-slate-400 flex items-center gap-1.5 pt-1">
-            <Award className="w-4 h-4 text-amber-400 flex-shrink-0" />
-            <span>Được bảo trợ bởi mạng lưới 10+ VCs hàng đầu khu vực</span>
+          <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60 text-center text-xs">
+            <span className="text-slate-400">Xác nhận giữ chỗ: </span>
+            <strong className="text-amber-300">{registeredCount > 0 ? registeredCount : 42} nhà đầu tư</strong>
           </div>
         </div>
       </div>
