@@ -76,6 +76,11 @@ export interface GeneratedContent {
   tagline: string;
 }
 
+export interface SemanticPageSchema extends GeneratedContent {
+  matchedTemplateId: EventCategory;
+  categorySpecifics?: Record<string, any>;
+}
+
 export interface CROEvaluation {
   totalScore: number;
   headlineScore: number;

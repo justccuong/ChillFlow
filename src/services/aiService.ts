@@ -1,4 +1,5 @@
-import type { EventInput, GeneratedContent, CROEvaluation, FaqItem } from '../types';
+import type { EventInput, GeneratedContent, SemanticPageSchema, CROEvaluation, FaqItem } from '../types';
+import { detectBestTemplate } from './templateRegistry';
 
 // Preset templates for instant demo during presentation
 export const PRESETS: { label: string; iconType: 'ai' | 'marketing' | 'startup' | 'design'; data: EventInput }[] = [
@@ -237,7 +238,8 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
         ],
   };
 
-  const content: GeneratedContent = {
+  const content: SemanticPageSchema = {
+    matchedTemplateId: category,
     headline,
     alternativeHeadline: altHeadline,
     subHeadline,
@@ -337,5 +339,9 @@ Hãy trả về DUY NHẤT một chuỗi JSON hợp lệ (không kèm Markdown b
   if (!text) throw new Error('Empty response');
 
   const cleanJson = text.trim().replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
-  return JSON.parse(cleanJson);
+  const parsed = JSON.parse(cleanJson);
+  if (parsed?.content) {
+    parsed.content.matchedTemplateId = input.category || detectBestTemplate(input.eventName, input.targetAudience).id;
+  }
+  return parsed;
 }
