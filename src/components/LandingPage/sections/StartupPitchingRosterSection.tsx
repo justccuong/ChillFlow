@@ -1,0 +1,116 @@
+import React from 'react';
+import { DollarSign, Building2, TrendingUp, Shield, Award, Users } from 'lucide-react';
+import type { ThemeConfig } from '../../../types';
+
+interface StartupPitchingProps {
+  theme: ThemeConfig;
+  onScrollToRegister: () => void;
+}
+
+export const StartupPitchingRosterSection: React.FC<StartupPitchingProps> = ({
+  theme,
+  onScrollToRegister,
+}) => {
+  const startups = [
+    { name: 'OmniAgent.ai', sector: 'Enterprise AI & Automation', round: 'Seed ($1.2M)', traction: 'ARR $350K • 28 Khách hàng B2B' },
+    { name: 'FinFlow Pay', sector: 'Cross-border B2B Payments', round: 'Pre-Series A ($2.0M)', traction: 'GMV $14M/tháng • Tăng trưởng 25% MoM' },
+    { name: 'BioCure Health', sector: 'MedTech & AI Diagnosis', round: 'Seed ($800K)', traction: 'Đã thử nghiệm lâm sàng tại 4 bệnh viện' },
+    { name: 'GreenLogistics', sector: 'Clean Energy & Fleet Management', round: 'Pre-Series A ($1.8M)', traction: '1,200 phương tiện điện đang vận hành' },
+    { name: 'EduVerse XR', sector: 'Immersive EdTech', round: 'Seed ($600K)', traction: '45,000 người dùng hàng tháng' },
+    { name: 'CyberShield Sec', sector: 'Cloud Security & Zero-Trust', round: 'Seed ($1.5M)', traction: 'Hợp đồng bảo mật với 3 ngân hàng lớn' },
+  ];
+
+  const investors = [
+    'Mekong Ventures', 'Sequoia SEA Alpha', 'Golden Gate Ventures', 'Vertex Southeast Asia', '500 Emerging Startups', 'East Ventures'
+  ];
+
+  return (
+    <section className="py-20 bg-slate-950 text-white relative overflow-hidden" data-reveal>
+      <div className="max-w-6xl mx-auto px-4 md:px-8 space-y-16 relative z-10">
+        {/* Section Header */}
+        <div className="text-center space-y-3">
+          <span className="text-xs font-bold uppercase tracking-widest text-amber-300 flex items-center justify-center gap-1.5">
+            <DollarSign className="w-3.5 h-3.5" /> DEALFLOW & PITCHING PIPELINE
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-black font-heading tracking-tight text-white">
+            Danh Mục 6 Doanh Nghiệp Pitching Tiêu Biểu
+          </h2>
+          <p className="text-sm text-slate-400 max-w-2xl mx-auto">
+            Được tuyển chọn khắt khe từ hơn 180 hồ sơ đăng ký tham gia vòng thẩm định deal kín.
+          </p>
+        </div>
+
+        {/* Startups Table Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {startups.map((st, i) => (
+            <div
+              key={i}
+              className="p-6 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 hover:border-amber-400/40 transition-all space-y-3 shadow-lg"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                  DEAL #{i + 1}
+                </span>
+                <span className="text-xs font-bold text-amber-400 font-mono">
+                  {st.round}
+                </span>
+              </div>
+
+              <h4 className="text-xl font-bold text-white tracking-tight">{st.name}</h4>
+              <p className="text-xs text-slate-400">{st.sector}</p>
+
+              <div className="pt-2 border-t border-slate-800/80 text-[11px] text-emerald-400 font-medium flex items-center gap-1.5">
+                <TrendingUp className="w-3.5 h-3.5" />
+                <span>{st.traction}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* VC Partners Banner */}
+        <div className="p-8 rounded-3xl bg-slate-900/60 border border-slate-800 space-y-6 text-center">
+          <div className="space-y-1">
+            <h4 className="text-base font-bold text-slate-300 uppercase tracking-widest">
+              Hội Đồng Quỹ Đầu Tư & Đối Tác VCs Tham Dự
+            </h4>
+            <p className="text-xs text-slate-500">Các đối tác quản lý quỹ trực tiếp tham gia hội đồng thẩm định</p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
+            {investors.map((inv, idx) => (
+              <span
+                key={idx}
+                className="px-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-slate-300 hover:text-amber-300 hover:border-amber-400/30 transition-colors"
+              >
+                {inv}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* NDA & VIP Registration Pass */}
+        <div className="p-8 rounded-3xl bg-gradient-to-r from-amber-400/10 via-slate-900 to-amber-400/10 border border-amber-400/30 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-400/20 flex items-center justify-center text-amber-300 shrink-0">
+              <Shield className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-base font-bold text-white">Thỏa Thuận Bảo Mật Thông Tin (NDA) Bắt Buộc</h4>
+              <p className="text-xs text-slate-400">
+                Toàn bộ dữ liệu tài chính của các startup pitching được bảo mật theo tiêu chuẩn Venture NDA quốc tế.
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={onScrollToRegister}
+            className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black text-sm shadow-xl hover:from-amber-300 hover:to-amber-400 transition-all cursor-pointer hover:scale-105 shrink-0"
+          >
+            Đăng Ký Founder / Investor Pass
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};

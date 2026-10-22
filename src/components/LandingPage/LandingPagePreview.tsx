@@ -20,7 +20,11 @@ import { TerminalCodeSection } from './sections/TerminalCodeSection';
 import { ExecutivePitchesSection } from './sections/ExecutivePitchesSection';
 import { CreativeMasonrySection } from './sections/CreativeMasonrySection';
 import { AcademySyllabusSection } from './sections/AcademySyllabusSection';
-import { StickyFomoBar } from './StickyFomoBar';
+import { MarketingBeforeAfterSection } from './sections/MarketingBeforeAfterSection';
+import { StartupPitchingRosterSection } from './sections/StartupPitchingRosterSection';
+import { DeveloperCodeSandboxSection } from './sections/DeveloperCodeSandboxSection';
+import { TemplateCatalogModal } from '../TemplateCatalogModal';
+import { TEMPLATE_LIBRARY, detectBestTemplate, getTemplateById } from '../../services/templateRegistry';
 import { ExitIntentModal } from './ExitIntentModal';
 import { SocialProofTicker } from './SocialProofTicker';
 import { PublishModal } from './PublishModal';
@@ -28,7 +32,7 @@ import { CustomDomainModal } from '../CustomDomainModal';
 import { publishEvent } from '../../services/publishService';
 import { exportStandaloneHtml } from '../../utils/sourceExporter';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
-import { Sparkles, ArrowUp, BarChart3, Edit3, Palette, Globe, Send, Download, X } from 'lucide-react';
+import { Sparkles, ArrowUp, BarChart3, Edit3, Palette, Globe, Send, Download, X, Layers } from 'lucide-react';
 import type { UserProfile, PublishedPageRecord } from '../../types';
 
 interface LandingPagePreviewProps {
@@ -68,6 +72,10 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   const [showCRODrawer, setShowCRODrawer] = useState<boolean>(false);
   const [currentCategory, setCurrentCategory] = useState<EventCategory>(input.category || 'ai-tech');
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState<boolean>(false);
+
+  const recommendedTemplate = detectBestTemplate(input.eventName, input.targetAudience);
+  const currentTemplateDef = getTemplateById(currentCategory);
 
   // Publishing & Domain Modals State
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
@@ -181,14 +189,24 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans pb-24">
-      {/* ConvertFlow Sticky FOMO Bar (Auto-reveals on scroll past hero) */}
-      <StickyFomoBar
-        targetDate={input.eventDate}
-        onCtaClick={scrollToRegistration}
-        earlyBirdBadge={content.earlyBirdBadge}
-        ticketsLeft={38}
-        triggerScrollY={500}
-      />
+      {/* Top AI Match Notification Bar */}
+      <div className="max-w-7xl mx-auto px-4 pt-3 pb-1 flex flex-wrap items-center justify-between gap-3 text-xs w-full">
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/30 text-indigo-700 dark:text-indigo-300">
+          <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+          <span>
+            <strong>AI Auto-Matched:</strong> Đã kích hoạt template <strong className="text-indigo-600 dark:text-indigo-200">"{currentTemplateDef.name}"</strong> ({currentTemplateDef.categoryLabel}) từ Kho Template.
+          </span>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIsTemplateModalOpen(true)}
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold cursor-pointer transition-all shadow-sm"
+        >
+          <Palette className="w-3.5 h-3.5 text-cyan-500" />
+          <span>Kho 6 Templates Sự Kiện</span>
+        </button>
+      </div>
 
       {/* Visual CMS Helper Banner */}
       {isEditMode && (
@@ -202,21 +220,19 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
       {/* Floating Modern Studio Dock */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 sm:gap-2.5 p-2 rounded-2xl bg-slate-950/92 backdrop-blur-2xl border border-white/20 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] text-white text-xs max-w-[96vw] shrink-0">
-        {/* CRO Score Pill Button */}
+        {/* Kho Template Trigger Button */}
         <button
           type="button"
-          onClick={() => setShowCRODrawer(!showCRODrawer)}
+          onClick={() => setIsTemplateModalOpen(true)}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/40 font-semibold cursor-pointer transition-all shrink-0"
-          title="Bấm để xem phân tích CRO chi tiết"
+          title="Mở Kho 6 Templates Sự Kiện Độc Quyền"
         >
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-          <span className="hidden sm:inline">Điểm CRO:</span>
-          <span className="font-bold text-white">{cro.totalScore}/100</span>
+          <Palette className="w-3.5 h-3.5 text-cyan-400" />
+          <span>Kho Template</span>
         </button>
 
-        {/* Template Selector */}
+        {/* Template Selector Quick Dropdown */}
         <div className="flex items-center gap-1.5 bg-white/10 px-2.5 py-1.5 rounded-xl border border-white/10 shrink-0">
-          <Palette className="w-3.5 h-3.5 text-cyan-400" />
           <select
             value={currentCategory}
             onChange={e => setCurrentCategory(e.target.value as EventCategory)}
@@ -229,6 +245,18 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             ))}
           </select>
         </div>
+
+        {/* CRO Score Pill Button */}
+        <button
+          type="button"
+          onClick={() => setShowCRODrawer(!showCRODrawer)}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 font-semibold cursor-pointer transition-all shrink-0"
+          title="Bấm để xem phân tích CRO chi tiết"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <span className="hidden sm:inline">CRO:</span>
+          <span className="font-bold text-white">{cro.totalScore}/100</span>
+        </button>
 
         <div className="w-[1px] h-4 bg-white/20 mx-0.5 shrink-0 hidden sm:block"></div>
 
@@ -320,81 +348,150 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           onUpdateInputField={handleUpdateInputField}
         />
 
-        {/* 2. Trust Bar / Social Proof Logos (Interactive SVG with Marquee & Editability) */}
-        <div data-reveal>
-          <TrustBarSection
-            theme={theme}
-            sponsors={input.sponsors}
-            onOpenSponsorEditor={() => setIsSponsorEditorOpen(true)}
-          />
-        </div>
-
-        {/* 3. 03 Bullet Benefits Section (Bento Grid) */}
-        <div data-reveal data-reveal-delay="100">
-          <BenefitsSection benefits={content.benefits} theme={theme} />
-        </div>
-
-        {/* 3.5. Distinct Archetype-Specific Interactive Sections */}
-        {theme.layout === 'masterclass' && (
-          <div data-reveal data-reveal-delay="100">
-            <MasterclassStatsSection theme={theme} />
-          </div>
-        )}
-        {theme.layout === 'terminal' && (
-          <div data-reveal data-reveal-delay="100">
-            <TerminalCodeSection theme={theme} />
-          </div>
-        )}
-        {theme.layout === 'executive' && (
-          <div data-reveal data-reveal-delay="100">
-            <ExecutivePitchesSection theme={theme} />
-          </div>
-        )}
-        {theme.layout === 'creative' && (
-          <div data-reveal data-reveal-delay="100">
-            <CreativeMasonrySection theme={theme} />
-          </div>
-        )}
-        {theme.layout === 'academy' && (
-          <div data-reveal data-reveal-delay="100">
-            <AcademySyllabusSection theme={theme} />
-          </div>
+        {/* ========================================================
+            CATEGORY 1: AI & TECH (Cyber Summit 2026)
+            ======================================================== */}
+        {currentCategory === 'ai-tech' && (
+          <>
+            <div data-reveal>
+              <TrustBarSection
+                theme={theme}
+                sponsors={input.sponsors}
+                onOpenSponsorEditor={() => setIsSponsorEditorOpen(true)}
+              />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <BenefitsSection benefits={content.benefits} theme={theme} />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <SpeakerSection
+                input={{ ...input, category: currentCategory }}
+                theme={theme}
+                onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
+              />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <AgendaSection
+                agenda={content.agenda}
+                eventName={input.eventName}
+                theme={theme}
+                speakerName={input.speakerName}
+                speakerPhoto={speakerPhoto}
+              />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <FaqSection faqs={content.faqs} theme={theme} />
+            </div>
+          </>
         )}
 
-        {/* 4. Event Atmosphere & Real Photo Gallery Showcase */}
-        <div data-reveal data-reveal-delay="100">
-          <EventGallerySection theme={theme} location={input.location} />
-        </div>
+        {/* ========================================================
+            CATEGORY 2: MARKETING & GROWTH (High-Conversion Masterclass)
+            ======================================================== */}
+        {currentCategory === 'marketing' && (
+          <>
+            <div data-reveal data-reveal-delay="100">
+              <MasterclassStatsSection theme={theme} />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <MarketingBeforeAfterSection
+                theme={theme}
+                onScrollToRegister={scrollToRegistration}
+              />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <TestimonialsSection theme={theme} targetAudience={input.targetAudience} />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <FaqSection faqs={content.faqs} theme={theme} />
+            </div>
+          </>
+        )}
 
-        {/* 5. Speaker Section + Real Speaker Portrait */}
-        <div data-reveal data-reveal-delay="100">
-          <SpeakerSection
-            input={{ ...input, category: currentCategory }}
-            theme={theme}
-            onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
-          />
-        </div>
+        {/* ========================================================
+            CATEGORY 3: DEVELOPER (Terminal Broadsheet & Telemetry)
+            ======================================================== */}
+        {currentCategory === 'developer' && (
+          <>
+            <div data-reveal data-reveal-delay="100">
+              <TerminalCodeSection theme={theme} />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <DeveloperCodeSandboxSection theme={theme} />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <SpeakerSection
+                input={{ ...input, category: currentCategory }}
+                theme={theme}
+                onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
+              />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <AgendaSection
+                agenda={content.agenda}
+                eventName={input.eventName}
+                theme={theme}
+                speakerName={input.speakerName}
+                speakerPhoto={speakerPhoto}
+              />
+            </div>
+          </>
+        )}
 
-        {/* 6. Community Testimonials & Social Proof */}
-        <div data-reveal data-reveal-delay="100">
-          <TestimonialsSection theme={theme} targetAudience={input.targetAudience} />
-        </div>
+        {/* ========================================================
+            CATEGORY 4: STARTUP (Executive Dealflow & Pitching Roster)
+            ======================================================== */}
+        {currentCategory === 'startup' && (
+          <>
+            <div data-reveal data-reveal-delay="100">
+              <ExecutivePitchesSection theme={theme} />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <StartupPitchingRosterSection
+                theme={theme}
+                onScrollToRegister={scrollToRegistration}
+              />
+            </div>
+          </>
+        )}
 
-        {/* 7. Agenda Section */}
-        <div data-reveal data-reveal-delay="100">
-          <AgendaSection
-            agenda={content.agenda}
-            eventName={input.eventName}
-            theme={theme}
-            speakerName={input.speakerName}
-            speakerPhoto={speakerPhoto}
-          />
-        </div>
+        {/* ========================================================
+            CATEGORY 5: DESIGN (Creative Avant-Garde & Mood Canvas)
+            ======================================================== */}
+        {currentCategory === 'design' && (
+          <>
+            <div data-reveal data-reveal-delay="100">
+              <CreativeMasonrySection theme={theme} />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <BenefitsSection benefits={content.benefits} theme={theme} />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <SpeakerSection
+                input={{ ...input, category: currentCategory }}
+                theme={theme}
+                onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
+              />
+            </div>
+          </>
+        )}
 
-        {/* 8. FAQ Section */}
-        <div data-reveal data-reveal-delay="100">
-          <FaqSection faqs={content.faqs} theme={theme} />
-        </div>
+        {/* ========================================================
+            CATEGORY 6: EDUCATION (Academic Syllabus & ISO Accreditation)
+            ======================================================== */}
+        {currentCategory === 'education' && (
+          <>
+            <div data-reveal data-reveal-delay="100">
+              <AcademySyllabusSection theme={theme} />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <BenefitsSection benefits={content.benefits} theme={theme} />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <FaqSection faqs={content.faqs} theme={theme} />
+            </div>
+          </>
+        )}
 
         {/* 9. Registration Section */}
         <div data-reveal data-reveal-delay="100">
@@ -408,15 +505,6 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           />
         </div>
       </main>
-
-      {/* Sticky Bottom Conversion Bar */}
-      <StickyBottomCta
-        eventName={input.eventName}
-        theme={theme}
-        onScrollToRegister={scrollToRegistration}
-        registeredCount={registeredCount}
-        maxSeats={input.maxCapacity || 100}
-      />
 
       {/* Clean Client Event Footer */}
       <footer className="bg-slate-950 border-t border-slate-900 py-10 px-4 text-center text-xs text-slate-500 space-y-2">
@@ -482,6 +570,21 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
       <CustomDomainModal
         isOpen={isCustomDomainOpen}
         onClose={() => setIsCustomDomainOpen(false)}
+        eventName={input.eventName}
+      />
+
+      {/* Exclusive 6-Template Catalog Modal */}
+      <TemplateCatalogModal
+        isOpen={isTemplateModalOpen}
+        onClose={() => setIsTemplateModalOpen(false)}
+        currentCategory={currentCategory}
+        recommendedCategory={recommendedTemplate.id}
+        onSelectTemplate={(newCat) => {
+          setCurrentCategory(newCat);
+          const updated: EventInput = { ...input, category: newCat };
+          onUpdateInput(updated);
+          saveCurrentEventState(updated, content, cro);
+        }}
         eventName={input.eventName}
       />
     </div>

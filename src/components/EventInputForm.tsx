@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { EventInput, EventCategory } from '../types';
 import { PRESETS } from '../services/aiService';
 import { CATEGORIES } from '../services/themeEngine';
+import { detectBestTemplate } from '../services/templateRegistry';
 import { Calendar, MapPin, User, Gift, Target, Users, Sparkles, Layers, Cpu, TrendingUp, Rocket, Code2, Palette, GraduationCap } from 'lucide-react';
 
 const renderCategoryIcon = (id: EventCategory, className = 'w-6 h-6') => {
@@ -154,6 +155,25 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
               </button>
             ))}
           </div>
+
+          {/* AI Auto-Detection Helper */}
+          {formData.eventName && formData.category !== detectBestTemplate(formData.eventName, formData.targetAudience).id && (
+            <div className="flex items-center justify-between p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-xs text-indigo-700 dark:text-indigo-300 animate-in fade-in">
+              <span className="flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                <span>
+                  AI phân tích chủ đề hợp nhất với Template: <strong>{detectBestTemplate(formData.eventName, formData.targetAudience).name}</strong> ({detectBestTemplate(formData.eventName, formData.targetAudience).categoryLabel})
+                </span>
+              </span>
+              <button
+                type="button"
+                onClick={() => setFormData(p => ({ ...p, category: detectBestTemplate(formData.eventName, formData.targetAudience).id }))}
+                className="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[11px] transition-colors shrink-0 ml-2 cursor-pointer"
+              >
+                Tự động áp dụng
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">
