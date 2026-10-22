@@ -105,7 +105,7 @@ export const ConferenceHero: React.FC<HeroProps> = ({
               <button
                 type="button"
                 onClick={onScrollToRegister}
-                className={`px-8 py-3.5 rounded-xl text-base shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group ${theme.btnPrimary}`}
+                className={`px-8 py-3.5 rounded-2xl text-base font-bold shadow-[0_10px_30px_-5px_rgba(6,182,212,0.4)] transition-all transform hover:-translate-y-0.5 hover:shadow-[0_15px_35px_-5px_rgba(6,182,212,0.5)] cursor-pointer flex items-center justify-center gap-2.5 group ${theme.btnPrimary}`}
               >
                 <InlineEditable
                   value={content.ctaButtonText || 'Giữ Chỗ Tham Gia Ngay'}
@@ -141,9 +141,9 @@ export const ConferenceHero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-          {/* Compact Floating Borderless Countdown (No column overflow!) */}
-          <div className="pt-2">
-            <CountdownTimer targetDate={input.eventDate} size="compact" align="left" />
+          {/* Prominent High-Impact Hero Countdown Timer */}
+          <div className="pt-4">
+            <CountdownTimer targetDate={input.eventDate} size="hero" align="left" />
           </div>
         </div>
 
@@ -179,14 +179,14 @@ export const ConferenceHero: React.FC<HeroProps> = ({
               )}
 
               {/* Floating Speaker Badge Overlay */}
-              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-white/10 dark:bg-slate-900/60 backdrop-blur-xl border border-white/20 dark:border-white/10 text-white space-y-1 shadow-2xl">
+              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-slate-900/80 backdrop-blur-xl border border-white/15 text-white space-y-1 shadow-2xl">
                 <div className="flex items-center justify-between">
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-[10px] font-bold text-cyan-300 uppercase tracking-wider">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-[10px] font-bold text-cyan-300 uppercase tracking-wider">
                     <Sparkles className="w-3 h-3 text-cyan-300" /> Keynote Speaker
                   </span>
-                  <div className="flex items-center gap-1 text-[11px] text-amber-300 font-semibold">
-                    <Star className="w-3 h-3 fill-amber-300 text-amber-300" />
-                    <span>4.98 / 5.0</span>
+                  <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-medium">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>Verified Speaker</span>
                   </div>
                 </div>
                 <InlineEditable

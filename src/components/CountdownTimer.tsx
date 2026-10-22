@@ -4,6 +4,7 @@ interface CountdownTimerProps {
   targetDate: string;
   size?: 'hero' | 'compact';
   align?: 'center' | 'left';
+  label?: string;
 }
 
 interface TimeRemaining {
@@ -17,11 +18,12 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   targetDate,
   size = 'hero',
   align = 'center',
+  label = 'SỰ KIỆN SẼ BẮT ĐẦU TRONG',
 }) => {
   const calculateTimeRemaining = (): TimeRemaining => {
     let targetTime = new Date(targetDate).getTime();
 
-    // Đảm bảo luôn luôn có số đếm ngược sống động
+    // Luôn đảm bảo có thời gian đếm ngược thực tế sống động
     if (isNaN(targetTime) || targetTime <= Date.now()) {
       targetTime = Date.now() + 14 * 24 * 60 * 60 * 1000 + 8 * 60 * 60 * 1000 + 45 * 60 * 1000;
     }
@@ -48,106 +50,99 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   const isCompact = size === 'compact';
   const isLeft = align === 'left';
 
+  const units = [
+    { label: 'NGÀY', value: String(time.days).padStart(2, '0'), isSeconds: false },
+    { label: 'GIỜ', value: String(time.hours).padStart(2, '0'), isSeconds: false },
+    { label: 'PHÚT', value: String(time.minutes).padStart(2, '0'), isSeconds: false },
+    { label: 'GIÂY', value: String(time.seconds).padStart(2, '0'), isSeconds: true },
+  ];
+
   return (
     <div
       className={`w-full flex flex-col ${
         isLeft ? 'items-start text-left' : 'items-center justify-center text-center'
-      } ${isCompact ? 'my-3' : 'my-6 md:my-10'} select-none`}
+      } ${isCompact ? 'my-3' : 'my-6 sm:my-8'} select-none`}
     >
-      {/* Title with wide tracking - Chuẩn phong cách ảnh mẫu TemplateFlip */}
-      <div
-        className={`${
-          isCompact ? 'text-[11px] mb-2' : 'text-xs sm:text-sm md:text-base mb-4 md:mb-6'
-        } uppercase tracking-[0.25em] text-slate-800 dark:text-slate-300 font-bold`}
-      >
-        SỰ KIỆN SẼ BẮT ĐẦU TRONG
-      </div>
+      {/* Timer Header Label with Live Blinking Pulse Dot */}
+      {label && (
+        <div className="flex items-center gap-2 mb-3 sm:mb-4">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+          </span>
+          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-slate-700 dark:text-slate-300">
+            {label}
+          </span>
+        </div>
+      )}
 
-      {/* 4 CỘT SỐ NGUYÊN BẢN - KHÔNG VIỀN, KHÔNG NỀN, KHÔNG KHUNG DIV */}
+      {/* Frosted Obsidian Glass Cards Grid */}
       <div
-        className={`flex items-start ${
+        className={`flex items-center ${
           isLeft ? 'justify-start' : 'justify-center'
-        } ${isCompact ? 'gap-4 sm:gap-7 md:gap-9' : 'gap-6 sm:gap-12 md:gap-16 lg:gap-20'}`}
+        } gap-2 sm:gap-3.5 md:gap-4`}
       >
-        {/* NGÀY */}
-        <div className="flex flex-col items-center">
-          <span
-            className={`${
-              isCompact
-                ? 'text-3xl sm:text-4xl md:text-5xl'
-                : 'text-5xl sm:text-7xl md:text-8xl lg:text-9xl'
-            } font-light tracking-tight text-slate-900 dark:text-white tabular-nums drop-shadow-md leading-none`}
-          >
-            {String(time.days).padStart(2, '0')}
-          </span>
-          <span
-            className={`${
-              isCompact ? 'text-[9px] sm:text-[10px] mt-1' : 'text-[10px] sm:text-xs md:text-sm mt-2 md:mt-3'
-            } tracking-[0.25em] uppercase text-slate-500 dark:text-slate-400 font-medium`}
-          >
-            NGÀY
-          </span>
-        </div>
+        {units.map((unit, idx) => (
+          <React.Fragment key={unit.label}>
+            <div
+              className={`relative flex flex-col items-center justify-center rounded-2xl border transition-all duration-300 ${
+                unit.isSeconds
+                  ? 'bg-white/95 dark:bg-slate-900/90 border-cyan-500/40 dark:border-cyan-400/30 shadow-[0_4px_25px_-5px_rgba(6,182,212,0.25)]'
+                  : 'bg-white/85 dark:bg-slate-900/75 border-slate-200/80 dark:border-white/10 shadow-lg shadow-black/5 dark:shadow-black/30'
+              } backdrop-blur-xl ${
+                isCompact
+                  ? 'w-[68px] sm:w-[84px] md:w-[92px] py-2.5 sm:py-3'
+                  : 'w-[78px] sm:w-[102px] md:w-[124px] lg:w-[136px] py-3.5 sm:py-5 md:py-6'
+              }`}
+            >
+              {/* Subtle top specular glass reflection line */}
+              <div className="absolute top-0 inset-x-0 h-[1.5px] rounded-t-2xl bg-gradient-to-r from-transparent via-white/30 dark:via-white/20 to-transparent pointer-events-none"></div>
 
-        {/* GIỜ */}
-        <div className="flex flex-col items-center">
-          <span
-            className={`${
-              isCompact
-                ? 'text-3xl sm:text-4xl md:text-5xl'
-                : 'text-5xl sm:text-7xl md:text-8xl lg:text-9xl'
-            } font-light tracking-tight text-slate-900 dark:text-white tabular-nums drop-shadow-md leading-none`}
-          >
-            {String(time.hours).padStart(2, '0')}
-          </span>
-          <span
-            className={`${
-              isCompact ? 'text-[9px] sm:text-[10px] mt-1' : 'text-[10px] sm:text-xs md:text-sm mt-2 md:mt-3'
-            } tracking-[0.25em] uppercase text-slate-500 dark:text-slate-400 font-medium`}
-          >
-            GIỜ
-          </span>
-        </div>
+              {/* Number Digits */}
+              <span
+                className={`font-black font-mono tracking-tight tabular-nums leading-none ${
+                  unit.isSeconds
+                    ? 'text-cyan-600 dark:text-cyan-400'
+                    : 'text-slate-900 dark:text-white'
+                } ${
+                  isCompact
+                    ? 'text-2xl sm:text-3xl md:text-4xl'
+                    : 'text-3xl sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-sm'
+                }`}
+              >
+                {unit.value}
+              </span>
 
-        {/* PHÚT */}
-        <div className="flex flex-col items-center">
-          <span
-            className={`${
-              isCompact
-                ? 'text-3xl sm:text-4xl md:text-5xl'
-                : 'text-5xl sm:text-7xl md:text-8xl lg:text-9xl'
-            } font-light tracking-tight text-slate-900 dark:text-white tabular-nums drop-shadow-md leading-none`}
-          >
-            {String(time.minutes).padStart(2, '0')}
-          </span>
-          <span
-            className={`${
-              isCompact ? 'text-[9px] sm:text-[10px] mt-1' : 'text-[10px] sm:text-xs md:text-sm mt-2 md:mt-3'
-            } tracking-[0.25em] uppercase text-slate-500 dark:text-slate-400 font-medium`}
-          >
-            PHÚT
-          </span>
-        </div>
+              {/* Subtitle Unit Label */}
+              <span
+                className={`font-bold tracking-[0.2em] uppercase ${
+                  unit.isSeconds
+                    ? 'text-cyan-700 dark:text-cyan-300/90'
+                    : 'text-slate-500 dark:text-slate-400'
+                } ${
+                  isCompact
+                    ? 'text-[9px] sm:text-[10px] mt-1'
+                    : 'text-[10px] sm:text-xs md:text-sm mt-1.5 sm:mt-2.5'
+                }`}
+              >
+                {unit.label}
+              </span>
+            </div>
 
-        {/* GIÂY */}
-        <div className="flex flex-col items-center">
-          <span
-            className={`${
-              isCompact
-                ? 'text-3xl sm:text-4xl md:text-5xl'
-                : 'text-5xl sm:text-7xl md:text-8xl lg:text-9xl'
-            } font-light tracking-tight text-emerald-500 dark:text-emerald-400 tabular-nums drop-shadow-md leading-none animate-pulse-subtle`}
-          >
-            {String(time.seconds).padStart(2, '0')}
-          </span>
-          <span
-            className={`${
-              isCompact ? 'text-[9px] sm:text-[10px] mt-1' : 'text-[10px] sm:text-xs md:text-sm mt-2 md:mt-3'
-            } tracking-[0.25em] uppercase text-slate-500 dark:text-slate-400 font-medium`}
-          >
-            GIÂY
-          </span>
-        </div>
+            {/* Colon Separator between cards (except after last card) */}
+            {idx < units.length - 1 && (
+              <span
+                className={`font-mono font-bold select-none text-slate-400 dark:text-slate-600 ${
+                  isCompact
+                    ? 'text-lg sm:text-xl'
+                    : 'text-2xl sm:text-3xl md:text-4xl'
+                } ${idx % 2 === 0 ? 'animate-pulse' : ''}`}
+              >
+                :
+              </span>
+            )}
+          </React.Fragment>
+        ))}
       </div>
     </div>
   );

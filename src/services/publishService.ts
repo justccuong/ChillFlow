@@ -50,15 +50,6 @@ export function publishEvent(
 ): { success: boolean; record?: PublishedPageRecord; error?: string } {
   const slug = slugify(input.eventName);
 
-  // Check quota enforcement
-  const quotaCheck = canPublishOrSavePage(slug);
-  if (!quotaCheck.allowed) {
-    return {
-      success: false,
-      error: quotaCheck.reason || 'Đã đạt hạn mức trang xuất bản của gói hiện tại.'
-    };
-  }
-
   const registry = getRegistry();
   const existing = registry[slug];
 

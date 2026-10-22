@@ -96,45 +96,51 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
   let subHeadline = '';
   let description = '';
 
+  const cleanTitle = (fallbackPrefix: string, name: string) => {
+    if (!name) return fallbackPrefix;
+    if (name.includes(':') || name.length > 28) return name;
+    return `${fallbackPrefix} — ${name}`;
+  };
+
   if (category === 'ai-tech') {
     headline = forceOptimized
       ? `Làm Chủ Hệ Sinh Thái AI Agent 2026: Đột Phá Năng Suất Cùng ${input.speakerName}`
-      : `Hội Thảo Chuyên Sâu: ${input.eventName}`;
+      : cleanTitle('Hội Thảo AI Summit', input.eventName);
     altHeadline = `Đừng Để Tụt Hậu Trước Làn Sóng Tự Động Hoá AI Agent Thực Chiến`;
     subHeadline = `Khám phá kiến trúc xây dựng và vận hành AI Agent từ quy mô ý tưởng đến sản phẩm thực tế, chia sẻ trực tiếp bởi ${input.speakerName}.`;
     description = `Chương trình thực chiến 100% giúp ${input.targetAudience || 'kỹ sư và tech lead'} nắm vững framework mới nhất, giải quyết bài toán tự động hoá tác vụ phức tạp mà không tốn hàng tháng tự nghiên cứu.`;
   } else if (category === 'marketing') {
     headline = forceOptimized
       ? `Công Thức Tăng Trưởng Đột Phá: Thu Hút Hàng Ngàn Khách Hàng Tiềm Năng`
-      : `Chiến Lược Tăng Trưởng & Tối Ưu Chuyển Đổi: ${input.eventName}`;
+      : cleanTitle('Growth Masterclass', input.eventName);
     altHeadline = `Bí Quyết Scale Sản Phẩm Tinh Gọn Không Phụ Thuộc Vào Quảng Cáo Trả Phí`;
     subHeadline = `Toàn bộ framework growth hacking thực chiến đã được kiểm chứng qua case study thực tế của ${input.speakerName}.`;
     description = `Tiếp cận phương pháp thu hút và giữ chân khách hàng hiệu quả nhất hiện nay. Đăng ký sớm để nhận trọn bộ tài liệu và quyền lợi đặc quyền.`;
   } else if (category === 'startup') {
     headline = forceOptimized
       ? `Bứt Phá Định Giá & Thu Hút Vốn Đầu Tư Cùng ${input.speakerName}`
-      : `Diễn Đàn Kết Nối Đầu Tư & Khởi Nghiệp: ${input.eventName}`;
+      : cleanTitle('Diễn Đàn Đầu Tư', input.eventName);
     altHeadline = `Cơ Hội Tiếp Cận Trực Tiếp 30+ Quỹ Đầu Tư Hàng Đầu Khu Vực`;
     subHeadline = `Không gian đối thoại kín giữa các nhà sáng lập tiềm năng và những nhà đầu tư mạo hiểm hàng đầu.`;
     description = `Nơi định hình chiến lược tăng trưởng, hoàn thiện mô hình kinh doanh và mở ra cơ hội hợp tác chiến lược cho dự án của bạn.`;
   } else if (category === 'developer') {
     headline = forceOptimized
       ? `Kỹ Nghệ Phần Mềm Hiện Đại: Xây Dựng Hệ Thống Bền Vững & Chịu Tải Cao`
-      : `Hội Thảo Kỹ Thuật Chuyên Sâu: ${input.eventName}`;
+      : cleanTitle('Hội Thảo Kỹ Thuật', input.eventName);
     altHeadline = `Học Trực Tiếp Từ Chuyên Gia Vận Hành Hệ Thống Hàng Triệu Người Dùng`;
     subHeadline = `Đi sâu vào kiến trúc microservices, tối ưu hiệu năng và quy trình CI/CD thực tế cùng ${input.speakerName}.`;
     description = `Thực hành trên bài toán thực tế, trao đổi trực tiếp mã nguồn và thảo luận sâu về những thách thức kỹ thuật cốt lõi.`;
   } else if (category === 'design') {
     headline = forceOptimized
       ? `Thiết Kế Vì Chuyển Đổi: Tối Ưu Trải Nghiệm & Gia Tăng Doanh Thu Vượt Trội`
-      : `Masterclass Thiết Kế Giao Diện & CRO: ${input.eventName}`;
+      : cleanTitle('Masterclass Thiết Kế', input.eventName);
     altHeadline = `Bí Quyết Xây Dựng Trải Nghiệm Khiến Khách Hàng Ra Quyết Định Mua Hàng`;
     subHeadline = `Ứng dụng tâm lý học hành vi và design system thực chiến vào thiết kế sản phẩm số cùng ${input.speakerName}.`;
     description = `Phân tích chi tiết quy trình audit UX, cách xây dựng luồng trải nghiệm tối ưu tỉ lệ chuyển đổi từ góc nhìn chuyên gia.`;
   } else {
     headline = forceOptimized
       ? `Lộ Trình Tinh Gọn Để Nâng Tầm Kỹ Năng Cùng ${input.speakerName}`
-      : `Workshop Đào Tạo Chuyên Sâu: ${input.eventName}`;
+      : cleanTitle('Workshop Chuyên Sâu', input.eventName);
     altHeadline = `Nắm Bắt Phương Pháp Luận Thực Chiến Chỉ Sau Một Phiên Học`;
     subHeadline = `Trải nghiệm học tập tương tác cao, kết nối trực tiếp cùng giảng viên và cộng đồng.`;
     description = `Chương trình được thiết kế cô đọng, tập trung vào kỹ năng ứng dụng ngay vào công việc hàng ngày.`;

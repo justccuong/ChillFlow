@@ -90,9 +90,9 @@ export const MasterclassHero: React.FC<HeroProps> = ({
         </div>
       </div>
 
-      {/* Centered Floating Countdown */}
-      <div className="pt-2">
-        <CountdownTimer targetDate={input.eventDate} size="compact" />
+      {/* Centered Prominent Hero Countdown */}
+      <div className="pt-3">
+        <CountdownTimer targetDate={input.eventDate} size="hero" />
       </div>
 
       {/* Panoramic Horizon Stage Ribbon (3D Tilt) */}

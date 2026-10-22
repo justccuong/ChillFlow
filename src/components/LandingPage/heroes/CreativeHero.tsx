@@ -90,9 +90,9 @@ export const CreativeHero: React.FC<HeroProps> = ({
             </span>
           </div>
 
-          {/* Compact Countdown (No overflow into right card!) */}
+          {/* Prominent Avant-Garde Countdown */}
           <div className="pt-2">
-            <CountdownTimer targetDate={input.eventDate} size="compact" align="left" />
+            <CountdownTimer targetDate={input.eventDate} size="hero" align="left" />
           </div>
         </div>
 

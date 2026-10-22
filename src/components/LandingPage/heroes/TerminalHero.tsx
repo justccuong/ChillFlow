@@ -116,9 +116,9 @@ export const TerminalHero: React.FC<HeroProps> = ({
           </div>
         </div>
 
-        {/* Compact Countdown */}
-        <div className="pt-2">
-          <CountdownTimer targetDate={input.eventDate} size="compact" align="left" />
+        {/* Prominent Developer Countdown */}
+        <div className="pt-3">
+          <CountdownTimer targetDate={input.eventDate} size="hero" align="left" />
         </div>
       </div>
 

@@ -60,9 +60,9 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
           </div>
         </div>
 
-        {/* Floating Countdown */}
-        <div className="pt-1">
-          <CountdownTimer targetDate={input.eventDate} size="compact" align="left" />
+        {/* Prominent Executive Countdown */}
+        <div className="pt-2">
+          <CountdownTimer targetDate={input.eventDate} size="hero" align="left" />
         </div>
       </div>
 

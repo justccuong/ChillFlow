@@ -93,9 +93,9 @@ export const AcademyHero: React.FC<HeroProps> = ({
             </span>
           </div>
 
-          {/* Compact Countdown (No column overflow!) */}
+          {/* Prominent Academic Countdown */}
           <div className="pt-2">
-            <CountdownTimer targetDate={input.eventDate} size="compact" align="left" />
+            <CountdownTimer targetDate={input.eventDate} size="hero" align="left" />
           </div>
         </div>
 

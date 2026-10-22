@@ -28,7 +28,7 @@ import { CustomDomainModal } from '../CustomDomainModal';
 import { publishEvent } from '../../services/publishService';
 import { exportStandaloneHtml } from '../../utils/sourceExporter';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
-import { Sparkles, ArrowUp, BarChart3, Edit3, Palette, Globe, Send, Download } from 'lucide-react';
+import { Sparkles, ArrowUp, BarChart3, Edit3, Palette, Globe, Send, Download, X } from 'lucide-react';
 import type { UserProfile, PublishedPageRecord } from '../../types';
 
 interface LandingPagePreviewProps {
@@ -180,112 +180,19 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   const speakerPhoto = input.speakerAvatarUrl || theme.speakerImage;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans">
-      {/* Marketer Floating Toolbar */}
-      <div className="sticky top-16 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-2 transition-colors">
-        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setShowCRODrawer(!showCRODrawer)}
-              className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 text-indigo-900 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/30 cursor-pointer"
-              title="Bấm để xem phân tích CRO chi tiết"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-              <span className="font-semibold text-slate-900 dark:text-slate-200">Điểm CRO:</span>
-              <span className="font-bold text-indigo-700 dark:text-indigo-300">{cro.totalScore}/100</span>
-              <span className="text-[10px] text-indigo-600 dark:text-indigo-400 hidden sm:inline">({showCRODrawer ? 'Thu gọn' : 'Xem chi tiết'})</span>
-            </button>
-          </div>
-
-          {/* Instant Template Selector */}
-          <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-1">
-            <span className="text-slate-600 dark:text-slate-400 px-1.5 flex items-center gap-1 text-[11px]">
-              <Palette className="w-3 h-3 text-indigo-500 dark:text-indigo-400" /> Template:
-            </span>
-            <select
-              value={currentCategory}
-              onChange={e => setCurrentCategory(e.target.value as EventCategory)}
-              className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer"
-            >
-              {CATEGORIES.map(c => (
-                <option key={c.id} value={c.id}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex items-center gap-2">
-            {/* Visual CMS In-place Edit Toggle */}
-            <button
-              type="button"
-              onClick={() => setIsEditMode(!isEditMode)}
-              className={`px-3 py-1 rounded-lg border font-semibold flex items-center gap-1.5 cursor-pointer transition-all ${
-                isEditMode
-                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600 shadow-sm'
-                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
-              }`}
-              title="Bật/Tắt chế độ nhấp chuột trực tiếp lên trang để sửa chữ"
-            >
-              <Edit3 className="w-3.5 h-3.5" />
-              <span>{isEditMode ? 'Visual CMS (Đang bật)' : 'Sửa trực tiếp'}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setShowCRODrawer(!showCRODrawer)}
-              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
-            >
-              <BarChart3 className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
-              <span>{showCRODrawer ? 'Ẩn báo cáo' : 'Điểm CRO'}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={onEditForm}
-              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
-            >
-              <Edit3 className="w-3.5 h-3.5" />
-              <span>Sửa form</span>
-            </button>
-
-            {/* 1-Click Online Publishing Button */}
-            <button
-              type="button"
-              onClick={handlePublishOnline}
-              className="px-3.5 py-1 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold flex items-center gap-1.5 cursor-pointer shadow-sm transition-all hover:scale-105"
-              title="Xuất bản online và lấy link chia sẻ"
-            >
-              <Send className="w-3.5 h-3.5" />
-              <span>Xuất bản</span>
-            </button>
-
-            {/* VIP Quick HTML Export */}
-            <button
-              type="button"
-              onClick={handleExportSource}
-              className="hidden lg:flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-xs font-semibold cursor-pointer transition-colors"
-              title="Tải mã nguồn HTML trọn gói"
-            >
-              <Download className="w-3.5 h-3.5 text-amber-500" />
-              <span>Tải HTML</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ConvertFlow Sticky FOMO Bar */}
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans pb-24">
+      {/* ConvertFlow Sticky FOMO Bar (Auto-reveals on scroll past hero) */}
       <StickyFomoBar
         targetDate={input.eventDate}
         onCtaClick={scrollToRegistration}
         earlyBirdBadge={content.earlyBirdBadge}
         ticketsLeft={38}
+        triggerScrollY={500}
       />
 
       {/* Visual CMS Helper Banner */}
       {isEditMode && (
-        <div className="bg-emerald-600 text-white px-4 py-2 text-center text-xs font-medium flex items-center justify-center gap-2 shadow-sm animate-in fade-in duration-200">
+        <div className="sticky top-16 z-30 bg-emerald-600 text-white px-4 py-2 text-center text-xs font-medium flex items-center justify-center gap-2 shadow-sm animate-in fade-in duration-200">
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
           <span>
             <strong>Chế độ Visual CMS đang hoạt động:</strong> Rê chuột vào các tiêu đề, địa điểm hoặc tên diễn giả để sửa chữ trực tiếp. Mọi thay đổi sẽ tự động lưu!
@@ -293,19 +200,106 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         </div>
       )}
 
-      {/* Expandable CRO Panel */}
+      {/* Floating Modern Studio Dock */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 sm:gap-2.5 p-2 rounded-2xl bg-slate-950/92 backdrop-blur-2xl border border-white/20 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] text-white text-xs max-w-[96vw] shrink-0">
+        {/* CRO Score Pill Button */}
+        <button
+          type="button"
+          onClick={() => setShowCRODrawer(!showCRODrawer)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/40 font-semibold cursor-pointer transition-all shrink-0"
+          title="Bấm để xem phân tích CRO chi tiết"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <span className="hidden sm:inline">Điểm CRO:</span>
+          <span className="font-bold text-white">{cro.totalScore}/100</span>
+        </button>
+
+        {/* Template Selector */}
+        <div className="flex items-center gap-1.5 bg-white/10 px-2.5 py-1.5 rounded-xl border border-white/10 shrink-0">
+          <Palette className="w-3.5 h-3.5 text-cyan-400" />
+          <select
+            value={currentCategory}
+            onChange={e => setCurrentCategory(e.target.value as EventCategory)}
+            className="bg-transparent border-none text-white text-xs font-semibold focus:outline-none cursor-pointer pr-1"
+          >
+            {CATEGORIES.map(c => (
+              <option key={c.id} value={c.id} className="bg-slate-900 text-white">
+                {c.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="w-[1px] h-4 bg-white/20 mx-0.5 shrink-0 hidden sm:block"></div>
+
+        {/* Visual CMS In-place Edit Toggle */}
+        <button
+          type="button"
+          onClick={() => setIsEditMode(!isEditMode)}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-semibold cursor-pointer transition-all shrink-0 ${
+            isEditMode
+              ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30'
+              : 'hover:bg-white/10 text-slate-300'
+          }`}
+          title="Bật/Tắt chế độ Visual CMS sửa chữ trực tiếp"
+        >
+          <Edit3 className="w-3.5 h-3.5" />
+          <span>{isEditMode ? 'Visual CMS (Bật)' : 'Sửa trực tiếp'}</span>
+        </button>
+
+        {/* Sửa form */}
+        <button
+          type="button"
+          onClick={onEditForm}
+          className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-white/10 text-slate-300 font-semibold cursor-pointer transition-all shrink-0"
+        >
+          <span>Sửa form</span>
+        </button>
+
+        {/* 1-Click Online Publishing Button */}
+        <button
+          type="button"
+          onClick={handlePublishOnline}
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold cursor-pointer shadow-lg shadow-emerald-500/20 transition-all hover:scale-105 shrink-0"
+          title="Xuất bản online và lấy link chia sẻ"
+        >
+          <Send className="w-3.5 h-3.5" />
+          <span>Xuất bản</span>
+        </button>
+
+        {/* HTML Export Button */}
+        <button
+          type="button"
+          onClick={handleExportSource}
+          className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-semibold cursor-pointer transition-all shrink-0"
+          title="Tải mã nguồn HTML trọn gói"
+        >
+          <Download className="w-3.5 h-3.5 text-amber-400" />
+          <span>Tải HTML</span>
+        </button>
+      </div>
+
+      {/* Floating CRO Drawer Modal */}
       {showCRODrawer && (
-        <div className="bg-slate-50 dark:bg-slate-950 p-4 md:p-6 border-b border-slate-200 dark:border-slate-800 max-w-6xl mx-auto w-full transition-colors">
-          <CROScorecard
-            cro={cro}
-            onOptimize={onOptimizeCRO}
-            isOptimizing={isOptimizing}
-            isAlreadyOptimized={isAlreadyOptimized}
-            activeHeadlineVariant={headlineVariant}
-            onToggleHeadlineVariant={() => setHeadlineVariant(v => (v === 'A' ? 'B' : 'A'))}
-            primaryHeadline={content.headline}
-            alternativeHeadline={content.alternativeHeadline}
-          />
+        <div className="fixed inset-x-0 bottom-24 z-50 max-w-4xl mx-auto px-4 animate-in slide-in-from-bottom-6 duration-300">
+          <div className="bg-slate-900/95 text-white backdrop-blur-2xl p-6 rounded-3xl border border-white/20 shadow-2xl relative max-h-[75vh] overflow-y-auto">
+            <button
+              onClick={() => setShowCRODrawer(false)}
+              className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <CROScorecard
+              cro={cro}
+              onOptimize={onOptimizeCRO}
+              isOptimizing={isOptimizing}
+              isAlreadyOptimized={isAlreadyOptimized}
+              activeHeadlineVariant={headlineVariant}
+              onToggleHeadlineVariant={() => setHeadlineVariant(v => (v === 'A' ? 'B' : 'A'))}
+              primaryHeadline={content.headline}
+              alternativeHeadline={content.alternativeHeadline}
+            />
+          </div>
         </div>
       )}
 

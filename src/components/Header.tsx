@@ -45,26 +45,13 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
             <Zap className="w-5 h-5 text-white fill-white" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-base tracking-tight font-heading text-slate-900 dark:text-white">
-                ConvertFlow
-              </span>
-              <button
-                type="button"
-                onClick={onOpenPricingModal}
-                title="Bấm để xem Bảng giá & Nâng cấp"
-                className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider transition-all cursor-pointer ${
-                  tier === 'vip'
-                    ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300/40 hover:scale-105'
-                    : tier === 'pro'
-                    ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950/80 dark:text-indigo-300 border border-indigo-300/40 hover:scale-105'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-200'
-                }`}
-              >
-                {tier === 'free' ? `FREE (${pagesCount}/${pageLimit})` : tier.toUpperCase()}
-              </button>
-            </div>
+          <div className="flex items-center gap-2">
+            <span className="font-extrabold text-base tracking-tight font-heading text-slate-900 dark:text-white">
+              ConvertFlow
+            </span>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+              AI Summit Edition
+            </span>
           </div>
         </div>
 
@@ -101,33 +88,6 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Action Controls */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Upgrade / Pricing Button */}
-          {onOpenPricingModal && (
-            <button
-              type="button"
-              onClick={onOpenPricingModal}
-              className="hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/10 to-indigo-500/10 hover:from-amber-500/20 hover:to-indigo-500/20 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-xs font-bold transition-all cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span>Gói cước</span>
-            </button>
-          )}
-
-          {/* User Auth Profile Avatar Button */}
-          {userProfile && onOpenAuthModal && (
-            <button
-              type="button"
-              onClick={onOpenAuthModal}
-              className="flex items-center gap-1.5 p-1 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-              title={`Đăng nhập: ${userProfile.name} (${userProfile.email})`}
-            >
-              <img
-                src={userProfile.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}
-                alt={userProfile.name}
-                className="w-7 h-7 rounded-lg object-cover border border-slate-300 dark:border-slate-700"
-              />
-            </button>
-          )}
 
           {/* Light / Dark Mode Toggle Button */}
           {onToggleTheme && (
