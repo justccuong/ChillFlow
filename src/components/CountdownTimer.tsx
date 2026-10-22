@@ -80,19 +80,19 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
       <div
         className={`flex items-center ${
           isLeft ? 'justify-start' : 'justify-center'
-        } gap-2 sm:gap-3.5 md:gap-4`}
+        } gap-1 xs:gap-1.5 sm:gap-3.5 md:gap-4 max-w-full`}
       >
         {units.map((unit, idx) => (
           <React.Fragment key={unit.label}>
             <div
-              className={`relative flex flex-col items-center justify-center rounded-2xl border transition-all duration-300 ${
+              className={`relative flex flex-col items-center justify-center rounded-xl sm:rounded-2xl border transition-all duration-300 ${
                 unit.isSeconds
                   ? 'bg-white/95 dark:bg-slate-900/90 border-cyan-500/40 dark:border-cyan-400/30 shadow-[0_4px_25px_-5px_rgba(6,182,212,0.25)]'
                   : 'bg-white/85 dark:bg-slate-900/75 border-slate-200/80 dark:border-white/10 shadow-lg shadow-black/5 dark:shadow-black/30'
               } backdrop-blur-xl ${
                 isCompact
-                  ? 'w-[68px] sm:w-[84px] md:w-[92px] py-2.5 sm:py-3'
-                  : 'w-[78px] sm:w-[102px] md:w-[124px] lg:w-[136px] py-3.5 sm:py-5 md:py-6'
+                  ? 'w-[56px] xs:w-[68px] sm:w-[84px] md:w-[92px] py-2 sm:py-3'
+                  : 'w-[62px] xs:w-[72px] sm:w-[102px] md:w-[124px] lg:w-[136px] py-2.5 xs:py-3 sm:py-5 md:py-6'
               }`}
             >
               {/* Subtle top specular glass reflection line */}
@@ -106,8 +106,8 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
                     : 'text-slate-900 dark:text-white'
                 } ${
                   isCompact
-                    ? 'text-2xl sm:text-3xl md:text-4xl'
-                    : 'text-3xl sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-sm'
+                    ? 'text-xl sm:text-3xl md:text-4xl'
+                    : 'text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-sm'
                 }`}
               >
                 {unit.value}
@@ -121,8 +121,8 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
                     : 'text-slate-500 dark:text-slate-400'
                 } ${
                   isCompact
-                    ? 'text-[9px] sm:text-[10px] mt-1'
-                    : 'text-[10px] sm:text-xs md:text-sm mt-1.5 sm:mt-2.5'
+                    ? 'text-[8px] sm:text-[10px] mt-1'
+                    : 'text-[9px] xs:text-[10px] sm:text-xs md:text-sm mt-1 sm:mt-2.5'
                 }`}
               >
                 {unit.label}
@@ -134,8 +134,8 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
               <span
                 className={`font-mono font-bold select-none text-slate-400 dark:text-slate-600 ${
                   isCompact
-                    ? 'text-lg sm:text-xl'
-                    : 'text-2xl sm:text-3xl md:text-4xl'
+                    ? 'text-base sm:text-xl'
+                    : 'text-lg xs:text-xl sm:text-3xl md:text-4xl'
                 } ${idx % 2 === 0 ? 'animate-pulse' : ''}`}
               >
                 :
