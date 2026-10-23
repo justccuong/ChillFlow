@@ -33,6 +33,7 @@ import { CustomDomainModal } from '../CustomDomainModal';
 import { publishEvent } from '../../services/publishService';
 import { exportStandaloneHtml } from '../../utils/sourceExporter';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { useSmoothScroll } from '../../hooks/useSmoothScroll';
 import { Sparkles, ArrowUp, Edit3, Palette, Send, X } from 'lucide-react';
 import type { UserProfile, PublishedPageRecord } from '../../types';
 
@@ -111,6 +112,9 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   // Smooth scroll reveal observer (from awesome-landing-pages)
   useScrollReveal([currentCategory, content, input.sponsors]);
 
+  // Enable Lenis buttery-smooth momentum scrolling (mdx.so standard)
+  useSmoothScroll({ enabled: true });
+
   // Deterministic Theme Engine mapping
   const theme = getThemeForCategory(currentCategory);
 
@@ -148,12 +152,20 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   const scrollToRegistration = () => {
     const el = document.getElementById('registration');
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      if ((window as any).__lenis) {
+        (window as any).__lenis.scrollTo(el, { duration: 1.2 });
+      } else {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if ((window as any).__lenis) {
+      (window as any).__lenis.scrollTo(0, { duration: 1.2 });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const handleOpenHeroPicker = () => {

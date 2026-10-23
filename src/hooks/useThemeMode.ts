@@ -21,8 +21,12 @@ export function useThemeMode() {
     localStorage.setItem('convertflow-theme-mode', mode);
   }, [mode]);
 
-  const toggleMode = () => {
-    setMode(prev => (prev === 'dark' ? 'light' : 'dark'));
+  const toggleMode = (newMode?: ThemeMode) => {
+    if (newMode) {
+      setMode(newMode);
+    } else {
+      setMode(prev => (prev === 'dark' ? 'light' : 'dark'));
+    }
   };
 
   return { mode, toggleMode, isDark: mode === 'dark' };

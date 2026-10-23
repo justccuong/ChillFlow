@@ -85,6 +85,14 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
       [0, 3], [1, 8], [5, 9], [11, 4], [10, 2]
     ];
 
+    // 20 Triangular Facets for realistic 3D volumetric glass shading
+    const faces = [
+      [0, 11, 5], [0, 5, 1], [0, 1, 7], [0, 7, 10], [0, 10, 11],
+      [1, 5, 9], [5, 11, 4], [11, 10, 2], [10, 7, 6], [7, 1, 8],
+      [3, 9, 4], [3, 4, 2], [3, 2, 6], [3, 6, 8], [3, 8, 9],
+      [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1]
+    ];
+
     // Star/dust particles
     const particles = Array.from({ length: 45 }, () => ({
       x: (Math.random() - 0.5) * 2.5,
@@ -97,10 +105,54 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
     let currentRotX = rotation.x;
     let currentRotY = rotation.y;
 
+    // Scroll & Wheel reactivity (Inspired by mdx.so - "lăn thì xoay")
+    let lastScrollY = typeof window !== 'undefined' ? window.scrollY : 0;
+    let scrollImpulseX = 0;
+    let scrollImpulseY = 0;
+
+    const handleWindowScroll = () => {
+      const currentScrollY = window.scrollY;
+      const deltaY = currentScrollY - lastScrollY;
+      lastScrollY = currentScrollY;
+
+      // Impart rotational momentum on scroll
+      scrollImpulseY += deltaY * 0.0035;
+      scrollImpulseX += deltaY * 0.0018;
+    };
+
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
+
+    // Wheel event directly on canvas container for trackball scrub
+    const handleCanvasWheel = (e: WheelEvent) => {
+      scrollImpulseY += e.deltaY * 0.003;
+      scrollImpulseX += (e.deltaX || e.deltaY * 0.4) * 0.0015;
+    };
+    canvas.addEventListener('wheel', handleCanvasWheel, { passive: true });
+
+    // Optional Lenis velocity listener
+    const lenis = (window as any).__lenis;
+    const handleLenisScroll = (e: any) => {
+      if (e && typeof e.velocity === 'number') {
+        scrollImpulseY += e.velocity * 0.002;
+        scrollImpulseX += e.velocity * 0.001;
+      }
+    };
+    if (lenis && typeof lenis.on === 'function') {
+      lenis.on('scroll', handleLenisScroll);
+    }
+
     const render = () => {
+      // Apply scroll momentum with smooth inertia damping
+      currentRotX += scrollImpulseX;
+      currentRotY += scrollImpulseY;
+      scrollImpulseX *= 0.91;
+      scrollImpulseY *= 0.91;
+
       if (!isDragging) {
         currentRotX += velocity.current.x;
         currentRotY += velocity.current.y;
+        velocity.current.x = velocity.current.x * 0.96 + 0.0015 * 0.04;
+        velocity.current.y = velocity.current.y * 0.96 + 0.0035 * 0.04;
       }
 
       const w = bufferCanvas.width;
@@ -151,6 +203,28 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
 
       // Project 3D vertices
       const projected = vertices.map(([x, y, z]) => project(x, y, z));
+
+      // Draw 3D Crystal Facets with dynamic lighting (Face normal back-face culling)
+      faces.forEach(([i1, i2, i3]) => {
+        const p1 = projected[i1];
+        const p2 = projected[i2];
+        const p3 = projected[i3];
+        if (!p1 || !p2 || !p3) return;
+
+        const normalZ = (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]);
+        if (normalZ > 0) {
+          const avgZ = (p1[2] + p2[2] + p3[2]) / 3;
+          const lightFactor = Math.max(0.04, Math.min(0.22, (avgZ + 1) * 0.11));
+
+          bufferCtx.beginPath();
+          bufferCtx.moveTo(p1[0], p1[1]);
+          bufferCtx.lineTo(p2[0], p2[1]);
+          bufferCtx.lineTo(p3[0], p3[1]);
+          bufferCtx.closePath();
+          bufferCtx.fillStyle = `rgba(251, 191, 36, ${lightFactor})`;
+          bufferCtx.fill();
+        }
+      });
 
       // Draw edges with depth-based luminance
       edges.forEach(([i1, i2]) => {
@@ -208,6 +282,11 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', resize);
+      window.removeEventListener('scroll', handleWindowScroll);
+      canvas.removeEventListener('wheel', handleCanvasWheel);
+      if (lenis && typeof lenis.off === 'function') {
+        lenis.off('scroll', handleLenisScroll);
+      }
     };
   }, [isDragging]);
 
@@ -363,7 +442,7 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
             {/* Bottom Interaction Guide Pill */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 dark:bg-black/60 border border-slate-200 dark:border-white/15 text-[11px] text-slate-800 dark:text-zinc-300 backdrop-blur-md pointer-events-none shadow-md group-hover:border-amber-400/40 transition-colors">
               <RefreshCw className="w-3 h-3 text-amber-500 dark:text-amber-400 animate-spin" style={{ animationDuration: '6s' }} />
-              <span>Kéo để xoay 360° tương tác</span>
+              <span>Lăn chuột hoặc kéo để xoay 360° • Scroll-Driven 3D</span>
             </div>
           </div>
         </div>
