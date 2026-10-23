@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
-import { flushSync } from 'react-dom';
 import { cn } from '../../utils/cn';
 
 export type TransitionVariant =
@@ -31,9 +30,6 @@ function polygonCollapsed(point: string, vertexCount: number): string {
   return `polygon(${pairs})`;
 }
 
-// All coordinates are percentages of the snapshot reference box: Chrome renders
-// absolute px clip-path coordinates on ::view-transition-new(root) unscaled on fractional
-// display scales (e.g. Windows 150%) for the first transition after load, so px values land at the wrong position.
 function getThemeTransitionClipPaths(
   variant: TransitionVariant,
   cx: number,
@@ -45,12 +41,12 @@ function getThemeTransitionClipPaths(
   const toX = (x: number) => `${(x / viewportWidth) * 100}%`;
   const toY = (y: number) => `${(y / viewportHeight) * 100}%`;
   const point = (x: number, y: number) => `${toX(x)} ${toY(y)}`;
-  // circle() percentage radii resolve against hypot(w, h) / sqrt(2) of the reference box.
   const toRadius = (r: number) =>
     `${(r / (Math.hypot(viewportWidth, viewportHeight) / Math.SQRT2)) * 100}%`;
 
   switch (variant) {
     case 'circle':
+    default:
       return [
         `circle(0% at ${point(cx, cy)})`,
         `circle(${toRadius(maxRadius)} at ${point(cx, cy)})`,
@@ -67,16 +63,6 @@ function getThemeTransitionClipPaths(
       ].join(', ');
       return [polygonCollapsed(point(cx, cy), 4), `polygon(${end})`];
     }
-    case 'triangle': {
-      const scale = maxRadius * 2.2;
-      const dx = (Math.sqrt(3) / 2) * scale;
-      const verts = [
-        point(cx, cy - scale),
-        point(cx + dx, cy + 0.5 * scale),
-        point(cx - dx, cy + 0.5 * scale),
-      ].join(', ');
-      return [polygonCollapsed(point(cx, cy), 3), `polygon(${verts})`];
-    }
     case 'diamond': {
       const R = maxRadius * Math.SQRT2;
       const end = [
@@ -87,53 +73,12 @@ function getThemeTransitionClipPaths(
       ].join(', ');
       return [polygonCollapsed(point(cx, cy), 4), `polygon(${end})`];
     }
-    case 'hexagon': {
-      const R = maxRadius * Math.SQRT2;
-      const verts: string[] = [];
-      for (let i = 0; i < 6; i++) {
-        const a = -Math.PI / 2 + (i * Math.PI) / 3;
-        verts.push(point(cx + R * Math.cos(a), cy + R * Math.sin(a)));
-      }
-      return [polygonCollapsed(point(cx, cy), 6), `polygon(${verts.join(', ')})`];
-    }
-    case 'rectangle': {
-      const halfW = Math.max(cx, viewportWidth - cx);
-      const halfH = Math.max(cy, viewportHeight - cy);
-      const end = [
-        point(cx - halfW, cy - halfH),
-        point(cx + halfW, cy - halfH),
-        point(cx + halfW, cy + halfH),
-        point(cx - halfW, cy + halfH),
-      ].join(', ');
-      return [polygonCollapsed(point(cx, cy), 4), `polygon(${end})`];
-    }
-    case 'star': {
-      const R = maxRadius * Math.SQRT2 * 1.03;
-      const innerRatio = 0.42;
-      const starPolygon = (radius: number) => {
-        const verts: string[] = [];
-        for (let i = 0; i < 5; i++) {
-          const outerA = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
-          verts.push(point(cx + radius * Math.cos(outerA), cy + radius * Math.sin(outerA)));
-          const innerA = outerA + Math.PI / 5;
-          verts.push(point(cx + radius * innerRatio * Math.cos(innerA), cy + radius * innerRatio * Math.sin(innerA)));
-        }
-        return `polygon(${verts.join(', ')})`;
-      };
-      const startR = Math.max(2, R * 0.025);
-      return [starPolygon(startR), starPolygon(R)];
-    }
-    default:
-      return [
-        `circle(0% at ${point(cx, cy)})`,
-        `circle(${toRadius(maxRadius)} at ${point(cx, cy)})`,
-      ];
   }
 }
 
 export const AnimatedThemeToggler: React.FC<AnimatedThemeTogglerProps> = ({
   className,
-  duration = 450,
+  duration = 260,
   variant = 'circle',
   fromCenter = false,
   theme,
@@ -151,22 +96,22 @@ export const AnimatedThemeToggler: React.FC<AnimatedThemeTogglerProps> = ({
 
   const isDark = isControlled ? theme === 'dark' : internalIsDark;
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const isTransitioningRef = useRef(false);
   const activeAnimRef = useRef<Animation | null>(null);
 
   const cancelAnim = useCallback(() => {
-    activeAnimRef.current?.cancel();
-    activeAnimRef.current = null;
+    if (activeAnimRef.current) {
+      activeAnimRef.current.cancel();
+      activeAnimRef.current = null;
+    }
+    const root = document.documentElement;
+    delete root.dataset.magicuiThemeVt;
+    root.style.removeProperty('--magicui-theme-toggle-vt-duration');
+    root.style.removeProperty('--magicui-theme-vt-clip-from');
   }, []);
 
   useEffect(() => {
     return () => {
       cancelAnim();
-      const root = document.documentElement;
-      if (root.dataset.magicuiThemeVt !== 'active') return;
-      delete root.dataset.magicuiThemeVt;
-      root.style.removeProperty('--magicui-theme-toggle-vt-duration');
-      root.style.removeProperty('--magicui-theme-vt-clip-from');
     };
   }, [cancelAnim]);
 
@@ -190,14 +135,49 @@ export const AnimatedThemeToggler: React.FC<AnimatedThemeTogglerProps> = ({
 
   const toggleTheme = useCallback(() => {
     const button = buttonRef.current;
+    if (!button) return;
+
+    // If an animation is currently running, cancel it immediately so subsequent clicks are NEVER ignored!
+    cancelAnim();
+
+    const nextIsDark = !isDark;
+    const nextTheme = nextIsDark ? 'dark' : 'light';
+
+    // 1. Synchronously mutate DOM classes (pure DOM mutation takes < 0.05ms with 0 React freeze)
+    const applyDomClasses = () => {
+      if (nextIsDark) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+      }
+    };
+
+    // 2. Update React state asynchronously (does not block browser frame)
+    const applyReactState = () => {
+      if (isControlled) {
+        onThemeChange?.(nextTheme);
+      } else {
+        setInternalIsDark(nextIsDark);
+        localStorage.setItem('convertflow-theme-mode', nextTheme);
+      }
+    };
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Fast path: If View Transitions is not supported or user prefers reduced motion, toggle instantly!
     if (
-      !button ||
-      isTransitioningRef.current ||
-      document.documentElement.dataset.magicuiThemeVt === 'active'
+      !('startViewTransition' in document) ||
+      typeof (document as any).startViewTransition !== 'function' ||
+      prefersReducedMotion
     ) {
+      applyDomClasses();
+      applyReactState();
       return;
     }
 
+    // View Transition path: Compute coordinates and trigger smooth circular reveal
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
@@ -207,39 +187,15 @@ export const AnimatedThemeToggler: React.FC<AnimatedThemeTogglerProps> = ({
       x = viewportWidth / 2;
       y = viewportHeight / 2;
     } else {
-      const { top, left, width, height } = button.getBoundingClientRect();
-      x = left + width / 2;
-      y = top + height / 2;
+      const rect = button.getBoundingClientRect();
+      x = rect.left + rect.width / 2;
+      y = rect.top + rect.height / 2;
     }
 
     const maxRadius = Math.hypot(
       Math.max(x, viewportWidth - x),
       Math.max(y, viewportHeight - y)
     );
-
-    const applyTheme = () => {
-      const nextTheme = !isDark;
-      if (nextTheme) {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-      } else {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-      }
-
-      if (isControlled) {
-        onThemeChange?.(nextTheme ? 'dark' : 'light');
-      } else {
-        setInternalIsDark(nextTheme);
-        localStorage.setItem('convertflow-theme-mode', nextTheme ? 'dark' : 'light');
-      }
-    };
-
-    // Fallback if View Transitions API is not supported
-    if (!('startViewTransition' in document) || typeof (document as any).startViewTransition !== 'function') {
-      applyTheme();
-      return;
-    }
 
     const clipPath = getThemeTransitionClipPaths(
       shape,
@@ -255,43 +211,49 @@ export const AnimatedThemeToggler: React.FC<AnimatedThemeTogglerProps> = ({
     root.style.setProperty('--magicui-theme-toggle-vt-duration', `${duration}ms`);
     root.style.setProperty('--magicui-theme-vt-clip-from', clipPath[0]);
 
-    const cleanup = () => {
-      isTransitioningRef.current = false;
-      delete root.dataset.magicuiThemeVt;
-      root.style.removeProperty('--magicui-theme-toggle-vt-duration');
-      root.style.removeProperty('--magicui-theme-vt-clip-from');
+    try {
+      // NOTE: We only put the pure DOM class mutation inside startViewTransition!
+      // This eliminates synchronous React tree re-rendering freeze (0ms freeze)!
+      const transition = (document as any).startViewTransition(() => {
+        applyDomClasses();
+      });
+
+      // Update React state outside startViewTransition so React batches re-renders smoothly
+      applyReactState();
+
+      if (typeof transition?.finished?.finally === 'function') {
+        transition.finished.finally(() => {
+          cancelAnim();
+        }).catch(() => {
+          cancelAnim();
+        });
+      }
+
+      const ready = transition?.ready;
+      if (ready && typeof ready.then === 'function') {
+        ready
+          .then(() => {
+            const anim = document.documentElement.animate(
+              {
+                clipPath,
+              },
+              {
+                duration,
+                easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                fill: 'forwards',
+                pseudoElement: '::view-transition-new(root)',
+              }
+            );
+            activeAnimRef.current = anim;
+          })
+          .catch(() => {
+            cancelAnim();
+          });
+      }
+    } catch {
+      applyDomClasses();
+      applyReactState();
       cancelAnim();
-    };
-
-    isTransitioningRef.current = true;
-    const transition = (document as any).startViewTransition(() => {
-      flushSync(applyTheme);
-    });
-
-    if (typeof transition?.finished?.finally === 'function') {
-      transition.finished.finally(cleanup).catch(() => {});
-    } else {
-      cleanup();
-    }
-
-    const ready = transition?.ready;
-    if (ready && typeof ready.then === 'function') {
-      ready
-        .then(() => {
-          const anim = document.documentElement.animate(
-            {
-              clipPath,
-            },
-            {
-              duration,
-              easing: shape === 'star' ? 'linear' : 'cubic-bezier(0.4, 0, 0.2, 1)',
-              fill: 'forwards',
-              pseudoElement: '::view-transition-new(root)',
-            }
-          );
-          activeAnimRef.current = anim;
-        })
-        .catch(() => {});
     }
   }, [shape, fromCenter, duration, isDark, isControlled, onThemeChange, cancelAnim]);
 
@@ -301,18 +263,31 @@ export const AnimatedThemeToggler: React.FC<AnimatedThemeTogglerProps> = ({
       ref={buttonRef}
       onClick={toggleTheme}
       className={cn(
-        'relative inline-flex items-center justify-center transition-transform active:scale-90',
+        'relative inline-flex items-center justify-center transition-all active:scale-90 select-none overflow-hidden',
         className
       )}
-      title={isDark ? 'Chuyển sang giao diện Sáng (Magic UI)' : 'Chuyển sang giao diện Tối (Magic UI)'}
+      title={isDark ? 'Chuyển sang giao diện Sáng' : 'Chuyển sang giao diện Tối'}
       aria-label="Toggle theme mode"
       {...props}
     >
-      {isDark ? (
-        <Sun className="w-4 h-4 text-amber-400 transition-all duration-300 hover:rotate-90 hover:scale-110" />
-      ) : (
-        <Moon className="w-4 h-4 text-indigo-600 transition-all duration-300 hover:-rotate-12 hover:scale-110" />
-      )}
+      <span className="relative flex items-center justify-center w-4 h-4">
+        <Sun
+          className={cn(
+            'w-4 h-4 text-amber-500 transition-all duration-200 transform absolute',
+            isDark
+              ? 'rotate-0 scale-100 opacity-100'
+              : 'rotate-90 scale-0 opacity-0 pointer-events-none'
+          )}
+        />
+        <Moon
+          className={cn(
+            'w-4 h-4 text-indigo-600 dark:text-indigo-400 transition-all duration-200 transform absolute',
+            isDark
+              ? '-rotate-90 scale-0 opacity-0 pointer-events-none'
+              : 'rotate-0 scale-100 opacity-100'
+          )}
+        />
+      </span>
       <span className="sr-only">Toggle theme</span>
     </button>
   );

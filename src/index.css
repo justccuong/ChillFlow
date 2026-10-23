@@ -309,6 +309,10 @@ html.light .border-gradient-glow {
   mix-blend-mode: normal;
 }
 
+::view-transition-group(root) {
+  animation-duration: var(--magicui-theme-toggle-vt-duration, 260ms);
+}
+
 [data-magicui-theme-vt="active"]::view-transition-new(root) {
   clip-path: var(--magicui-theme-vt-clip-from, none);
 }

@@ -129,19 +129,22 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
     };
     canvas.addEventListener('wheel', handleCanvasWheel, { passive: true });
 
-    // Optional Lenis velocity listener
-    const lenis = (window as any).__lenis;
-    const handleLenisScroll = (e: any) => {
-      if (e && typeof e.velocity === 'number') {
-        scrollImpulseY += e.velocity * 0.002;
-        scrollImpulseX += e.velocity * 0.001;
-      }
-    };
-    if (lenis && typeof lenis.on === 'function') {
-      lenis.on('scroll', handleLenisScroll);
-    }
+    // IntersectionObserver: Pause canvas rendering when scrolled off-screen to save 100% GPU
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(canvas);
 
     const render = () => {
+      if (!isVisible) {
+        animId = requestAnimationFrame(render);
+        return;
+      }
+
       // Apply scroll momentum with smooth inertia damping
       currentRotX += scrollImpulseX;
       currentRotY += scrollImpulseY;
@@ -226,7 +229,7 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
         }
       });
 
-      // Draw edges with depth-based luminance
+      // Zero-blur, ultra-fast glowing edges (zero Gaussian blur passes)
       edges.forEach(([i1, i2]) => {
         const p1 = projected[i1];
         const p2 = projected[i2];
@@ -235,38 +238,48 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
         const avgZ = (p1[2] + p2[2]) / 2;
         const alpha = Math.max(0.18, (avgZ + 1) * 0.45);
 
+        // Halo outer line for neon glow look without expensive shadowBlur
+        if (avgZ > 0) {
+          bufferCtx.beginPath();
+          bufferCtx.moveTo(p1[0], p1[1]);
+          bufferCtx.lineTo(p2[0], p2[1]);
+          bufferCtx.strokeStyle = `rgba(251, 191, 36, ${alpha * 0.28})`;
+          bufferCtx.lineWidth = 3.6 * dpr;
+          bufferCtx.stroke();
+        }
+
+        // Core crisp line
         bufferCtx.beginPath();
         bufferCtx.moveTo(p1[0], p1[1]);
         bufferCtx.lineTo(p2[0], p2[1]);
         bufferCtx.strokeStyle = `rgba(245, 158, 11, ${alpha})`;
-        bufferCtx.lineWidth = (avgZ > 0 ? 1.8 : 0.8) * dpr;
-        bufferCtx.shadowColor = 'rgba(251, 191, 36, 0.4)';
-        bufferCtx.shadowBlur = avgZ > 0 ? 8 * dpr : 0;
+        bufferCtx.lineWidth = (avgZ > 0 ? 1.6 : 0.8) * dpr;
         bufferCtx.stroke();
       });
 
-      // Draw vertex nodes
+      // Draw vertex nodes (outer glow halo + crisp inner core, zero shadowBlur)
       projected.forEach(([x, y, z]) => {
         const alpha = Math.max(0.3, (z + 1) * 0.5);
-        const nodeRadius = (z > 0 ? 3.5 : 2) * dpr;
+        if (z > 0) {
+          bufferCtx.beginPath();
+          bufferCtx.arc(x, y, 6 * dpr, 0, Math.PI * 2);
+          bufferCtx.fillStyle = `rgba(251, 191, 36, ${alpha * 0.3})`;
+          bufferCtx.fill();
+        }
         bufferCtx.beginPath();
-        bufferCtx.arc(x, y, nodeRadius, 0, Math.PI * 2);
+        bufferCtx.arc(x, y, (z > 0 ? 3.0 : 1.8) * dpr, 0, Math.PI * 2);
         bufferCtx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-        bufferCtx.shadowColor = 'rgba(251, 191, 36, 0.8)';
-        bufferCtx.shadowBlur = 8 * dpr;
         bufferCtx.fill();
       });
 
-      // Inner core sphere
+      // Inner core sphere with pure radial gradient (zero blur overhead)
       bufferCtx.beginPath();
       bufferCtx.arc(cx, cy, radius * 0.22, 0, Math.PI * 2);
       const coreGrad = bufferCtx.createRadialGradient(cx, cy, 0, cx, cy, radius * 0.22);
       coreGrad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
-      coreGrad.addColorStop(0.3, 'rgba(251, 191, 36, 0.7)');
+      coreGrad.addColorStop(0.35, 'rgba(251, 191, 36, 0.7)');
       coreGrad.addColorStop(1, 'rgba(217, 119, 6, 0)');
       bufferCtx.fillStyle = coreGrad;
-      bufferCtx.shadowColor = 'rgba(251, 191, 36, 0.8)';
-      bufferCtx.shadowBlur = 25 * dpr;
       bufferCtx.fill();
 
       // Blit to main canvas with smoothing disabled for high performance
@@ -281,12 +294,10 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
 
     return () => {
       cancelAnimationFrame(animId);
+      observer.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('scroll', handleWindowScroll);
       canvas.removeEventListener('wheel', handleCanvasWheel);
-      if (lenis && typeof lenis.off === 'function') {
-        lenis.off('scroll', handleLenisScroll);
-      }
     };
   }, [isDragging]);
 

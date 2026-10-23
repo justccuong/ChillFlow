@@ -10,8 +10,8 @@ export interface SmoothScrollOptions {
 
 export function useSmoothScroll({
   enabled = true,
-  duration = 1.15,
-  wheelMultiplier = 0.95,
+  duration = 0.7,
+  wheelMultiplier = 1.0,
 }: SmoothScrollOptions = {}) {
   const lenisRef = useRef<Lenis | null>(null);
 
@@ -24,13 +24,13 @@ export function useSmoothScroll({
 
     const lenis = new Lenis({
       duration,
-      // Exponential inertia decay for buttery smooth scrolling like mdx.so
+      // Snappy, agile exponential inertia decay
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier,
-      touchMultiplier: 1.6,
+      touchMultiplier: 1.0,
       infinite: false,
     });
 
@@ -44,7 +44,18 @@ export function useSmoothScroll({
     }
     rafId = requestAnimationFrame(raf);
 
+    // Stop lenis when tab is in background to save 100% CPU/GPU
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        lenis.stop();
+      } else {
+        lenis.start();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
     return () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;

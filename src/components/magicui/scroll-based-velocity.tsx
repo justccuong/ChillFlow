@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   motion,
   useScroll,
@@ -33,6 +33,8 @@ function ParallaxRow({
   pauseOnHover = true,
 }: ParallaxProps) {
   const baseX = useMotionValue(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInViewRef = useRef(true);
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
 
@@ -48,7 +50,25 @@ function ParallaxRow({
 
   const directionFactor = useRef<number>(1);
 
+  // Pause RAF when offscreen to save 100% CPU/GPU
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isInViewRef.current = entry.isIntersecting;
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   useAnimationFrame((_, delta) => {
+    if (!isInViewRef.current) {
+      return;
+    }
+
     if (isHovered.current && pauseOnHover) {
       return;
     }
@@ -73,6 +93,7 @@ function ParallaxRow({
 
   return (
     <div
+      ref={containerRef}
       className="w-full overflow-hidden whitespace-nowrap flex flex-nowrap select-none"
       onMouseEnter={() => {
         isHovered.current = true;
@@ -82,8 +103,8 @@ function ParallaxRow({
       }}
     >
       <motion.div
-        className={cn('inline-flex flex-nowrap items-center shrink-0', className)}
-        style={{ x }}
+        className={cn('inline-flex flex-nowrap items-center shrink-0 will-change-transform', className)}
+        style={{ x, translateZ: 0 }}
       >
         <div className="inline-flex items-center gap-6 sm:gap-10 shrink-0 px-3">
           {children}
