@@ -29,3 +29,12 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Temporary directories & research
+awesome-landing-pages/
+rea/
+web-audit-mvp/
+screenshots/
+scripts/
+*.png
+.superpowers/
