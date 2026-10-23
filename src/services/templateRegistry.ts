@@ -11,7 +11,7 @@ export interface TemplateDefinition {
   description: string;
   idealFor: string;
   previewThumbnail: string;
-  layoutArchetype: 'cyber-conference' | 'growth-masterclass' | 'terminal-hacker' | 'executive-dealflow' | 'creative-avantgarde' | 'academic-syllabus';
+  layoutArchetype: 'cyber-conference' | 'growth-masterclass' | 'terminal-hacker' | 'executive-dealflow' | 'creative-avantgarde' | 'academic-syllabus' | 'cinematic-studio';
   features: string[];
 }
 
@@ -136,6 +136,26 @@ export const TEMPLATE_LIBRARY: TemplateDefinition[] = [
       'Form đăng ký nhận trọn bộ Syllabus & Giáo trình',
     ],
   },
+  {
+    id: 'studio-3d',
+    name: 'Cinematic 3D Studio',
+    subtitle: 'Studio Thiết kế Không gian & Trải nghiệm 3D',
+    categoryLabel: '3D Studio & Motion',
+    badge: 'AWWWARDS SITE OF THE DAY',
+    themeColor: '#e2e8f0',
+    accentGradient: 'from-amber-200 via-zinc-100 to-amber-400',
+    description: 'Bố cục phòng thu 3D điện ảnh đỉnh cao phong cách MDX, canvas 360 độ tương tác, hiệu ứng nút bấm đa hướng và hệ thống âm thanh Web Audio sống động.',
+    idealFor: 'Showcase 3D, Creative Studio, Portfolio Nghệ thuật số, Motion Graphics, Sản phẩm điện ảnh.',
+    previewThumbnail: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+    layoutArchetype: 'cinematic-studio',
+    features: [
+      'Hero Canvas 360° tương tác kép (Double-Buffered)',
+      'Nút bấm cảm biến hướng trỏ chuột (Directional Hover)',
+      'Hệ thống âm thanh Web Audio & Sóng âm SVG sống động',
+      'Bento Grid dự án 3D mở rộng với hiệu ứng Clip-Path',
+      'Thước đo tín nhiệm giải thưởng quốc tế Awwwards & FWA',
+    ],
+  },
 ];
 
 export function getTemplateById(id: EventCategory): TemplateDefinition {
@@ -144,6 +164,23 @@ export function getTemplateById(id: EventCategory): TemplateDefinition {
 
 export function detectBestTemplate(eventName: string, topic?: string): TemplateDefinition {
   const text = `${eventName} ${topic || ''}`.toLowerCase();
+
+  if (
+    text.includes('3d') ||
+    text.includes('studio') ||
+    text.includes('motion') ||
+    text.includes('cinema') ||
+    text.includes('cinematic') ||
+    text.includes('animation') ||
+    text.includes('vfx') ||
+    text.includes('render') ||
+    text.includes('blender') ||
+    text.includes('unreal') ||
+    text.includes('spatial') ||
+    text.includes('cgi')
+  ) {
+    return TEMPLATE_LIBRARY.find(t => t.id === 'studio-3d') || TEMPLATE_LIBRARY[0];
+  }
 
   if (text.includes('code') || text.includes('dev') || text.includes('lập trình') || text.includes('kỹ thuật') || text.includes('software') || text.includes('hackathon') || text.includes('backend') || text.includes('frontend')) {
     return TEMPLATE_LIBRARY.find(t => t.id === 'developer') || TEMPLATE_LIBRARY[0];

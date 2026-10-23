@@ -6,6 +6,7 @@ import { TerminalHero } from './heroes/TerminalHero';
 import { ExecutiveHero } from './heroes/ExecutiveHero';
 import { CreativeHero } from './heroes/CreativeHero';
 import { AcademyHero } from './heroes/AcademyHero';
+import { CinematicStudioHero } from './heroes/CinematicStudioHero';
 
 interface HeroSectionProps {
   input: EventInput;
@@ -19,6 +20,7 @@ interface HeroSectionProps {
   isEditMode?: boolean;
   onUpdateContentField?: (field: keyof GeneratedContent, val: any) => void;
   onUpdateInputField?: (field: keyof EventInput, val: any) => void;
+  headlineVariant?: 'A' | 'B';
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
@@ -33,83 +35,50 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   isEditMode = false,
   onUpdateContentField,
   onUpdateInputField,
+  headlineVariant = 'A',
 }) => {
   const heroPhoto = input.heroImageUrl || theme.heroImage;
+
+  const handleSaveHeadline = (val: string) => {
+    if (headlineVariant === 'B') {
+      onUpdateContentField?.('alternativeHeadline', val);
+    } else {
+      onUpdateContentField?.('headline', val);
+    }
+  };
+
+  const sharedHeroProps = {
+    input,
+    content,
+    theme,
+    headlineToDisplay,
+    onScrollToRegister,
+    registeredCount,
+    onOpenHeroImagePicker,
+    onOpenSpeakerImagePicker,
+    isEditMode,
+    onUpdateContentField,
+    onUpdateInputField,
+    onSaveHeadline: handleSaveHeadline,
+  };
 
   const renderHeroByLayout = () => {
     switch (theme.layout) {
       case 'masterclass':
-        return (
-          <MasterclassHero
-            input={input}
-            content={content}
-            theme={theme}
-            headlineToDisplay={headlineToDisplay}
-            onScrollToRegister={onScrollToRegister}
-            registeredCount={registeredCount}
-          />
-        );
+        return <MasterclassHero {...sharedHeroProps} />;
       case 'terminal':
-        return (
-          <TerminalHero
-            input={input}
-            content={content}
-            theme={theme}
-            headlineToDisplay={headlineToDisplay}
-            onScrollToRegister={onScrollToRegister}
-            registeredCount={registeredCount}
-          />
-        );
+        return <TerminalHero {...sharedHeroProps} />;
       case 'executive':
-        return (
-          <ExecutiveHero
-            input={input}
-            content={content}
-            theme={theme}
-            headlineToDisplay={headlineToDisplay}
-            onScrollToRegister={onScrollToRegister}
-            registeredCount={registeredCount}
-          />
-        );
+        return <ExecutiveHero {...sharedHeroProps} />;
       case 'creative':
-        return (
-          <CreativeHero
-            input={input}
-            content={content}
-            theme={theme}
-            headlineToDisplay={headlineToDisplay}
-            onScrollToRegister={onScrollToRegister}
-            registeredCount={registeredCount}
-          />
-        );
+        return <CreativeHero {...sharedHeroProps} />;
       case 'academy':
-        return (
-          <AcademyHero
-            input={input}
-            content={content}
-            theme={theme}
-            headlineToDisplay={headlineToDisplay}
-            onScrollToRegister={onScrollToRegister}
-            registeredCount={registeredCount}
-          />
-        );
+        return <AcademyHero {...sharedHeroProps} />;
+      case 'cinematic':
+        return <CinematicStudioHero {...sharedHeroProps} />;
       case 'conference':
       default:
-        return (
-          <ConferenceHero
-            input={input}
-            content={content}
-            theme={theme}
-            headlineToDisplay={headlineToDisplay}
-            onScrollToRegister={onScrollToRegister}
-            registeredCount={registeredCount}
-            onOpenHeroImagePicker={onOpenHeroImagePicker}
-            onOpenSpeakerImagePicker={onOpenSpeakerImagePicker}
-            isEditMode={isEditMode}
-            onUpdateContentField={onUpdateContentField}
-            onUpdateInputField={onUpdateInputField}
-          />
-        );
+        return <ConferenceHero {...sharedHeroProps} />;
     }
   };
 

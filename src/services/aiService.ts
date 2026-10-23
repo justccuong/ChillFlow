@@ -2,7 +2,7 @@ import type { EventInput, GeneratedContent, SemanticPageSchema, CROEvaluation, F
 import { detectBestTemplate } from './templateRegistry';
 
 // Preset templates for instant demo during presentation
-export const PRESETS: { label: string; iconType: 'ai' | 'marketing' | 'startup' | 'design'; data: EventInput }[] = [
+export const PRESETS: { label: string; iconType: 'ai' | 'marketing' | 'startup' | 'design' | 'studio'; data: EventInput }[] = [
   {
     label: 'AI Agent Summit 2026',
     iconType: 'ai',
@@ -65,6 +65,22 @@ export const PRESETS: { label: string; iconType: 'ai' | 'marketing' | 'startup' 
       earlyBirdDiscount: 'Ưu đãi Early Bird 35% + Tặng UI Kit Figma Design System trị giá $99',
       targetAudience: 'UI/UX Designers, Frontend Developers, Product Managers',
       maxCapacity: 80,
+    },
+  },
+  {
+    label: 'Cinematic 3D Studio Showcase',
+    iconType: 'studio',
+    data: {
+      eventName: 'Spatial Vision 2026: Đột Phá Thiết Kế Không Gian 3D & Điện Ảnh Số',
+      category: 'studio-3d',
+      eventDate: '2026-12-18T19:00',
+      location: 'Grand Cinema Hall, Trung tâm Nghệ thuật Số Quận 1, TP. HCM & VR Live Stream',
+      speakerName: 'Kenzo Vũ',
+      speakerRole: 'Creative Director & Awwwards Judge',
+      speakerBio: 'Hơn 12 năm dẫn dắt các dự án CGI/3D tương tác toàn cầu, từng đoạt 8 giải Awwwards Site of the Day và FWA.',
+      earlyBirdDiscount: 'Giảm 50% vé Studio Pass VIP + Bộ 3D Spline Asset Kit bản quyền trị giá $299',
+      targetAudience: '3D Artists, Motion Designers, Creative Directors & Visual Developers',
+      maxCapacity: 60,
     },
   },
 ];
@@ -138,6 +154,13 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
     altHeadline = `Bí Quyết Xây Dựng Trải Nghiệm Khiến Khách Hàng Ra Quyết Định Mua Hàng`;
     subHeadline = `Ứng dụng tâm lý học hành vi và design system thực chiến vào thiết kế sản phẩm số cùng ${input.speakerName}.`;
     description = `Phân tích chi tiết quy trình audit UX, cách xây dựng luồng trải nghiệm tối ưu tỉ lệ chuyển đổi từ góc nhìn chuyên gia.`;
+  } else if (category === 'studio-3d') {
+    headline = forceOptimized
+      ? `Trải Nghiệm Không Gian Số & Nghệ Thuật 3D Đột Phá Cùng ${input.speakerName}`
+      : cleanTitle('Cinematic 3D Studio', input.eventName);
+    altHeadline = `Tiêu Chuẩn Thiết Kế & Kỹ Xảo Điện Ảnh Đoạt Giải Awwwards 2026`;
+    subHeadline = `Khám phá quy trình sáng tạo thế giới 3D tương tác, kỹ xảo điện ảnh và trải nghiệm số đa giác quan từ ${input.speakerName}.`;
+    description = `Được định hình theo phong cách MDX Studio danh giá: tích hợp canvas 360° siêu thực, âm thanh Web Audio và nghệ thuật tương tác chạm đến cảm xúc.`;
   } else {
     headline = forceOptimized
       ? `Lộ Trình Tinh Gọn Để Nâng Tầm Kỹ Năng Cùng ${input.speakerName}`
@@ -147,7 +170,7 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
     description = `Chương trình được thiết kế cô đọng, tập trung vào kỹ năng ứng dụng ngay vào công việc hàng ngày.`;
   }
 
-  const benefits = [
+  let benefits = [
     {
       title: 'Kiến Thức Thực Chiến 100%',
       description: 'Phân tích case study thực tế, tập trung vào giải pháp ứng dụng ngay mà không rườm rà lý thuyết.',
@@ -165,7 +188,27 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
     },
   ];
 
-  const agenda = [
+  if (category === 'studio-3d') {
+    benefits = [
+      {
+        title: 'Hero Canvas 360° Siêu Thực (WebGL 60fps)',
+        description: 'Tối ưu hóa kiến trúc Double-Buffered 3D Canvas, tương tác mượt mà trên mọi thiết bị chuẩn điện ảnh.',
+        iconName: 'zap' as const,
+      },
+      {
+        title: 'Masterclass Thiết Kế Chuẩn SOTD Awwwards',
+        description: `Học hỏi trực tiếp tư duy đạo diễn nghệ thuật, ánh sáng CGI Dark Luxe và không gian số từ ${input.speakerName || 'Creative Director'}.`,
+        iconName: 'award' as const,
+      },
+      {
+        title: 'Thư Viện Shader 3D & Web Audio Độc Quyền',
+        description: input.earlyBirdDiscount || 'Nhận trọn bộ source code tương tác, GLSL shaders và sound effects ambient bản quyền cao cấp.',
+        iconName: 'target' as const,
+      },
+    ];
+  }
+
+  let agenda = [
     {
       time: '08:30 - 09:00',
       title: 'Check-in & Đón tiếp khách mời',
@@ -189,7 +232,33 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
     },
   ];
 
-  const faqs: FaqItem[] = [
+  if (category === 'studio-3d') {
+    agenda = [
+      {
+        time: '18:30 - 19:00',
+        title: 'Red Carpet & Ambient Audio Sensory Lounge',
+        description: 'Đón tiếp VIP, trải nghiệm không gian âm thanh tần số thấp và hiệu ứng ánh sáng tương tác đa hướng.',
+      },
+      {
+        time: '19:00 - 20:00',
+        title: 'Keynote: Giải Mã Kiến Trúc Trải Nghiệm 3D Chuẩn MDX & Awwwards',
+        description: `${input.speakerName} trực tiếp bóc tách kiến trúc Canvas 360°, directional hover và nghệ thuật typography avant-garde.`,
+        speaker: input.speakerName,
+      },
+      {
+        time: '20:00 - 21:00',
+        title: 'Live Workshop: Xây Dựng Không Gian 3D Thời Gian Thực 60fps',
+        description: 'Thực hành kết nối WebGL shader, hiệu ứng Clip-Path bento grid và trigger âm thanh phản hồi xúc giác trong trình duyệt.',
+      },
+      {
+        time: '21:00 - 21:30',
+        title: 'Exhibition & Trao Tặng Exclusive 3D Asset Kit',
+        description: 'Giao lưu cùng cộng đồng 3D Creator, nhận mã bản quyền bộ asset 3D độc quyền và vinh danh tác phẩm ấn tượng.',
+      },
+    ];
+  }
+
+  let faqs: FaqItem[] = [
     {
       question: 'Tôi có nhận được video recording và slide sau sự kiện không?',
       answer: 'Có! Toàn bộ người đăng ký tham gia sẽ nhận được đường link truy cập slide thuyết trình chất lượng cao và bản thu âm đầy đủ sau khi sự kiện kết thúc 24 giờ.',
@@ -209,6 +278,29 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
       answer: 'Sau khi bấm đăng ký, hệ thống sẽ tự động xác nhận mã vé điện tử của bạn ngay trên màn hình và gửi bản hướng dẫn tham dự chi tiết về email đã cung cấp.',
     },
   ];
+
+  if (category === 'studio-3d') {
+    faqs = [
+      {
+        question: 'Tôi có cần cấu hình máy tính đồ họa khủng để tham gia không?',
+        answer: 'Không bắt buộc! Toàn bộ không gian 3D tương tác và demo được tối ưu hóa chạy trực tiếp trên trình duyệt hiện đại (Chrome/Edge/Safari) nhờ công nghệ Double-Buffered WebGL siêu nhẹ.',
+      },
+      {
+        question: 'Sau sự kiện tôi có được cung cấp mã nguồn 3D và file project không?',
+        answer: 'Chắc chắn có! Toàn bộ người tham dự sẽ nhận được quyền truy cập GitHub repo chứa mã nguồn canvas 360°, các shader GLSL tùy biến và bộ sound effect Web Audio độc bản.',
+      },
+      {
+        question: 'Ưu đãi Studio Pass độc quyền áp dụng như thế nào?',
+        answer: input.earlyBirdDiscount
+          ? `Quyền lợi "${input.earlyBirdDiscount}" chỉ dành riêng cho số lượng giới hạn những nhà sáng tạo đăng ký đầu tiên. Cổng đăng ký sẽ tự đóng ngay khi đạt đủ sĩ số.`
+          : 'Ưu đãi vé Studio Pass đặc quyền áp dụng cho những người hoàn tất đăng ký sớm nhất.',
+      },
+      {
+        question: 'Buổi showcase có cấp chứng chỉ ghi nhận tham dự không?',
+        answer: 'Có! Mỗi học viên tham gia trọn vẹn sẽ được cấp Certificate of Creative Excellence với chữ ký số của Giám đốc Nghệ thuật và mã định danh quốc tế.',
+      },
+    ];
+  }
 
   const totalScore = forceOptimized ? 94 : 78;
   const headlineScore = forceOptimized ? 96 : 76;
@@ -248,12 +340,14 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
     agenda,
     faqs,
     earlyBirdBadge: input.earlyBirdDiscount || 'Ưu đãi Early Bird có hạn',
-    ctaButtonText: 'Đăng Ký Tham Gia Ngay',
-    tagline: 'Sự kiện chuyên sâu không thể bỏ lỡ',
+    ctaButtonText: category === 'studio-3d' ? 'Trải Nghiệm Không Gian 3D Ngay' : 'Đăng Ký Tham Gia Ngay',
+    tagline: category === 'studio-3d' ? 'AWWWARDS SITE OF THE DAY • CINEMATIC EXPERIENCE' : 'Sự kiện chuyên sâu không thể bỏ lỡ',
   };
 
   return { content, cro };
 }
+
+export const getFallbackContent = generateWithSmartEngine;
 
 async function callGeminiAPI(
   input: EventInput,
@@ -344,4 +438,140 @@ Hãy trả về DUY NHẤT một chuỗi JSON hợp lệ (không kèm Markdown b
     parsed.content.matchedTemplateId = input.category || detectBestTemplate(input.eventName, input.targetAudience).id;
   }
   return parsed;
+}
+
+export type RewriteStyle = 'concise' | 'fomo' | 'luxury';
+
+export interface RewriteOptions {
+  text: string;
+  style: RewriteStyle;
+  apiKey?: string;
+  category?: string;
+}
+
+export async function rewriteCopyContent(options: RewriteOptions): Promise<string> {
+  const { text, style, apiKey, category } = options;
+  if (!text || text.trim() === '') return text;
+
+  // 1. Try real Gemini API if key is present
+  if (apiKey && apiKey.trim() !== '') {
+    try {
+      const rewritten = await callGeminiRewriteAPI(text.trim(), style, apiKey.trim(), category);
+      if (rewritten && rewritten.trim() !== '') {
+        return rewritten.trim();
+      }
+    } catch (err) {
+      console.warn('Gemini Rewrite API error, using smart local rewrite engine:', err);
+    }
+  }
+
+  // 2. Fallback to smart offline copywriting engine
+  return rewriteWithSmartFallback(text.trim(), style);
+}
+
+async function callGeminiRewriteAPI(
+  text: string,
+  style: RewriteStyle,
+  apiKey: string,
+  category?: string
+): Promise<string> {
+  const styleInstruction = {
+    concise: 'Ngắn gọn hơn: Cắt bỏ mọi từ thừa, câu chữ cô đọng, súc tích, nhịp nhanh, đanh thép, dễ đọc lướt.',
+    fomo: 'Tăng tính khẩn cấp (FOMO): Nhấn mạnh sự khan hiếm, cơ hội cuối cùng, số suất có hạn, kích thích hành động ngay kẻo bỏ lỡ.',
+    luxury: 'Sang trọng hơn: Dùng ngôn từ tinh hoa, đẳng cấp, chuyên nghiệp chuẩn C-Level / Executive Summit, gia tăng uy tín và vị thế.',
+  }[style];
+
+  const prompt = `
+Bạn là chuyên gia Copywriting & Tối ưu chuyển đổi (CRO) hàng đầu.
+Nhiệm vụ: Hãy viết lại câu/đoạn văn bản sau cho Landing Page sự kiện theo phong cách yêu cầu.
+
+Văn bản gốc:
+"${text}"
+
+Phong cách yêu cầu:
+${styleInstruction}
+
+Ngữ cảnh sự kiện: ${category || 'Sự kiện công nghệ, kinh doanh chuyên nghiệp'}
+
+QUY TẮC BẮT BUỘC:
+- Chỉ trả về DUY NHẤT câu/đoạn văn bản tiếng Việt đã được viết lại hoàn chỉnh.
+- KHÔNG dùng dấu ngoặc kép bọc ngoài câu.
+- KHÔNG thêm bất kỳ lời giải thích, lời chào, tiền tố hay hậu tố nào.
+`;
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        temperature: 0.85,
+        maxOutputTokens: 200,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Gemini Rewrite API status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  const rawResult = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!rawResult) throw new Error('Empty rewrite text from Gemini');
+
+  return rawResult.trim().replace(/^["“']|["”']$/g, '');
+}
+
+function rewriteWithSmartFallback(text: string, style: RewriteStyle): string {
+  const clean = text.trim();
+
+  if (style === 'concise') {
+    // Rút gọn từ thừa, cô đọng
+    let result = clean
+      .replace(/^(Chương trình|Hội thảo|Sự kiện|Workshop|Khám phá|Tìm hiểu cách)\s+/i, '')
+      .replace(/từ số 0 đến triển khai/i, 'thực chiến')
+      .replace(/dành cho\s+.*$/i, '')
+      .replace(/một cách hiệu quả và bền vững/i, 'đột phá')
+      .trim();
+
+    if (result.length > 55) {
+      const parts = result.split(/[:—\-]/);
+      if (parts.length > 1) {
+        result = parts[0].trim();
+      }
+    }
+    return result || clean;
+  }
+
+  if (style === 'fomo') {
+    // Tăng tính khẩn cấp FOMO
+    if (/chỉ còn|sắp hết|vé cuối|đừng bỏ lỡ/i.test(clean)) {
+      return `[Gấp] Chỉ Còn 12 Suất: ${clean.replace(/^\[.*?\]\s*/, '')}`;
+    }
+    const fomoPrefixes = [
+      '⚡ Đừng Bỏ Lỡ:',
+      '🔥 Cơ Hội Cuối Cùng:',
+      '⏳ Sắp Đóng Đăng Ký:',
+      '🚀 Chỉ Còn 15 Vé Sớm:',
+    ];
+    const prefix = fomoPrefixes[Math.floor(Math.random() * fomoPrefixes.length)];
+    return `${prefix} ${clean}`;
+  }
+
+  if (style === 'luxury') {
+    // Sang trọng, đẳng cấp Executive
+    let elevated = clean
+      .replace(/khóa học|lớp học/gi, 'Chương trình Đào tạo Cấp cao')
+      .replace(/buổi chia sẻ/gi, 'Hội đàm Thượng đỉnh')
+      .replace(/giảm giá/gi, 'Đặc quyền Đặc biệt')
+      .replace(/hướng dẫn/gi, 'Chuyển giao Chiến lược');
+
+    if (!/thượng đỉnh|đặc quyền|tinh hoa|chiến lược/i.test(elevated)) {
+      elevated = `Hội Nghị Thượng Đỉnh: ${elevated}`;
+    }
+    return elevated;
+  }
+
+  return clean;
 }

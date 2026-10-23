@@ -23,6 +23,7 @@ import { AcademySyllabusSection } from './sections/AcademySyllabusSection';
 import { MarketingBeforeAfterSection } from './sections/MarketingBeforeAfterSection';
 import { StartupPitchingRosterSection } from './sections/StartupPitchingRosterSection';
 import { DeveloperCodeSandboxSection } from './sections/DeveloperCodeSandboxSection';
+import { CinematicShowcaseSection } from './sections/CinematicShowcaseSection';
 import { TemplateCatalogModal } from '../TemplateCatalogModal';
 import { TEMPLATE_LIBRARY, detectBestTemplate, getTemplateById } from '../../services/templateRegistry';
 import { ExitIntentModal } from './ExitIntentModal';
@@ -32,7 +33,7 @@ import { CustomDomainModal } from '../CustomDomainModal';
 import { publishEvent } from '../../services/publishService';
 import { exportStandaloneHtml } from '../../utils/sourceExporter';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
-import { Sparkles, ArrowUp, BarChart3, Edit3, Palette, Globe, Send, Download, X, Layers } from 'lucide-react';
+import { Sparkles, ArrowUp, Edit3, Palette, Send, X } from 'lucide-react';
 import type { UserProfile, PublishedPageRecord } from '../../types';
 
 interface LandingPagePreviewProps {
@@ -204,7 +205,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold cursor-pointer transition-all shadow-sm"
         >
           <Palette className="w-3.5 h-3.5 text-cyan-500" />
-          <span>Kho 6 Templates Sự Kiện</span>
+          <span>Kho 7 Templates Sự Kiện</span>
         </button>
       </div>
 
@@ -225,7 +226,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           type="button"
           onClick={() => setIsTemplateModalOpen(true)}
           className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/40 font-semibold cursor-pointer transition-all shrink-0"
-          title="Mở Kho 6 Templates Sự Kiện Độc Quyền"
+          title="Mở Kho 7 Templates Sự Kiện Độc Quyền"
         >
           <Palette className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
           <span className="hidden sm:inline">Kho Template</span>
@@ -264,15 +265,15 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         <button
           type="button"
           onClick={() => setIsEditMode(!isEditMode)}
-          className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl font-semibold cursor-pointer transition-all shrink-0 ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold cursor-pointer transition-all shrink-0 ${
             isEditMode
-              ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30'
-              : 'hover:bg-white/10 text-slate-300'
+              ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/40 ring-2 ring-emerald-400/50 scale-105'
+              : 'bg-white/10 hover:bg-white/20 text-slate-200'
           }`}
-          title="Bật/Tắt chế độ Visual CMS sửa chữ trực tiếp"
+          title="Bật/Tắt chế độ Visual CMS sửa chữ trực tiếp và kích hoạt AI Viết lại"
         >
-          <Edit3 className="w-3.5 h-3.5 shrink-0" />
-          <span className="hidden md:inline">{isEditMode ? 'Visual CMS (Bật)' : 'Sửa trực tiếp'}</span>
+          <Edit3 className={`w-3.5 h-3.5 shrink-0 ${isEditMode ? 'text-white animate-pulse' : 'text-emerald-400'}`} />
+          <span>{isEditMode ? 'Sửa chữ (Đang bật)' : 'Sửa chữ (Visual CMS)'}</span>
         </button>
 
         {/* Sửa form */}
@@ -293,17 +294,6 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         >
           <Send className="w-3.5 h-3.5 shrink-0" />
           <span className="text-xs">Xuất bản</span>
-        </button>
-
-        {/* HTML Export Button */}
-        <button
-          type="button"
-          onClick={handleExportSource}
-          className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-semibold cursor-pointer transition-all shrink-0"
-          title="Tải mã nguồn HTML trọn gói"
-        >
-          <Download className="w-3.5 h-3.5 text-amber-400" />
-          <span>Tải HTML</span>
         </button>
       </div>
 
@@ -339,6 +329,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           content={content}
           theme={theme}
           headlineToDisplay={activeHeadline}
+          headlineVariant={headlineVariant}
           onScrollToRegister={scrollToRegistration}
           registeredCount={registeredCount}
           onOpenHeroImagePicker={handleOpenHeroPicker}
@@ -486,6 +477,33 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             </div>
             <div data-reveal data-reveal-delay="100">
               <BenefitsSection benefits={content.benefits} theme={theme} />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <FaqSection faqs={content.faqs} theme={theme} />
+            </div>
+          </>
+        )}
+
+        {/* ========================================================
+            CATEGORY 7: STUDIO 3D (Cinematic 3D Studio & Experiential Showcase)
+            ======================================================== */}
+        {currentCategory === 'studio-3d' && (
+          <>
+            <div data-reveal data-reveal-delay="100">
+              <CinematicShowcaseSection
+                theme={theme}
+                onScrollToRegister={scrollToRegistration}
+              />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <BenefitsSection benefits={content.benefits} theme={theme} />
+            </div>
+            <div data-reveal data-reveal-delay="100">
+              <SpeakerSection
+                input={{ ...input, category: currentCategory }}
+                theme={theme}
+                onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
+              />
             </div>
             <div data-reveal data-reveal-delay="100">
               <FaqSection faqs={content.faqs} theme={theme} />

@@ -19,6 +19,8 @@ const renderCategoryIcon = (id: EventCategory, className = 'w-6 h-6') => {
       return <Palette className={`${className} text-pink-400`} />;
     case 'education':
       return <GraduationCap className={`${className} text-blue-400`} />;
+    case 'studio-3d':
+      return <Sparkles className={`${className} text-amber-300`} />;
     default:
       return <Sparkles className={`${className} text-indigo-400`} />;
   }
@@ -30,6 +32,7 @@ const renderPresetIcon = (iconType: string) => {
     case 'marketing': return <TrendingUp className="w-3.5 h-3.5 text-amber-400" />;
     case 'startup': return <Rocket className="w-3.5 h-3.5 text-purple-400" />;
     case 'design': return <Palette className="w-3.5 h-3.5 text-pink-400" />;
+    case 'studio': return <Sparkles className="w-3.5 h-3.5 text-amber-300" />;
     default: return <Sparkles className="w-3.5 h-3.5 text-indigo-400" />;
   }
 };

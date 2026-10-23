@@ -2,6 +2,7 @@ import React from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
 import { formatEventDate } from '../../../utils/date';
+import { InlineEditable } from '../InlineEditable';
 import { Calendar, MapPin, ArrowRight, Palette, Sparkles, PenTool, Zap } from 'lucide-react';
 
 interface HeroProps {
@@ -11,6 +12,10 @@ interface HeroProps {
   headlineToDisplay: string;
   onScrollToRegister: () => void;
   registeredCount: number;
+  isEditMode?: boolean;
+  onUpdateContentField?: (field: keyof GeneratedContent, val: any) => void;
+  onUpdateInputField?: (field: keyof EventInput, val: any) => void;
+  onSaveHeadline?: (val: string) => void;
 }
 
 export const CreativeHero: React.FC<HeroProps> = ({
@@ -20,6 +25,10 @@ export const CreativeHero: React.FC<HeroProps> = ({
   headlineToDisplay,
   onScrollToRegister,
   registeredCount,
+  isEditMode = false,
+  onUpdateContentField,
+  onUpdateInputField,
+  onSaveHeadline,
 }) => {
   const tags = theme.creativeTags || ['Design Systems', 'Micro-Interactions', 'Spline 3D', 'Spatial UI'];
 
@@ -40,11 +49,24 @@ export const CreativeHero: React.FC<HeroProps> = ({
       {/* Bold, Un-cramped Neo-Brutalist Headline */}
       <div className="space-y-4 max-w-4xl">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight font-heading leading-[1.22] text-slate-900 dark:text-white drop-shadow-sm">
-          {headlineToDisplay}
+          <InlineEditable
+            value={headlineToDisplay}
+            onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
+            isEditMode={isEditMode}
+            as="span"
+            category={input.category}
+          />
         </h1>
 
         <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl">
-          {content.subHeadline}
+          <InlineEditable
+            value={content.subHeadline}
+            onSave={(val) => onUpdateContentField?.('subHeadline', val)}
+            isEditMode={isEditMode}
+            as="span"
+            multiline
+            category={input.category}
+          />
         </p>
 
         {/* Creative Discipline Tags */}
@@ -71,7 +93,14 @@ export const CreativeHero: React.FC<HeroProps> = ({
             </div>
             <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
               <MapPin className="w-4 h-4 text-purple-500" />
-              <span className="font-semibold">{input.location}</span>
+              <InlineEditable
+                value={input.location}
+                onSave={(val) => onUpdateInputField?.('location', val)}
+                isEditMode={isEditMode}
+                as="span"
+                className="font-semibold"
+                category={input.category}
+              />
             </div>
           </div>
 
@@ -81,7 +110,13 @@ export const CreativeHero: React.FC<HeroProps> = ({
               onClick={onScrollToRegister}
               className={`px-8 py-3.5 rounded-xl text-base font-bold shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group uppercase tracking-wide ${theme.btnPrimary}`}
             >
-              <span>{content.ctaButtonText || 'Đăng Ký Tham Gia Studio'}</span>
+              <InlineEditable
+                value={content.ctaButtonText || 'Đăng Ký Tham Gia Studio'}
+                onSave={(val) => onUpdateContentField?.('ctaButtonText', val)}
+                isEditMode={isEditMode}
+                as="span"
+                category={input.category}
+              />
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
             <span className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 px-1">

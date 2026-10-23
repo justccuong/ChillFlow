@@ -15,6 +15,7 @@ interface HeroProps {
   isEditMode?: boolean;
   onUpdateContentField?: (field: keyof GeneratedContent, val: any) => void;
   onUpdateInputField?: (field: keyof EventInput, val: any) => void;
+  onSaveHeadline?: (val: string) => void;
 }
 
 export const MasterclassHero: React.FC<HeroProps> = ({
@@ -23,10 +24,11 @@ export const MasterclassHero: React.FC<HeroProps> = ({
   theme,
   headlineToDisplay,
   onScrollToRegister,
-  registeredCount = 0,
+  registeredCount: _registeredCount = 0,
   isEditMode = false,
   onUpdateContentField,
   onUpdateInputField,
+  onSaveHeadline,
 }) => {
   const maxSeats = input.maxCapacity || 120;
   const takenSeats = Math.min(maxSeats, 72);
@@ -51,9 +53,10 @@ export const MasterclassHero: React.FC<HeroProps> = ({
       <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight font-heading leading-[1.15] text-slate-900 dark:text-white max-w-4xl mx-auto drop-shadow-sm">
         <InlineEditable
           value={headlineToDisplay}
-          onSave={(val) => onUpdateContentField?.('headline', val)}
+          onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
           isEditMode={isEditMode}
           as="span"
+          category={input.category}
         />
       </h1>
 
@@ -65,6 +68,7 @@ export const MasterclassHero: React.FC<HeroProps> = ({
           isEditMode={isEditMode}
           as="span"
           multiline
+          category={input.category}
         />
       </p>
 
@@ -142,8 +146,22 @@ export const MasterclassHero: React.FC<HeroProps> = ({
             <div className="text-[10px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1">
               <Award className="w-3.5 h-3.5 text-amber-400" /> Giảng Viên Trưởng
             </div>
-            <div className="font-extrabold text-white text-sm sm:text-base">{input.speakerName}</div>
-            <div className="text-xs text-slate-400 line-clamp-1">{input.speakerRole}</div>
+            <InlineEditable
+              value={input.speakerName}
+              onSave={(val) => onUpdateInputField?.('speakerName', val)}
+              isEditMode={isEditMode}
+              as="div"
+              className="font-extrabold text-white text-sm sm:text-base"
+              category={input.category}
+            />
+            <InlineEditable
+              value={input.speakerRole}
+              onSave={(val) => onUpdateInputField?.('speakerRole', val)}
+              isEditMode={isEditMode}
+              as="div"
+              className="text-xs text-slate-400 line-clamp-1"
+              category={input.category}
+            />
           </div>
         </div>
       </div>

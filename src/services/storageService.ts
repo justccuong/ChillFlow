@@ -111,7 +111,12 @@ export function clearEventState() {
 }
 
 export function getSavedApiKey(): string {
-  return localStorage.getItem(API_KEY_STORAGE) || '';
+  const fromStorage = localStorage.getItem(API_KEY_STORAGE);
+  if (fromStorage && fromStorage.trim() !== '') {
+    return fromStorage.trim();
+  }
+  const envKey = (import.meta.env.VITE_GEMINI_API_KEY as string) || '';
+  return envKey.trim();
 }
 
 export function saveApiKey(key: string) {

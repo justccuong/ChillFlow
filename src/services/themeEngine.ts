@@ -37,6 +37,12 @@ export const CATEGORIES: { id: EventCategory; label: string; iconName: string; d
     iconName: 'graduation-cap',
     description: 'Layout Academy: Tone xanh hoàng gia tin cậy, lớp học thực chiến',
   },
+  {
+    id: 'studio-3d',
+    label: '3D Studio & Motion',
+    iconName: 'sparkles',
+    description: 'Layout Cinematic: Tone Dark Luxe, Canvas 360°, âm thanh Web Audio',
+  },
 ];
 
 export const THEME_CONFIGS: Record<EventCategory, ThemeConfig> = {
@@ -324,6 +330,38 @@ if __name__ == "__main__":
       },
     ],
     trustLogos: ['Đại học Quốc Gia', 'FPT Education', 'Coursera Enterprise', 'EdTech Asia', 'Topica'],
+  },
+  'studio-3d': {
+    id: 'studio-3d',
+    name: 'Cinematic 3D Studio',
+    layout: 'cinematic',
+    accentColor: 'text-amber-300',
+    accentBg: 'bg-amber-400/10',
+    accentBorder: 'border-amber-400/30',
+    btnPrimary: 'bg-gradient-to-r from-amber-200 via-white to-amber-400 hover:from-amber-100 hover:to-amber-300 text-black font-bold shadow-[0_0_30px_rgba(251,191,36,0.2)]',
+    badgeBg: 'bg-white/10',
+    badgeText: 'text-amber-200',
+    glowGradient: 'from-amber-500/15 via-purple-600/10 to-transparent',
+    heroImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80',
+    speakerImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+    galleryPhotos: [
+      {
+        title: 'Trải nghiệm không gian 3D tương tác 360°',
+        tag: 'Spatial 3D',
+        url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80',
+      },
+      {
+        title: 'Hậu kỳ Motion Graphics & Kỹ xảo Điện ảnh VFX',
+        tag: 'Motion & VFX',
+        url: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80',
+      },
+      {
+        title: 'Triển lãm Nghệ thuật Số Siêu thực & CGI Lighting',
+        tag: 'CGI Exhibition',
+        url: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80',
+      },
+    ],
+    trustLogos: ['Awwwards', 'FWA of the Day', 'Blender Foundation', 'Unreal Engine', 'CGSociety'],
   },
 };
 

@@ -17,6 +17,7 @@ interface HeroProps {
   isEditMode?: boolean;
   onUpdateContentField?: (field: keyof GeneratedContent, val: any) => void;
   onUpdateInputField?: (field: keyof EventInput, val: any) => void;
+  onSaveHeadline?: (val: string) => void;
 }
 
 export const ConferenceHero: React.FC<HeroProps> = ({
@@ -30,6 +31,7 @@ export const ConferenceHero: React.FC<HeroProps> = ({
   isEditMode = false,
   onUpdateContentField,
   onUpdateInputField,
+  onSaveHeadline,
 }) => {
   const speakerPhoto =
     input.speakerAvatarUrl ||
@@ -57,6 +59,7 @@ export const ConferenceHero: React.FC<HeroProps> = ({
               isEditMode={isEditMode}
               as="span"
               className="text-indigo-700 dark:text-indigo-300 font-bold"
+              category={input.category}
             />
           </div>
 
@@ -64,9 +67,10 @@ export const ConferenceHero: React.FC<HeroProps> = ({
           <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.25rem] font-extrabold tracking-tight font-heading leading-[1.18] text-slate-900 dark:text-white max-w-4xl drop-shadow-sm">
             <InlineEditable
               value={headlineToDisplay}
-              onSave={(val) => onUpdateContentField?.('headline', val)}
+              onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
               isEditMode={isEditMode}
               as="span"
+              category={input.category}
             />
           </h1>
 
@@ -78,6 +82,7 @@ export const ConferenceHero: React.FC<HeroProps> = ({
               isEditMode={isEditMode}
               as="span"
               multiline
+              category={input.category}
             />
           </p>
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
 import { formatEventDate } from '../../../utils/date';
+import { InlineEditable } from '../InlineEditable';
 import { Calendar, MapPin, ArrowRight, Terminal, Copy, Check, Code2, Cpu, GitBranch, Layers, CheckCircle2 } from 'lucide-react';
 
 interface HeroProps {
@@ -11,6 +12,10 @@ interface HeroProps {
   headlineToDisplay: string;
   onScrollToRegister: () => void;
   registeredCount: number;
+  isEditMode?: boolean;
+  onUpdateContentField?: (field: keyof GeneratedContent, val: any) => void;
+  onUpdateInputField?: (field: keyof EventInput, val: any) => void;
+  onSaveHeadline?: (val: string) => void;
 }
 
 export const TerminalHero: React.FC<HeroProps> = ({
@@ -20,6 +25,10 @@ export const TerminalHero: React.FC<HeroProps> = ({
   headlineToDisplay,
   onScrollToRegister,
   registeredCount,
+  isEditMode = false,
+  onUpdateContentField,
+  onUpdateInputField,
+  onSaveHeadline,
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -55,11 +64,24 @@ export const TerminalHero: React.FC<HeroProps> = ({
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-mono text-slate-900 dark:text-white leading-[1.16]">
-          {headlineToDisplay}
+          <InlineEditable
+            value={headlineToDisplay}
+            onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
+            isEditMode={isEditMode}
+            as="span"
+            category={input.category}
+          />
         </h1>
 
         <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl">
-          {content.subHeadline}
+          <InlineEditable
+            value={content.subHeadline}
+            onSave={(val) => onUpdateContentField?.('subHeadline', val)}
+            isEditMode={isEditMode}
+            as="span"
+            multiline
+            category={input.category}
+          />
         </p>
       </div>
 
@@ -96,7 +118,13 @@ export const TerminalHero: React.FC<HeroProps> = ({
           </div>
           <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm text-slate-700 dark:text-slate-300">
             <MapPin className="w-4 h-4 text-emerald-500" />
-            <span>{input.location}</span>
+            <InlineEditable
+              value={input.location}
+              onSave={(val) => onUpdateInputField?.('location', val)}
+              isEditMode={isEditMode}
+              as="span"
+              category={input.category}
+            />
           </div>
         </div>
 
@@ -107,7 +135,13 @@ export const TerminalHero: React.FC<HeroProps> = ({
             onClick={onScrollToRegister}
             className={`px-8 py-4 rounded-xl text-base shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group font-mono ${theme.btnPrimary}`}
           >
-            <span>{content.ctaButtonText || 'git checkout --register-vip'}</span>
+            <InlineEditable
+              value={content.ctaButtonText || 'git checkout --register-vip'}
+              onSave={(val) => onUpdateContentField?.('ctaButtonText', val)}
+              isEditMode={isEditMode}
+              as="span"
+              category={input.category}
+            />
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </button>
           <div className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">

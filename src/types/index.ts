@@ -4,7 +4,8 @@ export type EventCategory =
   | 'startup'
   | 'developer'
   | 'design'
-  | 'education';
+  | 'education'
+  | 'studio-3d';
 
 export type TemplateLayout =
   | 'conference'
@@ -12,7 +13,8 @@ export type TemplateLayout =
   | 'terminal'
   | 'executive'
   | 'creative'
-  | 'academy';
+  | 'academy'
+  | 'cinematic';
 
 export interface GalleryPhoto {
   title: string;

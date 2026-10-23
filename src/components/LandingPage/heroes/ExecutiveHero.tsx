@@ -2,6 +2,7 @@ import React from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
 import { formatEventDate } from '../../../utils/date';
+import { InlineEditable } from '../InlineEditable';
 import { Calendar, MapPin, ArrowRight, Briefcase, DollarSign, Shield, Award, CheckCircle2 } from 'lucide-react';
 
 interface HeroProps {
@@ -11,6 +12,10 @@ interface HeroProps {
   headlineToDisplay: string;
   onScrollToRegister: () => void;
   registeredCount: number;
+  isEditMode?: boolean;
+  onUpdateContentField?: (field: keyof GeneratedContent, val: any) => void;
+  onUpdateInputField?: (field: keyof EventInput, val: any) => void;
+  onSaveHeadline?: (val: string) => void;
 }
 
 export const ExecutiveHero: React.FC<HeroProps> = ({
@@ -20,6 +25,10 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
   headlineToDisplay,
   onScrollToRegister,
   registeredCount,
+  isEditMode = false,
+  onUpdateContentField,
+  onUpdateInputField,
+  onSaveHeadline,
 }) => {
   const metrics = theme.dealMetrics || {
     capitalPool: '$5,000,000+',
@@ -37,11 +46,24 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white leading-[1.16]">
-          {headlineToDisplay}
+          <InlineEditable
+            value={headlineToDisplay}
+            onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
+            isEditMode={isEditMode}
+            as="span"
+            category={input.category}
+          />
         </h1>
 
         <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl">
-          {content.subHeadline}
+          <InlineEditable
+            value={content.subHeadline}
+            onSave={(val) => onUpdateContentField?.('subHeadline', val)}
+            isEditMode={isEditMode}
+            as="span"
+            multiline
+            category={input.category}
+          />
         </p>
 
         {/* Date & Location & NDA Pills */}
@@ -52,7 +74,14 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
           </div>
           <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
             <MapPin className="w-4 h-4 text-amber-500" />
-            <span className="font-semibold">{input.location}</span>
+            <InlineEditable
+              value={input.location}
+              onSave={(val) => onUpdateInputField?.('location', val)}
+              isEditMode={isEditMode}
+              as="span"
+              className="font-semibold"
+              category={input.category}
+            />
           </div>
           <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
             <Shield className="w-4 h-4 text-emerald-500" />
