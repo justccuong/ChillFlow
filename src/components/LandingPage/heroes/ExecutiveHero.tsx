@@ -98,28 +98,28 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
       {/* Bottom Section: Asymmetric 3-Column Bento Poster Grid */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-5 pt-1">
         {/* Bento 1: Deal Metrics (Col-span 4) */}
-        <div className="md:col-span-4 rounded-2xl p-5 bg-gradient-to-b from-slate-900 to-slate-950 border border-amber-400/20 text-white space-y-4 shadow-xl">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800 text-xs font-bold tracking-wider text-amber-400">
+        <div className="md:col-span-4 rounded-2xl p-5 bg-white dark:bg-gradient-to-b dark:from-slate-900 dark:to-slate-950 border border-amber-500/30 text-slate-900 dark:text-white space-y-4 shadow-xl transition-colors">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 text-xs font-bold tracking-wider text-amber-600 dark:text-amber-400">
             <span>QUỸ ĐẦU TƯ & DEALFLOW</span>
             <span className="px-2 py-0.5 rounded bg-amber-400/20 text-[10px]">INVITE ONLY</span>
           </div>
 
           <div className="space-y-3">
-            <div className="bg-slate-850 p-3.5 rounded-xl border border-slate-800">
-              <div className="text-[11px] text-slate-400 flex items-center gap-1 mb-1">
-                <DollarSign className="w-3.5 h-3.5 text-amber-400" /> Vốn Cam Kết Đầu Tư
+            <div className="bg-slate-50 dark:bg-slate-850 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
+              <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mb-1">
+                <DollarSign className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" /> Vốn Cam Kết Đầu Tư
               </div>
-              <div className="text-2xl font-bold font-heading text-amber-300">{metrics.capitalPool}</div>
+              <div className="text-2xl font-bold font-heading text-amber-600 dark:text-amber-300">{metrics.capitalPool}</div>
             </div>
 
             <div className="grid grid-cols-2 gap-2.5">
-              <div className="bg-slate-850 p-3 rounded-xl border border-slate-800">
-                <div className="text-[10px] text-slate-400">Startup Pitching</div>
-                <div className="text-lg font-bold text-slate-100">{metrics.startupsCount} Doanh nghiệp</div>
+              <div className="bg-slate-50 dark:bg-slate-850 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                <div className="text-[10px] text-slate-500 dark:text-slate-400">Startup Pitching</div>
+                <div className="text-lg font-bold text-slate-800 dark:text-slate-100">{metrics.startupsCount} Doanh nghiệp</div>
               </div>
-              <div className="bg-slate-850 p-3 rounded-xl border border-slate-800">
-                <div className="text-[10px] text-slate-400">Quỹ VC Tham Dự</div>
-                <div className="text-lg font-bold text-slate-100">{metrics.investorCount}+ Quỹ VC</div>
+              <div className="bg-slate-50 dark:bg-slate-850 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                <div className="text-[10px] text-slate-500 dark:text-slate-400">Quỹ VC Tham Dự</div>
+                <div className="text-lg font-bold text-slate-800 dark:text-slate-100">{metrics.investorCount}+ Quỹ VC</div>
               </div>
             </div>
           </div>

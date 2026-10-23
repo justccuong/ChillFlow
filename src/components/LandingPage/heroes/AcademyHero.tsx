@@ -136,12 +136,12 @@ export const AcademyHero: React.FC<HeroProps> = ({
 
         {/* Right Column: Syllabus Roadmap Timeline Preview (lg:col-span-4) */}
         <div className="lg:col-span-4 relative">
-          <div className="relative rounded-3xl p-5 bg-gradient-to-b from-slate-900 via-slate-950 to-blue-950/40 border border-blue-500/30 shadow-2xl text-white space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800 text-xs">
-              <span className="font-bold tracking-wider text-blue-400 uppercase flex items-center gap-1.5">
+          <div className="relative rounded-3xl p-5 bg-white dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-950 dark:to-blue-950/40 border border-blue-200 dark:border-blue-500/30 shadow-xl dark:shadow-2xl text-slate-900 dark:text-white space-y-4 transition-colors">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 text-xs">
+              <span className="font-bold tracking-wider text-blue-600 dark:text-blue-400 uppercase flex items-center gap-1.5">
                 <Layers className="w-3.5 h-3.5" /> LỘ TRÌNH ĐÀO TẠO
               </span>
-              <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-[10px] font-bold">
+              <span className="px-2 py-0.5 rounded bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-300 text-[10px] font-bold">
                 ISO 17024
               </span>
             </div>
@@ -149,12 +149,12 @@ export const AcademyHero: React.FC<HeroProps> = ({
             {/* Modules List */}
             <div className="space-y-3">
               {syllabusModules.map((mod, i) => (
-                <div key={i} className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 space-y-1">
+                <div key={i} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-1">
                   <div className="flex items-center justify-between text-xs font-bold">
-                    <span className="text-blue-300">{mod.title}</span>
-                    <span className="text-[10px] font-mono text-slate-400">{mod.week}</span>
+                    <span className="text-blue-600 dark:text-blue-300">{mod.title}</span>
+                    <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">{mod.week}</span>
                   </div>
-                  <p className="text-[11px] text-slate-300">{mod.desc}</p>
+                  <p className="text-[11px] text-slate-600 dark:text-slate-300">{mod.desc}</p>
                 </div>
               ))}
             </div>
@@ -162,11 +162,11 @@ export const AcademyHero: React.FC<HeroProps> = ({
             {/* Official Certification Seal */}
             <div className="pt-2 flex items-center gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30">
               <div className="w-9 h-9 rounded-xl bg-amber-500/20 flex items-center justify-center flex-shrink-0">
-                <Award className="w-5 h-5 text-amber-400" />
+                <Award className="w-5 h-5 text-amber-500 dark:text-amber-400" />
               </div>
               <div className="text-xs">
-                <div className="font-bold text-amber-300">Chứng nhận hoàn thành</div>
-                <div className="text-[10px] text-slate-300">Cấp mã định danh xác thực quốc tế</div>
+                <div className="font-bold text-amber-600 dark:text-amber-300">Chứng nhận hoàn thành</div>
+                <div className="text-[10px] text-slate-600 dark:text-slate-300">Cấp mã định danh xác thực quốc tế</div>
               </div>
             </div>
           </div>

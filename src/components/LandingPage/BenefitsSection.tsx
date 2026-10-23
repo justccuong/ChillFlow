@@ -28,9 +28,9 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = ({ benefits, them
   ];
 
   return (
-    <section className="py-24 px-4 md:px-8 bg-slate-950 text-white relative overflow-hidden">
+    <section className="py-24 px-4 md:px-8 bg-white dark:bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden transition-colors border-t border-slate-200/60 dark:border-slate-850">
       {/* Background ambient light */}
-      <div className={`ambient-glow-orb top-1/2 -left-48 w-96 h-96 bg-gradient-to-tr ${theme.glowGradient} opacity-30`}></div>
+      <div className={`ambient-glow-orb top-1/2 -left-48 w-96 h-96 bg-gradient-to-tr ${theme.glowGradient} opacity-20 dark:opacity-30`}></div>
 
       <div className="max-w-6xl mx-auto space-y-16 relative z-10">
         {/* Header - Minimalist, No box */}
@@ -38,10 +38,10 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = ({ benefits, them
           <div className="text-xs uppercase tracking-[0.25em] text-slate-500 font-bold">
             GIÁ TRỊ CỐT LÕI
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-white">
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
             Vì Sao Bạn Không Thể Bỏ Lỡ Sự Kiện Này?
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
             Chương trình được thiết kế cô đọng, tập trung giải quyết trực tiếp những thách thức lớn nhất của bạn.
           </p>
         </div>
@@ -54,11 +54,11 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = ({ benefits, them
               className="relative group transition-all duration-300 hover:-translate-y-1"
             >
               {/* Subtle top hairline */}
-              <div className="h-[2px] w-full bg-slate-800/80 group-hover:bg-amber-400 transition-colors mb-6"></div>
+              <div className="h-[2px] w-full bg-slate-200 dark:bg-slate-800/80 group-hover:bg-amber-400 transition-colors mb-6"></div>
 
               {/* Watermark Number */}
               <div className="flex items-center justify-between mb-4">
-                <span className="text-4xl sm:text-5xl font-mono font-black text-slate-800 group-hover:text-amber-400/90 transition-colors">
+                <span className="text-4xl sm:text-5xl font-mono font-black text-slate-300 dark:text-slate-800 group-hover:text-amber-500 dark:group-hover:text-amber-400/90 transition-colors">
                   {item.num}
                 </span>
                 <div className={`w-9 h-9 rounded-full ${theme.accentBg} ${theme.accentColor} flex items-center justify-center`}>
@@ -68,18 +68,18 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = ({ benefits, them
 
               {/* Content */}
               <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white group-hover:text-amber-300 transition-colors">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
                   {item.data.title}
                 </h3>
-                <p className="text-slate-400 text-sm leading-relaxed font-sans">
+                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed font-sans">
                   {item.data.description}
                 </p>
               </div>
 
               {/* Distinct contextual tag */}
-              <div className="pt-4 flex items-center gap-1.5 text-xs text-slate-500 group-hover:text-slate-300 transition-colors">
-                <span className="font-medium text-slate-400">{item.tag}</span>
-                <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-amber-400" />
+              <div className="pt-4 flex items-center gap-1.5 text-xs text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors">
+                <span className="font-medium text-slate-500 dark:text-slate-400">{item.tag}</span>
+                <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-amber-500 dark:text-amber-400" />
               </div>
             </div>
           ))}

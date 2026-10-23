@@ -136,22 +136,22 @@ export const MasterclassHero: React.FC<HeroProps> = ({
 
       {/* Masterclass Key Instructor Ribbon */}
       <div className="pt-4 max-w-xl mx-auto">
-        <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-md flex items-center gap-4 text-left shadow-xl">
+        <div className="p-3.5 rounded-2xl bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 backdrop-blur-md flex items-center gap-4 text-left shadow-lg transition-colors">
           <img
             src={speakerPhoto}
             alt={input.speakerName}
             className="w-14 h-14 rounded-xl object-cover border border-amber-500/30 shrink-0"
           />
           <div className="space-y-0.5">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1">
-              <Award className="w-3.5 h-3.5 text-amber-400" /> Giảng Viên Trưởng
+            <div className="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 flex items-center gap-1">
+              <Award className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" /> Giảng Viên Trưởng
             </div>
             <InlineEditable
               value={input.speakerName}
               onSave={(val) => onUpdateInputField?.('speakerName', val)}
               isEditMode={isEditMode}
               as="div"
-              className="font-extrabold text-white text-sm sm:text-base"
+              className="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base"
               category={input.category}
             />
             <InlineEditable
@@ -159,7 +159,7 @@ export const MasterclassHero: React.FC<HeroProps> = ({
               onSave={(val) => onUpdateInputField?.('speakerRole', val)}
               isEditMode={isEditMode}
               as="div"
-              className="text-xs text-slate-400 line-clamp-1"
+              className="text-xs text-slate-600 dark:text-slate-400 line-clamp-1"
               category={input.category}
             />
           </div>

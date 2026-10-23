@@ -16,18 +16,18 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
   const speakerPhoto = input.speakerAvatarUrl || theme.speakerImage;
 
   return (
-    <section className="py-24 px-4 md:px-8 bg-slate-950 text-white relative overflow-hidden">
+    <section className="py-24 px-4 md:px-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden transition-colors border-t border-slate-200/60 dark:border-slate-850">
       <div className="hairline-divider absolute top-0 inset-x-0"></div>
 
       {/* Ambient background glow */}
-      <div className={`ambient-glow-orb top-1/3 right-1/4 w-[500px] h-[400px] bg-gradient-to-tr ${theme.glowGradient} opacity-20`}></div>
+      <div className={`ambient-glow-orb top-1/3 right-1/4 w-[500px] h-[400px] bg-gradient-to-tr ${theme.glowGradient} opacity-15 dark:opacity-20`}></div>
 
       <div className="max-w-5xl mx-auto space-y-12 relative z-10">
         <div className="text-center space-y-2">
           <span className="text-xs uppercase tracking-[0.25em] text-slate-500 font-bold">
             CHUYÊN GIA DẪN DẮT
           </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-white">
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
             Gặp Gỡ Diễn Giả Chính
           </h2>
         </div>
@@ -37,7 +37,7 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
           <div className="relative shrink-0">
             <div
               onClick={onOpenSpeakerImagePicker}
-              className="w-44 h-44 sm:w-52 sm:h-52 rounded-full p-1.5 bg-gradient-to-tr from-slate-700 via-slate-600 to-amber-500/50 shadow-2xl cursor-pointer relative group/avatar overflow-hidden"
+              className="w-44 h-44 sm:w-52 sm:h-52 rounded-full p-1.5 bg-gradient-to-tr from-slate-300 via-slate-400 to-amber-500/50 dark:from-slate-700 dark:via-slate-600 dark:to-amber-500/50 shadow-2xl cursor-pointer relative group/avatar overflow-hidden"
               title="Nhấp để đổi ảnh chân dung diễn giả"
             >
               <img
@@ -60,22 +60,26 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
               </div>
             )}
 
-            <h3 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            <h3 className="text-2xl sm:text-4xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
               {input.speakerName}
             </h3>
 
-            <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-sans">
-              {input.speakerBio ||
-                `Chuyên gia có nhiều năm kinh nghiệm thực chiến trong lĩnh vực ${input.targetAudience || 'công nghệ và chuyển đổi số'}. Đã tham gia đào tạo và chia sẻ kiến thức cho hàng ngàn người trong cộng đồng.`}
-            </p>
+            {input.speakerBio && (
+              <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed font-sans">
+                {input.speakerBio}
+              </p>
+            )}
 
-            <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs text-slate-400">
-              <span className="flex items-center gap-1.5 text-emerald-400">
-                <CheckCircle className="w-4 h-4" /> Case study người thật việc thật
-              </span>
-              <span className="flex items-center gap-1.5 text-emerald-400">
-                <CheckCircle className="w-4 h-4" /> Đối thoại Q&A 1-1
-              </span>
+            {/* Credibility Checklist */}
+            <div className="pt-2 flex flex-wrap gap-4 justify-center md:justify-start text-xs text-slate-700 dark:text-slate-300">
+              <div className="flex items-center gap-1.5">
+                <CheckCircle className="w-4 h-4 text-emerald-500" />
+                <span>10+ Năm Kinh Nghiệm Thực Chiến</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Award className="w-4 h-4 text-amber-500" />
+                <span>Cố Vấn Cho Hàng Chục Doanh Nghiệp</span>
+              </div>
             </div>
           </div>
         </div>

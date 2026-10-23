@@ -136,21 +136,21 @@ export const CreativeHero: React.FC<HeroProps> = ({
           {/* Ambient Glow */}
           <div className="absolute -inset-4 bg-gradient-to-tr from-pink-500/20 via-purple-500/20 to-cyan-500/20 rounded-3xl blur-2xl opacity-70 pointer-events-none"></div>
 
-          <div className="relative rounded-3xl p-5 bg-gradient-to-br from-purple-950/40 via-slate-900 to-pink-950/40 border border-purple-500/30 shadow-2xl space-y-4 overflow-hidden">
-            <div className="flex items-center justify-between text-xs text-slate-400 pb-2 border-b border-purple-500/20">
-              <span className="flex items-center gap-1.5 font-mono text-pink-300">
+          <div className="relative rounded-3xl p-5 bg-white dark:bg-gradient-to-br dark:from-purple-950/40 dark:via-slate-900 dark:to-pink-950/40 border border-purple-200 dark:border-purple-500/30 shadow-xl dark:shadow-2xl space-y-4 overflow-hidden transition-colors">
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pb-2 border-b border-purple-100 dark:border-purple-500/20">
+              <span className="flex items-center gap-1.5 font-mono text-pink-600 dark:text-pink-300">
                 <PenTool className="w-3.5 h-3.5" /> canvas_showcase.fig
               </span>
-              <span className="px-2 py-0.5 rounded bg-pink-500/20 text-pink-300 text-[10px] font-bold">LIVE PREVIEW</span>
+              <span className="px-2 py-0.5 rounded bg-pink-500/10 dark:bg-pink-500/20 text-pink-600 dark:text-pink-300 text-[10px] font-bold">LIVE PREVIEW</span>
             </div>
 
             {/* Overlapping Visual Stickers */}
-            <div className="relative h-44 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden p-4">
+            <div className="relative h-44 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-center overflow-hidden p-4">
               <div className="text-center space-y-2 z-10">
-                <div className="font-heading font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 uppercase tracking-tighter">
+                <div className="font-heading font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600 dark:from-pink-400 dark:to-purple-400 uppercase tracking-tighter">
                   NO BORING WEBSITES
                 </div>
-                <p className="text-xs text-slate-400 font-mono">Design Systems • Motion • 3D Canvas</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">Design Systems • Motion • 3D Canvas</p>
               </div>
 
               {/* Angle Badge 1 */}
@@ -159,14 +159,14 @@ export const CreativeHero: React.FC<HeroProps> = ({
               </div>
 
               {/* Angle Badge 2 */}
-              <div className="absolute bottom-2 right-2 rotate-3 px-2.5 py-0.5 rounded bg-emerald-500 text-slate-950 text-[10px] font-black uppercase shadow-md">
+              <div className="absolute bottom-2 right-2 rotate-3 px-2.5 py-0.5 rounded bg-emerald-500 text-white text-[10px] font-black uppercase shadow-md">
                 100% PRACTICAL
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-xs text-slate-300 pt-1">
-              <span className="font-semibold text-pink-300">Số lượng giới hạn: 40 chỗ</span>
-              <span className="text-slate-400">{registeredCount > 0 ? `${registeredCount} đã giữ chỗ` : 'Đang mở đăng ký'}</span>
+            <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 pt-1">
+              <span className="font-semibold text-pink-600 dark:text-pink-300">Số lượng giới hạn: 40 chỗ</span>
+              <span className="text-slate-500 dark:text-slate-400">{registeredCount > 0 ? `${registeredCount} đã giữ chỗ` : 'Đang mở đăng ký'}</span>
             </div>
           </div>
         </div>

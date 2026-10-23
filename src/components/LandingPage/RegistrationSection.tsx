@@ -78,27 +78,27 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
   };
 
   return (
-    <section id="registration" className="py-20 px-4 md:px-8 bg-slate-950 text-white relative">
+    <section id="registration" className="py-20 px-4 md:px-8 bg-white dark:bg-slate-950 text-slate-900 dark:text-white relative border-t border-slate-200 dark:border-slate-800 transition-colors">
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight font-heading text-white">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight font-heading text-slate-900 dark:text-white">
             Đăng Ký Tham Gia
           </h2>
-          <p className="text-slate-400 text-sm max-w-md mx-auto">
+          <p className="text-slate-600 dark:text-slate-400 text-sm max-w-md mx-auto">
             Điền thông tin để nhận vé mời và tài liệu sự kiện.
           </p>
         </div>
 
         {/* Live Attendance Scarcity Card */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-4">
+        <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-lg space-y-4 transition-colors">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className={`w-10 h-10 rounded-xl ${theme.accentBg} ${theme.accentColor} flex items-center justify-center`}>
                 <Flame className="w-5 h-5" />
               </div>
               <div>
-                <div className="text-xs text-slate-400">Số lượng người đăng ký</div>
-                <div className="text-xl font-bold text-white flex items-center gap-1.5">
+                <div className="text-xs text-slate-500 dark:text-slate-400">Số lượng người đăng ký</div>
+                <div className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                   <span className={theme.accentColor}>{registeredCount}</span>
                   <span className="text-slate-500 text-sm font-normal">/ {maxSeats} suất</span>
                 </div>
@@ -108,20 +108,20 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
             <button
               type="button"
               onClick={onOpenAttendeeList}
-              className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center gap-1.5 cursor-pointer transition-colors"
+              className="text-xs px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center gap-1.5 cursor-pointer transition-colors shadow-sm"
             >
-              <Users className="w-3.5 h-3.5 text-slate-400" />
+              <Users className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
               Danh sách ({registeredCount})
             </button>
           </div>
 
           {/* Progress bar */}
           <div className="space-y-1.5">
-            <div className="flex justify-between text-xs text-slate-400">
+            <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
               <span>Đã đăng ký {percentFilled}%</span>
               <span className={`${theme.accentColor} font-semibold`}>Còn lại {remainingSeats} vé</span>
             </div>
-            <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+            <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${theme.btnPrimary.includes('from-') ? theme.btnPrimary.split(' ')[0].replace('bg-', 'bg-') : 'bg-indigo-500'}`}
                 style={{ width: `${percentFilled}%` }}
@@ -131,29 +131,29 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
         </div>
 
         {/* Registration Form */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-xl">
+        <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 md:p-8 shadow-xl transition-colors">
           {isSubmitted ? (
             <div className="text-center py-6 space-y-5">
-              <div className="w-14 h-14 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mx-auto flex items-center justify-center">
+              <div className="w-14 h-14 rounded-full bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 mx-auto flex items-center justify-center">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
 
               <div className="space-y-1">
-                <h3 className="text-xl font-bold text-white">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                   Đăng Ký Thành Công!
                 </h3>
-                <p className="text-slate-400 text-sm">
-                  Thông tin xác nhận đã được gửi tới <strong className="text-white">{formData.email}</strong>.
+                <p className="text-slate-600 dark:text-slate-400 text-sm">
+                  Thông tin xác nhận đã được gửi tới <strong className="text-slate-900 dark:text-white">{formData.email}</strong>.
                 </p>
               </div>
 
               {/* Digital ticket card */}
-              <div className="max-w-sm mx-auto bg-slate-950 border border-slate-800 rounded-xl p-4 text-left space-y-2">
-                <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+              <div className="max-w-sm mx-auto bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-4 text-left space-y-2 shadow-sm">
+                <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2">
                   <span className="text-[10px] uppercase font-bold text-slate-500">Mã vé</span>
                   <span className={`text-sm font-mono font-bold ${theme.accentColor}`}>{lastTicketId}</span>
                 </div>
-                <div className="text-xs text-slate-300 space-y-1">
+                <div className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                   <div><strong>Khách mời:</strong> {formData.fullName}</div>
                   <div><strong>Hạng vé:</strong> {formData.ticketType === 'early-bird' ? 'Early Bird' : 'Tiêu chuẩn'}</div>
                 </div>
@@ -163,14 +163,14 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                 <button
                   type="button"
                   onClick={handleRegisterAnother}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs cursor-pointer transition-colors"
+                  className="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-medium text-xs cursor-pointer transition-colors"
                 >
                   Đăng ký vé khác
                 </button>
                 <button
                   type="button"
                   onClick={onOpenAttendeeList}
-                  className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs cursor-pointer transition-colors"
+                  className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs cursor-pointer transition-colors shadow-sm"
                 >
                   Xem danh sách tham gia
                 </button>
@@ -189,8 +189,8 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label htmlFor="reg-name" className="block text-xs font-semibold text-slate-300">
-                    Họ và tên <span className="text-red-400">*</span>
+                  <label htmlFor="reg-name" className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    Họ và tên <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="reg-name"
@@ -199,13 +199,13 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                     value={formData.fullName}
                     onChange={e => setFormData({ ...formData, fullName: e.target.value })}
                     placeholder="Nguyễn Văn A"
-                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label htmlFor="reg-email" className="block text-xs font-semibold text-slate-300">
-                    Email <span className="text-red-400">*</span>
+                  <label htmlFor="reg-email" className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    Email <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="reg-email"
@@ -214,13 +214,13 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                     value={formData.email}
                     onChange={e => setFormData({ ...formData, email: e.target.value })}
                     placeholder="email@example.com"
-                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label htmlFor="reg-phone" className="block text-xs font-semibold text-slate-300">
-                    Số điện thoại <span className="text-red-400">*</span>
+                  <label htmlFor="reg-phone" className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    Số điện thoại <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="reg-phone"
@@ -229,12 +229,12 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                     value={formData.phone}
                     onChange={e => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="0912345678"
-                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold text-slate-300">
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
                     Hạng vé
                   </label>
                   <div className="grid grid-cols-2 gap-2">
@@ -243,8 +243,8 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                       onClick={() => setFormData({ ...formData, ticketType: 'early-bird' })}
                       className={`p-2 rounded-xl border text-xs font-medium text-left transition-colors cursor-pointer ${
                         formData.ticketType === 'early-bird'
-                          ? `border-indigo-500 bg-indigo-500/15 text-white ring-1 ring-indigo-500`
-                          : 'border-slate-800 bg-slate-950 text-slate-400 hover:bg-slate-800'
+                          ? `border-indigo-500 bg-indigo-500/15 text-indigo-700 dark:text-white ring-1 ring-indigo-500 font-bold`
+                          : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                       }`}
                     >
                       Early Bird
@@ -255,8 +255,8 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                       onClick={() => setFormData({ ...formData, ticketType: 'standard' })}
                       className={`p-2 rounded-xl border text-xs font-medium text-left transition-colors cursor-pointer ${
                         formData.ticketType === 'standard'
-                          ? `border-indigo-500 bg-indigo-500/15 text-white ring-1 ring-indigo-500`
-                          : 'border-slate-800 bg-slate-950 text-slate-400 hover:bg-slate-800'
+                          ? `border-indigo-500 bg-indigo-500/15 text-indigo-700 dark:text-white ring-1 ring-indigo-500 font-bold`
+                          : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                       }`}
                     >
                       Tiêu chuẩn
@@ -275,7 +275,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                 </button>
 
                 <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500 mt-2.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                   <span>Vé mời sẽ được gửi tự động qua email.</span>
                 </div>
               </div>

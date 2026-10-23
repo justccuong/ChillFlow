@@ -339,18 +339,20 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           onUpdateInputField={handleUpdateInputField}
         />
 
+        {/* Universal Magic UI Velocity Sponsors & Trust Bar */}
+        <div data-reveal>
+          <TrustBarSection
+            theme={theme}
+            sponsors={input.sponsors}
+            onOpenSponsorEditor={() => setIsSponsorEditorOpen(true)}
+          />
+        </div>
+
         {/* ========================================================
             CATEGORY 1: AI & TECH (Cyber Summit 2026)
             ======================================================== */}
         {currentCategory === 'ai-tech' && (
           <>
-            <div data-reveal>
-              <TrustBarSection
-                theme={theme}
-                sponsors={input.sponsors}
-                onOpenSponsorEditor={() => setIsSponsorEditorOpen(true)}
-              />
-            </div>
             <div data-reveal data-reveal-delay="100">
               <BenefitsSection benefits={content.benefits} theme={theme} />
             </div>
@@ -525,11 +527,11 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
       </main>
 
       {/* Clean Client Event Footer */}
-      <footer className="bg-slate-950 border-t border-slate-900 py-10 px-4 text-center text-xs text-slate-500 space-y-2">
-        <div className="font-semibold text-slate-300">
+      <footer className="bg-slate-100 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-900 py-10 px-4 text-center text-xs text-slate-600 dark:text-slate-400 space-y-2 transition-colors">
+        <div className="font-semibold text-slate-900 dark:text-slate-200">
           {input.eventName}
         </div>
-        <p className="text-slate-500">
+        <p className="text-slate-500 dark:text-slate-400">
           Mọi thắc mắc về sự kiện xin vui lòng liên hệ ban tổ chức.
         </p>
       </footer>

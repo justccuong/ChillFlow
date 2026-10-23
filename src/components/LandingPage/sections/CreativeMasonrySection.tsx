@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ThemeConfig } from '../../../types';
-import { Palette, Layers, Sparkles, PenTool, Eye } from 'lucide-react';
+import { Palette } from 'lucide-react';
 
 interface CreativeProps {
   theme: ThemeConfig;
@@ -15,16 +15,16 @@ export const CreativeMasonrySection: React.FC<CreativeProps> = () => {
   ];
 
   return (
-    <section className="py-16 bg-slate-900/40 dark:bg-slate-950 border-y border-purple-500/20 text-slate-100 relative overflow-hidden" data-reveal>
+    <section className="py-16 bg-pink-50/40 dark:bg-slate-950 border-y border-purple-200 dark:border-purple-500/20 text-slate-900 dark:text-slate-100 relative overflow-hidden transition-colors" data-reveal>
       <div className="max-w-6xl mx-auto px-4 md:px-8 space-y-10">
         <div className="text-center space-y-2">
-          <span className="text-xs uppercase font-bold tracking-widest text-pink-400 flex items-center justify-center gap-1.5">
-            <Palette className="w-4 h-4 text-pink-400" /> CREATIVE PROCESS CANVAS
+          <span className="text-xs uppercase font-bold tracking-widest text-pink-600 dark:text-pink-400 flex items-center justify-center gap-1.5">
+            <Palette className="w-4 h-4 text-pink-500" /> CREATIVE PROCESS CANVAS
           </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white font-heading">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
             Quy Trình Sáng Tạo Từ Ý Tưởng Đến Tác Phẩm Hoàn Chỉnh
           </h2>
-          <p className="text-sm text-slate-400 max-w-xl mx-auto">
+          <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             Học viên sẽ được trực tiếp thực hành 4 giai đoạn thiết kế tiêu chuẩn studio quốc tế.
           </p>
         </div>
@@ -34,7 +34,7 @@ export const CreativeMasonrySection: React.FC<CreativeProps> = () => {
           {processSteps.map((pr, idx) => (
             <div
               key={idx}
-              className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-purple-500/20 hover:border-pink-500/40 shadow-xl space-y-3 transition-transform hover:-translate-y-1"
+              className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-purple-200 dark:border-purple-500/20 hover:border-pink-500/40 shadow-md dark:shadow-xl space-y-3 transition-transform hover:-translate-y-1"
             >
               <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center font-heading font-black text-white text-lg shadow-lg">
                 {pr.step}

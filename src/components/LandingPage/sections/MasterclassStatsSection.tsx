@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ThemeConfig } from '../../../types';
-import { TrendingUp, Users, BookOpen, ShieldCheck, Award } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 
 interface StatsProps {
   theme: ThemeConfig;
@@ -15,10 +15,10 @@ export const MasterclassStatsSection: React.FC<StatsProps> = ({ theme }) => {
   ];
 
   return (
-    <section className="py-16 bg-slate-900/60 dark:bg-slate-950/80 border-y border-amber-500/20 relative overflow-hidden" data-reveal>
+    <section className="py-16 bg-amber-50/40 dark:bg-slate-950/80 border-y border-amber-500/20 relative overflow-hidden transition-colors" data-reveal>
       <div className="max-w-6xl mx-auto px-4 md:px-8 space-y-10">
         <div className="text-center space-y-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-amber-400 flex items-center justify-center gap-1.5">
+          <span className="text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 flex items-center justify-center gap-1.5">
             <TrendingUp className="w-3.5 h-3.5" /> HIỆU QUẢ ĐO LƯỜNG THỰC TẾ
           </span>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
@@ -34,9 +34,9 @@ export const MasterclassStatsSection: React.FC<StatsProps> = ({ theme }) => {
           {stats.map((st, idx) => (
             <div
               key={idx}
-              className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-2 text-center transition-transform hover:-translate-y-1"
+              className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-md dark:shadow-xl space-y-2 text-center transition-transform hover:-translate-y-1"
             >
-              <div className="text-3xl sm:text-4xl font-black font-heading bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              <div className="text-3xl sm:text-4xl font-black font-heading bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
                 {st.value}
               </div>
               <div className="text-sm font-bold text-slate-900 dark:text-white">{st.label}</div>
