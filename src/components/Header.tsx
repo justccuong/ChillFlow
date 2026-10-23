@@ -1,7 +1,6 @@
 import React from 'react';
-import { Plus, Users, Key, Eye, Edit3, Zap, Sparkles } from 'lucide-react';
+import { Plus, Users, Key, Eye, Edit3, Zap, Sun, Moon, Sparkles } from 'lucide-react';
 import { UserProfile } from '../types';
-import { AnimatedThemeToggler } from './magicui';
 
 interface HeaderProps {
   currentTab: 'form' | 'preview';
@@ -101,15 +100,21 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {/* Magic UI Animated Theme Toggler */}
+          {/* Light / Dark Mode Toggle Button (Bản gốc nhanh, 0ms lag) */}
           {onToggleTheme && (
-            <AnimatedThemeToggler
-              theme={themeMode}
-              onThemeChange={(nextTheme) => onToggleTheme(nextTheme)}
-              variant="circle"
-              duration={450}
-              className="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs cursor-pointer shadow-sm hover:scale-105 active:scale-95 transition-all"
-            />
+            <button
+              type="button"
+              onClick={() => onToggleTheme()}
+              className="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs cursor-pointer transition-colors shadow-sm active:scale-95 flex items-center justify-center"
+              title={themeMode === 'dark' ? 'Chuyển sang giao diện Sáng' : 'Chuyển sang giao diện Tối'}
+              aria-label="Toggle Theme Mode"
+            >
+              {themeMode === 'dark' ? (
+                <Sun className="w-4 h-4 text-amber-500 transition-transform hover:rotate-45" />
+              ) : (
+                <Moon className="w-4 h-4 text-indigo-600 transition-transform hover:-rotate-12" />
+              )}
+            </button>
           )}
 
           <button

@@ -129,11 +129,16 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
     };
     canvas.addEventListener('wheel', handleCanvasWheel, { passive: true });
 
-    // IntersectionObserver: Pause canvas rendering when scrolled off-screen to save 100% GPU
+    // IntersectionObserver: Completely STOP canvas rendering when scrolled off-screen to save 100% GPU
     let isVisible = true;
     const observer = new IntersectionObserver(
       ([entry]) => {
+        const wasVisible = isVisible;
         isVisible = entry.isIntersecting;
+        if (!wasVisible && isVisible) {
+          cancelAnimationFrame(animId);
+          animId = requestAnimationFrame(render);
+        }
       },
       { threshold: 0.05 }
     );
@@ -141,7 +146,6 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
 
     const render = () => {
       if (!isVisible) {
-        animId = requestAnimationFrame(render);
         return;
       }
 

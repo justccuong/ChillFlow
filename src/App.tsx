@@ -10,7 +10,6 @@ import { PricingModal } from './components/PricingModal';
 import { PublicStandalonePage } from './components/LandingPage/PublicStandalonePage';
 import { generateLandingPageContent, PRESETS } from './services/aiService';
 import { useThemeMode } from './hooks/useThemeMode';
-import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { extractSlugFromLocation, getPublishedEvent } from './services/publishService';
 import { Globe } from 'lucide-react';
 import {
@@ -52,7 +51,6 @@ export function App() {
   const [pricingReason, setPricingReason] = useState<string | undefined>(undefined);
 
   const { mode: themeMode, toggleMode } = useThemeMode();
-  useSmoothScroll({ enabled: true });
 
   // Listen to routing changes (hash, history popstate)
   useEffect(() => {

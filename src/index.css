@@ -302,17 +302,6 @@ html.light .border-gradient-glow {
   background: linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(99,102,241,0.5) 50%, rgba(217,119,6,0.4) 100%);
 }
 
-/* Magic UI Animated Theme Toggler - View Transitions API */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-::view-transition-group(root) {
-  animation-duration: var(--magicui-theme-toggle-vt-duration, 260ms);
-}
-
-[data-magicui-theme-vt="active"]::view-transition-new(root) {
-  clip-path: var(--magicui-theme-vt-clip-from, none);
+html {
+  scroll-behavior: smooth;
 }
