@@ -28,7 +28,7 @@ interface ParallaxProps {
 
 function ParallaxRow({
   children,
-  baseVelocity = 3,
+  baseVelocity = 1,
   className,
   pauseOnHover = true,
 }: ParallaxProps) {
@@ -36,8 +36,8 @@ function ParallaxRow({
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
 
-  // Map scroll speed from [0, 1000] to a smooth multiplier [0, 4]
-  const smoothVelocity = useTransform(scrollVelocity, [0, 1000], [0, 4], {
+  // Map scroll speed from [0, 1000] to a smooth multiplier [0, 3]
+  const smoothVelocity = useTransform(scrollVelocity, [0, 1000], [0, 3], {
     clamp: false,
   });
 
@@ -53,7 +53,8 @@ function ParallaxRow({
       return;
     }
 
-    let moveBy = directionFactor.current * baseVelocity * (delta / 1000) * 12;
+    // Gentle base drift (~10% of previous speed for a luxurious, readable pace)
+    let moveBy = directionFactor.current * baseVelocity * (delta / 1000) * 1.2;
 
     const currentVelocity = smoothVelocity.get();
     if (currentVelocity < -0.1) {
@@ -63,7 +64,8 @@ function ParallaxRow({
     }
 
     if (currentVelocity) {
-      moveBy += directionFactor.current * Math.abs(currentVelocity) * (delta / 1000) * 20;
+      // Subtle scroll acceleration (10% of previous multiplier)
+      moveBy += directionFactor.current * Math.abs(currentVelocity) * (delta / 1000) * 1.8;
     }
 
     baseX.set(baseX.get() + moveBy);
@@ -96,7 +98,7 @@ function ParallaxRow({
 
 export function ScrollBasedVelocity({
   text,
-  default_velocity = 2.5,
+  default_velocity = 1.0,
   className,
   numRows = 2,
   children,

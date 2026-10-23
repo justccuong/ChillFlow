@@ -51,7 +51,7 @@ export const TrustBarSection: React.FC<TrustBarSectionProps> = ({
         {/* Magic UI Scroll-Based Velocity Marquee */}
         <div className="py-2">
           {/* Lane 1: Partner Brand Cards gliding with positive scroll velocity */}
-          <ScrollBasedVelocity default_velocity={2.2} numRows={1} pauseOnHover={true}>
+          <ScrollBasedVelocity default_velocity={1.0} numRows={1} pauseOnHover={true}>
             <div className="flex items-center gap-5 sm:gap-8">
               {activeSponsors.concat(activeSponsors).map((brand, idx) => (
                 <div
@@ -79,7 +79,7 @@ export const TrustBarSection: React.FC<TrustBarSectionProps> = ({
           </ScrollBasedVelocity>
 
           {/* Lane 2: Reverse Direction Velocity Ribbon */}
-          <ScrollBasedVelocity default_velocity={-1.8} numRows={1} pauseOnHover={true}>
+          <ScrollBasedVelocity default_velocity={-0.8} numRows={1} pauseOnHover={true}>
             <div className="flex items-center gap-5 sm:gap-8">
               {activeSponsors.concat(activeSponsors).map((brand, idx) => (
                 <div
