@@ -19,13 +19,13 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
   const getSessionBadge = (index: number) => {
     switch (index) {
       case 0:
-        return { label: 'Đón tiếp & Check-in', color: 'text-slate-400 bg-slate-900 border-slate-800' };
+        return { label: 'Đón tiếp & Check-in', color: 'text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700' };
       case 1:
-        return { label: 'Keynote & Xu Hướng', color: `${theme.badgeText} ${theme.badgeBg} ${theme.accentBorder}` };
+        return { label: 'Keynote & Xu hướng', color: `${theme.badgeText} ${theme.badgeBg} ${theme.accentBorder}` };
       case 2:
-        return { label: 'Hands-on Workshop', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' };
+        return { label: 'Hands-on Workshop', color: 'text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/30' };
       default:
-        return { label: 'Q&A & Quà Tặng', color: 'text-amber-400 bg-amber-500/10 border-amber-500/30' };
+        return { label: 'Q&A & Quà tặng', color: 'text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/30' };
     }
   };
 
@@ -44,7 +44,7 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
             <span>LỘ TRÌNH CHI TIẾT</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
-            Lịch Trình Sự Kiện
+            Lịch trình sự kiện
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-lg mx-auto">
             Lộ trình làm việc cô đọng, tối đa hóa thời gian tiếp thu và thực hành ứng dụng thực tế.

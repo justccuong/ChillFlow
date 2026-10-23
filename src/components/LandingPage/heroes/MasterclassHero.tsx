@@ -103,7 +103,7 @@ export const MasterclassHero: React.FC<HeroProps> = ({
           className={`w-full px-8 py-4 rounded-2xl text-base font-black shadow-[0_10px_30px_-5px_rgba(245,158,11,0.4)] transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group ${theme.btnPrimary}`}
         >
           <InlineEditable
-            value={content.ctaButtonText || 'Nhận Vé Masterclass Ngay'}
+            value={content.ctaButtonText || 'Nhận vé masterclass ngay'}
             onSave={(val) => onUpdateContentField?.('ctaButtonText', val)}
             isEditMode={isEditMode}
             as="span"
@@ -144,7 +144,7 @@ export const MasterclassHero: React.FC<HeroProps> = ({
           />
           <div className="space-y-0.5">
             <div className="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 flex items-center gap-1">
-              <Award className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" /> Giảng Viên Trưởng
+              <Award className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" /> Giảng viên trưởng
             </div>
             <InlineEditable
               value={input.speakerName}

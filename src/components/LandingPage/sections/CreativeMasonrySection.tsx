@@ -8,10 +8,10 @@ interface CreativeProps {
 
 export const CreativeMasonrySection: React.FC<CreativeProps> = () => {
   const processSteps = [
-    { step: '01', title: 'Khám Phá & Định Vị Visual', desc: 'Xây dựng Moodboard, phân tích Persona và xác lập quy chuẩn thẩm mỹ.' },
-    { step: '02', title: 'Kiến Trúc Design System', desc: 'Thiết lập Token, Typography Matrix, Spacing và thư viện Component tái sử dụng.' },
+    { step: '01', title: 'Khám phá & định vị visual', desc: 'Xây dựng Moodboard, phân tích Persona và xác lập quy chuẩn thẩm mỹ.' },
+    { step: '02', title: 'Kiến trúc Design System', desc: 'Thiết lập Token, Typography Matrix, Spacing và thư viện Component tái sử dụng.' },
     { step: '03', title: 'Micro-Interactions & 3D UI', desc: 'Tích hợp animation tinh tế với GSAP, Framer Motion và Spline 3D viewport.' },
-    { step: '04', title: 'Thử Nghiệm & Đóng Gói Case Study', desc: 'Đánh giá khả năng tiếp cận (a11y), đo đạc CRO và hoàn thiện bài trình diễn Portfolio.' },
+    { step: '04', title: 'Thử nghiệm & đóng gói case study', desc: 'Đánh giá khả năng tiếp cận (a11y), đo đạc CRO và hoàn thiện bài trình diễn Portfolio.' },
   ];
 
   return (
@@ -22,7 +22,7 @@ export const CreativeMasonrySection: React.FC<CreativeProps> = () => {
             <Palette className="w-4 h-4 text-pink-500" /> CREATIVE PROCESS CANVAS
           </span>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
-            Quy Trình Sáng Tạo Từ Ý Tưởng Đến Tác Phẩm Hoàn Chỉnh
+            Quy trình sáng tạo từ ý tưởng đến tác phẩm hoàn chỉnh
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             Học viên sẽ được trực tiếp thực hành 4 giai đoạn thiết kế tiêu chuẩn studio quốc tế.

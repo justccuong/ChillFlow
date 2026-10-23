@@ -40,7 +40,7 @@ export async function bootstrapCluster() {
             <Terminal className="w-3.5 h-3.5" /> SOURCE CODE & BENCHMARK ARCHITECTURE
           </span>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-mono">
-            Học Trực Tiếp Qua Mã Nguồn Thực Tế
+            Học trực tiếp qua mã nguồn thực tế
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto font-sans">
             Không slide lý thuyết. Cùng bẻ khóa kiến trúc distributed agents và live-debug trên bài toán production chịu tải.

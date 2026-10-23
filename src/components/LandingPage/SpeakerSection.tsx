@@ -28,7 +28,7 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
             CHUYÊN GIA DẪN DẮT
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
-            Gặp Gỡ Diễn Giả Chính
+            Gặp gỡ diễn giả chính
           </h2>
         </div>
 
@@ -74,11 +74,11 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
             <div className="pt-2 flex flex-wrap gap-4 justify-center md:justify-start text-xs text-slate-700 dark:text-slate-300">
               <div className="flex items-center gap-1.5">
                 <CheckCircle className="w-4 h-4 text-emerald-500" />
-                <span>10+ Năm Kinh Nghiệm Thực Chiến</span>
+                <span>10+ năm kinh nghiệm thực chiến</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Award className="w-4 h-4 text-amber-500" />
-                <span>Cố Vấn Cho Hàng Chục Doanh Nghiệp</span>
+                <span>Cố vấn cho hàng chục doanh nghiệp</span>
               </div>
             </div>
           </div>

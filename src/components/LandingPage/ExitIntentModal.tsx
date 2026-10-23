@@ -144,7 +144,7 @@ export const ExitIntentModal: React.FC<ExitIntentModalProps> = ({
               className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold text-sm shadow-xl shadow-indigo-500/25 transition-all flex items-center justify-center gap-2 hover:scale-[1.02]"
             >
               <Sparkles className="w-4 h-4 text-amber-300" />
-              <span>Áp dụng mã & Đặt vé ngay</span>
+              <span>Áp dụng mã & đặt vé ngay</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 

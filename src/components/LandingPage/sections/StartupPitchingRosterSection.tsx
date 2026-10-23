@@ -33,7 +33,7 @@ export const StartupPitchingRosterSection: React.FC<StartupPitchingProps> = ({
             <DollarSign className="w-3.5 h-3.5" /> DEALFLOW & PITCHING PIPELINE
           </span>
           <h2 className="text-3xl sm:text-5xl font-black font-heading tracking-tight text-slate-900 dark:text-white">
-            Danh Mục 6 Doanh Nghiệp Pitching Tiêu Biểu
+            Danh mục 6 doanh nghiệp pitching tiêu biểu
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Được tuyển chọn khắt khe từ hơn 180 hồ sơ đăng ký tham gia vòng thẩm định deal kín.
@@ -71,7 +71,7 @@ export const StartupPitchingRosterSection: React.FC<StartupPitchingProps> = ({
         <div className="p-8 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-6 text-center shadow-sm">
           <div className="space-y-1">
             <h4 className="text-base font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest">
-              Hội Đồng Quỹ Đầu Tư & Đối Tác VCs Tham Dự
+              Hội đồng quỹ đầu tư & đối tác VCs tham dự
             </h4>
             <p className="text-xs text-slate-500 dark:text-slate-400">Các đối tác quản lý quỹ trực tiếp tham gia hội đồng thẩm định</p>
           </div>
@@ -95,7 +95,7 @@ export const StartupPitchingRosterSection: React.FC<StartupPitchingProps> = ({
               <Shield className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-base font-bold text-slate-900 dark:text-white">Thỏa Thuận Bảo Mật Thông Tin (NDA) Bắt Buộc</h4>
+              <h4 className="text-base font-bold text-slate-900 dark:text-white">Thỏa thuận bảo mật thông tin (NDA) bắt buộc</h4>
               <p className="text-xs text-slate-600 dark:text-slate-400">
                 Toàn bộ dữ liệu tài chính của các startup pitching được bảo mật theo tiêu chuẩn Venture NDA quốc tế.
               </p>

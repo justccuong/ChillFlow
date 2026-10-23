@@ -237,38 +237,6 @@ html.light .bg-grid-lines {
     linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
 }
 
-html.light header {
-  background-color: rgba(255, 255, 255, 0.95) !important;
-  border-bottom-color: #e2e8f0 !important;
-  color: #0f172a !important;
-}
-
-html.light header span.font-heading {
-  color: #0f172a !important;
-}
-
-html.light .sticky.top-16 {
-  background-color: rgba(255, 255, 255, 0.96) !important;
-  border-bottom-color: #e2e8f0 !important;
-}
-
-html.light section {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #e2e8f0 !important;
-}
-
-html.light section h1,
-html.light section h2,
-html.light section h3,
-html.light section h4 {
-  color: #0f172a !important;
-}
-
-html.light section p {
-  color: #475569 !important;
-}
-
 html.light .brand-logo-item img {
   filter: none !important;
 }
@@ -279,19 +247,6 @@ html.light .hairline-divider {
 
 html.light .hero-bg-gradient {
   background: linear-gradient(to bottom, rgba(248, 250, 252, 0.92) 0%, rgba(248, 250, 252, 0.98) 70%, #f8fafc 100%) !important;
-}
-
-html.light .tabular-nums {
-  color: #0f172a !important;
-  text-shadow: none !important;
-}
-
-html.light .tabular-nums.animate-pulse-subtle {
-  color: #059669 !important;
-}
-
-html.light .font-mono {
-  color: #0f172a !important;
 }
 
 html.light .border-gradient-glow > div {

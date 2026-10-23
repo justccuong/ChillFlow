@@ -21,7 +21,7 @@ export const EventGallerySection: React.FC<EventGallerySectionProps> = ({ theme,
             <span>Hình ảnh thực tế</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
-            Không Khí & Trải Nghiệm Sự Kiện
+            Không khí & trải nghiệm sự kiện
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm max-w-xl mx-auto flex items-center justify-center gap-1.5">
             <MapPin className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />

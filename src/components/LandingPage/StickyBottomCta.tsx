@@ -60,7 +60,7 @@ export const StickyBottomCta: React.FC<StickyBottomCtaProps> = ({
           className={`px-5 py-2 rounded-xl text-xs font-black shadow-md cursor-pointer transition-transform hover:scale-105 flex items-center gap-1.5 ${theme.btnPrimary}`}
         >
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Giữ Chỗ Ngay</span>
+          <span>Giữ chỗ ngay</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>

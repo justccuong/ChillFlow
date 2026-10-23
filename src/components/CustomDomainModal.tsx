@@ -60,10 +60,10 @@ export const CustomDomainModal: React.FC<CustomDomainModalProps> = ({
           
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold uppercase tracking-wider mb-2">
             <Globe className="w-3.5 h-3.5 text-cyan-300" />
-            <span>Định danh Thương hiệu Doanh nghiệp</span>
+            <span>Định danh thương hiệu doanh nghiệp</span>
           </div>
           <h3 className="text-xl md:text-2xl font-extrabold tracking-tight">
-            Cấu hình Tên Miền Riêng (CNAME)
+            Cấu hình tên miền riêng (CNAME)
           </h3>
           <p className="mt-1 text-xs text-indigo-100 max-w-md mx-auto">
             Chạy trang sự kiện {eventName} trực tiếp dưới tên miền chính thức của công ty bạn.
@@ -167,7 +167,7 @@ export const CustomDomainModal: React.FC<CustomDomainModalProps> = ({
                   ) : (
                     <>
                       <Sparkles className="w-4 h-4 text-amber-300" />
-                      <span>Kiểm tra & Xác thực DNS ngay</span>
+                      <span>Kiểm tra & xác thực DNS ngay</span>
                     </>
                   )}
                 </button>

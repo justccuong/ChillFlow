@@ -107,7 +107,7 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
           <div className="space-y-3">
             <div className="bg-slate-50 dark:bg-slate-850 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
               <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mb-1">
-                <DollarSign className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" /> Vốn Cam Kết Đầu Tư
+                <DollarSign className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" /> Vốn cam kết đầu tư
               </div>
               <div className="text-2xl font-bold font-heading text-amber-600 dark:text-amber-300">{metrics.capitalPool}</div>
             </div>
@@ -140,7 +140,7 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
             <div className="space-y-2.5 pt-1 text-xs text-slate-600 dark:text-slate-300">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                <span>Nhận trọn bộ 16 Pitch Decks & Báo cáo Thẩm định</span>
+                <span>Nhận trọn bộ 16 Pitch Decks & báo cáo thẩm định</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
@@ -158,7 +158,7 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
             onClick={onScrollToRegister}
             className={`w-full mt-3 px-6 py-3.5 rounded-xl text-sm font-semibold shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2 ${theme.btnPrimary}`}
           >
-            <span>{content.ctaButtonText || 'Đăng Ký Tham Dự Summit'}</span>
+            <span>{content.ctaButtonText || 'Đăng ký tham dự summit'}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

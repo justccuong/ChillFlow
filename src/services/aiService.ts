@@ -7,7 +7,7 @@ export const PRESETS: { label: string; iconType: 'ai' | 'marketing' | 'startup' 
     label: 'AI Agent Summit 2026',
     iconType: 'ai',
     data: {
-      eventName: 'VibeCoding Summit: Xây Dựng AI Agent Từ Số 0 Đến Triển Khai',
+      eventName: 'VibeCoding Summit: Xây dựng AI Agent từ số 0 đến triển khai',
       category: 'ai-tech',
       eventDate: '2026-11-15T08:30',
       location: 'Hội trường Trống Đồng Palace, 72 Trần Đăng Ninh, Cầu Giấy, Hà Nội & Zoom Online',
@@ -23,7 +23,7 @@ export const PRESETS: { label: string; iconType: 'ai' | 'marketing' | 'startup' 
     label: 'Growth Masterclass: 10K Users 0đ',
     iconType: 'marketing',
     data: {
-      eventName: 'Growth Hacking Masterclass: Thu Hút 10,000 Người Dùng Với Ngân Sách 0đ',
+      eventName: 'Growth Hacking Masterclass: Thu hút 10,000 người dùng với ngân sách 0đ',
       category: 'marketing',
       eventDate: '2026-11-28T19:30',
       location: 'Trực tuyến qua Zoom Webinar riêng tư (Có recording bản quyền)',
@@ -39,7 +39,7 @@ export const PRESETS: { label: string; iconType: 'ai' | 'marketing' | 'startup' 
     label: 'Startup Demo Day & Pitching',
     iconType: 'startup',
     data: {
-      eventName: 'Startup Demo Day 2026: Kết Nối 30+ Quỹ Đầu Tư Mạo Hiểm',
+      eventName: 'Startup Demo Day 2026: Kết nối 30+ quỹ đầu tư mạo hiểm',
       category: 'startup',
       eventDate: '2026-12-10T13:30',
       location: 'Innovation Center, Tầng 12 Toà nhà Landmark, Ba Đình, Hà Nội',
@@ -55,7 +55,7 @@ export const PRESETS: { label: string; iconType: 'ai' | 'marketing' | 'startup' 
     label: 'Design & CRO Workshop',
     iconType: 'design',
     data: {
-      eventName: 'Thiết Kế Landing Page Tỉ Lệ Chuyển Đổi Cao Với Tư Duy CRO & Design System',
+      eventName: 'Thiết kế Landing Page tỉ lệ chuyển đổi cao với tư duy CRO & Design System',
       category: 'design',
       eventDate: '2026-12-05T14:00',
       location: 'Toà nhà Innovation Hub, Quận 1, TP. Hồ Chí Minh',
@@ -71,7 +71,7 @@ export const PRESETS: { label: string; iconType: 'ai' | 'marketing' | 'startup' 
     label: 'Cinematic 3D Studio Showcase',
     iconType: 'studio',
     data: {
-      eventName: 'Spatial Vision 2026: Đột Phá Thiết Kế Không Gian 3D & Điện Ảnh Số',
+      eventName: 'Spatial Vision 2026: Đột phá thiết kế không gian 3D & điện ảnh số',
       category: 'studio-3d',
       eventDate: '2026-12-18T19:00',
       location: 'Grand Cinema Hall, Trung tâm Nghệ thuật Số Quận 1, TP. HCM & VR Live Stream',
@@ -121,68 +121,68 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
 
   if (category === 'ai-tech') {
     headline = forceOptimized
-      ? `Làm Chủ Hệ Sinh Thái AI Agent 2026: Đột Phá Năng Suất Cùng ${input.speakerName}`
+      ? `Làm chủ hệ sinh thái AI Agent 2026: Đột phá năng suất cùng ${input.speakerName}`
       : cleanTitle('Hội Thảo AI Summit', input.eventName);
-    altHeadline = `Đừng Để Tụt Hậu Trước Làn Sóng Tự Động Hoá AI Agent Thực Chiến`;
+    altHeadline = `Đừng để tụt hậu trước làn sóng tự động hóa AI Agent thực chiến`;
     subHeadline = `Khám phá kiến trúc xây dựng và vận hành AI Agent từ quy mô ý tưởng đến sản phẩm thực tế, chia sẻ trực tiếp bởi ${input.speakerName}.`;
     description = `Chương trình thực chiến 100% giúp ${input.targetAudience || 'kỹ sư và tech lead'} nắm vững framework mới nhất, giải quyết bài toán tự động hoá tác vụ phức tạp mà không tốn hàng tháng tự nghiên cứu.`;
   } else if (category === 'marketing') {
     headline = forceOptimized
-      ? `Công Thức Tăng Trưởng Đột Phá: Thu Hút Hàng Ngàn Khách Hàng Tiềm Năng`
+      ? `Công thức tăng trưởng đột phá: Thu hút hàng ngàn khách hàng tiềm năng`
       : cleanTitle('Growth Masterclass', input.eventName);
-    altHeadline = `Bí Quyết Scale Sản Phẩm Tinh Gọn Không Phụ Thuộc Vào Quảng Cáo Trả Phí`;
+    altHeadline = `Bí quyết scale sản phẩm tinh gọn không phụ thuộc vào quảng cáo trả phí`;
     subHeadline = `Toàn bộ framework growth hacking thực chiến đã được kiểm chứng qua case study thực tế của ${input.speakerName}.`;
     description = `Tiếp cận phương pháp thu hút và giữ chân khách hàng hiệu quả nhất hiện nay. Đăng ký sớm để nhận trọn bộ tài liệu và quyền lợi đặc quyền.`;
   } else if (category === 'startup') {
     headline = forceOptimized
-      ? `Bứt Phá Định Giá & Thu Hút Vốn Đầu Tư Cùng ${input.speakerName}`
+      ? `Bứt phá định giá & thu hút vốn đầu tư cùng ${input.speakerName}`
       : cleanTitle('Diễn Đàn Đầu Tư', input.eventName);
-    altHeadline = `Cơ Hội Tiếp Cận Trực Tiếp 30+ Quỹ Đầu Tư Hàng Đầu Khu Vực`;
+    altHeadline = `Cơ hội tiếp cận trực tiếp 30+ quỹ đầu tư hàng đầu khu vực`;
     subHeadline = `Không gian đối thoại kín giữa các nhà sáng lập tiềm năng và những nhà đầu tư mạo hiểm hàng đầu.`;
     description = `Nơi định hình chiến lược tăng trưởng, hoàn thiện mô hình kinh doanh và mở ra cơ hội hợp tác chiến lược cho dự án của bạn.`;
   } else if (category === 'developer') {
     headline = forceOptimized
-      ? `Kỹ Nghệ Phần Mềm Hiện Đại: Xây Dựng Hệ Thống Bền Vững & Chịu Tải Cao`
+      ? `Kỹ nghệ phần mềm hiện đại: Xây dựng hệ thống bền vững & chịu tải cao`
       : cleanTitle('Hội Thảo Kỹ Thuật', input.eventName);
-    altHeadline = `Học Trực Tiếp Từ Chuyên Gia Vận Hành Hệ Thống Hàng Triệu Người Dùng`;
+    altHeadline = `Học trực tiếp từ chuyên gia vận hành hệ thống hàng triệu người dùng`;
     subHeadline = `Đi sâu vào kiến trúc microservices, tối ưu hiệu năng và quy trình CI/CD thực tế cùng ${input.speakerName}.`;
     description = `Thực hành trên bài toán thực tế, trao đổi trực tiếp mã nguồn và thảo luận sâu về những thách thức kỹ thuật cốt lõi.`;
   } else if (category === 'design') {
     headline = forceOptimized
-      ? `Thiết Kế Vì Chuyển Đổi: Tối Ưu Trải Nghiệm & Gia Tăng Doanh Thu Vượt Trội`
+      ? `Thiết kế vì chuyển đổi: Tối ưu trải nghiệm & gia tăng doanh thu vượt trội`
       : cleanTitle('Masterclass Thiết Kế', input.eventName);
-    altHeadline = `Bí Quyết Xây Dựng Trải Nghiệm Khiến Khách Hàng Ra Quyết Định Mua Hàng`;
+    altHeadline = `Bí quyết xây dựng trải nghiệm khiến khách hàng ra quyết định mua hàng`;
     subHeadline = `Ứng dụng tâm lý học hành vi và design system thực chiến vào thiết kế sản phẩm số cùng ${input.speakerName}.`;
     description = `Phân tích chi tiết quy trình audit UX, cách xây dựng luồng trải nghiệm tối ưu tỉ lệ chuyển đổi từ góc nhìn chuyên gia.`;
   } else if (category === 'studio-3d') {
     headline = forceOptimized
-      ? `Trải Nghiệm Không Gian Số & Nghệ Thuật 3D Đột Phá Cùng ${input.speakerName}`
+      ? `Trải nghiệm không gian số & nghệ thuật 3D đột phá cùng ${input.speakerName}`
       : cleanTitle('Cinematic 3D Studio', input.eventName);
-    altHeadline = `Tiêu Chuẩn Thiết Kế & Kỹ Xảo Điện Ảnh Đoạt Giải Awwwards 2026`;
+    altHeadline = `Tiêu chuẩn thiết kế & kỹ xảo điện ảnh đoạt giải Awwwards 2026`;
     subHeadline = `Khám phá quy trình sáng tạo thế giới 3D tương tác, kỹ xảo điện ảnh và trải nghiệm số đa giác quan từ ${input.speakerName}.`;
     description = `Được định hình theo phong cách MDX Studio danh giá: tích hợp canvas 360° siêu thực, âm thanh Web Audio và nghệ thuật tương tác chạm đến cảm xúc.`;
   } else {
     headline = forceOptimized
-      ? `Lộ Trình Tinh Gọn Để Nâng Tầm Kỹ Năng Cùng ${input.speakerName}`
+      ? `Lộ trình tinh gọn để nâng tầm kỹ năng cùng ${input.speakerName}`
       : cleanTitle('Workshop Chuyên Sâu', input.eventName);
-    altHeadline = `Nắm Bắt Phương Pháp Luận Thực Chiến Chỉ Sau Một Phiên Học`;
+    altHeadline = `Nắm bắt phương pháp luận thực chiến chỉ sau một phiên học`;
     subHeadline = `Trải nghiệm học tập tương tác cao, kết nối trực tiếp cùng giảng viên và cộng đồng.`;
     description = `Chương trình được thiết kế cô đọng, tập trung vào kỹ năng ứng dụng ngay vào công việc hàng ngày.`;
   }
 
   let benefits = [
     {
-      title: 'Kiến Thức Thực Chiến 100%',
+      title: 'Kiến thức thực chiến 100%',
       description: 'Phân tích case study thực tế, tập trung vào giải pháp ứng dụng ngay mà không rườm rà lý thuyết.',
       iconName: 'zap' as const,
     },
     {
-      title: 'Đối Thoại Trực Tiếp Cùng Chuyên Gia',
+      title: 'Đối thoại trực tiếp cùng chuyên gia',
       description: `Q&A trực tiếp và nhận định hướng cụ thể từ ${input.speakerName || 'diễn giả'}.`,
       iconName: 'award' as const,
     },
     {
-      title: 'Tài Liệu & Quyền Lợi Độc Quyền',
+      title: 'Tài liệu & quyền lợi độc quyền',
       description: input.earlyBirdDiscount || 'Toàn bộ slide trình bày, bản thu âm và bộ công cụ mẫu dành riêng cho người tham gia.',
       iconName: 'target' as const,
     },
@@ -191,17 +191,17 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
   if (category === 'studio-3d') {
     benefits = [
       {
-        title: 'Hero Canvas 360° Siêu Thực (WebGL 60fps)',
+        title: 'Hero Canvas 360° siêu thực (WebGL 60fps)',
         description: 'Tối ưu hóa kiến trúc Double-Buffered 3D Canvas, tương tác mượt mà trên mọi thiết bị chuẩn điện ảnh.',
         iconName: 'zap' as const,
       },
       {
-        title: 'Masterclass Thiết Kế Chuẩn SOTD Awwwards',
+        title: 'Masterclass thiết kế chuẩn SOTD Awwwards',
         description: `Học hỏi trực tiếp tư duy đạo diễn nghệ thuật, ánh sáng CGI Dark Luxe và không gian số từ ${input.speakerName || 'Creative Director'}.`,
         iconName: 'award' as const,
       },
       {
-        title: 'Thư Viện Shader 3D & Web Audio Độc Quyền',
+        title: 'Thư viện Shader 3D & Web Audio độc quyền',
         description: input.earlyBirdDiscount || 'Nhận trọn bộ source code tương tác, GLSL shaders và sound effects ambient bản quyền cao cấp.',
         iconName: 'target' as const,
       },
@@ -216,18 +216,18 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
     },
     {
       time: '09:00 - 10:15',
-      title: 'Phiên 1: Bức tranh toàn cảnh & Xu hướng mới',
+      title: 'Phiên 1: Bức tranh toàn cảnh & xu hướng mới',
       description: `Diễn giả ${input.speakerName} trình bày phân tích chuyên sâu và bài học thực tiễn.`,
       speaker: input.speakerName,
     },
     {
       time: '10:15 - 11:30',
-      title: 'Phiên 2: Phân tích Case Study & Giải pháp cốt lõi',
+      title: 'Phiên 2: Phân tích case study & giải pháp cốt lõi',
       description: 'Mổ xẻ quy trình giải quyết vấn đề và framework triển khai thực tế.',
     },
     {
       time: '11:30 - 12:00',
-      title: 'Phiên 3: Q&A Đối thoại & Trao giải',
+      title: 'Phiên 3: Q&A đối thoại & trao giải',
       description: 'Giải đáp thắc mắc trực tiếp cùng người tham dự và trao các phần quà sớm.',
     },
   ];
@@ -241,13 +241,13 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
       },
       {
         time: '19:00 - 20:00',
-        title: 'Keynote: Giải Mã Kiến Trúc Trải Nghiệm 3D Chuẩn MDX & Awwwards',
+        title: 'Keynote: Giải mã kiến trúc trải nghiệm 3D chuẩn MDX & Awwwards',
         description: `${input.speakerName} trực tiếp bóc tách kiến trúc Canvas 360°, directional hover và nghệ thuật typography avant-garde.`,
         speaker: input.speakerName,
       },
       {
         time: '20:00 - 21:00',
-        title: 'Live Workshop: Xây Dựng Không Gian 3D Thời Gian Thực 60fps',
+        title: 'Live Workshop: Xây dựng không gian 3D thời gian thực 60fps',
         description: 'Thực hành kết nối WebGL shader, hiệu ứng Clip-Path bento grid và trigger âm thanh phản hồi xúc giác trong trình duyệt.',
       },
       {
@@ -340,7 +340,7 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
     agenda,
     faqs,
     earlyBirdBadge: input.earlyBirdDiscount || 'Ưu đãi Early Bird có hạn',
-    ctaButtonText: category === 'studio-3d' ? 'Trải Nghiệm Không Gian 3D Ngay' : 'Đăng Ký Tham Gia Ngay',
+    ctaButtonText: category === 'studio-3d' ? 'Trải nghiệm không gian 3D ngay' : 'Đăng ký tham gia ngay',
     tagline: category === 'studio-3d' ? 'AWWWARDS SITE OF THE DAY • CINEMATIC EXPERIENCE' : 'Sự kiện chuyên sâu không thể bỏ lỡ',
   };
 
@@ -368,6 +368,10 @@ Thông tin sự kiện:
 - Đối tượng: "${input.targetAudience || 'Khán giả mục tiêu'}"
 - Tối ưu hóa chuyển đổi cao: ${forceOptimized ? 'BẬT' : 'TIÊU CHUẨN'}
 
+QUY TẮC BẮT BUỘC VỀ VĂN PHONG TIẾNG VIỆT:
+- Dùng văn phong tự nhiên, viết hoa theo đúng quy tắc tiếng Việt (Sentence case cho câu, tiêu đề và lợi ích; CHỈ viết hoa chữ cái đầu câu hoặc danh từ riêng/từ viết tắt như AI, Google, FPT, VC).
+- TUYỆT ĐỐI KHÔNG viết hoa từng chữ cái đầu của mỗi từ (Title Case kiểu tiếng Anh) như "Đăng Ký Tham Gia Sự Kiện".
+
 Hãy trả về DUY NHẤT một chuỗi JSON hợp lệ (không kèm Markdown backticks):
 {
   "content": {
@@ -392,7 +396,7 @@ Hãy trả về DUY NHẤT một chuỗi JSON hợp lệ (không kèm Markdown b
       { "question": "Vé mời được nhận như thế nào?", "answer": "Mã vé sẽ được tạo ngay lập tức khi hoàn tất đăng ký." }
     ],
     "earlyBirdBadge": "Ưu đãi Early Bird tóm tắt",
-    "ctaButtonText": "Đăng Ký Giữ Chỗ",
+    "ctaButtonText": "Đăng ký giữ chỗ",
     "tagline": "Sự kiện chuyên sâu"
   },
   "cro": {
@@ -497,6 +501,7 @@ QUY TẮC BẮT BUỘC:
 - Chỉ trả về DUY NHẤT câu/đoạn văn bản tiếng Việt đã được viết lại hoàn chỉnh.
 - KHÔNG dùng dấu ngoặc kép bọc ngoài câu.
 - KHÔNG thêm bất kỳ lời giải thích, lời chào, tiền tố hay hậu tố nào.
+- Dùng văn phong tự nhiên, viết hoa theo đúng quy tắc tiếng Việt (Sentence case). TUYỆT ĐỐI KHÔNG viết hoa chữ cái đầu của mỗi từ (Title Case).
 `;
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
@@ -547,13 +552,13 @@ function rewriteWithSmartFallback(text: string, style: RewriteStyle): string {
   if (style === 'fomo') {
     // Tăng tính khẩn cấp FOMO
     if (/chỉ còn|sắp hết|vé cuối|đừng bỏ lỡ/i.test(clean)) {
-      return `[Gấp] Chỉ Còn 12 Suất: ${clean.replace(/^\[.*?\]\s*/, '')}`;
+      return `[Gấp] Chỉ còn 12 suất: ${clean.replace(/^\[.*?\]\s*/, '')}`;
     }
     const fomoPrefixes = [
-      '⚡ Đừng Bỏ Lỡ:',
-      '🔥 Cơ Hội Cuối Cùng:',
-      '⏳ Sắp Đóng Đăng Ký:',
-      '🚀 Chỉ Còn 15 Vé Sớm:',
+      '⚡ Đừng bỏ lỡ:',
+      '🔥 Cơ hội cuối cùng:',
+      '⏳ Sắp đóng đăng ký:',
+      '🚀 Chỉ còn 15 vé sớm:',
     ];
     const prefix = fomoPrefixes[Math.floor(Math.random() * fomoPrefixes.length)];
     return `${prefix} ${clean}`;
@@ -562,13 +567,13 @@ function rewriteWithSmartFallback(text: string, style: RewriteStyle): string {
   if (style === 'luxury') {
     // Sang trọng, đẳng cấp Executive
     let elevated = clean
-      .replace(/khóa học|lớp học/gi, 'Chương trình Đào tạo Cấp cao')
-      .replace(/buổi chia sẻ/gi, 'Hội đàm Thượng đỉnh')
-      .replace(/giảm giá/gi, 'Đặc quyền Đặc biệt')
-      .replace(/hướng dẫn/gi, 'Chuyển giao Chiến lược');
+      .replace(/khóa học|lớp học/gi, 'Chương trình đào tạo cấp cao')
+      .replace(/buổi chia sẻ/gi, 'Hội đàm thượng đỉnh')
+      .replace(/giảm giá/gi, 'Đặc quyền đặc biệt')
+      .replace(/hướng dẫn/gi, 'Chuyển giao chiến lược');
 
     if (!/thượng đỉnh|đặc quyền|tinh hoa|chiến lược/i.test(elevated)) {
-      elevated = `Hội Nghị Thượng Đỉnh: ${elevated}`;
+      elevated = `Hội nghị thượng đỉnh: ${elevated}`;
     }
     return elevated;
   }

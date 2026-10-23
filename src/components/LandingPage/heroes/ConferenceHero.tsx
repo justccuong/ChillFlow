@@ -113,7 +113,7 @@ export const ConferenceHero: React.FC<HeroProps> = ({
                 className={`px-8 py-3.5 rounded-2xl text-base font-bold shadow-[0_10px_30px_-5px_rgba(6,182,212,0.4)] transition-all transform hover:-translate-y-0.5 hover:shadow-[0_15px_35px_-5px_rgba(6,182,212,0.5)] cursor-pointer flex items-center justify-center gap-2.5 group ${theme.btnPrimary}`}
               >
                 <InlineEditable
-                  value={content.ctaButtonText || 'Giữ Chỗ Tham Gia Ngay'}
+                  value={content.ctaButtonText || 'Giữ chỗ tham gia ngay'}
                   onSave={(val) => onUpdateContentField?.('ctaButtonText', val)}
                   isEditMode={isEditMode}
                   as="span"

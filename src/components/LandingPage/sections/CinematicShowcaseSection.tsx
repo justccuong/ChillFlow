@@ -84,7 +84,7 @@ export const CinematicShowcaseSection: React.FC<CinematicShowcaseProps> = ({
               </span>
             </div>
             <h2 className="text-3xl sm:text-5xl font-black font-heading tracking-tight text-slate-900 dark:text-white leading-tight">
-              Tác Phẩm 3D & Trải Nghiệm Số Đỉnh Cao
+              Tác phẩm 3D & trải nghiệm số đỉnh cao
             </h2>
             <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 font-sans leading-relaxed">
               Mỗi tác phẩm là sự giao thoa hoàn hảo giữa công nghệ đồ họa điện ảnh, thuật toán nạp mượt mà và âm học Web Audio tiên phong.
@@ -98,7 +98,7 @@ export const CinematicShowcaseSection: React.FC<CinematicShowcaseProps> = ({
               className="px-6 py-3"
               icon={<ArrowUpRight className="w-4 h-4 text-amber-500 dark:text-amber-300" />}
             >
-              Đăng Ký Tham Quan Studio
+              Đăng ký tham quan studio
             </DirectionalButton>
           </div>
         </div>

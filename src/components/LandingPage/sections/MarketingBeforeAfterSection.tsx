@@ -20,7 +20,7 @@ export const MarketingBeforeAfterSection: React.FC<MarketingBeforeAfterProps> = 
             <Zap className="w-3.5 h-3.5" /> BỨT PHÁ TĂNG TRƯỞNG THỰC CHIẾN
           </span>
           <h2 className="text-3xl sm:text-5xl font-black font-heading tracking-tight text-slate-900 dark:text-white">
-            Sự Khác Biệt Giữa Cách Làm Cũ & Framework Mới
+            Sự khác biệt giữa cách làm cũ & framework mới
           </h2>
           <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Tại sao 90% chiến dịch marketing thất bại vì phụ thuộc vào ads, và cách các Unicorn scale doanh thu với ngân sách 0đ.
@@ -95,7 +95,7 @@ export const MarketingBeforeAfterSection: React.FC<MarketingBeforeAfterProps> = 
             onClick={onScrollToRegister}
             className={`px-8 py-4 rounded-xl font-bold text-base shadow-xl transition-all hover:scale-105 cursor-pointer ${theme.btnPrimary}`}
           >
-            Đăng Ký Khóa Học Để Áp Dụng Framework Mới
+            Đăng ký khóa học để áp dụng framework mới
           </button>
         </div>
       </div>

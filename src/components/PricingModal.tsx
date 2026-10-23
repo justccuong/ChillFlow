@@ -85,10 +85,10 @@ export const PricingModal: React.FC<PricingModalProps> = ({
           
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-semibold uppercase tracking-wider mb-2">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            <span>Mô hình Thương mại & Bảng giá SaaS</span>
+            <span>Mô hình thương mại & bảng giá SaaS</span>
           </div>
           <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-            Nâng cấp ConvertFlow AI để Mở rộng Sự kiện
+            Nâng cấp ConvertFlow AI để mở rộng sự kiện
           </h2>
           <p className="mt-1 text-sm text-indigo-100 max-w-xl mx-auto">
             {reason || `Bạn hiện đang dùng gói ${currentUser.tier.toUpperCase()} (${currentCount}/${maxFree} trang). Chọn gói phù hợp với quy mô sự kiện của bạn.`}

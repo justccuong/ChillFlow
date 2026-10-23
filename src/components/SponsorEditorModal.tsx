@@ -96,7 +96,7 @@ export const SponsorEditorModal: React.FC<SponsorEditorModalProps> = ({
               <ShieldCheck className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 dark:text-white text-base">Chỉnh Sửa Nhà Tài Trợ & Đối Tác</h3>
+              <h3 className="font-bold text-slate-900 dark:text-white text-base">Chỉnh sửa nhà tài trợ & đối tác</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">Thêm, xóa hoặc tùy biến logo và danh vị đối tác hiển thị trên dải marquee</p>
             </div>
           </div>

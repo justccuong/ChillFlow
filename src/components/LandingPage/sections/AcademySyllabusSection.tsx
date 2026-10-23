@@ -12,7 +12,7 @@ export const AcademySyllabusSection: React.FC<AcademyProps> = ({ theme }) => {
   const modules = theme.curriculumModules || [
     {
       moduleNum: '01',
-      title: 'Nền tảng & Tư duy Nguyên lý Đầu tiên (First Principles)',
+      title: 'Nền tảng & tư duy nguyên lý đầu tiên (First Principles)',
       duration: 'Tuần 1 (8 giờ)',
       topics: [
         'Hiểu bản chất và các giới hạn công nghệ hiện tại',
@@ -22,7 +22,7 @@ export const AcademySyllabusSection: React.FC<AcademyProps> = ({ theme }) => {
     },
     {
       moduleNum: '02',
-      title: 'Kỹ thuật Chuyên sâu & Thực hành Hands-on Lab',
+      title: 'Kỹ thuật chuyên sâu & thực hành hands-on lab',
       duration: 'Tuần 2 (10 giờ)',
       topics: [
         'Trực tiếp thao tác và giải quyết ca bệnh thực tế',
@@ -32,7 +32,7 @@ export const AcademySyllabusSection: React.FC<AcademyProps> = ({ theme }) => {
     },
     {
       moduleNum: '03',
-      title: 'Dự án Tốt nghiệp & Thẩm định Thực tế (Capstone Project)',
+      title: 'Dự án tốt nghiệp & thẩm định thực tế (Capstone Project)',
       duration: 'Tuần 3 & 4 (18 giờ)',
       topics: [
         'Xây dựng sản phẩm hoàn chỉnh giải quyết vấn đề doanh nghiệp',
@@ -50,7 +50,7 @@ export const AcademySyllabusSection: React.FC<AcademyProps> = ({ theme }) => {
             <BookOpen className="w-4 h-4 text-blue-500" /> KHUNG CHƯƠNG TRÌNH ĐÀO TẠO
           </span>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
-            Lộ Trình Học Chi Tiết & Chuẩn Đầu Ra
+            Lộ trình học chi tiết & chuẩn đầu ra
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             Chương trình được thiết kế cô đọng, cân bằng giữa 30% lý thuyết nền tảng và 70% thời lượng thực chiến trên dự án thật.

@@ -94,7 +94,7 @@ export function generateStandaloneHtml(
 
         <div class="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
           <a href="#registration" class="px-8 py-4 rounded-2xl text-base font-bold bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-xl shadow-cyan-500/20 transition-all hover:scale-105 text-center">
-            ${content.ctaButtonText || 'Đăng Ký Tham Gia Ngay'} →
+            ${content.ctaButtonText || 'Đăng ký tham gia ngay'} →
           </a>
           <span class="text-xs text-slate-400">🛡️ Vé chính hãng & Hỗ trợ xuất VAT</span>
         </div>
@@ -122,7 +122,7 @@ export function generateStandaloneHtml(
         <p class="text-xs text-slate-300">Đốt ngân sách vào quảng cáo Facebook/Google nhưng tỉ lệ chuyển đổi dưới 1%, khách hàng rời đi nhanh chóng.</p>
       </div>
       <div class="p-6 rounded-2xl bg-amber-950/20 border border-amber-500/40 space-y-3">
-        <h4 class="text-sm font-bold text-amber-400 uppercase tracking-widest">✅ Framework Tăng Trưởng Mới</h4>
+        <h4 class="text-sm font-bold text-amber-400 uppercase tracking-widest">✅ Framework tăng trưởng mới</h4>
         <p class="text-xs text-slate-300">Tối ưu từng điểm chạm trong phễu CRO, nâng ROI trung bình lên +340%, sở hữu 50+ Playbooks thực chiến.</p>
       </div>
     </div>
@@ -132,7 +132,7 @@ export function generateStandaloneHtml(
   <!-- Benefits Section -->
   <section class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 border-t border-slate-900">
     <div class="text-center mb-12">
-      <h2 class="text-3xl font-extrabold text-white font-heading">Giá Trị Cốt Lõi</h2>
+      <h2 class="text-3xl font-extrabold text-white font-heading">Giá trị cốt lõi</h2>
       <p class="text-slate-400 text-sm mt-2">Những kiến thức và đặc quyền thực chiến nhận được</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -148,7 +148,7 @@ export function generateStandaloneHtml(
   <!-- Agenda Section -->
   <section class="max-w-5xl mx-auto py-16 px-4 sm:px-6 border-t border-slate-900">
     <div class="text-center mb-12">
-      <h2 class="text-3xl font-extrabold text-white font-heading">Lịch Trình Chi Tiết</h2>
+      <h2 class="text-3xl font-extrabold text-white font-heading">Lịch trình chi tiết</h2>
     </div>
     <div class="space-y-4">
       ${(content.agenda || []).map(a => `
@@ -169,7 +169,7 @@ export function generateStandaloneHtml(
   <!-- Registration Ticket Section -->
   <section id="registration" class="max-w-4xl mx-auto py-20 px-4">
     <div class="p-8 md:p-12 rounded-3xl bg-gradient-to-b from-slate-900 to-indigo-950/60 border border-cyan-500/30 shadow-2xl text-center">
-      <h2 class="text-3xl font-extrabold text-white mb-3 font-heading">Đăng Ký Giữ Chỗ Ngay Hôm Nay</h2>
+      <h2 class="text-3xl font-extrabold text-white mb-3 font-heading">Đăng ký giữ chỗ ngay hôm nay</h2>
       <p class="text-slate-300 text-sm max-w-lg mx-auto mb-8">
         Số lượng vé ưu đãi có giới hạn. Vui lòng hoàn tất thông tin bên dưới để nhận mã vé qua email.
       </p>
@@ -187,7 +187,7 @@ export function generateStandaloneHtml(
           <input type="tel" required placeholder="0901234567" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
         </div>
         <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 font-bold text-slate-950 shadow-xl shadow-cyan-500/20 transition-all text-sm mt-2">
-          Xác Nhận Giữ Chỗ Ngay
+          Xác nhận giữ chỗ ngay
         </button>
       </form>
     </div>

@@ -45,23 +45,23 @@ const TESTIMONIALS: Testimonial[] = [
 
 export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ theme }) => {
   return (
-    <section id="testimonials" className="py-24 px-4 md:px-8 bg-slate-950 text-white relative overflow-hidden">
+    <section id="testimonials" className="py-24 px-4 md:px-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden transition-colors border-t border-slate-200/60 dark:border-slate-850">
       <div className="hairline-divider absolute top-0 inset-x-0"></div>
 
       {/* Subtle ambient light */}
-      <div className={`ambient-glow-orb top-1/2 left-1/3 w-96 h-96 bg-gradient-to-tr ${theme.glowGradient} opacity-20`}></div>
+      <div className={`ambient-glow-orb top-1/2 left-1/3 w-96 h-96 bg-gradient-to-tr ${theme.glowGradient} opacity-15 dark:opacity-20`}></div>
 
       <div className="max-w-6xl mx-auto space-y-16 relative z-10">
         {/* Header - Editorial */}
         <div className="text-center space-y-3">
           <div className="text-xs uppercase tracking-[0.25em] text-slate-500 font-bold flex items-center justify-center gap-2">
-            <Award className="w-3.5 h-3.5 text-amber-400" />
+            <Award className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
             <span>ĐÁNH GIÁ TỪ CỘNG ĐỒNG</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-white">
-            Cảm Nhận Từ Khách Mời Các Mùa Trước
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
+            Cảm nhận từ khách mời các mùa trước
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base max-w-lg mx-auto">
+          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-lg mx-auto">
             Hơn 98% người tham dự đánh giá chương trình vượt mong đợi và sẵn sàng giới thiệu cho đồng nghiệp.
           </p>
         </div>
@@ -71,40 +71,40 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ theme 
           {TESTIMONIALS.map((t, idx) => (
             <div
               key={idx}
-              className="relative p-6 sm:p-8 rounded-2xl bg-slate-900/60 border border-slate-800/80 hover:border-slate-700 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl flex flex-col justify-between group"
+              className="relative p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-300 hover:-translate-y-1.5 shadow-md hover:shadow-xl dark:shadow-2xl flex flex-col justify-between group"
             >
               {/* Watermark Quote Icon */}
-              <div className="absolute top-4 right-4 text-slate-800 group-hover:text-amber-500/20 transition-colors">
+              <div className="absolute top-4 right-4 text-slate-200 dark:text-slate-800 group-hover:text-amber-500/20 transition-colors">
                 <Quote className="w-8 h-8" />
               </div>
 
               <div className="space-y-4">
                 {/* 5 Stars */}
-                <div className="flex items-center gap-1 text-amber-400">
+                <div className="flex items-center gap-1 text-amber-500">
                   {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    <Star key={i} className="w-4 h-4 fill-amber-500 text-amber-500" />
                   ))}
                 </div>
 
                 {/* Quote */}
-                <p className="text-slate-300 text-sm leading-relaxed font-sans italic">
+                <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed font-sans italic">
                   "{t.quote}"
                 </p>
               </div>
 
               {/* Author info */}
-              <div className="pt-6 mt-6 border-t border-slate-800/80 flex items-center gap-3.5">
+              <div className="pt-6 mt-6 border-t border-slate-100 dark:border-slate-800/80 flex items-center gap-3.5">
                 <img
                   src={t.avatar}
                   alt={t.name}
-                  className="w-11 h-11 rounded-full object-cover border-2 border-slate-700 shadow-sm"
+                  className="w-11 h-11 rounded-full object-cover border-2 border-slate-200 dark:border-slate-700 shadow-sm"
                 />
                 <div>
-                  <h4 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
                     {t.name}
                   </h4>
-                  <div className="text-xs text-slate-400">
-                    {t.role} · <span className="text-slate-300 font-medium">{t.company}</span>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">
+                    {t.role} · <span className="text-slate-700 dark:text-slate-300 font-medium">{t.company}</span>
                   </div>
                 </div>
               </div>

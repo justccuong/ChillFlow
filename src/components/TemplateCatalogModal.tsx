@@ -33,7 +33,7 @@ export const TemplateCatalogModal: React.FC<TemplateCatalogModalProps> = ({
                 <Palette className="w-4 h-4" />
               </div>
               <h2 className="text-xl sm:text-2xl font-black font-heading tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-                Kho Template Sự Kiện Độc Quyền
+                Kho template sự kiện độc quyền
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
@@ -101,7 +101,7 @@ export const TemplateCatalogModal: React.FC<TemplateCatalogModalProps> = ({
 
                     {isRecommended && (
                       <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 flex items-center gap-1 shadow-md">
-                        <Sparkles className="w-3 h-3 fill-slate-950" /> AI Đề Xuất
+                        <Sparkles className="w-3 h-3 fill-slate-950" /> AI đề xuất
                       </span>
                     )}
                   </div>

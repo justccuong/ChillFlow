@@ -82,7 +82,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="text-center space-y-2">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight font-heading text-slate-900 dark:text-white">
-            Đăng Ký Tham Gia
+            Đăng ký tham gia
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm max-w-md mx-auto">
             Điền thông tin để nhận vé mời và tài liệu sự kiện.
@@ -140,7 +140,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
 
               <div className="space-y-1">
                 <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-                  Đăng Ký Thành Công!
+                  Đăng ký thành công!
                 </h3>
                 <p className="text-slate-600 dark:text-slate-400 text-sm">
                   Thông tin xác nhận đã được gửi tới <strong className="text-slate-900 dark:text-white">{formData.email}</strong>.

@@ -22,7 +22,7 @@ export const MasterclassStatsSection: React.FC<StatsProps> = ({ theme }) => {
             <TrendingUp className="w-3.5 h-3.5" /> HIỆU QUẢ ĐO LƯỜNG THỰC TẾ
           </span>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
-            Con Số Biết Nói Từ Các Khóa Masterclass Trước
+            Con số biết nói từ các khóa masterclass trước
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             Không lý thuyết suông. Mọi chiến lược đều được kiểm chứng qua dữ liệu thực chiến và case study thành công.

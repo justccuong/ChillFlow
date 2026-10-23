@@ -400,7 +400,7 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
                 className="text-base py-3.5 px-8 font-black tracking-wide"
                 icon={<ArrowRight className="w-4 h-4 text-amber-500 dark:text-amber-300" />}
               >
-                {content.ctaButtonText || 'Khám Phá & Đặt Chỗ Ngay'}
+                {content.ctaButtonText || 'Khám phá & đặt chỗ ngay'}
               </DirectionalButton>
 
               <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-400 px-2">

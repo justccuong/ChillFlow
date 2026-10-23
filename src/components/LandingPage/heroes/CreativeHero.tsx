@@ -111,7 +111,7 @@ export const CreativeHero: React.FC<HeroProps> = ({
               className={`px-8 py-3.5 rounded-xl text-base font-bold shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group uppercase tracking-wide ${theme.btnPrimary}`}
             >
               <InlineEditable
-                value={content.ctaButtonText || 'Đăng Ký Tham Gia Studio'}
+                value={content.ctaButtonText || 'Đăng ký tham gia studio'}
                 onSave={(val) => onUpdateContentField?.('ctaButtonText', val)}
                 isEditMode={isEditMode}
                 as="span"
@@ -120,7 +120,7 @@ export const CreativeHero: React.FC<HeroProps> = ({
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
             <span className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 px-1">
-              <Zap className="w-4 h-4 text-amber-400 fill-amber-400" />
+              <Zap className="w-4 h-4 text-amber-500 fill-amber-500 dark:text-amber-400 dark:fill-amber-400" />
               1-on-1 Portfolio Critique cùng Design Director
             </span>
           </div>

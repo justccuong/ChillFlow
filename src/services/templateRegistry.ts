@@ -19,7 +19,7 @@ export const TEMPLATE_LIBRARY: TemplateDefinition[] = [
   {
     id: 'ai-tech',
     name: 'Cyber Summit 2026',
-    subtitle: 'Hội nghị Công nghệ & AI Chuyên sâu',
+    subtitle: 'Hội nghị công nghệ & AI chuyên sâu',
     categoryLabel: 'Công nghệ & AI',
     badge: 'HOTTEST AI 2026',
     themeColor: '#06b6d4',
@@ -39,7 +39,7 @@ export const TEMPLATE_LIBRARY: TemplateDefinition[] = [
   {
     id: 'marketing',
     name: 'Growth Masterclass',
-    subtitle: 'Chương trình Tăng trưởng & CRO Funnel',
+    subtitle: 'Chương trình tăng trưởng & CRO funnel',
     categoryLabel: 'Marketing & Growth',
     badge: 'HIGH CRO CONVERSION',
     themeColor: '#f59e0b',
@@ -59,7 +59,7 @@ export const TEMPLATE_LIBRARY: TemplateDefinition[] = [
   {
     id: 'developer',
     name: 'Terminal Broadsheet',
-    subtitle: 'Hội thảo Kỹ thuật & DevCon Telemetry',
+    subtitle: 'Hội thảo kỹ thuật & DevCon telemetry',
     categoryLabel: 'Lập trình & Kỹ thuật',
     badge: 'DEV NATIVE CLI',
     themeColor: '#10b981',
@@ -79,7 +79,7 @@ export const TEMPLATE_LIBRARY: TemplateDefinition[] = [
   {
     id: 'startup',
     name: 'Executive Dealflow',
-    subtitle: 'Diễn đàn Khởi nghiệp & Gọi vốn VC',
+    subtitle: 'Diễn đàn khởi nghiệp & gọi vốn VC',
     categoryLabel: 'Startup & Kinh doanh',
     badge: 'WALL STREET LUXURY',
     themeColor: '#eab308',
@@ -99,7 +99,7 @@ export const TEMPLATE_LIBRARY: TemplateDefinition[] = [
   {
     id: 'design',
     name: 'Creative Avant-Garde',
-    subtitle: 'Festival Thiết kế & Sáng tạo Số',
+    subtitle: 'Festival thiết kế & sáng tạo số',
     categoryLabel: 'Thiết kế & Sáng tạo',
     badge: 'AWWWARDS ART DIRECTION',
     themeColor: '#ec4899',
@@ -119,7 +119,7 @@ export const TEMPLATE_LIBRARY: TemplateDefinition[] = [
   {
     id: 'education',
     name: 'Academic Masterclass',
-    subtitle: 'Khóa Đào tạo Chuyên sâu & Chứng chỉ ISO',
+    subtitle: 'Khóa đào tạo chuyên sâu & chứng chỉ ISO',
     categoryLabel: 'Đào tạo & Workshop',
     badge: 'ACCREDITED CERTIFICATE',
     themeColor: '#3b82f6',
@@ -139,7 +139,7 @@ export const TEMPLATE_LIBRARY: TemplateDefinition[] = [
   {
     id: 'studio-3d',
     name: 'Cinematic 3D Studio',
-    subtitle: 'Studio Thiết kế Không gian & Trải nghiệm 3D',
+    subtitle: 'Studio thiết kế không gian & trải nghiệm 3D',
     categoryLabel: '3D Studio & Motion',
     badge: 'AWWWARDS SITE OF THE DAY',
     themeColor: '#e2e8f0',

@@ -9,15 +9,15 @@ interface BenefitsSectionProps {
 
 export const BenefitsSection: React.FC<BenefitsSectionProps> = ({ benefits, theme }) => {
   const b1 = benefits[0] || {
-    title: 'Kiến Thức Thực Chiến 100%',
+    title: 'Kiến thức thực chiến 100%',
     description: 'Tiếp cận giải pháp và case study thực tế, áp dụng trực tiếp vào công việc ngay sau phiên học.',
   };
   const b2 = benefits[1] || {
-    title: 'Đối Thoại Trực Tiếp Cùng Chuyên Gia',
+    title: 'Đối thoại trực tiếp cùng chuyên gia',
     description: 'Hỏi đáp Q&A chuyên sâu 1-1 để giải quyết trực tiếp bài toán của bạn.',
   };
   const b3 = benefits[2] || {
-    title: 'Tài Liệu & Bộ Công Cụ Độc Quyền',
+    title: 'Tài liệu & bộ công cụ độc quyền',
     description: 'Toàn bộ slide, checklist và tài nguyên giá trị cao gửi trực tiếp về email của bạn.',
   };
 
@@ -39,7 +39,7 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = ({ benefits, them
             GIÁ TRỊ CỐT LÕI
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
-            Vì Sao Bạn Không Thể Bỏ Lỡ Sự Kiện Này?
+            Vì sao bạn không thể bỏ lỡ sự kiện này?
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
             Chương trình được thiết kế cô đọng, tập trung giải quyết trực tiếp những thách thức lớn nhất của bạn.

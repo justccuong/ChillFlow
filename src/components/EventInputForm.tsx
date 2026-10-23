@@ -10,7 +10,7 @@ const renderCategoryIcon = (id: EventCategory, className = 'w-6 h-6') => {
     case 'ai-tech':
       return <Cpu className={`${className} text-cyan-400`} />;
     case 'marketing':
-      return <TrendingUp className={`${className} text-amber-400`} />;
+      return <TrendingUp className={`${className} text-amber-500 dark:text-amber-400`} />;
     case 'startup':
       return <Rocket className={`${className} text-purple-400`} />;
     case 'developer':
@@ -20,7 +20,7 @@ const renderCategoryIcon = (id: EventCategory, className = 'w-6 h-6') => {
     case 'education':
       return <GraduationCap className={`${className} text-blue-400`} />;
     case 'studio-3d':
-      return <Sparkles className={`${className} text-amber-300`} />;
+      return <Sparkles className={`${className} text-amber-500 dark:text-amber-300`} />;
     default:
       return <Sparkles className={`${className} text-indigo-400`} />;
   }
@@ -29,10 +29,10 @@ const renderCategoryIcon = (id: EventCategory, className = 'w-6 h-6') => {
 const renderPresetIcon = (iconType: string) => {
   switch (iconType) {
     case 'ai': return <Cpu className="w-3.5 h-3.5 text-cyan-400" />;
-    case 'marketing': return <TrendingUp className="w-3.5 h-3.5 text-amber-400" />;
+    case 'marketing': return <TrendingUp className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />;
     case 'startup': return <Rocket className="w-3.5 h-3.5 text-purple-400" />;
     case 'design': return <Palette className="w-3.5 h-3.5 text-pink-400" />;
-    case 'studio': return <Sparkles className="w-3.5 h-3.5 text-amber-300" />;
+    case 'studio': return <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-300" />;
     default: return <Sparkles className="w-3.5 h-3.5 text-indigo-400" />;
   }
 };
@@ -137,7 +137,7 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
         {/* Category / Theme Selector */}
         <div className="space-y-2">
           <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" /> Loại sự kiện & Phong cách Theme
+            <Layers className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" /> Loại sự kiện & phong cách theme
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
             {CATEGORIES.map(cat => (
@@ -328,7 +328,7 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
             ) : (
               <>
                 <Sparkles className="w-4 h-4 text-amber-300" />
-                Tạo trang sự kiện & Tối ưu chuyển đổi
+                Tạo trang sự kiện & tối ưu chuyển đổi
               </>
             )}
           </button>

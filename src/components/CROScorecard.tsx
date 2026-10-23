@@ -156,13 +156,13 @@ export const CROScorecard: React.FC<CROScorecardProps> = ({
 
           <div className="space-y-2">
             <div className="text-xs font-semibold text-slate-400 flex items-center justify-between">
-              <span>Biến thể Tiêu đề (A/B Test)</span>
+              <span>Biến thể tiêu đề (A/B Test)</span>
               <button
                 type="button"
                 onClick={onToggleHeadlineVariant}
                 className="text-indigo-400 hover:text-indigo-300 text-xs cursor-pointer"
               >
-                Đổi sang Bản {activeHeadlineVariant === 'A' ? 'B' : 'A'}
+                Đổi sang bản {activeHeadlineVariant === 'A' ? 'B' : 'A'}
               </button>
             </div>
 

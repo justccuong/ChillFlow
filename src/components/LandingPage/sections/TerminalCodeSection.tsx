@@ -24,7 +24,7 @@ export const TerminalCodeSection: React.FC<TerminalProps> = () => {
             <Cpu className="w-4 h-4" /> TECH_STACK // PREREQUISITES
           </span>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
-            Hệ Sinh Thái Công Nghệ Sử Dụng Trong Workshop
+            Hệ sinh thái công nghệ sử dụng trong workshop
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto font-sans">
             Toàn bộ mã nguồn, Dockerfile và pipeline mẫu sẽ được chia sẻ trực tiếp qua repository GitHub riêng tư.

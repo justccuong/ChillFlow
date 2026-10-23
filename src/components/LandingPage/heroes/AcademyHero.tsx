@@ -102,7 +102,7 @@ export const AcademyHero: React.FC<HeroProps> = ({
             </div>
             <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
               <BookOpen className="w-4 h-4 text-blue-500" />
-              <span className="font-semibold">{cert.hours} Giờ đào tạo thực chiến</span>
+              <span className="font-semibold">{cert.hours} giờ đào tạo thực chiến</span>
             </div>
           </div>
 
@@ -114,7 +114,7 @@ export const AcademyHero: React.FC<HeroProps> = ({
               className={`px-8 py-3.5 rounded-xl text-base shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2.5 group ${theme.btnPrimary}`}
             >
               <InlineEditable
-                value={content.ctaButtonText || 'Đăng Ký Tham Gia Khóa Học'}
+                value={content.ctaButtonText || 'Đăng ký tham gia khóa học'}
                 onSave={(val) => onUpdateContentField?.('ctaButtonText', val)}
                 isEditMode={isEditMode}
                 as="span"

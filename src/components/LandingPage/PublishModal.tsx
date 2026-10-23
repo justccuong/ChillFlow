@@ -57,10 +57,10 @@ export const PublishModal: React.FC<PublishModalProps> = ({
           
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            <span>Xuất bản Online Thành Công</span>
+            <span>Xuất bản online thành công</span>
           </div>
           <h3 className="text-xl md:text-2xl font-extrabold tracking-tight">
-            Trang Sự Kiện Của Bạn Đã Lên Sóng!
+            Trang sự kiện của bạn đã lên sóng!
           </h3>
           <p className="mt-1 text-xs text-emerald-100 max-w-sm mx-auto">
             Người tham dự có thể truy cập, xem chương trình và đăng ký vé ngay lập tức.

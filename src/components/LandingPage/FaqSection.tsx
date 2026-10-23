@@ -27,7 +27,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ faqs, theme }) => {
             <span>HỖ TRỢ & THẮC MẮC</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
-            Câu Hỏi Thường Gặp
+            Câu hỏi thường gặp
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-md mx-auto">
             Mọi thông tin cần thiết về lịch trình, tài liệu và hình thức tham gia.
