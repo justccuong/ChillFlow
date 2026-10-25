@@ -131,14 +131,25 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenApiKeyModal}
-            className={`p-1.5 sm:p-2 rounded-xl border text-xs cursor-pointer transition-colors shrink-0 ${
+            className={`flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl border text-xs cursor-pointer transition-colors shrink-0 ${
               apiKeyPresent
-                ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400'
-                : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-semibold'
+                : 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400 font-medium'
             }`}
-            title={apiKeyPresent ? 'Gemini API: Đã kết nối' : 'Cấu hình API Key'}
+            title={apiKeyPresent ? 'Gemini 1.5 Flash (AI Thật) đang hoạt động' : 'Bản demo vòng loại - Dữ liệu mô phỏng AI (Smart Engine)'}
           >
-            <Key className="w-4 h-4" />
+            {apiKeyPresent ? (
+              <>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <Key className="w-3.5 h-3.5" />
+                <span className="hidden lg:inline text-[11px]">AI Thật: Gemini 1.5</span>
+              </>
+            ) : (
+              <>
+                <Key className="w-3.5 h-3.5" />
+                <span className="hidden lg:inline text-[11px]">Mô phỏng AI</span>
+              </>
+            )}
           </button>
 
           <button

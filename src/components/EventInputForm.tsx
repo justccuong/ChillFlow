@@ -3,7 +3,7 @@ import type { EventInput, EventCategory } from '../types';
 import { PRESETS } from '../services/aiService';
 import { CATEGORIES } from '../services/themeEngine';
 import { detectBestTemplate } from '../services/templateRegistry';
-import { Calendar, MapPin, User, Gift, Target, Users, Sparkles, Layers, Cpu, TrendingUp, Rocket, Code2, Palette, GraduationCap } from 'lucide-react';
+import { Calendar, MapPin, User, Gift, Target, Users, Sparkles, Layers, Cpu, TrendingUp, Rocket, Code2, Palette, GraduationCap, AlertCircle } from 'lucide-react';
 
 const renderCategoryIcon = (id: EventCategory, className = 'w-6 h-6') => {
   switch (id) {
@@ -64,6 +64,7 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
   );
 
   const [activePresetIndex, setActivePresetIndex] = useState<number | null>(0);
+  const [formError, setFormError] = useState<string | null>(null);
 
   // Sync when initialData arrives from parent
   React.useEffect(() => {
@@ -75,10 +76,12 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
   const handleApplyPreset = (index: number) => {
     setActivePresetIndex(index);
     setFormData(PRESETS[index].data);
+    setFormError(null);
   };
 
   const handleCategorySelect = (cat: EventCategory) => {
     setFormData(prev => ({ ...prev, category: cat }));
+    setFormError(null);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -87,14 +90,32 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
       ...prev,
       [name]: name === 'maxCapacity' ? (value ? parseInt(value) : 100) : value,
     }));
+    if (formError) setFormError(null);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.eventName || !formData.eventDate || !formData.location || !formData.speakerName) {
-      alert('Vui lòng điền đầy đủ: Tên sự kiện, Thời gian, Địa điểm và Diễn giả');
+    if (!formData.eventName || !formData.eventName.trim()) {
+      setFormError('Vui lòng nhập tên sự kiện hợp lệ.');
       return;
     }
+    if (!formData.eventDate) {
+      setFormError('Vui lòng chọn thời gian diễn ra sự kiện.');
+      return;
+    }
+    if (!formData.location || !formData.location.trim()) {
+      setFormError('Vui lòng nhập địa điểm tổ chức sự kiện.');
+      return;
+    }
+    if (!formData.speakerName || !formData.speakerName.trim()) {
+      setFormError('Vui lòng nhập tên diễn giả hoặc người dẫn dắt.');
+      return;
+    }
+    if (formData.maxCapacity !== undefined && formData.maxCapacity <= 0) {
+      setFormError('Sức chứa tối đa (số lượng vé) phải lớn hơn 0.');
+      return;
+    }
+    setFormError(null);
     onSubmit(formData);
   };
 
@@ -134,6 +155,21 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
 
       {/* Form body */}
       <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6">
+        {formError && (
+          <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
+              <span className="font-medium">{formError}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setFormError(null)}
+              className="text-rose-500 hover:text-rose-700 dark:hover:text-rose-200 text-xs font-bold px-1.5 py-0.5 rounded cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
+        )}
         {/* Category / Theme Selector */}
         <div className="space-y-2">
           <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">

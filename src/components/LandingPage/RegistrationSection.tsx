@@ -37,6 +37,10 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (remainingSeats <= 0) {
+      alert('Sự kiện đã đạt tối đa sức chứa (Hết vé). Không thể đăng ký thêm.');
+      return;
+    }
     if (!formData.fullName || !formData.email || !formData.phone) {
       alert('Vui lòng điền đầy đủ thông tin: Họ tên, Email và Số điện thoại');
       return;
@@ -268,10 +272,15 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
               <div className="pt-2">
                 <button
                   type="submit"
-                  className={`w-full py-3.5 px-5 rounded-xl font-bold text-sm shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 ${theme.btnPrimary}`}
+                  disabled={remainingSeats <= 0}
+                  className={`w-full py-3.5 px-5 rounded-xl font-bold text-sm shadow-lg transition-all flex items-center justify-center gap-2 ${
+                    remainingSeats <= 0
+                      ? 'bg-slate-300 dark:bg-slate-800 text-slate-500 cursor-not-allowed shadow-none'
+                      : `${theme.btnPrimary} cursor-pointer`
+                  }`}
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>Xác nhận đăng ký giữ chỗ</span>
+                  <span>{remainingSeats <= 0 ? 'Sự kiện đã hết vé (Đạt tối đa sức chứa)' : 'Xác nhận đăng ký giữ chỗ'}</span>
                 </button>
 
                 <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500 mt-2.5">

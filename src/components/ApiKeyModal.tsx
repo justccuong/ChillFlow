@@ -61,7 +61,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({
               className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs font-mono focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
             <p className="text-[11px] text-slate-500 dark:text-slate-400">
-              Có thể cấu hình trực tiếp qua file <code className="text-indigo-600 dark:text-indigo-400">.env</code> (<code className="text-indigo-700 dark:text-indigo-300">VITE_GEMINI_API_KEY</code>) hoặc nhập thủ công tại đây. Nếu để trống, hệ thống sẽ sử dụng AI Engine tích hợp sẵn.
+              Cấu hình trực tiếp qua <code className="text-indigo-600 dark:text-indigo-400">.env</code> (<code className="text-indigo-700 dark:text-indigo-300">VITE_GEMINI_API_KEY</code>) hoặc nhập tại đây. Nếu để trống, hệ thống kích hoạt chế độ: <em>"Bản demo vòng loại - Dữ liệu mô phỏng AI (Smart Engine)"</em>.
             </p>
           </div>
 
