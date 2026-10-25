@@ -220,27 +220,27 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
       )}
 
       {/* Floating Modern Studio Dock */}
-      <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 sm:gap-2.5 p-1.5 sm:p-2 rounded-2xl bg-slate-950/92 backdrop-blur-2xl border border-white/20 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] text-white text-xs max-w-[calc(100vw-1rem)] overflow-x-auto shrink-0 scrollbar-none">
+      <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 sm:gap-2.5 p-1.5 sm:p-2 rounded-2xl bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border border-slate-200 dark:border-white/15 shadow-[0_12px_40px_-5px_rgba(0,0,0,0.18)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.85)] text-slate-800 dark:text-white text-xs max-w-[calc(100vw-1rem)] overflow-x-auto shrink-0 scrollbar-none transition-colors">
         {/* Kho Template Trigger Button */}
         <button
           type="button"
           onClick={() => setIsTemplateModalOpen(true)}
-          className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/40 font-semibold cursor-pointer transition-all shrink-0"
+          className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-500/20 dark:hover:bg-indigo-500/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/40 font-semibold cursor-pointer transition-all shrink-0"
           title="Mở Kho 7 Templates Sự Kiện Độc Quyền"
         >
-          <Palette className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+          <Palette className="w-3.5 h-3.5 text-indigo-600 dark:text-cyan-400 shrink-0" />
           <span className="hidden sm:inline">Kho Template</span>
         </button>
 
         {/* Template Selector Quick Dropdown */}
-        <div className="flex items-center gap-1 bg-white/10 px-2 sm:px-2.5 py-1.5 rounded-xl border border-white/10 shrink-0">
+        <div className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/15 px-2 sm:px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-white/10 shrink-0 transition-colors">
           <select
             value={currentCategory}
             onChange={e => setCurrentCategory(e.target.value as EventCategory)}
-            className="bg-transparent border-none text-white text-xs font-semibold focus:outline-none cursor-pointer pr-1 max-w-[110px] sm:max-w-none truncate"
+            className="bg-transparent border-none text-slate-900 dark:text-white text-xs font-semibold focus:outline-none cursor-pointer pr-1 max-w-[110px] sm:max-w-none truncate"
           >
             {CATEGORIES.map(c => (
-              <option key={c.id} value={c.id} className="bg-slate-900 text-white">
+              <option key={c.id} value={c.id} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-medium">
                 {c.label}
               </option>
             ))}
@@ -251,15 +251,15 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         <button
           type="button"
           onClick={() => setShowCRODrawer(!showCRODrawer)}
-          className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 font-semibold cursor-pointer transition-all shrink-0"
+          className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-transparent font-semibold cursor-pointer transition-all shrink-0"
           title="Bấm để xem phân tích CRO chi tiết"
         >
-          <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+          <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
           <span className="hidden sm:inline">CRO:</span>
-          <span className="font-bold text-white">{cro.totalScore}/100</span>
+          <span className="font-bold text-slate-900 dark:text-white">{cro.totalScore}/100</span>
         </button>
 
-        <div className="w-[1px] h-4 bg-white/20 mx-0.5 shrink-0 hidden sm:block"></div>
+        <div className="w-[1px] h-4 bg-slate-300 dark:bg-white/20 mx-0.5 shrink-0 hidden sm:block"></div>
 
         {/* Visual CMS In-place Edit Toggle */}
         <button
@@ -267,12 +267,12 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           onClick={() => setIsEditMode(!isEditMode)}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold cursor-pointer transition-all shrink-0 ${
             isEditMode
-              ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/40 ring-2 ring-emerald-400/50 scale-105'
-              : 'bg-white/10 hover:bg-white/20 text-slate-200'
+              ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 ring-2 ring-emerald-500/50 scale-105'
+              : 'bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-transparent'
           }`}
           title="Bật/Tắt chế độ Visual CMS sửa chữ trực tiếp và kích hoạt AI Viết lại"
         >
-          <Edit3 className={`w-3.5 h-3.5 shrink-0 ${isEditMode ? 'text-white animate-pulse' : 'text-emerald-400'}`} />
+          <Edit3 className={`w-3.5 h-3.5 shrink-0 ${isEditMode ? 'text-white animate-pulse' : 'text-emerald-600 dark:text-emerald-400'}`} />
           <span>{isEditMode ? 'Sửa chữ (Đang bật)' : 'Sửa chữ (Visual CMS)'}</span>
         </button>
 
@@ -280,7 +280,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         <button
           type="button"
           onClick={onEditForm}
-          className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-white/10 text-slate-300 font-semibold cursor-pointer transition-all shrink-0"
+          className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold cursor-pointer transition-all shrink-0"
         >
           <span>Sửa form</span>
         </button>
@@ -289,7 +289,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         <button
           type="button"
           onClick={handlePublishOnline}
-          className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold cursor-pointer shadow-lg shadow-emerald-500/20 transition-all hover:scale-105 shrink-0"
+          className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold cursor-pointer shadow-lg shadow-emerald-600/25 transition-all hover:scale-105 shrink-0"
           title="Xuất bản online và lấy link chia sẻ"
         >
           <Send className="w-3.5 h-3.5 shrink-0" />
