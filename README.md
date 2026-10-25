@@ -6,7 +6,7 @@
 
 | Hạng mục | Nội dung |
 |---|---|
-| Chillandcode |
+| Tên đội thi | Chillandcode |
 | Bảng thi | Bảng A - Công nghệ |
 | Đề bài bốc thăm | Đề số `<số đề>` — `<Tên đề bài bốc thăm>` |
 | Demo online | https://chillflow.vercel.app `<hoặc URL Vercel của đội>` |
