@@ -9,7 +9,7 @@
 | Tên đội thi | Chillandcode |
 | Bảng thi | Bảng A - Công nghệ |
 | Đề bài bốc thăm | Đề số `08` — `Tạo landing page sự kiện trong 5 phút` |
-| Demo online | https://chillflow.vercel.app `<hoặc URL Vercel của đội>` |
+| Demo online | https://chill-flow-xi.vercel.app/ `<hoặc URL Vercel của đội>` |
 | Video demo (≤ 02 phút) | `<URL video demo YouTube hoặc Google Drive>` |
 | Source ZIP | `<URL tải gói mã nguồn ZIP hoặc đính kèm>` |
 | Minh chứng dùng AI | Kèm tại mục 10 và tài liệu chi tiết tại [`docs/VIBE_CODING_SHOWCASE.md`](docs/VIBE_CODING_SHOWCASE.md) |
