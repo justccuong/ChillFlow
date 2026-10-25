@@ -7,6 +7,8 @@ import { ExecutiveHero } from './heroes/ExecutiveHero';
 import { CreativeHero } from './heroes/CreativeHero';
 import { AcademyHero } from './heroes/AcademyHero';
 import { CinematicStudioHero } from './heroes/CinematicStudioHero';
+import { Particles } from '../ui/particles';
+import { useThemeMode } from '../../hooks/useThemeMode';
 
 interface HeroSectionProps {
   input: EventInput;
@@ -37,6 +39,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onUpdateInputField,
   headlineVariant = 'A',
 }) => {
+  const { isDark } = useThemeMode();
   const heroPhoto = input.heroImageUrl || theme.heroImage;
 
   const handleSaveHeadline = (val: string) => {
@@ -98,6 +101,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div
           className={`ambient-glow-orb top-1/4 left-1/2 -translate-x-1/2 w-[750px] h-[450px] bg-gradient-to-tr ${theme.glowGradient} opacity-25 dark:opacity-35`}
         ></div>
+        {/* Magic UI Interactive Particles */}
+        <Particles
+          className="absolute inset-0 z-0"
+          quantity={90}
+          ease={70}
+          size={0.6}
+          staticity={35}
+          color={isDark ? '#e2e8f0' : '#475569'}
+          refresh
+        />
       </div>
 
       {/* Render the dynamically selected Hero Archetype */}

@@ -8,6 +8,7 @@ import { ApiKeyModal } from './components/ApiKeyModal';
 import { AuthModal } from './components/AuthModal';
 import { PricingModal } from './components/PricingModal';
 import { PublicStandalonePage } from './components/LandingPage/PublicStandalonePage';
+import { Particles } from './components/ui/particles';
 import { generateLandingPageContent, PRESETS } from './services/aiService';
 import { useThemeMode } from './hooks/useThemeMode';
 import { extractSlugFromLocation, getPublishedEvent } from './services/publishService';
@@ -247,13 +248,24 @@ export function App() {
       <div className="flex-1">
         {currentTab === 'form' || !content || !eventInput ? (
           <div className="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-6">
-            <div className="text-center space-y-2">
-              <h1 className="text-2xl md:text-4xl font-bold font-heading text-slate-900 dark:text-white tracking-tight">
-                Tạo Trang Đích Sự Kiện & Tối Ưu Chuyển Đổi
-              </h1>
-              <p className="text-slate-600 dark:text-slate-400 text-sm max-w-xl mx-auto">
-                Điền thông tin để tạo landing page chuẩn chuyển đổi kèm phân tích CRO tự động.
-              </p>
+            <div className="relative overflow-hidden rounded-3xl p-8 md:p-10 text-center space-y-3 border border-slate-200/80 dark:border-slate-800/80 bg-gradient-to-b from-white/80 via-white/40 to-white/90 dark:from-slate-900/90 dark:via-slate-900/50 dark:to-slate-950/90 backdrop-blur-xl shadow-xl shadow-slate-200/40 dark:shadow-black/40">
+              <Particles
+                className="absolute inset-0 z-0"
+                quantity={60}
+                ease={70}
+                size={0.5}
+                staticity={35}
+                color={themeMode === 'dark' ? '#cbd5e1' : '#64748b'}
+                refresh
+              />
+              <div className="relative z-10 space-y-2">
+                <h1 className="text-2xl md:text-4xl font-bold font-heading text-slate-900 dark:text-white tracking-tight">
+                  Tạo Trang Đích Sự Kiện & Tối Ưu Chuyển Đổi
+                </h1>
+                <p className="text-slate-600 dark:text-slate-400 text-sm max-w-xl mx-auto">
+                  Điền thông tin để tạo landing page chuẩn chuyển đổi kèm phân tích CRO tự động.
+                </p>
+              </div>
             </div>
 
             <EventInputForm
