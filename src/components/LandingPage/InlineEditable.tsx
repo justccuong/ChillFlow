@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Pencil, Sparkles } from 'lucide-react';
 import { FloatingAiToolbar } from './FloatingAiToolbar';
+import { KineticText } from '../magicui';
 
 interface InlineEditableProps {
   value: string;
@@ -11,6 +12,7 @@ interface InlineEditableProps {
   multiline?: boolean;
   placeholder?: string;
   category?: string;
+  useKineticText?: boolean;
 }
 
 export const InlineEditable: React.FC<InlineEditableProps> = ({
@@ -22,6 +24,7 @@ export const InlineEditable: React.FC<InlineEditableProps> = ({
   multiline = false,
   placeholder = 'Nhấp để sửa...',
   category,
+  useKineticText = false,
 }) => {
   const [currentText, setCurrentText] = useState(value);
   const [originalText, setOriginalText] = useState(value);
@@ -37,6 +40,18 @@ export const InlineEditable: React.FC<InlineEditableProps> = ({
   }, [value, isEditing]);
 
   if (!isEditMode) {
+    if (useKineticText) {
+      return (
+        <KineticText
+          text={value}
+          as={Component}
+          className={className}
+          baseWeight={800}
+          hoverWeight={950}
+          hoverScale={1.12}
+        />
+      );
+    }
     return <Component className={className}>{value}</Component>;
   }
 

@@ -68,6 +68,7 @@ export const AcademyHero: React.FC<HeroProps> = ({
               isEditMode={isEditMode}
               as="span"
               category={input.category}
+              useKineticText
             />
           </h1>
 
