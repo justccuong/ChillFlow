@@ -18,7 +18,7 @@
 ### Câu 2: Sản phẩm của bạn tích hợp AI thật hay chỉ dùng Mock? Cơ chế kiểm soát đầu ra ra sao?
 
 **Trả lời:**
-> *"ChillFlow tích hợp **100% AI thật** sử dụng mô hình **Google Gemini 2.5 Flash REST API**, đồng thời có sẵn **Smart Offline Fallback Engine** để bảo đảm tính liên tục:*
+> *"ChillFlow tích hợp **100% AI thật** sử dụng mô hình **Google Gemini 3.5 Flash REST API**, đồng thời có sẵn **Smart Offline Fallback Engine** để bảo đảm tính liên tục:*
 > 1. * **Kiểm soát đầu ra (Structured Outputs):** Chúng tôi cấu hình `responseMimeType: 'application/json'` và ép kiểu dữ liệu chặt chẽ theo TypeScript Schema (`SemanticPageSchema`). Mọi trường từ Headline, Lợi ích, Agenda đến FAQ đều được định danh rõ ràng.*
 > 2. * **Văn phong tiếng Việt chuẩn:** Prompt được tối ưu để loại bỏ hiện tượng Title Case (viết hoa từng chữ kiểu tiếng Anh), đảm bảo câu chữ tự nhiên, mang tính kích thích hành động (FOMO/Urgency).*
 > 3. * **Khả năng chịu lỗi:** Nếu người dùng chưa nhập API key hoặc kết nối Internet gián đoạn, hệ thống tự động chuyển sang Smart Engine với thông báo minh bạch, cam kết ứng dụng không bao giờ bị crash."*

@@ -356,36 +356,55 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
 
 export const getFallbackContent = generateWithSmartEngine;
 
+const ACTIVE_GEMINI_MODELS = [
+  'gemini-3.5-flash',
+  'gemini-3.5-flash-lite',
+  'gemini-flash-lite-latest',
+  'gemini-3.8-flash',
+];
+
 async function fetchGeminiContent(
   apiKey: string,
   body: Record<string, unknown>
 ): Promise<Response> {
-  const primaryModel = (import.meta.env.VITE_GEMINI_MODEL as string) || 'gemini-2.5-flash';
-  const primaryUrl = `https://generativelanguage.googleapis.com/v1beta/models/${primaryModel}:generateContent?key=${apiKey}`;
+  const envModel = import.meta.env.VITE_GEMINI_MODEL as string;
+  const modelsToTry = [
+    ...(envModel ? [envModel] : []),
+    ...ACTIVE_GEMINI_MODELS.filter((m) => m !== envModel),
+  ];
 
-  let res = await fetch(primaryUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
+  let lastResponse: Response | null = null;
+  let lastError: unknown = null;
 
-  // If primary model returns 404 or 400, automatically fallback to alternative Gemini 2.x Flash
-  if (!res.ok && (res.status === 404 || res.status === 400)) {
-    const fallbackModel = primaryModel === 'gemini-2.5-flash' ? 'gemini-2.0-flash' : 'gemini-2.5-flash';
-    const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${fallbackModel}:generateContent?key=${apiKey}`;
+  for (const model of modelsToTry) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
     try {
-      const fallbackRes = await fetch(fallbackUrl, {
+      const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-      if (fallbackRes.ok) return fallbackRes;
-    } catch {
-      // return original response
+
+      if (res.ok) {
+        return res;
+      }
+
+      lastResponse = res;
+      // If 404 (model sunset/not available), 503 (high demand spike), or 429 (quota exceeded on specific model), cascade to next
+      if (res.status === 404 || res.status === 503 || res.status === 429) {
+        console.warn(`Gemini model ${model} returned ${res.status}, automatically cascading to next active model...`);
+        continue;
+      }
+
+      // If invalid key (400/403), stop retrying and return error
+      return res;
+    } catch (err) {
+      lastError = err;
     }
   }
 
-  return res;
+  if (lastResponse) return lastResponse;
+  throw lastError || new Error('All Gemini models failed');
 }
 
 async function callGeminiAPI(

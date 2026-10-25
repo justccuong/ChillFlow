@@ -156,7 +156,7 @@ export function App() {
       saveCurrentEventState(input, result.content, result.cro);
 
       if (result.source === 'gemini-api') {
-        showToast('⚡ Google Gemini 2.5 Flash đã sinh nội dung thành công!', 'success');
+        showToast('⚡ Google Gemini AI (3.5 Flash) đã sinh nội dung thành công!', 'success');
       } else {
         showToast('💡 Đã khởi tạo nội dung qua Smart Offline Engine', 'info');
       }
