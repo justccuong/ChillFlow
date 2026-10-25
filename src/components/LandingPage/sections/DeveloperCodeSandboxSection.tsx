@@ -13,7 +13,7 @@ export const DeveloperCodeSandboxSection: React.FC<DevProps> = ({ theme }) => {
 import { AgentRunner, ModelRouter, VectorStore } from '@eventflow/core';
 
 export async function bootstrapCluster() {
-  const router = new ModelRouter({ fallback: 'gemini-1.5-flash', latencyThresholdMs: 80 });
+  const router = new ModelRouter({ fallback: 'gemini-2.5-flash', latencyThresholdMs: 80 });
   const runner = new AgentRunner({ router, memory: new VectorStore('redis://cluster:6379') });
 
   // Execute distributed reasoning pipeline

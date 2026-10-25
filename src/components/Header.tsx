@@ -136,13 +136,13 @@ export const Header: React.FC<HeaderProps> = ({
                 ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-semibold'
                 : 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400 font-medium'
             }`}
-            title={apiKeyPresent ? 'Gemini 1.5 Flash (AI Thật) đang hoạt động' : 'Bản demo vòng loại - Dữ liệu mô phỏng AI (Smart Engine)'}
+            title={apiKeyPresent ? 'Gemini 2.5 Flash (AI Thật) đang hoạt động' : 'Bản demo vòng loại - Dữ liệu mô phỏng AI (Smart Engine)'}
           >
             {apiKeyPresent ? (
               <>
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                 <Key className="w-3.5 h-3.5" />
-                <span className="hidden lg:inline text-[11px]">AI Thật: Gemini 1.5</span>
+                <span className="hidden lg:inline text-[11px]">AI Thật: Gemini 2.5 Flash</span>
               </>
             ) : (
               <>

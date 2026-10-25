@@ -356,6 +356,38 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
 
 export const getFallbackContent = generateWithSmartEngine;
 
+async function fetchGeminiContent(
+  apiKey: string,
+  body: Record<string, unknown>
+): Promise<Response> {
+  const primaryModel = (import.meta.env.VITE_GEMINI_MODEL as string) || 'gemini-2.5-flash';
+  const primaryUrl = `https://generativelanguage.googleapis.com/v1beta/models/${primaryModel}:generateContent?key=${apiKey}`;
+
+  let res = await fetch(primaryUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+
+  // If primary model returns 404 or 400, automatically fallback to alternative Gemini 2.x Flash
+  if (!res.ok && (res.status === 404 || res.status === 400)) {
+    const fallbackModel = primaryModel === 'gemini-2.5-flash' ? 'gemini-2.0-flash' : 'gemini-2.5-flash';
+    const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${fallbackModel}:generateContent?key=${apiKey}`;
+    try {
+      const fallbackRes = await fetch(fallbackUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (fallbackRes.ok) return fallbackRes;
+    } catch {
+      // return original response
+    }
+  }
+
+  return res;
+}
+
 async function callGeminiAPI(
   input: EventInput,
   apiKey: string,
@@ -422,17 +454,12 @@ Hãy trả về DUY NHẤT một chuỗi JSON hợp lệ (không kèm Markdown b
 }
 `;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: 'application/json',
-        temperature: 0.7,
-      },
-    }),
+  const response = await fetchGeminiContent(apiKey, {
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: {
+      responseMimeType: 'application/json',
+      temperature: 0.7,
+    },
   });
 
   if (!response.ok) {
@@ -511,17 +538,12 @@ QUY TẮC BẮT BUỘC:
 - Dùng văn phong tự nhiên, viết hoa theo đúng quy tắc tiếng Việt (Sentence case). TUYỆT ĐỐI KHÔNG viết hoa chữ cái đầu của mỗi từ (Title Case).
 `;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.85,
-        maxOutputTokens: 200,
-      },
-    }),
+  const response = await fetchGeminiContent(apiKey, {
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: {
+      temperature: 0.85,
+      maxOutputTokens: 200,
+    },
   });
 
   if (!response.ok) {
