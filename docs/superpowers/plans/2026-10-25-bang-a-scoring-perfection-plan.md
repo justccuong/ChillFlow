@@ -54,10 +54,10 @@
 - Input validation: Chặn khi thiếu trường bắt buộc, ngày sự kiện sai định dạng hoặc trong quá khứ, sức chứa <= 0.
 - Toast feedback: Hiển thị trạng thái "Đang kết nối Gemini AI...", "AI đã sinh nội dung thành công", hoặc thông báo fallback thân thiện khi không có API key.
 
-- [ ] **Step 1: Viết logic validation và state thông báo lỗi inline trong EventInputForm**
-- [ ] **Step 2: Loại bỏ hoàn toàn browser `alert()` và thay bằng component thông báo lỗi trực quan trên form**
-- [ ] **Step 3: Bổ sung toast indicator trong App.tsx khi gọi AI thật thành công**
-- [ ] **Step 4: Kiểm tra build và xác nhận không có lỗi TypeScript**
+- [x] **Step 1: Viết logic validation và state thông báo lỗi inline trong EventInputForm**
+- [x] **Step 2: Loại bỏ hoàn toàn browser `alert()` và thay bằng component thông báo lỗi trực quan trên form**
+- [x] **Step 3: Bổ sung toast indicator trong App.tsx khi gọi AI thật thành công**
+- [x] **Step 4: Kiểm tra build và xác nhận không có lỗi TypeScript**
 
 ---
 
@@ -71,9 +71,9 @@
 - Đảm bảo `aiService.ts` trả về thông tin rõ ràng về nguồn dữ liệu (`source: 'gemini-api' | 'smart-fallback'`).
 - Hiển thị badge trực quan trên Header: "Chế độ: Gemini 1.5 Flash (AI Thật)" khi có key, hoặc "Chế độ: Smart Engine (Offline)" để minh bạch 100% với ban giám khảo.
 
-- [ ] **Step 1: Cập nhật hàm generateLandingPageContent trả về metadata nguồn sinh (Gemini vs Fallback)**
-- [ ] **Step 2: Bổ sung Badge trạng thái AI Engine trên thanh Header**
-- [ ] **Step 3: Kiểm tra luồng fallback khi API key bị lỗi hoặc mất mạng**
+- [x] **Step 1: Cập nhật hàm generateLandingPageContent trả về metadata nguồn sinh (Gemini vs Fallback)**
+- [x] **Step 2: Bổ sung Badge trạng thái AI Engine trên thanh Header**
+- [x] **Step 3: Kiểm tra luồng fallback khi API key bị lỗi hoặc mất mạng**
 
 ---
 
@@ -86,9 +86,9 @@
 **Interfaces:**
 - Thêm các Security Headers chuẩn OWASP: `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`.
 
-- [ ] **Step 1: Bổ sung khối "headers" vào vercel.json**
-- [ ] **Step 2: Bổ sung các directive security headers vào nginx.conf**
-- [ ] **Step 3: Kiểm tra cấu hình cú pháp JSON và Nginx**
+- [x] **Step 1: Bổ sung khối "headers" vào vercel.json**
+- [x] **Step 2: Bổ sung các directive security headers vào nginx.conf**
+- [x] **Step 3: Kiểm tra cấu hình cú pháp JSON và Nginx**
 
 ---
 
@@ -103,8 +103,8 @@
 - Hướng dẫn lấy và cấu hình Google Gemini API Key miễn phí.
 - Kiến trúc thư mục và sơ đồ hoạt động.
 
-- [ ] **Step 1: Soạn thảo README.md chuyên nghiệp chuẩn bài thi Hackathon**
-- [ ] **Step 2: Kiểm tra liên kết và định dạng markdown**
+- [x] **Step 1: Soạn thảo README.md chuyên nghiệp chuẩn bài thi Hackathon**
+- [x] **Step 2: Kiểm tra liên kết và định dạng markdown**
 
 ---
 
@@ -119,6 +119,6 @@
 - Bộ câu hỏi phản biện kỹ thuật (Defense Q&A) sẵn sàng cho đội thi thuyết trình trước hội đồng giám khảo.
 - Kịch bản quay video demo (3-5 phút) chuẩn barem.
 
-- [ ] **Step 1: Tạo docs/VIBE_CODING_SHOWCASE.md ghi nhận minh chứng sử dụng AI và quy trình phát triển**
-- [ ] **Step 2: Tạo docs/DEFENSE_QA.md với các câu trả lời phản biện xuất sắc về kiến trúc kỹ thuật**
-- [ ] **Step 3: Rà soát toàn bộ tài liệu và đối chiếu barem Bảng A**
+- [x] **Step 1: Tạo docs/VIBE_CODING_SHOWCASE.md ghi nhận minh chứng sử dụng AI và quy trình phát triển**
+- [x] **Step 2: Tạo docs/DEFENSE_QA.md với các câu trả lời phản biện xuất sắc về kiến trúc kỹ thuật**
+- [x] **Step 3: Rà soát toàn bộ tài liệu và đối chiếu barem Bảng A**
