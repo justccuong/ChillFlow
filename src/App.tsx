@@ -50,6 +50,16 @@ export function App() {
   const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
   const [pricingReason, setPricingReason] = useState<string | undefined>(undefined);
 
+  // Global Toast Feedback State
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'warning' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'info' | 'warning' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(prev => (prev?.message === message ? null : prev));
+    }, 4000);
+  };
+
   const { mode: themeMode, toggleMode } = useThemeMode();
 
   // Listen to routing changes (hash, history popstate)
@@ -143,8 +153,15 @@ export function App() {
       setAttendees(currentAttendees);
 
       saveCurrentEventState(input, result.content, result.cro);
+
+      if (result.source === 'gemini-api') {
+        showToast('⚡ Google Gemini 1.5 Flash đã sinh nội dung thành công!', 'success');
+      } else {
+        showToast('💡 Đã khởi tạo nội dung qua Smart Offline Engine', 'info');
+      }
     } catch (err) {
       console.error('Error generating landing page:', err);
+      showToast('Có lỗi xảy ra khi tạo trang, vui lòng thử lại', 'warning');
     } finally {
       setIsLoading(false);
     }
@@ -161,8 +178,10 @@ export function App() {
       setIsAlreadyOptimized(true);
 
       saveCurrentEventState(eventInput, result.content, result.cro);
+      showToast('🚀 Đã tối ưu hóa tỷ lệ chuyển đổi (CRO) thành công!', 'success');
     } catch (err) {
       console.error('Error optimizing CRO:', err);
+      showToast('Không thể tối ưu hóa nội dung lúc này', 'warning');
     } finally {
       setIsOptimizing(false);
     }
@@ -187,6 +206,7 @@ export function App() {
     setCro(null);
     setIsAlreadyOptimized(false);
     setCurrentTab('form');
+    showToast('Đã làm mới dữ liệu sự kiện', 'info');
   };
 
   // Register attendee
@@ -194,6 +214,7 @@ export function App() {
     const eventId = eventInput?.eventName || 'default';
     const updatedList = saveAttendee(attendeeData, eventId);
     setAttendees(updatedList);
+    showToast(`Đăng ký vé thành công cho ${attendeeData.fullName}!`, 'success');
   };
 
   const handleClearAttendees = () => {
@@ -291,6 +312,23 @@ export function App() {
         reason={pricingReason}
         onUpgraded={(updated) => setUserProfile(updated)}
       />
+
+      {/* Global Toast Notification */}
+      {toast && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-2xl border backdrop-blur-md animate-fade-in transition-all bg-white/95 dark:bg-slate-900/95 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white">
+          <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+            toast.type === 'success' ? 'bg-emerald-500 animate-pulse' : toast.type === 'warning' ? 'bg-rose-500' : 'bg-indigo-500'
+          }`} />
+          <span className="text-xs font-semibold">{toast.message}</span>
+          <button
+            type="button"
+            onClick={() => setToast(null)}
+            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs font-bold ml-2 cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      )}
     </div>
   );
 }

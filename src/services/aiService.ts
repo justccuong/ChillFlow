@@ -85,21 +85,28 @@ export const PRESETS: { label: string; iconType: 'ai' | 'marketing' | 'startup' 
   },
 ];
 
+export interface GenerateLandingPageResult {
+  content: GeneratedContent;
+  cro: CROEvaluation;
+  source: 'gemini-api' | 'smart-fallback';
+}
+
 export async function generateLandingPageContent(
   input: EventInput,
   apiKey?: string,
   forceOptimized = false
-): Promise<{ content: GeneratedContent; cro: CROEvaluation }> {
+): Promise<GenerateLandingPageResult> {
   if (apiKey && apiKey.trim() !== '') {
     try {
       const result = await callGeminiAPI(input, apiKey.trim(), forceOptimized);
-      if (result) return result;
+      if (result) return { ...result, source: 'gemini-api' };
     } catch (err) {
       console.warn('Gemini API call failed, falling back to smart built-in engine:', err);
     }
   }
 
-  return generateWithSmartEngine(input, forceOptimized);
+  const fallback = generateWithSmartEngine(input, forceOptimized);
+  return { ...fallback, source: 'smart-fallback' };
 }
 
 function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
