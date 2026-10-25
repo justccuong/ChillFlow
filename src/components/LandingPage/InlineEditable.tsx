@@ -48,7 +48,6 @@ export const InlineEditable: React.FC<InlineEditableProps> = ({
           className={className}
           baseWeight={800}
           hoverWeight={950}
-          hoverScale={1.12}
         />
       );
     }
