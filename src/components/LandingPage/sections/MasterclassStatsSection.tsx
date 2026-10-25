@@ -1,6 +1,24 @@
 import React from 'react';
 import type { ThemeConfig } from '../../../types';
 import { TrendingUp } from 'lucide-react';
+import { NumberTicker } from '../../ui/number-ticker';
+
+function renderStatValue(rawVal: string) {
+  const match = rawVal.match(/^([^0-9]*)([\d,.]+)(.*)$/);
+  if (!match) return rawVal;
+  const prefix = match[1];
+  const numStr = match[2].replace(/,/g, '');
+  const suffix = match[3];
+  const num = parseFloat(numStr);
+  if (isNaN(num)) return rawVal;
+  return (
+    <>
+      {prefix}
+      <NumberTicker value={num} />
+      {suffix}
+    </>
+  );
+}
 
 interface StatsProps {
   theme: ThemeConfig;
@@ -37,7 +55,7 @@ export const MasterclassStatsSection: React.FC<StatsProps> = ({ theme }) => {
               className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-md dark:shadow-xl space-y-2 text-center transition-transform hover:-translate-y-1"
             >
               <div className="text-3xl sm:text-4xl font-black font-heading bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
-                {st.value}
+                {renderStatValue(st.value)}
               </div>
               <div className="text-sm font-bold text-slate-900 dark:text-white">{st.label}</div>
               <p className="text-xs text-slate-500 dark:text-slate-400">{st.subtext}</p>

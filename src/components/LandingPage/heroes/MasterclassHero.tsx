@@ -4,6 +4,7 @@ import { CountdownTimer } from '../../CountdownTimer';
 import { InlineEditable } from '../InlineEditable';
 import { formatEventDate } from '../../../utils/date';
 import { Calendar, MapPin, ArrowRight, Users, Flame, Award, TrendingUp, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { NumberTicker } from '../../ui/number-ticker';
 
 interface HeroProps {
   input: EventInput;
@@ -119,7 +120,9 @@ export const MasterclassHero: React.FC<HeroProps> = ({
               <Users className="w-3.5 h-3.5 text-amber-500" />
               Đã có người giữ chỗ
             </span>
-            <span className="text-amber-600 dark:text-amber-400 font-bold">{percentTaken}% ({takenSeats}/{maxSeats} vé)</span>
+            <span className="text-amber-600 dark:text-amber-400 font-bold">
+              <NumberTicker value={percentTaken} />% (<NumberTicker value={takenSeats} />/{maxSeats} vé)
+            </span>
           </div>
           <div className="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
             <div

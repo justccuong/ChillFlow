@@ -4,6 +4,7 @@ import { CountdownTimer } from '../../CountdownTimer';
 import { formatEventDate } from '../../../utils/date';
 import { InlineEditable } from '../InlineEditable';
 import { Calendar, MapPin, ArrowRight, Terminal, Copy, Check, Code2, Cpu, GitBranch, Layers, CheckCircle2 } from 'lucide-react';
+import { NumberTicker } from '../../ui/number-ticker';
 
 interface HeroProps {
   input: EventInput;
@@ -147,7 +148,9 @@ export const TerminalHero: React.FC<HeroProps> = ({
           </button>
           <div className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-            <span>Đã cấp vé tham dự cho {registeredCount > 0 ? registeredCount : 96}+ kỹ sư</span>
+            <span>
+              Đã cấp vé tham dự cho <NumberTicker value={registeredCount > 0 ? registeredCount : 96} />+ kỹ sư
+            </span>
           </div>
         </div>
 

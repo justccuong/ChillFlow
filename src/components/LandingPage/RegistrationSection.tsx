@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { EventInput, GeneratedContent, Attendee, ThemeConfig } from '../../types';
 import confetti from 'canvas-confetti';
 import { Sparkles, CheckCircle2, Flame, Users, Gift, ShieldCheck } from 'lucide-react';
+import { NumberTicker } from '../ui/number-ticker';
 
 interface RegistrationSectionProps {
   input: EventInput;
@@ -103,7 +104,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
               <div>
                 <div className="text-xs text-slate-500 dark:text-slate-400">Số lượng người đăng ký</div>
                 <div className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                  <span className={theme.accentColor}>{registeredCount}</span>
+                  <span className={theme.accentColor}><NumberTicker value={registeredCount} /></span>
                   <span className="text-slate-500 text-sm font-normal">/ {maxSeats} suất</span>
                 </div>
               </div>
@@ -115,15 +116,15 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
               className="text-xs px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center gap-1.5 cursor-pointer transition-colors shadow-sm"
             >
               <Users className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
-              Danh sách ({registeredCount})
+              Danh sách (<NumberTicker value={registeredCount} />)
             </button>
           </div>
 
           {/* Progress bar */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
-              <span>Đã đăng ký {percentFilled}%</span>
-              <span className={`${theme.accentColor} font-semibold`}>Còn lại {remainingSeats} vé</span>
+              <span>Đã đăng ký <NumberTicker value={percentFilled} />%</span>
+              <span className={`${theme.accentColor} font-semibold`}>Còn lại <NumberTicker value={remainingSeats} /> vé</span>
             </div>
             <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
               <div

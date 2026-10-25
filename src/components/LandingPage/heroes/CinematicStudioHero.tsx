@@ -6,6 +6,7 @@ import { formatEventDate } from '../../../utils/date';
 import { Calendar, MapPin, ArrowRight, Award, ShieldCheck, Box, RefreshCw } from 'lucide-react';
 import { DirectionalButton } from '../../common/DirectionalButton';
 import { SoundWaveWidget } from '../../common/SoundWaveWidget';
+import { NumberTicker } from '../../ui/number-ticker';
 
 interface HeroProps {
   input: EventInput;
@@ -414,10 +415,20 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
             <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-zinc-400">
               <div className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
               <span className="font-medium text-slate-700 dark:text-zinc-300">
-                {registeredCount > 0 ? `${registeredCount} nhà sáng tạo đã ghi danh` : 'Hơn 180 nghệ sĩ số & studio đã đăng ký'}
+                {registeredCount > 0 ? (
+                  <>
+                    <NumberTicker value={registeredCount} /> nhà sáng tạo đã ghi danh
+                  </>
+                ) : (
+                  <>
+                    Hơn <NumberTicker value={180} /> nghệ sĩ số & studio đã đăng ký
+                  </>
+                )}
               </span>
               <span className="inline-block w-1 h-1 rounded-full bg-slate-300 dark:bg-zinc-700" />
-              <span className="text-amber-600 dark:text-amber-300 font-semibold">Chỉ còn 24 suất trải nghiệm 3D</span>
+              <span className="text-amber-600 dark:text-amber-300 font-semibold">
+                Chỉ còn <NumberTicker value={24} /> suất trải nghiệm 3D
+              </span>
             </div>
           </div>
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { Attendee } from '../types';
 import { exportAttendeesToCSV } from '../services/storageService';
 import { X, Download, Trash2, Users, Search, Ticket } from 'lucide-react';
+import { NumberTicker } from './ui/number-ticker';
 
 interface AttendeeListModalProps {
   isOpen: boolean;
@@ -42,7 +43,7 @@ export const AttendeeListModal: React.FC<AttendeeListModalProps> = ({
               <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 Danh sách người tham gia
                 <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                  {attendees.length}
+                  <NumberTicker value={attendees.length} />
                 </span>
               </h3>
             </div>

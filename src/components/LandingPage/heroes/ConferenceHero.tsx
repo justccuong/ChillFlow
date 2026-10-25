@@ -4,6 +4,7 @@ import { CountdownTimer } from '../../CountdownTimer';
 import { InlineEditable } from '../InlineEditable';
 import { formatEventDate } from '../../../utils/date';
 import { Calendar, MapPin, ArrowRight, Flame, Camera, Sparkles, Star, ShieldCheck } from 'lucide-react';
+import { NumberTicker } from '../../ui/number-ticker';
 
 interface HeroProps {
   input: EventInput;
@@ -140,10 +141,20 @@ export const ConferenceHero: React.FC<HeroProps> = ({
                 ))}
               </div>
               <span className="font-semibold text-slate-700 dark:text-slate-300">
-                {registeredCount > 0 ? `${registeredCount} người đã đăng ký` : 'Hơn 120 người đã giữ chỗ'}
+                {registeredCount > 0 ? (
+                  <>
+                    <NumberTicker value={registeredCount} /> người đã đăng ký
+                  </>
+                ) : (
+                  <>
+                    Hơn <NumberTicker value={120} /> người đã giữ chỗ
+                  </>
+                )}
               </span>
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-              <span className="text-emerald-600 dark:text-emerald-400 font-medium">Chỉ còn 38 vé Early Bird</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                Chỉ còn <NumberTicker value={38} /> vé Early Bird
+              </span>
             </div>
           </div>
 

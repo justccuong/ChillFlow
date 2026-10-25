@@ -3,6 +3,7 @@ import { X, Check, Crown, Zap, PlayCircle, Sparkles, CheckCircle2, ShieldCheck, 
 import { getCurrentUser, upgradeTier, addAdCredit } from '../services/authService';
 import { UserProfile, UserTier } from '../types';
 import confetti from 'canvas-confetti';
+import { NumberTicker } from './ui/number-ticker';
 
 interface PricingModalProps {
   isOpen: boolean;
@@ -118,7 +119,7 @@ export const PricingModal: React.FC<PricingModalProps> = ({
                   </div>
                 </div>
                 <div className="mb-4">
-                  <span className="text-3xl font-extrabold text-slate-900 dark:text-white">0đ</span>
+                  <span className="text-3xl font-extrabold text-slate-900 dark:text-white"><NumberTicker value={0} />đ</span>
                   <span className="text-xs text-slate-500 ml-1">/ trọn đời</span>
                 </div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-4">
@@ -176,7 +177,7 @@ export const PricingModal: React.FC<PricingModalProps> = ({
                   </div>
                 </div>
                 <div className="mb-4">
-                  <span className="text-3xl font-extrabold text-slate-900 dark:text-white">249.000đ</span>
+                  <span className="text-3xl font-extrabold text-slate-900 dark:text-white"><NumberTicker value={249000} />đ</span>
                   <span className="text-xs text-slate-500 ml-1">/ tháng</span>
                 </div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-4">
@@ -235,7 +236,7 @@ export const PricingModal: React.FC<PricingModalProps> = ({
                   </div>
                 </div>
                 <div className="mb-4">
-                  <span className="text-3xl font-extrabold text-slate-900 dark:text-white">990.000đ</span>
+                  <span className="text-3xl font-extrabold text-slate-900 dark:text-white"><NumberTicker value={990000} />đ</span>
                   <span className="text-xs text-slate-500 ml-1">/ sự kiện hoặc trọn đời</span>
                 </div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-4">

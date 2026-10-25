@@ -1,6 +1,7 @@
 import React from 'react';
 import { Plus, Users, Key, Eye, Edit3, Zap, Sun, Moon, Sparkles } from 'lucide-react';
 import { UserProfile } from '../types';
+import { NumberTicker } from './ui/number-ticker';
 
 interface HeaderProps {
   currentTab: 'form' | 'preview';
@@ -124,8 +125,8 @@ export const Header: React.FC<HeaderProps> = ({
             title="Danh sách người đăng ký"
           >
             <Users className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
-            <span className="hidden sm:inline">{registeredCount} đăng ký</span>
-            <span className="sm:hidden">{registeredCount}</span>
+            <span className="hidden sm:inline"><NumberTicker value={registeredCount} /> đăng ký</span>
+            <span className="sm:hidden"><NumberTicker value={registeredCount} /></span>
           </button>
 
           <button

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { ThemeConfig } from '../../types';
 import { ArrowRight, Flame, Sparkles } from 'lucide-react';
+import { NumberTicker } from '../ui/number-ticker';
 
 interface StickyBottomCtaProps {
   eventName: string;
@@ -50,7 +51,7 @@ export const StickyBottomCta: React.FC<StickyBottomCtaProps> = ({
 
           <div className="flex items-center gap-1.5 text-xs text-amber-400 font-semibold bg-amber-400/10 px-2.5 py-1 rounded-full border border-amber-400/20">
             <Flame className="w-3.5 h-3.5" />
-            <span>Chỉ còn {remaining} vé Early Bird!</span>
+            <span>Chỉ còn <NumberTicker value={remaining} /> vé Early Bird!</span>
           </div>
         </div>
 

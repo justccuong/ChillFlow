@@ -4,6 +4,7 @@ import { CountdownTimer } from '../../CountdownTimer';
 import { formatEventDate } from '../../../utils/date';
 import { InlineEditable } from '../InlineEditable';
 import { Calendar, MapPin, ArrowRight, Palette, Sparkles, PenTool, Zap } from 'lucide-react';
+import { NumberTicker } from '../../ui/number-ticker';
 
 interface HeroProps {
   input: EventInput;
@@ -167,7 +168,15 @@ export const CreativeHero: React.FC<HeroProps> = ({
 
             <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 pt-1">
               <span className="font-semibold text-pink-600 dark:text-pink-300">Số lượng giới hạn: 40 chỗ</span>
-              <span className="text-slate-500 dark:text-slate-400">{registeredCount > 0 ? `${registeredCount} đã giữ chỗ` : 'Đang mở đăng ký'}</span>
+              <span className="text-slate-500 dark:text-slate-400">
+                {registeredCount > 0 ? (
+                  <>
+                    <NumberTicker value={registeredCount} /> đã giữ chỗ
+                  </>
+                ) : (
+                  'Đang mở đăng ký'
+                )}
+              </span>
             </div>
           </div>
         </div>

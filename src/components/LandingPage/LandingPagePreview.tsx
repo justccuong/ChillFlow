@@ -34,6 +34,7 @@ import { publishEvent } from '../../services/publishService';
 import { exportStandaloneHtml } from '../../utils/sourceExporter';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { Sparkles, ArrowUp, Edit3, Palette, Send, X } from 'lucide-react';
+import { NumberTicker } from '../ui/number-ticker';
 import type { UserProfile, PublishedPageRecord } from '../../types';
 
 interface LandingPagePreviewProps {
@@ -256,7 +257,9 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         >
           <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
           <span className="hidden sm:inline">CRO:</span>
-          <span className="font-bold text-slate-900 dark:text-white">{cro.totalScore}/100</span>
+          <span className="font-bold text-slate-900 dark:text-white">
+            <NumberTicker value={cro.totalScore} />/100
+          </span>
         </button>
 
         <div className="w-[1px] h-4 bg-slate-300 dark:bg-white/20 mx-0.5 shrink-0 hidden sm:block"></div>
