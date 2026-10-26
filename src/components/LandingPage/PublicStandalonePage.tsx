@@ -9,7 +9,6 @@ import { AgendaSection } from './AgendaSection';
 import { FaqSection } from './FaqSection';
 import { RegistrationSection } from './RegistrationSection';
 import { StickyBottomCta } from './StickyBottomCta';
-import { StickyFomoBar } from './StickyFomoBar';
 import { ExitIntentModal } from './ExitIntentModal';
 import { SocialProofTicker } from './SocialProofTicker';
 import { MasterclassStatsSection } from './sections/MasterclassStatsSection';
@@ -58,14 +57,7 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans">
-      {/* 1. Sticky FOMO Urgency Bar */}
-      <StickyFomoBar
-        targetDate={input.eventDate}
-        onCtaClick={scrollToRegistration}
-        earlyBirdBadge={content.earlyBirdBadge}
-        ticketsLeft={24}
-      />
-
+      
       <main className="flex-1">
         {/* 2. Hero Section */}
         <HeroSection

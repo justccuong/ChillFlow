@@ -116,7 +116,7 @@ export const InlineEditable: React.FC<InlineEditableProps> = ({
 
   return (
     <span
-      className="relative group/inline-edit inline-block max-w-full"
+      className={`relative group/inline-edit inline-block max-w-full ${className.includes('justify-center') || className.includes('text-center') ? 'text-center w-full' : ''}`}
       onClick={(e) => {
         // Prevent clicking parent button/link when in Visual CMS mode
         e.stopPropagation();

@@ -51,7 +51,7 @@ export const MasterclassHero: React.FC<HeroProps> = ({
       </div>
 
       {/* Majestic Panoramic Headline */}
-      <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight font-heading leading-[1.15] text-slate-900 dark:text-white max-w-4xl mx-auto drop-shadow-sm">
+      <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight font-heading leading-[1.15] text-slate-900 dark:text-white max-w-4xl mx-auto drop-shadow-sm text-center flex flex-col items-center justify-center">
         <InlineEditable
           value={headlineToDisplay}
           onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
@@ -59,6 +59,7 @@ export const MasterclassHero: React.FC<HeroProps> = ({
           as="span"
           category={input.category}
           useKineticText
+          className="w-full flex flex-wrap justify-center text-center items-center"
         />
       </h1>
 
@@ -94,7 +95,7 @@ export const MasterclassHero: React.FC<HeroProps> = ({
 
       {/* Centered Prominent Hero Countdown */}
       <div className="pt-2 max-w-2xl mx-auto">
-        <CountdownTimer targetDate={input.eventDate} size="hero" />
+        <CountdownTimer targetDate={input.eventDate} size="hero" variant="transparent" />
       </div>
 
       {/* CTA Button & Live Scarcity Meter */}
