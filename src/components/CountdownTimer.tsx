@@ -50,6 +50,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
   return (
     <div
+      data-audit="countdown"
       className={`w-full flex flex-col ${
         isLeft ? 'items-start text-left' : 'items-center justify-center text-center'
       } ${isCompact ? 'my-3' : 'my-6 sm:my-8'} select-none`}

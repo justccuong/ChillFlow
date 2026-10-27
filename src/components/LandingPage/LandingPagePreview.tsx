@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import type { EventInput, GeneratedContent, CROEvaluation, Attendee, EventCategory, SponsorItem } from '../../types';
 import { getThemeForCategory, CATEGORIES } from '../../services/themeEngine';
 import { saveCurrentEventState } from '../../services/storageService';
@@ -88,6 +88,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   const [currentCategory, setCurrentCategory] = useState<EventCategory>(input.category || 'ai-tech');
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState<boolean>(false);
+  const previewContainerRef = useRef<HTMLElement>(null);
 
   // Undo / Redo Global Store Integration
   const undo = useLandingPageStore((s) => s.undo);
@@ -392,13 +393,17 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               onToggleHeadlineVariant={() => setHeadlineVariant(v => (v === 'A' ? 'B' : 'A'))}
               primaryHeadline={content.headline}
               alternativeHeadline={content.alternativeHeadline}
+              onApplyHeadline={(newHeadline) => handleUpdateContentField('headline', newHeadline)}
+              theme={theme}
+              category={currentCategory}
+              previewContainerRef={previewContainerRef}
             />
           </div>
         </div>
       )}
 
       {/* Main Landing Page Rendered Sections with Scroll Reveal Animations */}
-      <main className="flex-1">
+      <main ref={previewContainerRef} className="flex-1">
         {/* 1. Hero Section (Two-Column Split + Real Photo + Social Proof Avatars) */}
         <HeroSection
           input={{ ...input, category: currentCategory }}
