@@ -34,7 +34,7 @@ import { publishEvent } from '../../services/publishService';
 import { exportStandaloneHtml } from '../../utils/sourceExporter';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { Sparkles, ArrowUp, Edit3, Palette, Send, X } from 'lucide-react';
-import { NumberTicker } from '../ui/number-ticker';
+import { NumberTicker } from '../magicui';
 import type { UserProfile, PublishedPageRecord } from '../../types';
 
 interface LandingPagePreviewProps {

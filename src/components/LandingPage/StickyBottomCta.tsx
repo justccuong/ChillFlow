@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { ThemeConfig } from '../../types';
 import { ArrowRight, Flame, Sparkles } from 'lucide-react';
-import { NumberTicker } from '../ui/number-ticker';
+import { NumberTicker } from '../magicui';
 
 interface StickyBottomCtaProps {
   eventName: string;

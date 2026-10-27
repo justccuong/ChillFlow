@@ -1,7 +1,7 @@
 import React from 'react';
 import type { ThemeConfig } from '../../../types';
 import { TrendingUp } from 'lucide-react';
-import { NumberTicker } from '../../ui/number-ticker';
+import { NumberTicker } from '../../magicui';
 
 function renderStatValue(rawVal: string) {
   const match = rawVal.match(/^([^0-9]*)([\d,.]+)(.*)$/);

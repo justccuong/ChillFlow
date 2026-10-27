@@ -7,7 +7,7 @@ import { ExecutiveHero } from './heroes/ExecutiveHero';
 import { CreativeHero } from './heroes/CreativeHero';
 import { AcademyHero } from './heroes/AcademyHero';
 import { CinematicStudioHero } from './heroes/CinematicStudioHero';
-import { Particles } from '../ui/particles';
+import { Particles } from '../magicui';
 import { useThemeMode } from '../../hooks/useThemeMode';
 
 interface HeroSectionProps {

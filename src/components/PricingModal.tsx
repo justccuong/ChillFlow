@@ -3,7 +3,7 @@ import { X, Check, Crown, Zap, PlayCircle, Sparkles, CheckCircle2, ShieldCheck, 
 import { getCurrentUser, upgradeTier, addAdCredit } from '../services/authService';
 import { UserProfile, UserTier } from '../types';
 import confetti from 'canvas-confetti';
-import { NumberTicker } from './ui/number-ticker';
+import { NumberTicker } from './magicui';
 
 interface PricingModalProps {
   isOpen: boolean;

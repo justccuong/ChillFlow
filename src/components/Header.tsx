@@ -1,7 +1,7 @@
 import React from 'react';
 import { Plus, Users, Key, Eye, Edit3, Zap, Sun, Moon, Sparkles } from 'lucide-react';
 import { UserProfile } from '../types';
-import { NumberTicker } from './ui/number-ticker';
+import { NumberTicker } from './magicui';
 
 interface HeaderProps {
   currentTab: 'form' | 'preview';

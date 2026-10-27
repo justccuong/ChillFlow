@@ -4,7 +4,7 @@ import { CountdownTimer } from '../../CountdownTimer';
 import { InlineEditable } from '../InlineEditable';
 import { formatEventDate } from '../../../utils/date';
 import { Calendar, MapPin, ArrowRight, Flame, Camera, Sparkles, Star, ShieldCheck } from 'lucide-react';
-import { NumberTicker } from '../../ui/number-ticker';
+import { NumberTicker } from '../../magicui';
 
 interface HeroProps {
   input: EventInput;

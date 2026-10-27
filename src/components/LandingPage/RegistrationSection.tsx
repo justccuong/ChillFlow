@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { EventInput, GeneratedContent, Attendee, ThemeConfig } from '../../types';
 import confetti from 'canvas-confetti';
 import { Sparkles, CheckCircle2, Flame, Users, Gift, ShieldCheck } from 'lucide-react';
-import { NumberTicker } from '../ui/number-ticker';
+import { NumberTicker } from '../magicui';
 
 interface RegistrationSectionProps {
   input: EventInput;

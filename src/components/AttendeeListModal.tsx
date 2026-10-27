@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { Attendee } from '../types';
 import { exportAttendeesToCSV } from '../services/storageService';
 import { X, Download, Trash2, Users, Search, Ticket } from 'lucide-react';
-import { NumberTicker } from './ui/number-ticker';
+import { NumberTicker } from './magicui';
 
 interface AttendeeListModalProps {
   isOpen: boolean;

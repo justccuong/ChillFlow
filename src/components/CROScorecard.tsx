@@ -1,7 +1,7 @@
 import React from 'react';
 import type { CROEvaluation } from '../types';
 import { Sparkles, TrendingUp, CheckCircle2, Target, Zap, ShieldCheck } from 'lucide-react';
-import { NumberTicker } from './ui/number-ticker';
+import { NumberTicker } from './magicui';
 
 interface CROScorecardProps {
   cro: CROEvaluation;

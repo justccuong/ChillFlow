@@ -8,7 +8,7 @@ import { ApiKeyModal } from './components/ApiKeyModal';
 import { AuthModal } from './components/AuthModal';
 import { PricingModal } from './components/PricingModal';
 import { PublicStandalonePage } from './components/LandingPage/PublicStandalonePage';
-import { Particles } from './components/ui/particles';
+import { Particles } from './components/magicui';
 import { generateLandingPageContent, PRESETS } from './services/aiService';
 import { useThemeMode } from './hooks/useThemeMode';
 import { extractSlugFromLocation, getPublishedEvent } from './services/publishService';
