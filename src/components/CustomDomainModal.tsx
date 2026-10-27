@@ -187,3 +187,5 @@ export const CustomDomainModal: React.FC<CustomDomainModalProps> = ({
     </div>
   );
 };
+
+export default CustomDomainModal;

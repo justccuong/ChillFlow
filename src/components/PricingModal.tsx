@@ -342,3 +342,5 @@ export const PricingModal: React.FC<PricingModalProps> = ({
     </div>
   );
 };
+
+export default PricingModal;

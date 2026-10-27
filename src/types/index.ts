@@ -89,6 +89,8 @@ export interface CROEvaluation {
   urgencyScore: number;
   clarityScore: number;
   authorityScore: number;
+  seoScore?: number;
+  contrastScore?: number;
   verdict: string;
   aiSuggestions: string[];
 }

@@ -1,18 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import type { EventInput, GeneratedContent, CROEvaluation, Attendee, UserProfile } from './types';
 import { Header } from './components/Header';
 import { EventInputForm } from './components/EventInputForm';
 import { LandingPagePreview } from './components/LandingPage/LandingPagePreview';
-import { AttendeeListModal } from './components/AttendeeListModal';
-import { ApiKeyModal } from './components/ApiKeyModal';
-import { AuthModal } from './components/AuthModal';
-import { PricingModal } from './components/PricingModal';
 import { PublicStandalonePage } from './components/LandingPage/PublicStandalonePage';
 import { Particles } from './components/magicui';
 import { generateLandingPageContent, PRESETS } from './services/aiService';
 import { useThemeMode } from './hooks/useThemeMode';
 import { extractSlugFromLocation, getPublishedEvent } from './services/publishService';
 import { Globe } from 'lucide-react';
+import { useLandingPageStore } from './store/useLandingPageStore';
 import {
   getCurrentUser,
   subscribeAuthChange,
@@ -26,6 +23,12 @@ import {
   clearEventState,
   getSavedApiKey,
 } from './services/storageService';
+
+// Code Splitting: Lazy-load modals so they aren't included in the initial bundle
+const AttendeeListModal = lazy(() => import('./components/AttendeeListModal'));
+const ApiKeyModal = lazy(() => import('./components/ApiKeyModal'));
+const AuthModal = lazy(() => import('./components/AuthModal'));
+const PricingModal = lazy(() => import('./components/PricingModal'));
 
 export function App() {
   const [eventInput, setEventInput] = useState<EventInput | null>(() => PRESETS[0].data);
@@ -92,6 +95,10 @@ export function App() {
       setCro(savedState.cro);
       setCurrentTab('preview');
       setAttendees(getStoredAttendees(savedState.input.eventName));
+      // Sync into central Zustand store
+      useLandingPageStore.getState().setInput(savedState.input);
+      useLandingPageStore.getState().setContent(savedState.content, false);
+      useLandingPageStore.getState().setCroEvaluation(savedState.cro);
     } else {
       setEventInput(PRESETS[0].data);
       setAttendees(getStoredAttendees('default'));
@@ -154,6 +161,9 @@ export function App() {
       setAttendees(currentAttendees);
 
       saveCurrentEventState(input, result.content, result.cro);
+      useLandingPageStore.getState().setInput(input);
+      useLandingPageStore.getState().setContent(result.content, false);
+      useLandingPageStore.getState().setCroEvaluation(result.cro);
 
       if (result.source === 'gemini-api') {
         showToast('⚡ Google Gemini AI (3.5 Flash) đã sinh nội dung thành công!', 'success');
@@ -179,6 +189,8 @@ export function App() {
       setIsAlreadyOptimized(true);
 
       saveCurrentEventState(eventInput, result.content, result.cro);
+      useLandingPageStore.getState().setContent(result.content, true);
+      useLandingPageStore.getState().setCroEvaluation(result.cro);
       showToast('🚀 Đã tối ưu hóa tỷ lệ chuyển đổi (CRO) thành công!', 'success');
     } catch (err) {
       console.error('Error optimizing CRO:', err);
@@ -191,7 +203,7 @@ export function App() {
   // Nút "Tạo trang mới"
   const handleResetNewEvent = () => {
     clearEventState();
-    setEventInput({
+    const emptyInput: EventInput = {
       eventName: '',
       category: 'ai-tech',
       eventDate: '',
@@ -202,11 +214,13 @@ export function App() {
       earlyBirdDiscount: '',
       targetAudience: '',
       maxCapacity: 100,
-    });
+    };
+    setEventInput(emptyInput);
     setContent(null);
     setCro(null);
     setIsAlreadyOptimized(false);
     setCurrentTab('form');
+    useLandingPageStore.getState().resetAll();
     showToast('Đã làm mới dữ liệu sự kiện', 'info');
   };
 
@@ -286,8 +300,13 @@ export function App() {
             isOptimizing={isOptimizing}
             isAlreadyOptimized={isAlreadyOptimized}
             onEditForm={() => setCurrentTab('form')}
-            onUpdateInput={setEventInput}
-            onUpdateContent={setContent}
+            onUpdateInput={(updated) => {
+              setEventInput(updated);
+              useLandingPageStore.getState().setInput(updated);
+            }}
+            onUpdateContent={(updated) => {
+              setContent(updated);
+            }}
             userProfile={userProfile}
             onTriggerUpgrade={(reason) => {
               setPricingReason(reason);
@@ -297,33 +316,43 @@ export function App() {
         )}
       </div>
 
-      <AttendeeListModal
-        isOpen={isAttendeeModalOpen}
-        onClose={() => setIsAttendeeModalOpen(false)}
-        attendees={attendees}
-        eventName={eventInput?.eventName || 'Event'}
-        onClearAll={handleClearAttendees}
-      />
+      <Suspense fallback={null}>
+        {isAttendeeModalOpen && (
+          <AttendeeListModal
+            isOpen={isAttendeeModalOpen}
+            onClose={() => setIsAttendeeModalOpen(false)}
+            attendees={attendees}
+            eventName={eventInput?.eventName || 'Event'}
+            onClearAll={handleClearAttendees}
+          />
+        )}
 
-      <ApiKeyModal
-        isOpen={isApiKeyModalOpen}
-        onClose={() => setIsApiKeyModalOpen(false)}
-        currentKey={apiKey}
-        onKeySaved={setApiKey}
-      />
+        {isApiKeyModalOpen && (
+          <ApiKeyModal
+            isOpen={isApiKeyModalOpen}
+            onClose={() => setIsApiKeyModalOpen(false)}
+            currentKey={apiKey}
+            onKeySaved={setApiKey}
+          />
+        )}
 
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        onSuccess={(updated) => setUserProfile(updated)}
-      />
+        {isAuthModalOpen && (
+          <AuthModal
+            isOpen={isAuthModalOpen}
+            onClose={() => setIsAuthModalOpen(false)}
+            onSuccess={(updated) => setUserProfile(updated)}
+          />
+        )}
 
-      <PricingModal
-        isOpen={isPricingModalOpen}
-        onClose={() => setIsPricingModalOpen(false)}
-        reason={pricingReason}
-        onUpgraded={(updated) => setUserProfile(updated)}
-      />
+        {isPricingModalOpen && (
+          <PricingModal
+            isOpen={isPricingModalOpen}
+            onClose={() => setIsPricingModalOpen(false)}
+            reason={pricingReason}
+            onUpgraded={(updated) => setUserProfile(updated)}
+          />
+        )}
+      </Suspense>
 
       {/* Global Toast Notification */}
       {toast && (
@@ -344,5 +373,4 @@ export function App() {
     </div>
   );
 }
-
 export default App;

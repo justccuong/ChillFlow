@@ -65,3 +65,5 @@ export const ExecutivePitchesSection: React.FC<ExecutiveProps> = () => {
     </section>
   );
 };
+
+export default ExecutivePitchesSection;

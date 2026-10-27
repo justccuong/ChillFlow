@@ -340,3 +340,5 @@ export const CinematicShowcaseSection: React.FC<CinematicShowcaseProps> = ({
     </section>
   );
 };
+
+export default CinematicShowcaseSection;

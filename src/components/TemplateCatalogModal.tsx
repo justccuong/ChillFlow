@@ -303,3 +303,5 @@ export const TemplateCatalogModal: React.FC<TemplateCatalogModalProps> = ({
     </div>
   );
 };
+
+export default TemplateCatalogModal;

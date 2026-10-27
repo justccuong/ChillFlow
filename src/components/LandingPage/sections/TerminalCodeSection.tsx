@@ -58,3 +58,5 @@ export const TerminalCodeSection: React.FC<TerminalProps> = () => {
     </section>
   );
 };
+
+export default TerminalCodeSection;

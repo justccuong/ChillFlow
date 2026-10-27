@@ -48,3 +48,5 @@ export const CreativeMasonrySection: React.FC<CreativeProps> = () => {
     </section>
   );
 };
+
+export default CreativeMasonrySection;

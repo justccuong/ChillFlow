@@ -105,3 +105,5 @@ export const AcademySyllabusSection: React.FC<AcademyProps> = ({ theme }) => {
     </section>
   );
 };
+
+export default AcademySyllabusSection;

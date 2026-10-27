@@ -85,3 +85,5 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({
     </div>
   );
 };
+
+export default ApiKeyModal;

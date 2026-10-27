@@ -114,3 +114,5 @@ export const StartupPitchingRosterSection: React.FC<StartupPitchingProps> = ({
     </section>
   );
 };
+
+export default StartupPitchingRosterSection;

@@ -66,3 +66,5 @@ export const MasterclassStatsSection: React.FC<StatsProps> = ({ theme }) => {
     </section>
   );
 };
+
+export default MasterclassStatsSection;

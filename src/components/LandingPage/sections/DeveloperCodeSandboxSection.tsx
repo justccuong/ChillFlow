@@ -86,3 +86,5 @@ export async function bootstrapCluster() {
     </section>
   );
 };
+
+export default DeveloperCodeSandboxSection;

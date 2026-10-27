@@ -1,0 +1,41 @@
+name: ChillFlow CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, Typecheck, Test & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Step 1: Code Quality & Linting (oxlint)
+        run: npx oxlint
+
+      - name: 🛡️ Step 2: TypeScript Strict Compilation (tsc -b)
+        run: npx tsc -b
+
+      - name: 🧪 Step 3: Automated Unit Testing (Vitest)
+        run: npm test
+
+      - name: 🚀 Step 4: Production Bundle Packaging (Vite Build)
+        run: npm run build

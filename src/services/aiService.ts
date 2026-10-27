@@ -96,13 +96,11 @@ export async function generateLandingPageContent(
   apiKey?: string,
   forceOptimized = false
 ): Promise<GenerateLandingPageResult> {
-  if (apiKey && apiKey.trim() !== '') {
-    try {
-      const result = await callGeminiAPI(input, apiKey.trim(), forceOptimized);
-      if (result) return { ...result, source: 'gemini-api' };
-    } catch (err) {
-      console.warn('Gemini API call failed, falling back to smart built-in engine:', err);
-    }
+  try {
+    const result = await callGeminiAPI(input, apiKey, forceOptimized);
+    if (result) return { ...result, source: 'gemini-api' };
+  } catch (err) {
+    console.warn('Gemini API/Proxy call failed, seamlessly falling back to smart built-in engine:', err);
   }
 
   const fallback = generateWithSmartEngine(input, forceOptimized);
@@ -363,6 +361,44 @@ const ACTIVE_GEMINI_MODELS = [
   'gemini-3.8-flash',
 ];
 
+async function fetchWithHybridProxy(
+  apiKey: string | undefined,
+  body: Record<string, unknown>
+): Promise<Response> {
+  const cleanKey = apiKey?.trim();
+
+  // 1. If user provided a personal BYOK key, use it with active Gemini models
+  if (cleanKey && cleanKey !== '') {
+    return fetchGeminiContent(cleanKey, body);
+  }
+
+  // 2. Otherwise try the Serverless AI Proxy (/api/ai-proxy) with system key
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 14000);
+    const proxyRes = await fetch('/api/ai-proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ body }),
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    if (proxyRes.ok) {
+      return proxyRes;
+    }
+  } catch {
+    // Proxy unavailable (e.g. local vite dev without vercel), fallback to local env
+  }
+
+  // 3. Fallback to client-side env key if defined
+  const envKey = (import.meta.env.VITE_GEMINI_API_KEY as string)?.trim();
+  if (envKey) {
+    return fetchGeminiContent(envKey, body);
+  }
+
+  throw new Error('No API key or reachable AI proxy found');
+}
+
 async function fetchGeminiContent(
   apiKey: string,
   body: Record<string, unknown>
@@ -409,7 +445,7 @@ async function fetchGeminiContent(
 
 async function callGeminiAPI(
   input: EventInput,
-  apiKey: string,
+  apiKey: string | undefined,
   forceOptimized: boolean
 ): Promise<{ content: GeneratedContent; cro: CROEvaluation } | null> {
   const prompt = `
@@ -473,7 +509,7 @@ Hãy trả về DUY NHẤT một chuỗi JSON hợp lệ (không kèm Markdown b
 }
 `;
 
-  const response = await fetchGeminiContent(apiKey, {
+  const response = await fetchWithHybridProxy(apiKey, {
     contents: [{ parts: [{ text: prompt }] }],
     generationConfig: {
       responseMimeType: 'application/json',
@@ -529,7 +565,7 @@ export async function rewriteCopyContent(options: RewriteOptions): Promise<strin
 async function callGeminiRewriteAPI(
   text: string,
   style: RewriteStyle,
-  apiKey: string,
+  apiKey: string | undefined,
   category?: string
 ): Promise<string> {
   const styleInstruction = {
@@ -557,7 +593,7 @@ QUY TẮC BẮT BUỘC:
 - Dùng văn phong tự nhiên, viết hoa theo đúng quy tắc tiếng Việt (Sentence case). TUYỆT ĐỐI KHÔNG viết hoa chữ cái đầu của mỗi từ (Title Case).
 `;
 
-  const response = await fetchGeminiContent(apiKey, {
+  const response = await fetchWithHybridProxy(apiKey, {
     contents: [{ parts: [{ text: prompt }] }],
     generationConfig: {
       temperature: 0.85,
@@ -589,7 +625,7 @@ function rewriteWithSmartFallback(text: string, style: RewriteStyle): string {
       .trim();
 
     if (result.length > 55) {
-      const parts = result.split(/[:—\-]/);
+      const parts = result.split(/[:—-]/);
       if (parts.length > 1) {
         result = parts[0].trim();
       }

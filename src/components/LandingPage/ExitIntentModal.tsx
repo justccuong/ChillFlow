@@ -167,3 +167,5 @@ export const ExitIntentModal: React.FC<ExitIntentModalProps> = ({
     </div>
   );
 };
+
+export default ExitIntentModal;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { calculateTimeRemaining, type TimeRemaining } from '../utils/date';
 
 interface CountdownTimerProps {
   targetDate: string;
@@ -9,13 +10,6 @@ interface CountdownTimerProps {
   showLabels?: boolean;
 }
 
-interface TimeRemaining {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
-
 export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   targetDate,
   size = 'hero',
@@ -24,29 +18,12 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   variant = 'card',
   showLabels = true,
 }) => {
-  const calculateTimeRemaining = (): TimeRemaining => {
-    let targetTime = new Date(targetDate).getTime();
-
-    // Luôn đảm bảo có thời gian đếm ngược thực tế sống động
-    if (isNaN(targetTime) || targetTime <= Date.now()) {
-      targetTime = Date.now() + 14 * 24 * 60 * 60 * 1000 + 8 * 60 * 60 * 1000 + 45 * 60 * 1000;
-    }
-
-    const difference = targetTime - Date.now();
-
-    return {
-      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-      minutes: Math.floor((difference / 1000 / 60) % 60),
-      seconds: Math.floor((difference / 1000) % 60),
-    };
-  };
-
-  const [time, setTime] = useState<TimeRemaining>(calculateTimeRemaining());
+  const [time, setTime] = useState<TimeRemaining>(() => calculateTimeRemaining(targetDate));
 
   useEffect(() => {
+    setTime(calculateTimeRemaining(targetDate));
     const timer = setInterval(() => {
-      setTime(calculateTimeRemaining());
+      setTime(calculateTimeRemaining(targetDate));
     }, 1000);
     return () => clearInterval(timer);
   }, [targetDate]);

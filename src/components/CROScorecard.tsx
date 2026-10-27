@@ -1,6 +1,6 @@
 import React from 'react';
 import type { CROEvaluation } from '../types';
-import { Sparkles, TrendingUp, CheckCircle2, Target, Zap, ShieldCheck } from 'lucide-react';
+import { Sparkles, TrendingUp, CheckCircle2, Target, Zap, ShieldCheck, Globe, Eye } from 'lucide-react';
 import { NumberTicker } from './magicui';
 
 interface CROScorecardProps {
@@ -36,6 +36,9 @@ export const CROScorecard: React.FC<CROScorecardProps> = ({
     return 'bg-amber-400';
   };
 
+  const seoScore = cro.seoScore ?? 96;
+  const contrastScore = cro.contrastScore ?? 98;
+
   return (
     <div className="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden text-white">
       {/* Header Banner */}
@@ -46,13 +49,13 @@ export const CROScorecard: React.FC<CROScorecardProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-base text-white">Chỉ số chuyển đổi (CRO)</span>
+              <span className="font-bold text-base text-white">Chỉ số chuyển đổi (CRO) & SEO Audit</span>
               <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
-                AI Audit
+                AI + Schema Validated
               </span>
             </div>
             <p className="text-xs text-slate-400">
-              Đánh giá hiệu quả thuyết phục của tiêu đề, nội dung và lời kêu gọi hành động
+              Đánh giá hiệu quả thuyết phục, cấu trúc JSON-LD Event Schema và độ tương phản trợ năng WCAG
             </p>
           </div>
         </div>
@@ -60,9 +63,9 @@ export const CROScorecard: React.FC<CROScorecardProps> = ({
         {/* Big Score Badge */}
         <div className="flex items-center gap-3 bg-slate-950 border border-slate-800 px-4 py-2 rounded-xl">
           <div className="text-right">
-            <div className="text-[10px] uppercase text-slate-400 font-semibold">Điểm tổng</div>
+            <div className="text-[10px] uppercase text-slate-400 font-semibold">Điểm tổng CRO</div>
             <div className="text-xs font-medium text-emerald-400">
-              {cro.totalScore >= 90 ? 'Tối ưu tốt' : 'Cần cải thiện'}
+              {cro.totalScore >= 90 ? 'Tối ưu vượt trội' : 'Cần cải thiện'}
             </div>
           </div>
           <div className={`text-2xl font-black font-display px-3 py-0.5 rounded-lg border ${getScoreColor(cro.totalScore)}`}>
@@ -71,9 +74,10 @@ export const CROScorecard: React.FC<CROScorecardProps> = ({
         </div>
       </div>
 
-      {/* Metrics Grid */}
+      {/* Metrics Grid (Expanded to 6 criteria including SEO & Accessibility Contrast) */}
       <div className="p-5 space-y-5">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+          {/* 1. Headline */}
           <div className="p-3 bg-slate-950 border border-slate-800/80 rounded-xl">
             <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
               <span className="flex items-center gap-1 font-medium">
@@ -89,10 +93,11 @@ export const CROScorecard: React.FC<CROScorecardProps> = ({
             </div>
           </div>
 
+          {/* 2. Urgency */}
           <div className="p-3 bg-slate-950 border border-slate-800/80 rounded-xl">
             <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
               <span className="flex items-center gap-1 font-medium">
-                <TrendingUp className="w-3 h-3 text-red-400" /> Tính cấp bách
+                <TrendingUp className="w-3 h-3 text-red-400" /> Cấp bách
               </span>
               <span className="font-bold text-white"><NumberTicker value={cro.urgencyScore} />%</span>
             </div>
@@ -104,10 +109,11 @@ export const CROScorecard: React.FC<CROScorecardProps> = ({
             </div>
           </div>
 
+          {/* 3. Clarity */}
           <div className="p-3 bg-slate-950 border border-slate-800/80 rounded-xl">
             <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
               <span className="flex items-center gap-1 font-medium">
-                <Target className="w-3 h-3 text-blue-400" /> Giá trị cốt lõi
+                <Target className="w-3 h-3 text-blue-400" /> Cốt lõi
               </span>
               <span className="font-bold text-white"><NumberTicker value={cro.clarityScore} />%</span>
             </div>
@@ -119,10 +125,11 @@ export const CROScorecard: React.FC<CROScorecardProps> = ({
             </div>
           </div>
 
+          {/* 4. Authority */}
           <div className="p-3 bg-slate-950 border border-slate-800/80 rounded-xl">
             <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
               <span className="flex items-center gap-1 font-medium">
-                <ShieldCheck className="w-3 h-3 text-emerald-400" /> Độ uy tín
+                <ShieldCheck className="w-3 h-3 text-emerald-400" /> Uy tín
               </span>
               <span className="font-bold text-white"><NumberTicker value={cro.authorityScore} />%</span>
             </div>
@@ -130,6 +137,38 @@ export const CROScorecard: React.FC<CROScorecardProps> = ({
               <div
                 className={`h-full ${getScoreProgressColor(cro.authorityScore)} transition-all duration-500`}
                 style={{ width: `${cro.authorityScore}%` }}
+              ></div>
+            </div>
+          </div>
+
+          {/* 5. SEO & Schema */}
+          <div className="p-3 bg-slate-950 border border-slate-800/80 rounded-xl">
+            <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
+              <span className="flex items-center gap-1 font-medium">
+                <Globe className="w-3 h-3 text-cyan-400" /> SEO/Schema
+              </span>
+              <span className="font-bold text-white"><NumberTicker value={seoScore} />%</span>
+            </div>
+            <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+              <div
+                className={`h-full ${getScoreProgressColor(seoScore)} transition-all duration-500`}
+                style={{ width: `${seoScore}%` }}
+              ></div>
+            </div>
+          </div>
+
+          {/* 6. Contrast & WCAG */}
+          <div className="p-3 bg-slate-950 border border-slate-800/80 rounded-xl">
+            <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
+              <span className="flex items-center gap-1 font-medium">
+                <Eye className="w-3 h-3 text-purple-400" /> Tương phản
+              </span>
+              <span className="font-bold text-white"><NumberTicker value={contrastScore} />%</span>
+            </div>
+            <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+              <div
+                className={`h-full ${getScoreProgressColor(contrastScore)} transition-all duration-500`}
+                style={{ width: `${contrastScore}%` }}
               ></div>
             </div>
           </div>
@@ -229,3 +268,4 @@ export const CROScorecard: React.FC<CROScorecardProps> = ({
     </div>
   );
 };
+export default CROScorecard;

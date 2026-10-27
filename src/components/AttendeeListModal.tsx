@@ -147,3 +147,5 @@ export const AttendeeListModal: React.FC<AttendeeListModalProps> = ({
     </div>
   );
 };
+
+export default AttendeeListModal;

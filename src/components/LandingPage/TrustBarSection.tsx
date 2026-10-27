@@ -1,7 +1,7 @@
 import React from 'react';
 import type { ThemeConfig, SponsorItem } from '../../types';
 import { ShieldCheck, SlidersHorizontal, Sparkles } from 'lucide-react';
-import { SPONSOR_PRESET_LIBRARY } from '../SponsorEditorModal';
+import { SPONSOR_PRESET_LIBRARY } from '../../constants/sponsors';
 import { ScrollBasedVelocity } from '../magicui';
 
 interface TrustBarSectionProps {

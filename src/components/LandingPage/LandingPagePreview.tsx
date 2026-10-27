@@ -1,41 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import type { EventInput, GeneratedContent, CROEvaluation, Attendee, EventCategory, SponsorItem } from '../../types';
 import { getThemeForCategory, CATEGORIES } from '../../services/themeEngine';
 import { saveCurrentEventState } from '../../services/storageService';
 import { HeroSection } from './HeroSection';
 import { TrustBarSection } from './TrustBarSection';
 import { BenefitsSection } from './BenefitsSection';
-import { EventGallerySection } from './EventGallerySection';
 import { SpeakerSection } from './SpeakerSection';
 import { TestimonialsSection } from './TestimonialsSection';
 import { AgendaSection } from './AgendaSection';
 import { FaqSection } from './FaqSection';
 import { RegistrationSection } from './RegistrationSection';
-import { StickyBottomCta } from './StickyBottomCta';
 import { CROScorecard } from '../CROScorecard';
-import { ImagePickerModal } from '../ImagePickerModal';
-import { SponsorEditorModal } from '../SponsorEditorModal';
-import { MasterclassStatsSection } from './sections/MasterclassStatsSection';
-import { TerminalCodeSection } from './sections/TerminalCodeSection';
-import { ExecutivePitchesSection } from './sections/ExecutivePitchesSection';
-import { CreativeMasonrySection } from './sections/CreativeMasonrySection';
-import { AcademySyllabusSection } from './sections/AcademySyllabusSection';
-import { MarketingBeforeAfterSection } from './sections/MarketingBeforeAfterSection';
-import { StartupPitchingRosterSection } from './sections/StartupPitchingRosterSection';
-import { DeveloperCodeSandboxSection } from './sections/DeveloperCodeSandboxSection';
-import { CinematicShowcaseSection } from './sections/CinematicShowcaseSection';
-import { TemplateCatalogModal } from '../TemplateCatalogModal';
-import { TEMPLATE_LIBRARY, detectBestTemplate, getTemplateById } from '../../services/templateRegistry';
-import { ExitIntentModal } from './ExitIntentModal';
+import { detectBestTemplate, getTemplateById } from '../../services/templateRegistry';
 import { SocialProofTicker } from './SocialProofTicker';
-import { PublishModal } from './PublishModal';
-import { CustomDomainModal } from '../CustomDomainModal';
 import { publishEvent } from '../../services/publishService';
 import { exportStandaloneHtml } from '../../utils/sourceExporter';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
-import { Sparkles, ArrowUp, Edit3, Palette, Send, X } from 'lucide-react';
+import { Sparkles, ArrowUp, Edit3, Palette, Send, X, Undo2, Redo2 } from 'lucide-react';
 import { NumberTicker } from '../magicui';
 import type { UserProfile, PublishedPageRecord } from '../../types';
+import { useLandingPageStore } from '../../store/useLandingPageStore';
+import { useUndoRedoKeyboard } from '../../hooks/useUndoRedoKeyboard';
+
+// Code Splitting: Lazy-load Modals
+const ImagePickerModal = lazy(() => import('../ImagePickerModal'));
+const SponsorEditorModal = lazy(() => import('../SponsorEditorModal'));
+const TemplateCatalogModal = lazy(() => import('../TemplateCatalogModal'));
+const ExitIntentModal = lazy(() => import('./ExitIntentModal'));
+const PublishModal = lazy(() => import('./PublishModal'));
+const CustomDomainModal = lazy(() => import('../CustomDomainModal'));
+
+// Code Splitting: Lazy-load 9 Category-specific Section Variants
+const MasterclassStatsSection = lazy(() => import('./sections/MasterclassStatsSection'));
+const TerminalCodeSection = lazy(() => import('./sections/TerminalCodeSection'));
+const ExecutivePitchesSection = lazy(() => import('./sections/ExecutivePitchesSection'));
+const CreativeMasonrySection = lazy(() => import('./sections/CreativeMasonrySection'));
+const AcademySyllabusSection = lazy(() => import('./sections/AcademySyllabusSection'));
+const MarketingBeforeAfterSection = lazy(() => import('./sections/MarketingBeforeAfterSection'));
+const StartupPitchingRosterSection = lazy(() => import('./sections/StartupPitchingRosterSection'));
+const DeveloperCodeSandboxSection = lazy(() => import('./sections/DeveloperCodeSandboxSection'));
+const CinematicShowcaseSection = lazy(() => import('./sections/CinematicShowcaseSection'));
+
+function SectionFallback() {
+  return (
+    <div className="max-w-7xl mx-auto py-12 px-4 animate-pulse">
+      <div className="h-8 w-64 bg-slate-200 dark:bg-slate-800 rounded-xl mb-4 mx-auto" />
+      <div className="h-36 bg-slate-100 dark:bg-slate-900/60 rounded-2xl mx-auto" />
+    </div>
+  );
+}
 
 interface LandingPagePreviewProps {
   input: EventInput;
@@ -51,7 +64,7 @@ interface LandingPagePreviewProps {
   onUpdateInput: (updatedInput: EventInput) => void;
   onUpdateContent?: (updatedContent: GeneratedContent) => void;
   userProfile?: UserProfile;
-  onTriggerUpgrade?: (reason: string) => void;
+  onTriggerUpgrade?: (reason?: string) => void;
 }
 
 export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
@@ -76,6 +89,29 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState<boolean>(false);
 
+  // Undo / Redo Global Store Integration
+  const undo = useLandingPageStore((s) => s.undo);
+  const redo = useLandingPageStore((s) => s.redo);
+  const canUndo = useLandingPageStore((s) => s.history.length > 0);
+  const canRedo = useLandingPageStore((s) => s.future.length > 0);
+
+  // Register global Ctrl+Z / Ctrl+Y keyboard shortcuts
+  useUndoRedoKeyboard();
+
+  const handleUndo = () => {
+    if (undo()) {
+      const updated = useLandingPageStore.getState().content;
+      if (updated && onUpdateContent) onUpdateContent(updated);
+    }
+  };
+
+  const handleRedo = () => {
+    if (redo()) {
+      const updated = useLandingPageStore.getState().content;
+      if (updated && onUpdateContent) onUpdateContent(updated);
+    }
+  };
+
   const recommendedTemplate = detectBestTemplate(input.eventName, input.targetAudience);
   const currentTemplateDef = getTemplateById(currentCategory);
 
@@ -84,20 +120,21 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   const [publishedRecord, setPublishedRecord] = useState<PublishedPageRecord | null>(null);
   const [isCustomDomainOpen, setIsCustomDomainOpen] = useState(false);
 
-  // In-place Visual CMS field update handlers
-  const handleUpdateContentField = (field: keyof GeneratedContent, val: any) => {
+  // In-place Visual CMS field update handlers with Undo/Redo tracking
+  const handleUpdateContentField = (field: keyof GeneratedContent, val: unknown) => {
+    useLandingPageStore.getState().updateContentField(field, val);
     const updated = { ...content, [field]: val };
     if (onUpdateContent) onUpdateContent(updated);
     saveCurrentEventState(input, updated, cro);
   };
 
-  const handleUpdateInputField = (field: keyof EventInput, val: any) => {
+  const handleUpdateInputField = (field: keyof EventInput, val: unknown) => {
     const updated: EventInput = { ...input, category: currentCategory, [field]: val };
     onUpdateInput(updated);
     saveCurrentEventState(updated, content, cro);
   };
 
-  // Luôn reset cuộn lên đầu trang khi vào preview
+  // Reset scroll to top upon entering preview
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
@@ -109,45 +146,17 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   // Sponsor Editor state
   const [isSponsorEditorOpen, setIsSponsorEditorOpen] = useState(false);
 
-  // Smooth scroll reveal observer (from awesome-landing-pages)
-  useScrollReveal([currentCategory, content, input.sponsors]);
-
-  // Deterministic Theme Engine mapping
   const theme = getThemeForCategory(currentCategory);
 
-  const handlePublishOnline = () => {
-    const result = publishEvent(
-      { ...input, category: currentCategory },
-      content,
-      theme,
-      userProfile?.tier || 'free'
-    );
+  // Initialize Scroll Reveal observer
+  useScrollReveal();
 
-    if (!result.success) {
-      if (onTriggerUpgrade) {
-        onTriggerUpgrade(result.error || 'Đã hết hạn mức trang miễn phí. Vui lòng nâng cấp gói!');
-      }
-      return;
-    }
-
-    setPublishedRecord(result.record || null);
-    setIsPublishModalOpen(true);
-  };
-
-  const handleExportSource = () => {
-    exportStandaloneHtml(
-      { ...input, category: currentCategory },
-      content,
-      theme,
-      userProfile?.tier || 'free'
-    );
-  };
-
-  const activeHeadline =
-    headlineVariant === 'A' ? content.headline : content.alternativeHeadline || content.headline;
+  const activeHeadline = headlineVariant === 'B' && content.alternativeHeadline
+    ? content.alternativeHeadline
+    : content.headline;
 
   const scrollToRegistration = () => {
-    const el = document.getElementById('registration');
+    const el = document.getElementById('registration-section');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
@@ -155,6 +164,38 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Handle 1-Click Publishing
+  const handlePublishOnline = () => {
+    const res = publishEvent(
+      { ...input, category: currentCategory },
+      content,
+      theme,
+      userProfile?.tier || 'free'
+    );
+
+    if (!res.success) {
+      if (onTriggerUpgrade) {
+        onTriggerUpgrade(res.error || 'Bạn đã dùng hết lượt xuất bản miễn phí (2 trang). Hãy nâng cấp để xuất bản không giới hạn!');
+      }
+      return;
+    }
+
+    if (res.record) {
+      setPublishedRecord(res.record);
+      setIsPublishModalOpen(true);
+    }
+  };
+
+  // Standalone HTML source export
+  const handleExportSource = () => {
+    exportStandaloneHtml(
+      { ...input, category: currentCategory },
+      content,
+      theme,
+      userProfile?.tier || 'free'
+    );
   };
 
   const handleOpenHeroPicker = () => {
@@ -215,7 +256,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         <div className="sticky top-16 z-30 bg-emerald-600 text-white px-4 py-2 text-center text-xs font-medium flex items-center justify-center gap-2 shadow-sm animate-in fade-in duration-200">
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
           <span>
-            <strong>Chế độ Visual CMS đang hoạt động:</strong> Rê chuột vào các tiêu đề, địa điểm hoặc tên diễn giả để sửa chữ trực tiếp. Mọi thay đổi sẽ tự động lưu!
+            <strong>Chế độ Visual CMS đang hoạt động:</strong> Rê chuột vào các tiêu đề, địa điểm hoặc tên diễn giả để sửa chữ trực tiếp. Mọi thay đổi sẽ tự động lưu! (Hỗ trợ phím tắt <kbd className="px-1.5 py-0.5 rounded bg-black/30 font-mono text-[10px]">Ctrl+Z</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-black/30 font-mono text-[10px]">Ctrl+Y</kbd> để Hoàn tác / Làm lại).
           </span>
         </div>
       )}
@@ -277,6 +318,38 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         >
           <Edit3 className={`w-3.5 h-3.5 shrink-0 ${isEditMode ? 'text-white animate-pulse' : 'text-emerald-600 dark:text-emerald-400'}`} />
           <span>{isEditMode ? 'Sửa chữ (Đang bật)' : 'Sửa chữ (Visual CMS)'}</span>
+        </button>
+
+        {/* Undo Button (Ctrl+Z) */}
+        <button
+          type="button"
+          onClick={handleUndo}
+          disabled={!canUndo}
+          className={`flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl font-semibold cursor-pointer transition-all shrink-0 ${
+            canUndo
+              ? 'bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white'
+              : 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-white/5 text-slate-400'
+          }`}
+          title="Hoàn tác chỉnh sửa (Ctrl+Z)"
+        >
+          <Undo2 className="w-3.5 h-3.5 shrink-0" />
+          <span className="hidden lg:inline text-[11px]">Undo</span>
+        </button>
+
+        {/* Redo Button (Ctrl+Y) */}
+        <button
+          type="button"
+          onClick={handleRedo}
+          disabled={!canRedo}
+          className={`flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl font-semibold cursor-pointer transition-all shrink-0 ${
+            canRedo
+              ? 'bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white'
+              : 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-white/5 text-slate-400'
+          }`}
+          title="Làm lại chỉnh sửa (Ctrl+Y)"
+        >
+          <Redo2 className="w-3.5 h-3.5 shrink-0" />
+          <span className="hidden lg:inline text-[11px]">Redo</span>
         </button>
 
         {/* Sửa form */}
@@ -385,7 +458,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             CATEGORY 2: MARKETING & GROWTH (High-Conversion Masterclass)
             ======================================================== */}
         {currentCategory === 'marketing' && (
-          <>
+          <Suspense fallback={<SectionFallback />}>
             <div data-reveal data-reveal-delay="100">
               <MasterclassStatsSection theme={theme} />
             </div>
@@ -401,14 +474,14 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             <div data-reveal data-reveal-delay="100">
               <FaqSection faqs={content.faqs} theme={theme} />
             </div>
-          </>
+          </Suspense>
         )}
 
         {/* ========================================================
             CATEGORY 3: DEVELOPER (Terminal Broadsheet & Telemetry)
             ======================================================== */}
         {currentCategory === 'developer' && (
-          <>
+          <Suspense fallback={<SectionFallback />}>
             <div data-reveal data-reveal-delay="100">
               <TerminalCodeSection theme={theme} />
             </div>
@@ -431,14 +504,14 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
                 speakerPhoto={speakerPhoto}
               />
             </div>
-          </>
+          </Suspense>
         )}
 
         {/* ========================================================
             CATEGORY 4: STARTUP (Executive Dealflow & Pitching Roster)
             ======================================================== */}
         {currentCategory === 'startup' && (
-          <>
+          <Suspense fallback={<SectionFallback />}>
             <div data-reveal data-reveal-delay="100">
               <ExecutivePitchesSection theme={theme} />
             </div>
@@ -448,14 +521,14 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
                 onScrollToRegister={scrollToRegistration}
               />
             </div>
-          </>
+          </Suspense>
         )}
 
         {/* ========================================================
             CATEGORY 5: DESIGN (Creative Avant-Garde & Mood Canvas)
             ======================================================== */}
         {currentCategory === 'design' && (
-          <>
+          <Suspense fallback={<SectionFallback />}>
             <div data-reveal data-reveal-delay="100">
               <CreativeMasonrySection theme={theme} />
             </div>
@@ -469,14 +542,14 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
                 onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
               />
             </div>
-          </>
+          </Suspense>
         )}
 
         {/* ========================================================
             CATEGORY 6: EDUCATION (Academic Syllabus & ISO Accreditation)
             ======================================================== */}
         {currentCategory === 'education' && (
-          <>
+          <Suspense fallback={<SectionFallback />}>
             <div data-reveal data-reveal-delay="100">
               <AcademySyllabusSection theme={theme} />
             </div>
@@ -486,14 +559,14 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             <div data-reveal data-reveal-delay="100">
               <FaqSection faqs={content.faqs} theme={theme} />
             </div>
-          </>
+          </Suspense>
         )}
 
         {/* ========================================================
             CATEGORY 7: STUDIO 3D (Cinematic 3D Studio & Experiential Showcase)
             ======================================================== */}
         {currentCategory === 'studio-3d' && (
-          <>
+          <Suspense fallback={<SectionFallback />}>
             <div data-reveal data-reveal-delay="100">
               <CinematicShowcaseSection
                 theme={theme}
@@ -513,7 +586,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             <div data-reveal data-reveal-delay="100">
               <FaqSection faqs={content.faqs} theme={theme} />
             </div>
-          </>
+          </Suspense>
         )}
 
         {/* 9. Registration Section */}
@@ -549,67 +622,79 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         <ArrowUp className="w-4 h-4" />
       </button>
 
-      {/* Image Customizer Modal (Presets / Upload file / URL) */}
-      <ImagePickerModal
-        isOpen={isImagePickerOpen}
-        onClose={() => setIsImagePickerOpen(false)}
-        title={imagePickerType === 'hero' ? 'Thay đổi ảnh nền Hero' : 'Thay đổi ảnh chân dung diễn giả'}
-        presetType={imagePickerType}
-        currentImage={
-          imagePickerType === 'hero'
-            ? input.heroImageUrl || theme.heroImage
-            : input.speakerAvatarUrl || theme.speakerImage
-        }
-        onSelectImage={handleSelectImage}
-      />
+      {/* Lazy-loaded Modals with Suspense */}
+      <Suspense fallback={null}>
+        {/* Image Customizer Modal */}
+        {isImagePickerOpen && (
+          <ImagePickerModal
+            isOpen={isImagePickerOpen}
+            onClose={() => setIsImagePickerOpen(false)}
+            title={imagePickerType === 'hero' ? 'Thay đổi ảnh nền Hero' : 'Thay đổi ảnh chân dung diễn giả'}
+            presetType={imagePickerType}
+            currentImage={
+              imagePickerType === 'hero'
+                ? input.heroImageUrl || theme.heroImage
+                : input.speakerAvatarUrl || theme.speakerImage
+            }
+            onSelectImage={handleSelectImage}
+          />
+        )}
 
-      {/* Sponsor Customizer Modal (Interactive editability from awesome-landing-pages) */}
-      <SponsorEditorModal
-        isOpen={isSponsorEditorOpen}
-        onClose={() => setIsSponsorEditorOpen(false)}
-        sponsors={input.sponsors || []}
-        onSaveSponsors={handleSaveSponsors}
-      />
+        {/* Sponsor Customizer Modal */}
+        {isSponsorEditorOpen && (
+          <SponsorEditorModal
+            isOpen={isSponsorEditorOpen}
+            onClose={() => setIsSponsorEditorOpen(false)}
+            sponsors={input.sponsors || []}
+            onSaveSponsors={handleSaveSponsors}
+          />
+        )}
 
-      {/* ConvertFlow Exit-Intent Retention Modal */}
-      <ExitIntentModal
-        eventName={input.eventName}
-        onClaimOffer={scrollToRegistration}
-      />
+        {/* ConvertFlow Exit-Intent Retention Modal */}
+        <ExitIntentModal
+          eventName={input.eventName}
+          onClaimOffer={scrollToRegistration}
+        />
+
+        {/* 1-Click Publish Success & Share Modal */}
+        {isPublishModalOpen && (
+          <PublishModal
+            isOpen={isPublishModalOpen}
+            onClose={() => setIsPublishModalOpen(false)}
+            record={publishedRecord}
+            onOpenCustomDomain={() => setIsCustomDomainOpen(true)}
+            onExportSource={handleExportSource}
+          />
+        )}
+
+        {/* Custom Domain Setup Guide Modal */}
+        {isCustomDomainOpen && (
+          <CustomDomainModal
+            isOpen={isCustomDomainOpen}
+            onClose={() => setIsCustomDomainOpen(false)}
+            eventName={input.eventName}
+          />
+        )}
+
+        {/* Exclusive 6-Template Catalog Modal */}
+        {isTemplateModalOpen && (
+          <TemplateCatalogModal
+            isOpen={isTemplateModalOpen}
+            onClose={() => setIsTemplateModalOpen(false)}
+            currentCategory={currentCategory}
+            recommendedCategory={recommendedTemplate.id}
+            onSelectTemplate={(newCat) => {
+              setCurrentCategory(newCat);
+              handleUpdateInputField('category', newCat);
+              setIsTemplateModalOpen(false);
+            }}
+          />
+        )}
+      </Suspense>
 
       {/* ConvertFlow Social Proof Live Ticker */}
       <SocialProofTicker />
-
-      {/* 1-Click Publish Success & Share Modal */}
-      <PublishModal
-        isOpen={isPublishModalOpen}
-        onClose={() => setIsPublishModalOpen(false)}
-        record={publishedRecord}
-        onOpenCustomDomain={() => setIsCustomDomainOpen(true)}
-        onExportSource={handleExportSource}
-      />
-
-      {/* Custom Domain Setup Guide Modal */}
-      <CustomDomainModal
-        isOpen={isCustomDomainOpen}
-        onClose={() => setIsCustomDomainOpen(false)}
-        eventName={input.eventName}
-      />
-
-      {/* Exclusive 6-Template Catalog Modal */}
-      <TemplateCatalogModal
-        isOpen={isTemplateModalOpen}
-        onClose={() => setIsTemplateModalOpen(false)}
-        currentCategory={currentCategory}
-        recommendedCategory={recommendedTemplate.id}
-        onSelectTemplate={(newCat) => {
-          setCurrentCategory(newCat);
-          const updated: EventInput = { ...input, category: newCat };
-          onUpdateInput(updated);
-          saveCurrentEventState(updated, content, cro);
-        }}
-        eventName={input.eventName}
-      />
     </div>
   );
 };
+export default LandingPagePreview;

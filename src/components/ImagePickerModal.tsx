@@ -299,3 +299,5 @@ export const ImagePickerModal: React.FC<ImagePickerModalProps> = ({
     </div>
   );
 };
+
+export default ImagePickerModal;

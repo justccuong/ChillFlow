@@ -165,3 +165,5 @@ export const PublishModal: React.FC<PublishModalProps> = ({
     </div>
   );
 };
+
+export default PublishModal;

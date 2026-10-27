@@ -102,3 +102,5 @@ export const MarketingBeforeAfterSection: React.FC<MarketingBeforeAfterProps> = 
     </section>
   );
 };
+
+export default MarketingBeforeAfterSection;

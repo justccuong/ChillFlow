@@ -42,3 +42,37 @@
 > 1. * **Chặn dữ liệu sai ở tầng Form (Validation Layer):** Chặn bỏ trống các trường bắt buộc, validate ngày tháng và bắt buộc sức chứa sự kiện phải là số dương (> 0) kèm giao diện thông báo lỗi trực quan (Inline Error).*
 > 2. * **Chặn vượt ngưỡng đăng ký (Business Rule Layer):** Khi số lượng người đăng ký đạt giới hạn `maxCapacity`, hệ thống tự động khóa form đăng ký và thông báo trạng thái 'Hết vé'.*
 > 3. * **Kiểm thử tự động hóa (Automated E2E Testing):** Sử dụng Headless Chrome/Puppeteer để tự động kiểm tra responsive trên kích thước 375px (mobile) và 1440px (desktop), đảm bảo không có bất kỳ phần tử nào bị tràn màn hình (horizontal overflow)."*
+
+
+---
+
+### Câu 5: Cơ chế bảo vệ API Key và kiến trúc Hybrid AI Proxy hoạt động như thế nào?
+
+**Trả lời:**
+> *"ChillFlow áp dụng mô hình **Hybrid AI Proxy Architecture** giải quyết trọn vẹn bài toán bảo mật API Key trong môi trường Web:*
+> 1. * **Bảo mật Server-side (Default Zero-Config):** Một Vercel Serverless Function (`api/ai-proxy.ts`) hoạt động ở biên (Edge), giữ biến môi trường `GEMINI_API_KEY` bí mật trên server. Người dùng bình thường trải nghiệm ứng dụng ngay lập tức mà không cần tự cấu hình key và không bao giờ thấy API Key trong file tĩnh client.*
+> 2. * **Cơ chế BYOK (Bring Your Own Key):** Người dùng chuyên nghiệp hoặc khi hết quota hệ thống có thể chủ động nhập khóa cá nhân qua `ApiKeyModal.tsx`. Khóa này được lưu bảo mật trong LocalStorage trình duyệt và gửi qua header `x-api-key`.*
+> 3. * **Khả năng chịu tải & Cascading Model Fallback:** Tự động điều hướng giữa các mô hình (`gemini-3.5-flash-lite`, `gemini-3.5-flash`, `gemini-3.8-flash`) với cơ chế Exponential Backoff Retry. Nếu toàn bộ mạng gián đoạn, Smart Offline Engine lập tức đảm nhiệm để cam kết phiên demo không bao giờ gián đoạn."*
+
+---
+
+### Câu 6: Làm thế nào ChillFlow tối ưu hóa SEO và Structured Data cho công cụ tìm kiếm?
+
+**Trả lời:**
+> *"Để chứng minh giá trị chuyển đổi (CRO) không chỉ dừng lại ở giao diện mà còn ở lưu lượng truy cập tự nhiên (Organic Traffic), ChillFlow chuẩn hóa SEO đa tầng:*
+> 1. * **Thẻ Meta OpenGraph & Twitter Cards:** Tự động tạo thẻ `og:title`, `og:description`, `og:image`, `twitter:card="summary_large_image"` từ dữ liệu form và ảnh poster chất lượng cao, giúp bài viết chia sẻ trên Facebook, Zalo, LinkedIn hiển thị đẹp mắt và kích thích click.*
+> 2. * **Chuẩn hóa JSON-LD Schema (`@type: "Event"`):** Cả bản Standalone HTML (`sourceExporter.ts`) lẫn bản xem trước công khai (`PublicStandalonePage.tsx`) đều được tự động nhúng cấu trúc JSON-LD chuẩn Schema.org chứa tên sự kiện, thời gian (`startDate`), địa điểm (`location`), thông tin diễn giả (`performer`) và vé mời (`offers`). Điều này giúp Google Search hiển thị sự kiện dưới dạng **Rich Snippet (Hộp sự kiện nổi bật)**.*
+> 3. * **Kiểm tra độ tương phản (WCAG Accessibility Contrast):** Thuật toán `evaluateThemeAccessibility` kiểm tra bảng màu đạt tỷ lệ tương phản >= 7.0:1 (Chuẩn WCAG AAA), được thể hiện ngay trên bảng điểm `CROScorecard.tsx`."*
+
+---
+
+### Câu 7: Đội thi đã áp dụng quy trình CI/CD và kiểm thử tự động (Unit Test) như thế nào?
+
+**Trả lời:**
+> *"Để chứng minh năng lực kỹ thuật và tính chuyên nghiệp trong sản xuất phần mềm, chúng tôi tích hợp bộ quy trình kiểm thử tự động hóa:*
+> 1. * **Unit Testing (`Vitest`):** Dự án có bộ test suite chạy siêu tốc (< 1s) kiểm thử 4 module cốt lõi:
+>    - `date.test.ts`: Kiểm thử định dạng ngày tháng tiếng Việt và logic đếm ngược linh hoạt.
+>    - `themeEngine.test.ts`: Kiểm thử tính hợp lệ của toàn bộ 7 archetype và độ tương phản trợ năng.
+>    - `sourceExporter.test.ts`: Kiểm thử đầu ra HTML không lỗi cú pháp, chứa đủ Schema SEO.
+>    - `croCalculator.test.ts`: Kiểm thử thuật toán chấm điểm luôn nằm trong chặn $[0, 100]$ với mọi dữ liệu biên.
+> 2. * **CI/CD Pipeline (`.github/workflows/ci.yml`):** Tự động kích hoạt khi `push` hoặc tạo `pull_request` qua 4 chặng: `oxlint` (phát hiện lỗi code), `tsc -b` (kiểm tra kiểu dữ liệu nghiêm ngặt), `vitest` (chạy toàn bộ unit test) và `vite build` (đóng gói bundle với code splitting tối ưu)."*

@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../types';
-import { ConferenceHero } from './heroes/ConferenceHero';
-import { MasterclassHero } from './heroes/MasterclassHero';
-import { TerminalHero } from './heroes/TerminalHero';
-import { ExecutiveHero } from './heroes/ExecutiveHero';
-import { CreativeHero } from './heroes/CreativeHero';
-import { AcademyHero } from './heroes/AcademyHero';
-import { CinematicStudioHero } from './heroes/CinematicStudioHero';
 import { Particles } from '../magicui';
 import { useThemeMode } from '../../hooks/useThemeMode';
+
+// Dynamic lazy imports for the 7 Hero Archetypes
+const ConferenceHero = lazy(() => import('./heroes/ConferenceHero').then((m) => ({ default: m.ConferenceHero })));
+const MasterclassHero = lazy(() => import('./heroes/MasterclassHero').then((m) => ({ default: m.MasterclassHero })));
+const TerminalHero = lazy(() => import('./heroes/TerminalHero').then((m) => ({ default: m.TerminalHero })));
+const ExecutiveHero = lazy(() => import('./heroes/ExecutiveHero').then((m) => ({ default: m.ExecutiveHero })));
+const CreativeHero = lazy(() => import('./heroes/CreativeHero').then((m) => ({ default: m.CreativeHero })));
+const AcademyHero = lazy(() => import('./heroes/AcademyHero').then((m) => ({ default: m.AcademyHero })));
+const CinematicStudioHero = lazy(() => import('./heroes/CinematicStudioHero').then((m) => ({ default: m.CinematicStudioHero })));
 
 interface HeroSectionProps {
   input: EventInput;
@@ -20,9 +22,23 @@ interface HeroSectionProps {
   onOpenHeroImagePicker: () => void;
   onOpenSpeakerImagePicker: () => void;
   isEditMode?: boolean;
-  onUpdateContentField?: (field: keyof GeneratedContent, val: any) => void;
-  onUpdateInputField?: (field: keyof EventInput, val: any) => void;
+  onUpdateContentField?: (field: keyof GeneratedContent, val: unknown) => void;
+  onUpdateInputField?: (field: keyof EventInput, val: unknown) => void;
   headlineVariant?: 'A' | 'B';
+}
+
+function HeroSkeleton() {
+  return (
+    <div className="relative z-10 max-w-7xl mx-auto py-16 animate-pulse">
+      <div className="h-8 w-48 bg-slate-300 dark:bg-slate-800 rounded-full mb-6 mx-auto" />
+      <div className="h-16 w-3/4 max-w-2xl bg-slate-300 dark:bg-slate-800 rounded-2xl mb-4 mx-auto" />
+      <div className="h-6 w-1/2 max-w-lg bg-slate-200 dark:bg-slate-800/60 rounded-xl mb-8 mx-auto" />
+      <div className="flex justify-center gap-4">
+        <div className="h-14 w-40 bg-indigo-500/20 rounded-xl" />
+        <div className="h-14 w-36 bg-slate-300 dark:bg-slate-800 rounded-xl" />
+      </div>
+    </div>
+  );
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
@@ -114,7 +130,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       {/* Render the dynamically selected Hero Archetype */}
-      {renderHeroByLayout()}
+      <Suspense fallback={<HeroSkeleton />}>
+        {renderHeroByLayout()}
+      </Suspense>
     </section>
   );
 };
