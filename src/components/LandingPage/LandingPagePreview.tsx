@@ -150,7 +150,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   const theme = getThemeForCategory(currentCategory);
 
   // Initialize Scroll Reveal observer
-  useScrollReveal();
+  useScrollReveal([currentCategory, content.headline]);
 
   const activeHeadline = headlineVariant === 'B' && content.alternativeHeadline
     ? content.alternativeHeadline
