@@ -68,7 +68,7 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans overflow-x-hidden selection:bg-indigo-500 selection:text-white">
       {/* 1. Sticky ConvertFlow Badge for Free Tier */}
       {userTier === 'free' && (
-        <aside className="sticky top-0 z-50 bg-slate-950 text-slate-300 text-xs py-2 px-4 border-b border-slate-800 flex items-center justify-between shadow-sm">
+        <aside className="fixed top-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md text-slate-300 text-xs py-2 px-4 border-b border-slate-800 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span>Trang sự kiện tạo tự động bằng <strong>ConvertFlow AI</strong></span>
