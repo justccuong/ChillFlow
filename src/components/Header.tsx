@@ -1,5 +1,5 @@
-import React from 'react';
-import { Plus, Users, Key, Eye, Edit3, Zap, Sun, Moon, Sparkles } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Plus, Users, Key, Eye, Edit3, Zap, Sun, Moon } from 'lucide-react';
 import { UserProfile } from '../types';
 import { NumberTicker } from './magicui';
 
@@ -30,16 +30,63 @@ export const Header: React.FC<HeaderProps> = ({
   apiKeyPresent,
   themeMode = 'dark',
   onToggleTheme,
-  userProfile,
-  onOpenAuthModal,
-  onOpenPricingModal,
+  userProfile: _userProfile,
+  onOpenAuthModal: _onOpenAuthModal,
+  onOpenPricingModal: _onOpenPricingModal,
 }) => {
-  const tier = userProfile?.tier || 'free';
-  const pageLimit = (userProfile?.freePagesLimit || 2) + (userProfile?.extraCredits || 0);
-  const pagesCount = userProfile?.publishedPageSlugs?.length || 0;
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
+  const isVisibleRef = useRef(true);
+  const tickingRef = useRef(false);
+
+  useEffect(() => {
+    const SCROLL_DOWN_THRESHOLD = 10;
+    const SCROLL_UP_THRESHOLD = 8;
+    const PINNED_TOP_ZONE = 64;
+
+    const onScrollFrame = () => {
+      const currentScrollY = window.scrollY || window.pageYOffset || 0;
+      const lastScrollY = lastScrollYRef.current;
+      const delta = currentScrollY - lastScrollY;
+
+      let nextVisible = isVisibleRef.current;
+
+      if (currentScrollY <= PINNED_TOP_ZONE) {
+        nextVisible = true;
+      } else if (delta > SCROLL_DOWN_THRESHOLD) {
+        nextVisible = false;
+      } else if (delta < -SCROLL_UP_THRESHOLD) {
+        nextVisible = true;
+      }
+
+      if (nextVisible !== isVisibleRef.current) {
+        isVisibleRef.current = nextVisible;
+        setIsVisible(nextVisible);
+      }
+
+      lastScrollYRef.current = Math.max(0, currentScrollY);
+      tickingRef.current = false;
+    };
+
+    const handleScroll = () => {
+      if (!tickingRef.current) {
+        tickingRef.current = true;
+        window.requestAnimationFrame(onScrollFrame);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white">
+    <header
+      className={`sticky top-0 z-40 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white transition-transform duration-300 ease-out will-change-transform ${
+        isVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between gap-4">
         {/* Brand */}
         <div className="flex items-center gap-2">

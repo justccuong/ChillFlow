@@ -1,4 +1,4 @@
-/* Kune Studio - Laser Scroll Timeline Styles */
+/* Kune Studio - Laser Scroll Timeline Styles (Soft Elegant Palette) */
 
 .laser-timeline-section {
   position: relative;
@@ -12,14 +12,14 @@
   position: relative;
   background: #ffffff;
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(13, 148, 136, 0.08) 0%, transparent 65%),
-    linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+    radial-gradient(circle at 50% 0%, rgba(13, 148, 136, 0.04) 0%, transparent 65%),
+    linear-gradient(rgba(15, 23, 42, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
   background-size: 100% 100%, 48px 48px, 48px 48px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.06);
   border-radius: 36px;
   padding: 5rem var(--timeline-card-px);
-  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.03), 0 1px 2px rgba(15, 23, 42, 0.02);
   overflow: hidden;
   margin-top: 2rem;
   transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
@@ -28,29 +28,29 @@
 .dark .laser-timeline-canvas-card {
   background: #080d1a;
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(20, 184, 166, 0.14) 0%, transparent 60%),
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    radial-gradient(circle at 50% 0%, rgba(20, 184, 166, 0.06) 0%, transparent 60%),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05);
 }
 
-/* Ambient glow orb following the laser tip */
+/* Subtle ambient glow orb (whisper-level opacity, non-glaring) */
 .laser-timeline-ambient-glow {
   position: absolute;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
-  width: 320px;
-  height: 320px;
+  width: 280px;
+  height: 280px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.22) 0%, rgba(13, 148, 136, 0.08) 40%, transparent 70%);
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.1) 0%, rgba(13, 148, 136, 0.03) 45%, transparent 70%);
   pointer-events: none;
   z-index: 1;
   will-change: top;
 }
 
 .dark .laser-timeline-ambient-glow {
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.35) 0%, rgba(20, 184, 166, 0.15) 35%, transparent 68%);
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.12) 0%, rgba(13, 148, 136, 0.04) 40%, transparent 68%);
 }
 
 /* Central vertical rail track */
@@ -72,72 +72,73 @@
   left: 50%;
   transform: translateX(-50%);
   width: 2px;
-  background: rgba(15, 23, 42, 0.1);
+  background: rgba(15, 23, 42, 0.08);
   border-radius: 9999px;
   transition: background 0.4s ease;
 }
 
 .dark .laser-rail-guide-wire {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
 }
 
+/* Softer laser beam (warm teal without harsh bloom) */
 .laser-rail-beam {
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 3.5px;
-  background: linear-gradient(180deg, #0d9488, #14b8a6 60%, #059669);
-  box-shadow: 0 0 8px rgba(13, 148, 136, 0.4), 0 0 16px rgba(45, 212, 191, 0.35);
+  width: 3px;
+  background: linear-gradient(180deg, #0d9488, #14b8a6 60%, #10b981);
+  box-shadow: 0 0 6px rgba(20, 184, 166, 0.25);
   border-radius: 9999px;
   will-change: height;
 }
 
 .dark .laser-rail-beam {
-  background: linear-gradient(180deg, #0d9488, #14b8a6 60%, #2dd4bf);
-  box-shadow: 0 0 10px #14b8a6, 0 0 20px rgba(45, 212, 191, 0.75), 0 0 35px rgba(20, 184, 166, 0.5);
+  background: linear-gradient(180deg, #0f766e, #0d9488 60%, #14b8a6);
+  box-shadow: 0 0 8px rgba(20, 184, 166, 0.35);
 }
 
-/* Laser Head Spark */
+/* Laser Head Spark (Soft, elegant indicator) */
 .laser-head-spark {
   position: absolute;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: #0d9488;
-  box-shadow: 0 0 0 3px #ffffff, 0 0 12px 2px rgba(45, 212, 191, 0.8), 0 0 24px 6px rgba(13, 148, 136, 0.4);
+  box-shadow: 0 0 0 2px #ffffff, 0 0 8px rgba(20, 184, 166, 0.35);
   pointer-events: none;
   z-index: 4;
   will-change: top, opacity;
-  animation: laserPulseGlow 1.4s infinite alternate ease-in-out;
+  animation: laserPulseGlow 1.8s infinite alternate ease-in-out;
 }
 
 .dark .laser-head-spark {
-  background: #ffffff;
-  box-shadow: 0 0 12px 2px #ffffff, 0 0 24px 6px #2dd4bf, 0 0 45px 12px #0d9488;
+  background: #14b8a6;
+  box-shadow: 0 0 0 2px #080d1a, 0 0 10px rgba(45, 212, 191, 0.4);
 }
 
 @keyframes laserPulseGlow {
   0% {
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0.9;
   }
   100% {
-    transform: translate(-50%, -50%) scale(1.25);
+    transform: translate(-50%, -50%) scale(1.15);
     opacity: 1;
-    filter: drop-shadow(0 0 8px #2dd4bf);
+    filter: drop-shadow(0 0 4px rgba(45, 212, 191, 0.35));
   }
 }
 
 @keyframes nodeRingPing {
   0% {
-    transform: scale(0.9);
-    opacity: 0.8;
+    transform: scale(0.95);
+    opacity: 0.7;
   }
   100% {
-    transform: scale(1.6);
+    transform: scale(1.5);
     opacity: 0;
   }
 }
@@ -173,14 +174,14 @@
   left: calc(50% - 56px);
   top: 32px;
   width: 56px;
-  height: 2px;
-  background: rgba(15, 23, 42, 0.1);
+  height: 1.5px;
+  background: rgba(15, 23, 42, 0.08);
   transform-origin: right center;
   transition: all 0.4s ease;
 }
 
 .dark .laser-milestone-item.side-left .node-branch-line {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .laser-milestone-item.side-right {
@@ -197,19 +198,19 @@
   left: 50%;
   top: 32px;
   width: 56px;
-  height: 2px;
-  background: rgba(15, 23, 42, 0.1);
+  height: 1.5px;
+  background: rgba(15, 23, 42, 0.08);
   transform-origin: left center;
   transition: all 0.4s ease;
 }
 
 .dark .laser-milestone-item.side-right .node-branch-line {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .laser-milestone-item.passed .node-branch-line {
-  background: linear-gradient(90deg, #0d9488, #2dd4bf);
-  box-shadow: 0 0 10px rgba(45, 212, 191, 0.5);
+  background: linear-gradient(90deg, #0d9488, #14b8a6);
+  box-shadow: 0 0 6px rgba(45, 212, 191, 0.25);
 }
 
 /* Node Anchor */
@@ -240,12 +241,12 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1.5px solid rgba(15, 23, 42, 0.12);
+  border: 1.5px solid rgba(15, 23, 42, 0.08);
   transition: all 0.4s ease;
 }
 
 .dark .node-ring-pulse {
-  border-color: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .node-core-dot {
@@ -253,8 +254,8 @@
   height: 30px;
   border-radius: 50%;
   background: #ffffff;
-  border: 2px solid rgba(15, 23, 42, 0.15);
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  border: 2px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -264,7 +265,7 @@
 
 .dark .node-core-dot {
   background: #090e17;
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.18);
   box-shadow: none;
 }
 
@@ -276,14 +277,17 @@
   transition: color 0.3s ease;
 }
 
+/* Softer Activated Node */
 .laser-milestone-item.passed .node-core-dot {
   background: #0d9488;
-  border-color: #2dd4bf;
-  box-shadow: 0 0 12px rgba(45, 212, 191, 0.6), 0 0 20px rgba(20, 184, 166, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  border-color: #14b8a6;
+  box-shadow: 0 0 8px rgba(20, 184, 166, 0.3), inset 0 1px 1.5px rgba(255, 255, 255, 0.3);
 }
 
 .dark .laser-milestone-item.passed .node-core-dot {
-  box-shadow: 0 0 14px #2dd4bf, 0 0 25px rgba(20, 184, 166, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  background: #0d9488;
+  border-color: #14b8a6;
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.3), inset 0 1px 1.5px rgba(255, 255, 255, 0.2);
 }
 
 .laser-milestone-item.passed .node-inner-idx {
@@ -291,12 +295,12 @@
 }
 
 .laser-milestone-item.passed .node-ring-pulse {
-  border-color: rgba(45, 212, 191, 0.5);
-  animation: nodeRingPing 2.2s infinite cubic-bezier(0, 0, 0.2, 1);
+  border-color: rgba(45, 212, 191, 0.3);
+  animation: nodeRingPing 2.5s infinite cubic-bezier(0, 0, 0.2, 1);
 }
 
 .laser-milestone-item.passed .node-outer-halo {
-  background: radial-gradient(circle, rgba(20, 184, 166, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.1) 0%, transparent 70%);
 }
 
 /* Content Flow */
@@ -313,13 +317,13 @@
 }
 
 .laser-milestone-item.upcoming .milestone-content-flow {
-  opacity: 0.38;
-  transform: translateY(14px);
+  opacity: 0.45;
+  transform: translateY(10px);
   pointer-events: none;
 }
 
 .dark .laser-milestone-item.upcoming .milestone-content-flow {
-  opacity: 0.2;
+  opacity: 0.3;
 }
 
 .laser-milestone-item.passed .milestone-content-flow {
@@ -329,7 +333,7 @@
 }
 
 .milestone-phase-badge {
-  font-size: 0.88rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -339,11 +343,10 @@
 
 .dark .milestone-phase-badge {
   color: #2dd4bf;
-  text-shadow: 0 0 16px rgba(45, 212, 191, 0.45);
 }
 
 .milestone-title {
-  font-size: 1.55rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #0f172a;
   line-height: 1.3;
@@ -403,7 +406,7 @@
   margin: 0;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 20px 45px -20px rgba(15, 23, 42, 0.35);
+  box-shadow: 0 16px 36px -16px rgba(15, 23, 42, 0.25);
   transform: translateY(-50%);
   opacity: 0;
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -411,7 +414,7 @@
 }
 
 .dark .milestone-visual {
-  box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 20px 45px -20px rgba(0, 0, 0, 0.6);
 }
 
 .milestone-visual img {
