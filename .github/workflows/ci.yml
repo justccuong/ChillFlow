@@ -28,14 +28,14 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
-      - name: 🔍 Step 1: Code Quality & Linting (oxlint)
+      - name: '🔍 Step 1: Code Quality & Linting (oxlint)'
         run: npx oxlint
 
-      - name: 🛡️ Step 2: TypeScript Strict Compilation (tsc -b)
+      - name: '🛡️ Step 2: TypeScript Strict Compilation (tsc -b)'
         run: npx tsc -b
 
-      - name: 🧪 Step 3: Automated Unit Testing (Vitest)
+      - name: '🧪 Step 3: Automated Unit Testing (Vitest)'
         run: npm test
 
-      - name: 🚀 Step 4: Production Bundle Packaging (Vite Build)
+      - name: '🚀 Step 4: Production Bundle Packaging (Vite Build)'
         run: npm run build
