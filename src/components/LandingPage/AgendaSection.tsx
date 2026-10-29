@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import type { AgendaItem, ThemeConfig } from '../../types';
 import { Clock } from 'lucide-react';
+import './LaserScrollTimeline.css';
 
 interface AgendaSectionProps {
   agenda: AgendaItem[];
@@ -16,27 +17,119 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
   speakerName,
   speakerPhoto,
 }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const laserBeamRef = useRef<HTMLDivElement>(null);
+  const sparkRef = useRef<HTMLDivElement>(null);
+  const ambientGlowRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   const getSessionBadge = (index: number) => {
     switch (index) {
       case 0:
-        return { label: 'Đón tiếp & Check-in', color: 'text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700' };
+        return { label: 'ĐÓN TIẾP & CHECK-IN', color: 'text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700' };
       case 1:
-        return { label: 'Keynote & Xu hướng', color: `${theme.badgeText} ${theme.badgeBg} ${theme.accentBorder}` };
+        return { label: 'KEYNOTE & XU HƯỚNG', color: `${theme.badgeText} ${theme.badgeBg} ${theme.accentBorder}` };
       case 2:
-        return { label: 'Hands-on Workshop', color: 'text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/30' };
+        return { label: 'HANDS-ON WORKSHOP', color: 'text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/30' };
       default:
-        return { label: 'Q&A & Quà tặng', color: 'text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/30' };
+        return { label: 'Q&A & QUÀ TẶNG', color: 'text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/30' };
+    }
+  };
+
+  useEffect(() => {
+    let animId: number;
+    let targetProgress = 0;
+    let currentProgress = 0;
+    let isRunning = false;
+
+    const calculateProgress = () => {
+      if (!cardRef.current) return;
+      const rect = cardRef.current.getBoundingClientRect();
+      const triggerY = window.innerHeight * 0.72;
+      const totalHeight = rect.height;
+      const ratio = (triggerY - rect.top) / totalHeight;
+      targetProgress = Math.max(0, Math.min(1, ratio));
+    };
+
+    // Smooth Lerp Physics Loop: x += (target - current) * 0.18
+    const animate = () => {
+      currentProgress += (targetProgress - currentProgress) * 0.18;
+      const delta = Math.abs(targetProgress - currentProgress);
+      if (delta < 0.0004) {
+        currentProgress = targetProgress;
+      }
+
+      const percent = currentProgress * 100;
+
+      if (laserBeamRef.current) {
+        laserBeamRef.current.style.height = `${percent}%`;
+      }
+
+      if (sparkRef.current) {
+        sparkRef.current.style.top = `${percent}%`;
+        sparkRef.current.style.opacity = currentProgress > 0.01 ? '1' : '0';
+      }
+
+      if (ambientGlowRef.current) {
+        ambientGlowRef.current.style.top = `${percent}%`;
+      }
+
+      agenda.forEach((_, idx) => {
+        const itemEl = itemRefs.current[idx];
+        if (itemEl) {
+          const threshold = ((idx + 0.5) / Math.max(agenda.length, 1)) - 0.03;
+          const isPassed = currentProgress >= threshold;
+          if (isPassed && !itemEl.classList.contains('passed')) {
+            itemEl.classList.add('passed');
+            itemEl.classList.remove('upcoming');
+          } else if (!isPassed && itemEl.classList.contains('passed')) {
+            itemEl.classList.remove('passed');
+            itemEl.classList.add('upcoming');
+          }
+        }
+      });
+
+      if (delta >= 0.0004) {
+        animId = requestAnimationFrame(animate);
+      } else {
+        isRunning = false;
+      }
+    };
+
+    const handleScrollOrResize = () => {
+      calculateProgress();
+      if (!isRunning) {
+        isRunning = true;
+        animId = requestAnimationFrame(animate);
+      }
+    };
+
+    window.addEventListener('scroll', handleScrollOrResize, { passive: true });
+    window.addEventListener('resize', handleScrollOrResize, { passive: true });
+    handleScrollOrResize();
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('scroll', handleScrollOrResize);
+      window.removeEventListener('resize', handleScrollOrResize);
+    };
+  }, [agenda]);
+
+  const handleMilestoneClick = (index: number) => {
+    const item = itemRefs.current[index];
+    if (item) {
+      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
 
   return (
-    <section id="agenda" className="py-24 px-4 md:px-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden transition-colors">
+    <section id="agenda" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden transition-colors">
       <div className="hairline-divider absolute top-0 inset-x-0"></div>
 
       {/* Subtle ambient light */}
       <div className={`ambient-glow-orb top-1/2 right-10 w-96 h-96 bg-gradient-to-tr ${theme.glowGradient} opacity-10 dark:opacity-20`}></div>
 
-      <div className="max-w-4xl mx-auto space-y-16 relative z-10">
+      <div className="max-w-5xl mx-auto space-y-12 relative z-10">
         {/* Header */}
         <div className="text-center space-y-3">
           <div className="text-xs uppercase tracking-[0.25em] text-slate-500 font-bold flex items-center justify-center gap-2">
@@ -51,76 +144,52 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
           </p>
         </div>
 
-        {/* 1. Mobile View (< sm): Clean 1-Column Centered Layout (No Bezel Clipping) */}
-        <div className="sm:hidden space-y-4">
-          {agenda.map((item, index) => {
-            const badge = getSessionBadge(index);
-            const isSpeakerSession = index === 1;
+        {/* Laser Scroll Canvas Card (Kune Studio Architecture) */}
+        <div className="laser-timeline-canvas-card" ref={cardRef}>
+          {/* Ambient Glow Orb */}
+          <div className="laser-timeline-ambient-glow" ref={ambientGlowRef} />
 
-            return (
-              <div key={index} className="flex flex-col items-center">
-                <div className="w-full rounded-2xl p-5 bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-sm space-y-3 text-center transition-all hover:border-indigo-500/50">
-                  {/* Time + Badge Centered */}
-                  <div className="flex flex-wrap items-center justify-center gap-2">
-                    <span className="text-xl font-mono font-black text-slate-900 dark:text-white tracking-tight">
-                      {item.time}
-                    </span>
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${badge.color}`}>
-                      {badge.label}
-                    </span>
-                  </div>
+          {/* Central Laser Rail Track */}
+          <div className="laser-timeline-rail-track">
+            <div className="laser-rail-guide-wire" />
+            <div className="laser-rail-beam" ref={laserBeamRef} />
+            <div className="laser-head-spark" ref={sparkRef} />
+          </div>
 
-                  {/* Title & Description */}
-                  <div className="space-y-1.5">
-                    <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
-                      {item.title}
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
+          {/* Milestones List */}
+          <div className="laser-timeline-list">
+            {agenda.map((item, index) => {
+              const isLeft = index % 2 === 0;
+              const badge = getSessionBadge(index);
+              const isSpeakerSession = index === 1;
+              const formattedIdx = String(index + 1).padStart(2, '0');
 
-                  {/* Speaker Pill */}
-                  {isSpeakerSession && (
-                    <div className="pt-1 flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                      <img
-                        src={speakerPhoto}
-                        alt={speakerName}
-                        className="w-5 h-5 rounded-full object-cover border border-slate-300 dark:border-slate-700 shadow-sm"
-                      />
-                      <span className="text-slate-700 dark:text-slate-300 font-semibold text-xs">
-                        {item.speaker || speakerName}
-                      </span>
+              return (
+                <div
+                  key={index}
+                  ref={(el) => {
+                    itemRefs.current[index] = el;
+                  }}
+                  className={`laser-milestone-item upcoming ${isLeft ? 'side-left' : 'side-right'}`}
+                  onClick={() => handleMilestoneClick(index)}
+                >
+                  {/* Node Anchor on the Rail */}
+                  <div className="milestone-node-anchor">
+                    <div className="node-outer-halo" />
+                    <div className="node-ring-pulse" />
+                    <div className="node-core-dot">
+                      <span className="node-inner-idx">{formattedIdx}</span>
                     </div>
-                  )}
-                </div>
+                  </div>
 
-                {/* Centered Connector Line between items */}
-                {index < agenda.length - 1 && (
-                  <div className="h-6 w-0.5 bg-gradient-to-b from-indigo-500 to-purple-500/50 my-1 rounded-full"></div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                  {/* Horizontal Branch Line connecting Rail to Content on Desktop */}
+                  <div className="node-branch-line" />
 
-        {/* 2. Desktop / Tablet View (>= sm): Sleek Timeline with Exact Mathematical Alignment */}
-        <div className="hidden sm:block relative pl-12 space-y-12 before:absolute before:left-[19px] before:top-3 before:bottom-3 before:w-[2px] before:bg-gradient-to-b before:from-indigo-500 before:via-purple-500/50 before:to-slate-300 dark:before:to-slate-800">
-          {agenda.map((item, index) => {
-            const badge = getSessionBadge(index);
-            const isSpeakerSession = index === 1;
-
-            return (
-              <div key={index} className="relative group">
-                {/* Glowing Timeline Dot - Center of 16px dot aligns at 20px (left: -37px + pl-12(48px) = 11px to 27px, center = 19px) */}
-                <div className="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-white dark:bg-slate-950 border-2 border-indigo-500 dark:border-indigo-400 group-hover:border-amber-500 dark:group-hover:border-amber-400 group-hover:scale-125 transition-all shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
-
-                {/* Session Content */}
-                <div className="space-y-3 pb-8 border-b border-slate-200 dark:border-slate-900 group-last:border-b-0 group-last:pb-0">
-                  {/* Time + Badge Row */}
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl sm:text-2xl font-mono font-black text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors tracking-tight">
+                  {/* Milestone Content */}
+                  <div className="milestone-content-flow space-y-3">
+                    {/* Time & Phase Badge */}
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <span className="text-xl sm:text-2xl font-mono font-black text-slate-900 dark:text-white tracking-tight">
                         {item.time}
                       </span>
                       <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${badge.color}`}>
@@ -128,8 +197,19 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
                       </span>
                     </div>
 
+                    {/* Title & Description */}
+                    <div className="space-y-1.5">
+                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed font-sans">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    {/* Speaker Pill */}
                     {isSpeakerSession && (
-                      <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                      <div className="pt-1 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                         <img
                           src={speakerPhoto}
                           alt={speakerName}
@@ -139,20 +219,10 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
                       </div>
                     )}
                   </div>
-
-                  {/* Title & Description */}
-                  <div className="space-y-1.5 max-w-2xl">
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-white transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed font-sans">
-                      {item.description}
-                    </p>
-                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

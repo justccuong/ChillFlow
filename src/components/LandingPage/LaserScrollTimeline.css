@@ -1,0 +1,532 @@
+/* Kune Studio - Laser Scroll Timeline Styles */
+
+.laser-timeline-section {
+  position: relative;
+  padding: 5rem 0;
+  overflow: hidden;
+}
+
+.laser-timeline-canvas-card {
+  --timeline-card-px: 3.5rem;
+  --timeline-rail-x: 50%;
+  position: relative;
+  background: #ffffff;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(13, 148, 136, 0.08) 0%, transparent 65%),
+    linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 36px;
+  padding: 5rem var(--timeline-card-px);
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+  overflow: hidden;
+  margin-top: 2rem;
+  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.dark .laser-timeline-canvas-card {
+  background: #080d1a;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(20, 184, 166, 0.14) 0%, transparent 60%),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Ambient glow orb following the laser tip */
+.laser-timeline-ambient-glow {
+  position: absolute;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.22) 0%, rgba(13, 148, 136, 0.08) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+  will-change: top;
+}
+
+.dark .laser-timeline-ambient-glow {
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.35) 0%, rgba(20, 184, 166, 0.15) 35%, transparent 68%);
+}
+
+/* Central vertical rail track */
+.laser-timeline-rail-track {
+  position: absolute;
+  top: 5rem;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.laser-rail-guide-wire {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: rgba(15, 23, 42, 0.1);
+  border-radius: 9999px;
+  transition: background 0.4s ease;
+}
+
+.dark .laser-rail-guide-wire {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.laser-rail-beam {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3.5px;
+  background: linear-gradient(180deg, #0d9488, #14b8a6 60%, #059669);
+  box-shadow: 0 0 8px rgba(13, 148, 136, 0.4), 0 0 16px rgba(45, 212, 191, 0.35);
+  border-radius: 9999px;
+  will-change: height;
+}
+
+.dark .laser-rail-beam {
+  background: linear-gradient(180deg, #0d9488, #14b8a6 60%, #2dd4bf);
+  box-shadow: 0 0 10px #14b8a6, 0 0 20px rgba(45, 212, 191, 0.75), 0 0 35px rgba(20, 184, 166, 0.5);
+}
+
+/* Laser Head Spark */
+.laser-head-spark {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0d9488;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 12px 2px rgba(45, 212, 191, 0.8), 0 0 24px 6px rgba(13, 148, 136, 0.4);
+  pointer-events: none;
+  z-index: 4;
+  will-change: top, opacity;
+  animation: laserPulseGlow 1.4s infinite alternate ease-in-out;
+}
+
+.dark .laser-head-spark {
+  background: #ffffff;
+  box-shadow: 0 0 12px 2px #ffffff, 0 0 24px 6px #2dd4bf, 0 0 45px 12px #0d9488;
+}
+
+@keyframes laserPulseGlow {
+  0% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.25);
+    opacity: 1;
+    filter: drop-shadow(0 0 8px #2dd4bf);
+  }
+}
+
+@keyframes nodeRingPing {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Timeline Milestones List */
+.laser-timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5.5rem;
+  position: relative;
+  z-index: 3;
+}
+
+.laser-milestone-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+.laser-milestone-item.side-left {
+  justify-content: flex-start;
+}
+
+.laser-milestone-item.side-left .milestone-content-flow {
+  width: calc(50% - 64px);
+  margin-right: auto;
+}
+
+.laser-milestone-item.side-left .node-branch-line {
+  position: absolute;
+  left: calc(50% - 56px);
+  top: 32px;
+  width: 56px;
+  height: 2px;
+  background: rgba(15, 23, 42, 0.1);
+  transform-origin: right center;
+  transition: all 0.4s ease;
+}
+
+.dark .laser-milestone-item.side-left .node-branch-line {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.laser-milestone-item.side-right {
+  justify-content: flex-end;
+}
+
+.laser-milestone-item.side-right .milestone-content-flow {
+  width: calc(50% - 64px);
+  margin-left: auto;
+}
+
+.laser-milestone-item.side-right .node-branch-line {
+  position: absolute;
+  left: 50%;
+  top: 32px;
+  width: 56px;
+  height: 2px;
+  background: rgba(15, 23, 42, 0.1);
+  transform-origin: left center;
+  transition: all 0.4s ease;
+}
+
+.dark .laser-milestone-item.side-right .node-branch-line {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.laser-milestone-item.passed .node-branch-line {
+  background: linear-gradient(90deg, #0d9488, #2dd4bf);
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.5);
+}
+
+/* Node Anchor */
+.milestone-node-anchor {
+  position: absolute;
+  left: 50%;
+  top: 32px;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.node-outer-halo {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: transparent;
+  transition: all 0.4s ease;
+}
+
+.node-ring-pulse {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(15, 23, 42, 0.12);
+  transition: all 0.4s ease;
+}
+
+.dark .node-ring-pulse {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.node-core-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid rgba(15, 23, 42, 0.15);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .node-core-dot {
+  background: #090e17;
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: none;
+}
+
+.node-inner-idx {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  transition: color 0.3s ease;
+}
+
+.laser-milestone-item.passed .node-core-dot {
+  background: #0d9488;
+  border-color: #2dd4bf;
+  box-shadow: 0 0 12px rgba(45, 212, 191, 0.6), 0 0 20px rgba(20, 184, 166, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.dark .laser-milestone-item.passed .node-core-dot {
+  box-shadow: 0 0 14px #2dd4bf, 0 0 25px rgba(20, 184, 166, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.laser-milestone-item.passed .node-inner-idx {
+  color: #ffffff;
+}
+
+.laser-milestone-item.passed .node-ring-pulse {
+  border-color: rgba(45, 212, 191, 0.5);
+  animation: nodeRingPing 2.2s infinite cubic-bezier(0, 0, 0.2, 1);
+}
+
+.laser-milestone-item.passed .node-outer-halo {
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.2) 0%, transparent 70%);
+}
+
+/* Content Flow */
+.milestone-content-flow {
+  position: relative;
+  padding: 0.5rem 0;
+  color: #0f172a;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.dark .milestone-content-flow {
+  color: #ffffff;
+}
+
+.laser-milestone-item.upcoming .milestone-content-flow {
+  opacity: 0.38;
+  transform: translateY(14px);
+  pointer-events: none;
+}
+
+.dark .laser-milestone-item.upcoming .milestone-content-flow {
+  opacity: 0.2;
+}
+
+.laser-milestone-item.passed .milestone-content-flow {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.milestone-phase-badge {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #0d9488;
+  transition: color 0.3s ease;
+}
+
+.dark .milestone-phase-badge {
+  color: #2dd4bf;
+  text-shadow: 0 0 16px rgba(45, 212, 191, 0.45);
+}
+
+.milestone-title {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin: 0.35rem 0 0.75rem;
+  transition: color 0.3s ease;
+}
+
+.dark .milestone-title {
+  color: #ffffff;
+}
+
+.milestone-desc {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.65;
+  max-width: 580px;
+}
+
+.dark .milestone-desc {
+  color: #cbd5e1;
+}
+
+.milestone-highlights-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 1.25rem;
+}
+
+.highlight-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.92rem;
+  color: #334155;
+}
+
+.dark .highlight-pill {
+  color: #e2e8f0;
+}
+
+.highlight-pill .check-bullet {
+  color: #0f766e;
+  flex-shrink: 0;
+}
+
+.dark .highlight-pill .check-bullet {
+  color: #2dd4bf;
+}
+
+/* Visual Illustration */
+.milestone-visual {
+  position: absolute;
+  top: 50%;
+  width: min(calc(50% - 64px), 420px);
+  margin: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 45px -20px rgba(15, 23, 42, 0.35);
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+
+.dark .milestone-visual {
+  box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.7);
+}
+
+.milestone-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.laser-milestone-item.side-left .milestone-visual {
+  left: calc(50% + 64px);
+}
+
+.laser-milestone-item.side-right .milestone-visual {
+  right: calc(50% + 64px);
+}
+
+.laser-milestone-item.passed .milestone-visual {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ========================================================
+   RESPONSIVE DESIGN (TABLET & MOBILE)
+   ======================================================== */
+@media (max-width: 900px) {
+  .laser-timeline-canvas-card {
+    --timeline-card-px: 1.5rem;
+    --timeline-rail-x: 22px;
+    padding: 3.5rem var(--timeline-card-px);
+    border-radius: 28px;
+  }
+
+  .laser-timeline-rail-track {
+    left: calc(var(--timeline-card-px) + var(--timeline-rail-x));
+    transform: translateX(-50%);
+    top: 3rem;
+    bottom: 3rem;
+  }
+
+  .laser-timeline-ambient-glow {
+    left: calc(var(--timeline-card-px) + var(--timeline-rail-x));
+  }
+
+  .milestone-node-anchor {
+    left: var(--timeline-rail-x);
+    transform: translate(-50%, -50%);
+  }
+
+  .laser-milestone-item .node-branch-line {
+    display: none !important;
+  }
+
+  .laser-milestone-item.side-left,
+  .laser-milestone-item.side-right {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .laser-milestone-item.side-left .milestone-content-flow,
+  .laser-milestone-item.side-right .milestone-content-flow {
+    width: calc(100% - 56px);
+    margin-left: 56px !important;
+    margin-right: 0 !important;
+  }
+
+  .laser-milestone-item.side-left .milestone-visual,
+  .laser-milestone-item.side-right .milestone-visual {
+    position: static;
+    width: calc(100% - 56px);
+    margin: 1.25rem 0 0 56px;
+    transform: none;
+  }
+
+  .laser-timeline-list {
+    gap: 3.5rem;
+  }
+
+  .milestone-title {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .laser-timeline-canvas-card {
+    --timeline-card-px: 1.15rem;
+    --timeline-rail-x: 18px;
+    padding: 2.25rem var(--timeline-card-px);
+    border-radius: 20px;
+  }
+
+  .laser-timeline-rail-track {
+    left: calc(var(--timeline-card-px) + var(--timeline-rail-x));
+    top: 2.25rem;
+    bottom: 2.25rem;
+  }
+
+  .laser-timeline-ambient-glow {
+    left: calc(var(--timeline-card-px) + var(--timeline-rail-x));
+  }
+
+  .milestone-node-anchor {
+    left: var(--timeline-rail-x);
+  }
+
+  .laser-milestone-item.side-left .milestone-content-flow,
+  .laser-milestone-item.side-right .milestone-content-flow {
+    width: calc(100% - 46px);
+    margin-left: 46px !important;
+  }
+
+  .laser-milestone-item.side-left .milestone-visual,
+  .laser-milestone-item.side-right .milestone-visual {
+    width: calc(100% - 46px);
+    margin: 1rem 0 0 46px;
+  }
+}
