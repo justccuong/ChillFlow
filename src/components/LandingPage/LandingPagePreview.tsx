@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
-import type { EventInput, GeneratedContent, CROEvaluation, Attendee, EventCategory, SponsorItem, BenefitItem, AgendaItem, FaqItem } from '../../types';
+import type { EventInput, GeneratedContent, CROEvaluation, Attendee, EventCategory, SponsorItem, BenefitItem, AgendaItem, FaqItem, TestimonialItem } from '../../types';
 import { getThemeForCategory, CATEGORIES } from '../../services/themeEngine';
 import { saveCurrentEventState } from '../../services/storageService';
 import { HeroSection } from './HeroSection';
@@ -189,6 +189,27 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
   const handleRemoveFaqItem = (index: number) => {
     useLandingPageStore.getState().removeFaqItem(index);
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleUpdateTestimonial = (index: number, field: keyof TestimonialItem, val: any) => {
+    useLandingPageStore.getState().updateTestimonialItem(index, field, val);
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleAddTestimonial = () => {
+    useLandingPageStore.getState().addTestimonialItem();
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleRemoveTestimonial = (index: number) => {
+    useLandingPageStore.getState().removeTestimonialItem(index);
     const updated = useLandingPageStore.getState().content;
     if (updated && onUpdateContent) onUpdateContent(updated);
     if (updated) saveCurrentEventState(input, updated, cro);
@@ -571,7 +592,15 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               />
             </div>
             <div data-reveal data-reveal-delay="100">
-              <TestimonialsSection theme={theme} targetAudience={input.targetAudience} />
+              <TestimonialsSection
+                theme={theme}
+                targetAudience={input.targetAudience}
+                testimonials={content.testimonials}
+                isEditMode={isEditMode}
+                onUpdateTestimonial={handleUpdateTestimonial}
+                onAddTestimonial={handleAddTestimonial}
+                onRemoveTestimonial={handleRemoveTestimonial}
+              />
             </div>
             <div data-reveal data-reveal-delay="100">
               <FaqSection

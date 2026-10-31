@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { EventInput, GeneratedContent, CROEvaluation, ThemeConfig, BenefitItem, AgendaItem, FaqItem } from '../types';
+import { EventInput, GeneratedContent, CROEvaluation, ThemeConfig, BenefitItem, AgendaItem, FaqItem, TestimonialItem } from '../types';
 import { saveCurrentEventState, getSavedEventState } from '../services/storageService';
 
 interface LandingPageState {
@@ -29,6 +29,9 @@ interface LandingPageState {
   updateFaqItem: (index: number, field: keyof FaqItem, val: any) => void;
   addFaqItem: (item?: FaqItem) => void;
   removeFaqItem: (index: number) => void;
+  updateTestimonialItem: (index: number, field: keyof TestimonialItem, val: any) => void;
+  addTestimonialItem: (item?: TestimonialItem) => void;
+  removeTestimonialItem: (index: number) => void;
   setCroEvaluation: (cro: CROEvaluation) => void;
   setTheme: (theme: ThemeConfig) => void;
   toggleEditMode: () => void;
@@ -196,6 +199,37 @@ export const useLandingPageStore = create<LandingPageState>((set, get) => ({
     const newFaqs = content.faqs.filter((_, i) => i !== index);
     setContent({ ...content, faqs: newFaqs }, true);
   },
+  updateTestimonialItem: (index, field, val) => {
+    const { content, setContent } = get();
+    if (!content) return;
+    const current = content.testimonials ? [...content.testimonials] : [];
+    if (!current[index]) return;
+    current[index] = { ...current[index], [field]: val };
+    setContent({ ...content, testimonials: current }, true);
+  },
+
+  addTestimonialItem: (item) => {
+    const { content, setContent } = get();
+    if (!content) return;
+    const current = content.testimonials ? [...content.testimonials] : [];
+    const newItem: TestimonialItem = item || {
+      name: 'Khách mời tham dự',
+      role: 'Chuyên gia / Khách tham dự',
+      company: 'Cộng đồng',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
+      quote: 'Sự kiện được tổ chức chuyên nghiệp, mang lại nhiều trải nghiệm đáng giá và kết nối chất lượng.',
+      rating: 5,
+    };
+    setContent({ ...content, testimonials: [...current, newItem] }, true);
+  },
+
+  removeTestimonialItem: (index) => {
+    const { content, setContent } = get();
+    if (!content || !content.testimonials || content.testimonials.length <= 1) return;
+    const current = content.testimonials.filter((_, i) => i !== index);
+    setContent({ ...content, testimonials: current }, true);
+  },
+
 
   setCroEvaluation: (croEvaluation) => {
     set({ croEvaluation });

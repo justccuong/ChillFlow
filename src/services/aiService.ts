@@ -1,6 +1,149 @@
-import type { EventInput, GeneratedContent, SemanticPageSchema, CROEvaluation, FaqItem } from '../types';
+
+
+import type { EventInput, GeneratedContent, SemanticPageSchema, CROEvaluation, FaqItem, EventCategory, TestimonialItem } from '../types';
 import { detectBestTemplate } from './templateRegistry';
 import { getSavedApiKey } from './storageService';
+
+export const getDomainTestimonials = (cat: EventCategory): TestimonialItem[] => {
+  switch (cat) {
+    case 'festival-music':
+      return [
+        {
+          name: 'Nguyễn Minh Anh',
+          role: 'Music Producer & Fan',
+          company: 'Hanoi Indie Vibe',
+          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
+          quote: 'Dàn âm thanh L-Acoustics cực đỉnh, visual laser sống động. Đứng quẩy từ chiều đến nửa đêm không muốn về!',
+          rating: 5,
+        },
+        {
+          name: 'Trần Hải Đăng',
+          role: 'Event Photographer',
+          company: 'VibeMedia',
+          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80',
+          quote: 'Lineup nghệ sĩ cháy hết nấc. Không gian check-in bùng nổ, khâu tổ chức soát vé vào cổng cực nhanh và an toàn.',
+          rating: 5,
+        },
+        {
+          name: 'Đặng Mai Phương',
+          role: 'Creative Designer',
+          company: 'Freelancer',
+          avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=120&q=80',
+          quote: 'Một lễ hội âm nhạc đúng nghĩa với năng lượng tuyệt vời. Rất háo hức chờ đón những mùa tiếp theo!',
+          rating: 5,
+        },
+      ];
+    case 'sports-marathon':
+      return [
+        {
+          name: 'Phan Quốc Bảo',
+          role: 'Sub-3.5 Marathoner',
+          company: 'Runners Community',
+          avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80',
+          quote: 'Đường chạy tuyệt đẹp, trạm tiếp nước và y tế bố trí chuyên nghiệp chuẩn quốc tế. Mình đã lập PR mới tại giải này!',
+          rating: 5,
+        },
+        {
+          name: 'Lê Thùy Dung',
+          role: 'Triathlete',
+          company: 'Iron Team VN',
+          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
+          quote: 'Huy chương finisher kim loại đúc cực kỳ tinh xảo. Đội ngũ pacer dẫn tốc đều và nhiệt tình cổ vũ suốt chặng đường.',
+          rating: 5,
+        },
+        {
+          name: 'Vũ Thanh Tùng',
+          role: 'Trail Runner',
+          company: 'Ha Giang Trail Club',
+          avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=80',
+          quote: 'Khâu nhận race kit nhanh gọn, expo trước ngày chạy rất sôi động với nhiều nhãn hàng thể thao uy tín.',
+          rating: 5,
+        },
+      ];
+    case 'culinary-lifestyle':
+      return [
+        {
+          name: 'Hoàng Kim Oanh',
+          role: 'Food Blogger & Sommelier',
+          company: 'Saigon Taste Guide',
+          avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=120&q=80',
+          quote: 'Thực đơn tasting menu 7 món chuẩn vị Michelin, kết hợp rượu vang tinh tế. Một bữa tiệc vị giác đích thực!',
+          rating: 5,
+        },
+        {
+          name: 'Trịnh Bảo Nam',
+          role: 'Executive Chef',
+          company: 'L’Artisan Bistro',
+          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80',
+          quote: 'Phần workshop tương tác trực tiếp với Master Chef rất truyền cảm hứng. Kỹ thuật plating hiện đại rất đáng học hỏi.',
+          rating: 5,
+        },
+        {
+          name: 'Nguyễn Diệu Linh',
+          role: 'Lifestyle Writer',
+          company: 'Elle Gourmet',
+          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
+          quote: 'Không gian ấm cúng, ánh sáng và âm nhạc phối hợp hoàn hảo. Trải nghiệm ẩm thực cao cấp đáng nhớ nhất năm.',
+          rating: 5,
+        },
+      ];
+    case 'community-career':
+      return [
+        {
+          name: 'Bùi Đức Anh',
+          role: 'Junior Software Engineer',
+          company: 'FPT University Alumni',
+          avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80',
+          quote: 'Mình đã nhận offer trực tiếp ngay tại bàn phỏng vấn nhanh của công ty công nghệ đa quốc gia. Ngày hội việc làm quá thực tế!',
+          rating: 5,
+        },
+        {
+          name: 'Ngô Thu Trang',
+          role: 'Talent Acquisition Manager',
+          company: 'Global Tech Corp',
+          avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=120&q=80',
+          quote: 'Chất lượng ứng viên tham gia rất đồng đều và chủ động. Gian hàng của công ty đã thu hút hơn 300 hồ sơ tiềm năng.',
+          rating: 5,
+        },
+        {
+          name: 'Phạm Minh Quân',
+          role: 'Community Lead',
+          company: 'Vietnam Career Hub',
+          avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=80',
+          quote: 'Các phiên speed-networking và review CV 1-1 với HR Director mang lại giá trị định hướng rất lớn cho các bạn trẻ.',
+          rating: 5,
+        },
+      ];
+    default:
+      return [
+        {
+          name: 'Nguyễn Văn Minh',
+          role: 'Principal Engineer',
+          company: 'FPT Software',
+          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
+          quote: 'Nội dung thực chiến, không lý thuyết suông. Mình áp dụng ngay mô hình workflow vào dự án công ty ngay tuần sau đó và giảm 40% thời gian xử lý!',
+          rating: 5,
+        },
+        {
+          name: 'Trần Thị Thu Hà',
+          role: 'Head of Growth',
+          company: 'Fintech Startup',
+          avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=120&q=80',
+          quote: 'Phần Q&A 1-1 với diễn giả cực kỳ giá trị. Bài toán hóc búa của team mình được gỡ rối ngay tại chỗ chỉ trong 15 phút trao đổi.',
+          rating: 5,
+        },
+        {
+          name: 'Lê Hoàng Long',
+          role: 'AI Product Lead',
+          company: 'Tech Corp',
+          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80',
+          quote: 'Bộ slide và tài liệu tặng kèm đáng giá hơn cả tiền vé. Sự kiện được tổ chức chuyên nghiệp, networking chất lượng với nhiều founder và kỹ sư hàng đầu.',
+          rating: 5,
+        },
+      ];
+  }
+};
+
 
 // Preset templates for instant demo during presentation
 export const PRESETS: { label: string; iconType: 'ai' | 'marketing' | 'startup' | 'design' | 'studio'; data: EventInput }[] = [
@@ -345,6 +488,7 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
     benefits,
     agenda,
     faqs,
+    testimonials: getDomainTestimonials(category),
     earlyBirdBadge: input.earlyBirdDiscount || 'Ưu đãi Early Bird có hạn',
     ctaButtonText: category === 'studio-3d' ? 'Trải nghiệm không gian 3D ngay' : 'Đăng ký tham gia ngay',
     tagline: category === 'studio-3d' ? 'AWWWARDS SITE OF THE DAY • CINEMATIC EXPERIENCE' : 'Sự kiện chuyên sâu không thể bỏ lỡ',

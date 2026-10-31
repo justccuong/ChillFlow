@@ -75,6 +75,15 @@ export interface FaqItem {
   answer: string;
 }
 
+export interface TestimonialItem {
+  name: string;
+  role: string;
+  company: string;
+  avatar: string;
+  quote: string;
+  rating: number;
+}
+
 export interface GeneratedContent {
   headline: string;
   alternativeHeadline: string;
@@ -83,6 +92,7 @@ export interface GeneratedContent {
   benefits: BenefitItem[];
   agenda: AgendaItem[];
   faqs: FaqItem[];
+  testimonials?: TestimonialItem[];
   earlyBirdBadge: string;
   ctaButtonText: string;
   tagline: string;
