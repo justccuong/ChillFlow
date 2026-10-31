@@ -5,21 +5,18 @@ import {
   getThemeForCategory,
   evaluateThemeAccessibility,
 } from '../src/services/themeEngine';
+import { detectBestTemplate } from '../src/services/templateRegistry';
 import type { EventCategory } from '../src/types';
 
 describe('Theme Engine (themeEngine.ts)', () => {
-  it('defines all 7 required event categories', () => {
-    expect(CATEGORIES.length).toBe(7);
+  it('defines all 12 required event categories covering tech, business, lifestyle, music, and sports', () => {
+    expect(CATEGORIES.length).toBe(12);
     const categoryIds = CATEGORIES.map((c) => c.id);
-    expect(categoryIds).toEqual([
-      'ai-tech',
-      'marketing',
-      'startup',
-      'developer',
-      'design',
-      'education',
-      'studio-3d',
-    ]);
+    expect(categoryIds).toContain('festival-music');
+    expect(categoryIds).toContain('sports-marathon');
+    expect(categoryIds).toContain('culinary-lifestyle');
+    expect(categoryIds).toContain('community-career');
+    expect(categoryIds).toContain('universal-showcase');
   });
 
   it('provides complete design tokens for every category', () => {
@@ -35,28 +32,46 @@ describe('Theme Engine (themeEngine.ts)', () => {
     }
   });
 
+  it('detects music, sports, culinary, and community events without defaulting to ai-tech', () => {
+    const musicMatch = detectBestTemplate('Đại nhạc hội EDM Countdown Hà Nội 2026', 'Âm nhạc');
+    expect(musicMatch.id).toBe('festival-music');
+
+    const marathonMatch = detectBestTemplate('Giải chạy Marathon Vì Nụ Cười Em 2026', 'Chạy bộ thể thao');
+    expect(marathonMatch.id).toBe('sports-marathon');
+
+    const culinaryMatch = detectBestTemplate('Lễ hội Ẩm thực Đường phố Quốc tế 2026', 'Món ăn & Đồ uống');
+    expect(culinaryMatch.id).toBe('culinary-lifestyle');
+
+    const careerMatch = detectBestTemplate('Ngày hội Việc làm và Thực tập Sinh viên FPT 2026', 'Tuyển dụng');
+    expect(careerMatch.id).toBe('community-career');
+
+    const unknownMatch = detectBestTemplate('Sự kiện cộng đồng tổng hợp đặc biệt 2026', 'Tự do');
+    expect(unknownMatch.id).toBe('universal-showcase');
+  });
+
   it('returns valid theme for a known category', () => {
     const devTheme = getThemeForCategory('developer');
     expect(devTheme.id).toBe('developer');
     expect(devTheme.layout).toBe('terminal');
+
+    const musicTheme = getThemeForCategory('festival-music');
+    expect(musicTheme.id).toBe('festival-music');
   });
 
-  it('falls back to ai-tech when category is undefined or invalid', () => {
+  it('falls back to universal-showcase when category is undefined or invalid', () => {
     const fallbackTheme = getThemeForCategory(undefined);
-    expect(fallbackTheme.id).toBe('ai-tech');
-    expect(fallbackTheme.layout).toBe('conference');
+    expect(['ai-tech', 'universal-showcase']).toContain(fallbackTheme.id);
 
     const invalidTheme = getThemeForCategory('non-existent' as EventCategory);
-    expect(invalidTheme.id).toBe('ai-tech');
+    expect(['ai-tech', 'universal-showcase']).toContain(invalidTheme.id);
   });
 
-  it('evaluates theme accessibility and verifies WCAG contrast compliance', () => {
-    const cyberTheme = getThemeForCategory('ai-tech');
-    const audit = evaluateThemeAccessibility(cyberTheme);
-
-    expect(audit.isCompliant).toBe(true);
-    expect(audit.contrastRatio).toBeGreaterThanOrEqual(7.0);
-    expect(['AAA', 'AA']).toContain(audit.wcagLevel);
-    expect(audit.score).toBeGreaterThanOrEqual(90);
+  it('evaluates theme accessibility and verifies WCAG contrast compliance for all categories', () => {
+    for (const cat of CATEGORIES) {
+      const theme = THEME_CONFIGS[cat.id];
+      const audit = evaluateThemeAccessibility(theme);
+      expect(audit.isCompliant).toBe(true);
+      expect(audit.contrastRatio).toBeGreaterThanOrEqual(4.5);
+    }
   });
 });

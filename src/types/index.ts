@@ -5,7 +5,12 @@ export type EventCategory =
   | 'developer'
   | 'design'
   | 'education'
-  | 'studio-3d';
+  | 'studio-3d'
+  | 'festival-music'
+  | 'sports-marathon'
+  | 'culinary-lifestyle'
+  | 'community-career'
+  | 'universal-showcase';
 
 export type TemplateLayout =
   | 'conference'
@@ -14,7 +19,12 @@ export type TemplateLayout =
   | 'executive'
   | 'creative'
   | 'academy'
-  | 'cinematic';
+  | 'cinematic'
+  | 'festival'
+  | 'sports'
+  | 'culinary'
+  | 'community'
+  | 'showcase';
 
 export interface GalleryPhoto {
   title: string;

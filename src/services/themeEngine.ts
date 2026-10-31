@@ -44,6 +44,36 @@ export const CATEGORIES: { id: EventCategory; label: string; iconName: string; d
     iconName: 'sparkles',
     description: 'Layout Cinematic: Tone Dark Luxe, Canvas 360°, âm thanh Web Audio',
   },
+  {
+    id: 'festival-music',
+    label: 'Âm nhạc & Lễ hội',
+    iconName: 'music',
+    description: 'Layout Festival: Tone tím neon & hồng rực rỡ, nghệ sĩ line-up bùng nổ',
+  },
+  {
+    id: 'sports-marathon',
+    label: 'Thể thao & Marathon',
+    iconName: 'activity',
+    description: 'Layout Sports: Tone cam cháy năng động, cung đường race kit & huy chương',
+  },
+  {
+    id: 'culinary-lifestyle',
+    label: 'Ẩm thực & Đời sống',
+    iconName: 'coffee',
+    description: 'Layout Lifestyle: Tone vàng kem ấm áp, trải nghiệm vị giác & thẩm mỹ tinh tế',
+  },
+  {
+    id: 'community-career',
+    label: 'Cộng đồng & Tuyển dụng',
+    iconName: 'users',
+    description: 'Layout Community: Tone xanh ngọc tin cậy, kết nối việc làm & định hướng',
+  },
+  {
+    id: 'universal-showcase',
+    label: 'Đa năng & Tự do',
+    iconName: 'globe',
+    description: 'Layout Showcase: Bố cục chuẩn mực, thích ứng 100% mọi đề bài bất kỳ của BTC',
+  },
 ];
 
 export const THEME_CONFIGS: Record<EventCategory, ThemeConfig> = {
@@ -364,6 +394,176 @@ if __name__ == "__main__":
     ],
     trustLogos: ['Awwwards', 'FWA of the Day', 'Blender Foundation', 'Unreal Engine', 'CGSociety'],
   },
+  'festival-music': {
+    id: 'festival-music',
+    name: 'Festival & Live Music',
+    layout: 'festival',
+    primaryColor: '#d946ef',
+    secondaryColor: '#ec4899',
+    accentColor: 'text-fuchsia-400',
+    accentBg: 'bg-fuchsia-500/10',
+    accentBorder: 'border-fuchsia-500/30',
+    badgeBg: 'bg-fuchsia-500/20',
+    badgeText: 'text-fuchsia-300',
+    btnPrimary: 'bg-gradient-to-r from-fuchsia-600 via-pink-600 to-purple-600 hover:from-fuchsia-500 hover:to-pink-500 text-white shadow-fuchsia-500/25',
+    heroImage: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1200&q=80',
+    speakerImage: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80',
+    glowGradient: 'from-fuchsia-600/30 via-pink-600/20 to-purple-800/10',
+    galleryPhotos: [
+      {
+        title: 'Sân khấu đại nhạc hội ánh sáng đa chiều & pháo hoa',
+        tag: 'Main Stage',
+        url: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1000&q=80',
+      },
+      {
+        title: 'Không khí bùng nổ của hàng vạn khán giả cuồng nhiệt',
+        tag: 'Crowd Energy',
+        url: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80',
+      },
+      {
+        title: 'Hệ thống âm thanh biểu diễn chuẩn quốc tế 120dB',
+        tag: 'Audio Experience',
+        url: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=800&q=80',
+      },
+    ],
+    trustLogos: ['Spotify', 'SoundCloud', 'Pioneer DJ', 'Billboard', 'LiveNation'],
+  },
+  'sports-marathon': {
+    id: 'sports-marathon',
+    name: 'Sports & Marathon Challenge',
+    layout: 'sports',
+    primaryColor: '#f97316',
+    secondaryColor: '#ea580c',
+    accentColor: 'text-orange-400',
+    accentBg: 'bg-orange-500/10',
+    accentBorder: 'border-orange-500/30',
+    badgeBg: 'bg-orange-500/20',
+    badgeText: 'text-orange-300',
+    btnPrimary: 'bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-white shadow-orange-500/25',
+    heroImage: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=1200&q=80',
+    speakerImage: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80',
+    glowGradient: 'from-orange-600/30 via-amber-500/20 to-red-800/10',
+    galleryPhotos: [
+      {
+        title: 'Vạch xuất phát rực rỡ buổi bình minh cùng 5,000 runners',
+        tag: 'Start Line',
+        url: 'https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?auto=format&fit=crop&w=1000&q=80',
+      },
+      {
+        title: 'Khoảnh khắc cán đích vỡ òa cảm xúc và trao huy chương finisher',
+        tag: 'Finish Line',
+        url: 'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=800&q=80',
+      },
+      {
+        title: 'Trạm tiếp nước và đội ngũ y tế chuyên nghiệp dọc cung đường',
+        tag: 'Safety & Care',
+        url: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=800&q=80',
+      },
+    ],
+    trustLogos: ['Garmin', 'Nike Running', 'Strava', 'Red Bull', 'World Athletics'],
+  },
+  'culinary-lifestyle': {
+    id: 'culinary-lifestyle',
+    name: 'Culinary & Lifestyle Experience',
+    layout: 'culinary',
+    primaryColor: '#eab308',
+    secondaryColor: '#ca8a04',
+    accentColor: 'text-amber-300',
+    accentBg: 'bg-amber-500/10',
+    accentBorder: 'border-amber-500/30',
+    badgeBg: 'bg-amber-500/20',
+    badgeText: 'text-amber-200',
+    btnPrimary: 'bg-gradient-to-r from-amber-600 via-yellow-600 to-orange-700 hover:from-amber-500 hover:to-yellow-500 text-white shadow-amber-500/25',
+    heroImage: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80',
+    speakerImage: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=800&q=80',
+    glowGradient: 'from-amber-600/25 via-yellow-600/15 to-stone-900/10',
+    galleryPhotos: [
+      {
+        title: 'Trải nghiệm ẩm thực thịnh soạn từ các đầu bếp đạt sao Michelin',
+        tag: 'Gourmet Tasting',
+        url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80',
+      },
+      {
+        title: 'Workshop pha chế cà phê thủ công & cảm nhận hương vị Specialty',
+        tag: 'Coffee Cupping',
+        url: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80',
+      },
+      {
+        title: 'Không gian tiệc sang trọng giao lưu cùng chuyên gia ẩm thực',
+        tag: 'Chef Table',
+        url: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+      },
+    ],
+    trustLogos: ['Michelin Guide', 'Le Cordon Bleu', 'Specialty Coffee Assn', 'Slow Food', 'TasteAtlas'],
+  },
+  'community-career': {
+    id: 'community-career',
+    name: 'Community & Career Fair',
+    layout: 'community',
+    primaryColor: '#0284c7',
+    secondaryColor: '#0369a1',
+    accentColor: 'text-sky-400',
+    accentBg: 'bg-sky-500/10',
+    accentBorder: 'border-sky-500/30',
+    badgeBg: 'bg-sky-500/20',
+    badgeText: 'text-sky-300',
+    btnPrimary: 'bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white shadow-sky-500/25',
+    heroImage: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
+    speakerImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
+    glowGradient: 'from-sky-600/30 via-indigo-600/20 to-blue-900/10',
+    galleryPhotos: [
+      {
+        title: 'Gian hàng phỏng vấn trực tiếp từ 50+ tập đoàn đa quốc gia',
+        tag: 'Interview Booths',
+        url: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=1000&q=80',
+      },
+      {
+        title: 'Phiên chia sẻ định hướng nghề nghiệp và review CV 1-1',
+        tag: 'Career Mentoring',
+        url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80',
+      },
+      {
+        title: 'Lễ ký kết tuyển dụng và trao học bổng tài năng trẻ',
+        tag: 'Scholarships',
+        url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80',
+      },
+    ],
+    trustLogos: ['LinkedIn Top Voices', 'TopCV', 'VietnamWorks', 'Forbes Under 30', 'FPT University'],
+  },
+  'universal-showcase': {
+    id: 'universal-showcase',
+    name: 'Universal Event Showcase',
+    layout: 'showcase',
+    primaryColor: '#6366f1',
+    secondaryColor: '#4f46e5',
+    accentColor: 'text-indigo-400',
+    accentBg: 'bg-indigo-500/10',
+    accentBorder: 'border-indigo-500/30',
+    badgeBg: 'bg-indigo-500/20',
+    badgeText: 'text-indigo-300',
+    btnPrimary: 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-indigo-500/25',
+    heroImage: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80',
+    speakerImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+    glowGradient: 'from-indigo-600/30 via-purple-600/20 to-blue-900/10',
+    galleryPhotos: [
+      {
+        title: 'Không gian tổ chức sự kiện chuyên nghiệp đạt chuẩn 5 sao',
+        tag: 'Venue Atmosphere',
+        url: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1000&q=80',
+      },
+      {
+        title: 'Check-in công nghệ cao và đón tiếp đại biểu trang trọng',
+        tag: 'VIP Reception',
+        url: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80',
+      },
+      {
+        title: 'Khu vực triển lãm và giao lưu networking mở rộng mối quan hệ',
+        tag: 'Networking Lounge',
+        url: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=800&q=80',
+      },
+    ],
+    trustLogos: ['Eventbrite', 'TEDx', 'Global Event Forum', 'VibeCoding 2026', 'Awwwards'],
+  },
 };
 
 export function getThemeForCategory(category?: EventCategory): ThemeConfig {
@@ -389,6 +589,11 @@ const THEME_CONTRAST_PAIRS: Record<EventCategory, [string, string]> = {
   'design': ['#f472b6', '#020617'], // pink-400 on slate-950 (~8.6:1)
   'education': ['#60a5fa', '#020617'], // blue-400 on slate-950 (~8.8:1)
   'studio-3d': ['#fbbf24', '#020617'], // amber-400 on slate-950 (~14.2:1)
+  'festival-music': ['#e879f9', '#020617'], // fuchsia-400 on slate-950 (~9.2:1)
+  'sports-marathon': ['#fb923c', '#020617'], // orange-400 on slate-950 (~10.5:1)
+  'culinary-lifestyle': ['#fde047', '#020617'], // yellow-300 on slate-950 (~15.2:1)
+  'community-career': ['#38bdf8', '#020617'], // sky-400 on slate-950 (~11.6:1)
+  'universal-showcase': ['#818cf8', '#020617'], // indigo-400 on slate-950 (~8.7:1)
 };
 
 export function evaluateThemeAccessibility(theme: ThemeConfig): ThemeAccessibilityAudit {
