@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Plus, Users, Key, Eye, Edit3, Zap, Sun, Moon } from 'lucide-react';
+import { Plus, Users, Key, Eye, Edit3, Zap } from 'lucide-react';
 import { UserProfile } from '../types';
-import { NumberTicker } from './magicui';
+import { NumberTicker, AnimatedThemeToggler } from './magicui';
 
 interface HeaderProps {
   currentTab: 'form' | 'preview';
@@ -191,21 +191,13 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            {/* Light / Dark Mode Toggle Button (Bản gốc nhanh, 0ms lag) */}
+            {/* Light / Dark Mode Animated View-Transition Toggle Button */}
             {onToggleTheme && (
-              <button
-                type="button"
-                onClick={() => onToggleTheme()}
+              <AnimatedThemeToggler
+                theme={themeMode}
+                onThemeChange={onToggleTheme}
                 className="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs cursor-pointer transition-colors shadow-sm active:scale-95 flex items-center justify-center"
-                title={themeMode === 'dark' ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối'}
-                aria-label="Toggle Theme Mode"
-              >
-                {themeMode === 'dark' ? (
-                  <Sun className="w-4 h-4 text-amber-500 transition-transform hover:rotate-45" />
-                ) : (
-                  <Moon className="w-4 h-4 text-indigo-600 transition-transform hover:-rotate-12" />
-                )}
-              </button>
+              />
             )}
 
             <button
