@@ -89,3 +89,5 @@ export const StickyFomoBar: React.FC<StickyFomoBarProps> = ({
     </div>
   );
 };
+
+export default StickyFomoBar;
