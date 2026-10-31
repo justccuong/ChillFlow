@@ -157,7 +157,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
     : content.headline;
 
   const scrollToRegistration = () => {
-    const el = document.getElementById('registration-section');
+    const el = document.getElementById('registration');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
