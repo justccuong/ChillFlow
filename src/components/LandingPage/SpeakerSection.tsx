@@ -1,17 +1,24 @@
 import React from 'react';
 import type { EventInput, ThemeConfig } from '../../types';
 import { Camera, Award, CheckCircle } from 'lucide-react';
+import { InlineEditable } from './InlineEditable';
 
 interface SpeakerSectionProps {
   input: EventInput;
   theme: ThemeConfig;
   onOpenSpeakerImagePicker?: () => void;
+  isEditMode?: boolean;
+  onUpdateInputField?: (field: keyof EventInput, val: unknown) => void;
+  category?: string;
 }
 
 export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
   input,
   theme,
   onOpenSpeakerImagePicker,
+  isEditMode = false,
+  onUpdateInputField,
+  category = 'ai-tech',
 }) => {
   const speakerPhoto = input.speakerAvatarUrl || theme.speakerImage;
 
@@ -28,7 +35,7 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
             CHUYÊN GIA DẪN DẮT
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
-            Gặp gỡ diễn giả chính
+            Gặp gỡ diễn giả & chuyên gia chính
           </h2>
         </div>
 
@@ -42,7 +49,7 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
             >
               <img
                 src={speakerPhoto}
-                alt={input.speakerName}
+                alt={input.speakerName || 'Diễn giả'}
                 className="w-full h-full object-cover rounded-full group-hover/avatar:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 rounded-full bg-slate-950/60 opacity-0 group-hover/avatar:opacity-100 flex flex-col items-center justify-center transition-opacity text-xs font-bold text-white gap-1">
@@ -52,23 +59,37 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
             </div>
           </div>
 
-          {/* Speaker Info - Editorial style, NO box! */}
+          {/* Speaker Info - Editorial style with Visual CMS in-place editing */}
           <div className="space-y-4 text-center md:text-left max-w-xl">
-            {input.speakerRole && (
-              <div className={`text-xs font-bold uppercase tracking-widest ${theme.accentColor}`}>
-                {input.speakerRole}
-              </div>
-            )}
+            <div className={`text-xs font-bold uppercase tracking-widest ${theme.accentColor}`}>
+              <InlineEditable
+                value={input.speakerRole || 'Chuyên gia & Diễn giả'}
+                onSave={(val) => onUpdateInputField?.('speakerRole', val)}
+                isEditMode={isEditMode}
+                as="span"
+                category={category}
+              />
+            </div>
 
             <h3 className="text-2xl sm:text-4xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
-              {input.speakerName}
+              <InlineEditable
+                value={input.speakerName || 'Tên diễn giả'}
+                onSave={(val) => onUpdateInputField?.('speakerName', val)}
+                isEditMode={isEditMode}
+                as="span"
+                category={category}
+              />
             </h3>
 
-            {input.speakerBio && (
-              <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed font-sans">
-                {input.speakerBio}
-              </p>
-            )}
+            <div className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed font-sans">
+              <InlineEditable
+                value={input.speakerBio || 'Thông tin giới thiệu về kinh nghiệm, thành tựu và chuyên môn của diễn giả.'}
+                onSave={(val) => onUpdateInputField?.('speakerBio', val)}
+                isEditMode={isEditMode}
+                as="p"
+                category={category}
+              />
+            </div>
 
             {/* Credibility Checklist */}
             <div className="pt-2 flex flex-wrap gap-4 justify-center md:justify-start text-xs text-slate-700 dark:text-slate-300">
@@ -78,7 +99,7 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
               </div>
               <div className="flex items-center gap-1.5">
                 <Award className="w-4 h-4 text-amber-500" />
-                <span>Cố vấn cho hàng chục doanh nghiệp</span>
+                <span>Cố vấn cho hàng chục dự án lớn</span>
               </div>
             </div>
           </div>
@@ -87,3 +108,4 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
     </section>
   );
 };
+export default SpeakerSection;

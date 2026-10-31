@@ -131,6 +131,27 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
     saveCurrentEventState(input, updated, cro);
   };
 
+  const handleUpdateBenefit = (index: number, field: keyof BenefitItem, val: string) => {
+    useLandingPageStore.getState().updateBenefitItem(index, field, val);
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleAddBenefit = () => {
+    useLandingPageStore.getState().addBenefitItem();
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleRemoveBenefit = (index: number) => {
+    useLandingPageStore.getState().removeBenefitItem(index);
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
   const handleUpdateInputField = (field: keyof EventInput, val: unknown) => {
     const updated: EventInput = { ...input, category: currentCategory, [field]: val };
     onUpdateInput(updated);
@@ -447,13 +468,24 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         {currentCategory === 'ai-tech' && (
           <>
             <div data-reveal data-reveal-delay="100">
-              <BenefitsSection benefits={content.benefits} theme={theme} />
+              <BenefitsSection
+                benefits={content.benefits}
+                theme={theme}
+                isEditMode={isEditMode}
+                onUpdateBenefit={handleUpdateBenefit}
+                onAddBenefit={handleAddBenefit}
+                onRemoveBenefit={handleRemoveBenefit}
+                category={currentCategory}
+              />
             </div>
             <div data-reveal data-reveal-delay="100">
               <SpeakerSection
                 input={{ ...input, category: currentCategory }}
                 theme={theme}
                 onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
+                isEditMode={isEditMode}
+                onUpdateInputField={handleUpdateInputField}
+                category={currentCategory}
               />
             </div>
             <div data-reveal data-reveal-delay="100">
@@ -510,6 +542,9 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
                 input={{ ...input, category: currentCategory }}
                 theme={theme}
                 onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
+                isEditMode={isEditMode}
+                onUpdateInputField={handleUpdateInputField}
+                category={currentCategory}
               />
             </div>
             <div data-reveal data-reveal-delay="100">
@@ -550,13 +585,24 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               <CreativeMasonrySection theme={theme} />
             </div>
             <div data-reveal data-reveal-delay="100">
-              <BenefitsSection benefits={content.benefits} theme={theme} />
+              <BenefitsSection
+                benefits={content.benefits}
+                theme={theme}
+                isEditMode={isEditMode}
+                onUpdateBenefit={handleUpdateBenefit}
+                onAddBenefit={handleAddBenefit}
+                onRemoveBenefit={handleRemoveBenefit}
+                category={currentCategory}
+              />
             </div>
             <div data-reveal data-reveal-delay="100">
               <SpeakerSection
                 input={{ ...input, category: currentCategory }}
                 theme={theme}
                 onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
+                isEditMode={isEditMode}
+                onUpdateInputField={handleUpdateInputField}
+                category={currentCategory}
               />
             </div>
           </Suspense>
@@ -571,7 +617,15 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               <AcademySyllabusSection theme={theme} />
             </div>
             <div data-reveal data-reveal-delay="100">
-              <BenefitsSection benefits={content.benefits} theme={theme} />
+              <BenefitsSection
+                benefits={content.benefits}
+                theme={theme}
+                isEditMode={isEditMode}
+                onUpdateBenefit={handleUpdateBenefit}
+                onAddBenefit={handleAddBenefit}
+                onRemoveBenefit={handleRemoveBenefit}
+                category={currentCategory}
+              />
             </div>
             <div data-reveal data-reveal-delay="100">
               <FaqSection faqs={content.faqs} theme={theme} />
@@ -591,13 +645,24 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               />
             </div>
             <div data-reveal data-reveal-delay="100">
-              <BenefitsSection benefits={content.benefits} theme={theme} />
+              <BenefitsSection
+                benefits={content.benefits}
+                theme={theme}
+                isEditMode={isEditMode}
+                onUpdateBenefit={handleUpdateBenefit}
+                onAddBenefit={handleAddBenefit}
+                onRemoveBenefit={handleRemoveBenefit}
+                category={currentCategory}
+              />
             </div>
             <div data-reveal data-reveal-delay="100">
               <SpeakerSection
                 input={{ ...input, category: currentCategory }}
                 theme={theme}
                 onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
+                isEditMode={isEditMode}
+                onUpdateInputField={handleUpdateInputField}
+                category={currentCategory}
               />
             </div>
             <div data-reveal data-reveal-delay="100">
