@@ -87,4 +87,44 @@ describe('Source Exporter & SEO HTML Generator (sourceExporter.ts)', () => {
     expect(html).toContain('href="#registration"');
     expect(html).toContain('id="registration"');
   });
+
+  it('renders dynamic testimonials and FAQs in standalone HTML', () => {
+    const contentWithExtras: GeneratedContent = {
+      ...mockContent,
+      testimonials: [
+        {
+          name: 'Trần Văn Cường',
+          role: 'Lead Architect',
+          company: 'AI Solutions',
+          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120',
+          quote: 'Chương trình cực kỳ chất lượng và thực tế!',
+          rating: 5,
+        },
+      ],
+      faqs: [
+        {
+          question: 'Có hỗ trợ hoàn vé không?',
+          answer: 'Có hỗ trợ trước ngày diễn ra sự kiện 48h.',
+        },
+      ],
+    };
+
+    const html = generateStandaloneHtml(mockInput, contentWithExtras, theme, 'pro');
+    expect(html).toContain('Trần Văn Cường');
+    expect(html).toContain('Chương trình cực kỳ chất lượng và thực tế!');
+    expect(html).toContain('Có hỗ trợ hoàn vé không?');
+    expect(html).toContain('Có hỗ trợ trước ngày diễn ra sự kiện 48h.');
+  });
+
+  it('reflects new universal categories such as festival-music in exported HTML', () => {
+    const musicInput: EventInput = {
+      ...mockInput,
+      eventName: 'Hanoi SoundFest 2026',
+      category: 'festival-music',
+    };
+    const musicTheme = getThemeForCategory('festival-music');
+    const html = generateStandaloneHtml(musicInput, mockContent, musicTheme, 'pro');
+    expect(html).toContain('data-category="festival-music"');
+    expect(html).toContain('Hanoi SoundFest 2026');
+  });
 });

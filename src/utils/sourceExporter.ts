@@ -28,7 +28,7 @@ export function generateStandaloneHtml(
     .font-mono { font-family: 'JetBrains Mono', monospace; }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-cyan-500 selection:text-black">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-cyan-500 selection:text-black" data-category="${category}">
 
   ${userTier === 'free' ? `
   <!-- Free Tier Watermark Badge -->
@@ -42,6 +42,9 @@ export function generateStandaloneHtml(
     <div class="flex items-center gap-2">
       <span class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></span>
       <span class="font-extrabold tracking-tight text-white font-heading">${input.eventName}</span>
+      <span class="hidden sm:inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 ml-2">
+        ${category}
+      </span>
     </div>
     <a href="#registration" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition-all shadow-md">
       Giữ chỗ ngay
@@ -176,6 +179,53 @@ export function generateStandaloneHtml(
       </div>
     </div>
   </section>
+
+  <!-- Testimonials Section -->
+  ${content.testimonials && content.testimonials.length > 0 ? `
+  <section class="py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-900 bg-slate-900/40">
+    <div class="max-w-6xl mx-auto space-y-10">
+      <div class="text-center space-y-2">
+        <h2 class="text-2xl sm:text-4xl font-black text-white">Cảm nhận từ khách mời</h2>
+        <p class="text-sm text-slate-400">Đánh giá thực tế từ người tham gia các mùa trước</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        ${content.testimonials.map(t => `
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
+            <div class="flex text-amber-400 text-sm">★★★★★</div>
+            <p class="text-xs text-slate-300 italic leading-relaxed">"${t.quote}"</p>
+            <div class="pt-4 border-t border-slate-800 flex items-center gap-3">
+              <img src="${t.avatar}" alt="${t.name}" class="w-10 h-10 rounded-full object-cover border border-slate-700">
+              <div>
+                <h4 class="text-xs font-bold text-white">${t.name}</h4>
+                <p class="text-[11px] text-slate-400">${t.role} • ${t.company}</p>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </section>
+  ` : ''}
+
+  <!-- FAQs Section -->
+  ${content.faqs && content.faqs.length > 0 ? `
+  <section class="py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-900 bg-slate-900/20">
+    <div class="max-w-3xl mx-auto space-y-8">
+      <div class="text-center space-y-2">
+        <h2 class="text-2xl sm:text-4xl font-black text-white">Câu hỏi thường gặp</h2>
+        <p class="text-sm text-slate-400">Mọi thông tin cần thiết về lịch trình, tài liệu và hình thức tham gia</p>
+      </div>
+      <div class="space-y-4">
+        ${content.faqs.map(f => `
+          <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+            <h4 class="text-sm font-bold text-cyan-400">${f.question}</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">${f.answer}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </section>
+  ` : ''}
 
   <!-- Registration Section -->
   <section id="registration" class="py-20 px-4 sm:px-6 lg:px-8">
