@@ -7,6 +7,7 @@ import { PublicStandalonePage } from './components/LandingPage/PublicStandaloneP
 import { Particles } from './components/magicui';
 import { generateLandingPageContent, PRESETS } from './services/aiService';
 import { useThemeMode } from './hooks/useThemeMode';
+import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { extractSlugFromLocation, getPublishedEvent } from './services/publishService';
 import { Globe } from 'lucide-react';
 import { useLandingPageStore } from './store/useLandingPageStore';
@@ -65,6 +66,7 @@ export function App() {
   };
 
   const { mode: themeMode, toggleMode } = useThemeMode();
+  useSmoothScroll({ enabled: true, duration: 0.7, wheelMultiplier: 1.0 });
 
   // Listen to routing changes (hash, history popstate)
   useEffect(() => {
