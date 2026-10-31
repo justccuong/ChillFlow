@@ -252,3 +252,5 @@ export const LaserScrollTimeline: React.FC<LaserScrollTimelineProps> = ({
     </section>
   );
 };
+
+export default LaserScrollTimeline;

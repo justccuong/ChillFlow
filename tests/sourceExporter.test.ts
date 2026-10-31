@@ -82,4 +82,9 @@ describe('Source Exporter & SEO HTML Generator (sourceExporter.ts)', () => {
     const proHtml = generateStandaloneHtml(mockInput, mockContent, theme, 'pro');
     expect(proHtml).not.toContain('Free Tier Watermark Badge');
   });
+  it('ensures navigation CTA links match the registration section anchor id', () => {
+    const html = generateStandaloneHtml(mockInput, mockContent, theme, 'pro');
+    expect(html).toContain('href="#registration"');
+    expect(html).toContain('id="registration"');
+  });
 });
