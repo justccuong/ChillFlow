@@ -10,6 +10,7 @@ import { TestimonialsSection } from './TestimonialsSection';
 import { AgendaSection } from './AgendaSection';
 import { FaqSection } from './FaqSection';
 import { RegistrationSection } from './RegistrationSection';
+import { EventGallerySection } from './EventGallerySection';
 import { CROScorecard } from '../CROScorecard';
 import { detectBestTemplate, getTemplateById } from '../../services/templateRegistry';
 import { SocialProofTicker } from './SocialProofTicker';
@@ -593,6 +594,14 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             </div>
           </Suspense>
         )}
+
+        {/* Real Event Atmosphere Bento Gallery */}
+        <div data-reveal data-reveal-delay="100">
+          <EventGallerySection
+            theme={theme}
+            location={input.location || 'Địa điểm tổ chức'}
+          />
+        </div>
 
         {/* 9. Registration Section */}
         <div data-reveal data-reveal-delay="100">

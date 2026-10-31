@@ -8,6 +8,7 @@ import { TestimonialsSection } from './TestimonialsSection';
 import { AgendaSection } from './AgendaSection';
 import { FaqSection } from './FaqSection';
 import { RegistrationSection } from './RegistrationSection';
+import { EventGallerySection } from './EventGallerySection';
 import { StickyBottomCta } from './StickyBottomCta';
 import { SocialProofTicker } from './SocialProofTicker';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
@@ -155,6 +156,14 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
             theme={theme}
             speakerName={input.speakerName}
             speakerPhoto={input.speakerAvatarUrl || theme.speakerImage}
+          />
+        </div>
+
+        {/* Real Event Atmosphere Bento Gallery */}
+        <div data-reveal data-reveal-delay="100">
+          <EventGallerySection
+            theme={theme}
+            location={input.location || 'Địa điểm tổ chức'}
           />
         </div>
 

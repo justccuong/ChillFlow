@@ -78,3 +78,5 @@ export const EventGallerySection: React.FC<EventGallerySectionProps> = ({ theme,
     </section>
   );
 };
+
+export default EventGallerySection;
