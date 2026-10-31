@@ -201,3 +201,28 @@ export interface PublishedPageRecord {
   conversionsCount: number;
 }
 
+export interface SectionVisibilityConfig {
+  hero: boolean;
+  trustBar: boolean;
+  benefits: boolean;
+  categorySection: boolean;
+  speaker: boolean;
+  agenda: boolean;
+  testimonials: boolean;
+  gallery: boolean;
+  faq: boolean;
+  registration: boolean;
+}
+
+export const DEFAULT_SECTION_VISIBILITY: SectionVisibilityConfig = {
+  hero: true,
+  trustBar: true,
+  benefits: true,
+  categorySection: true,
+  speaker: true,
+  agenda: true,
+  testimonials: true,
+  gallery: true,
+  faq: true,
+  registration: true,
+};

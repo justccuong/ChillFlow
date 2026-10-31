@@ -93,4 +93,38 @@ describe('Landing Page Zustand Store Item-Level Mutations (useLandingPageStore.t
     store.updateInputField('speakerName', 'Dr. Trần Văn B');
     expect(useLandingPageStore.getState().input?.speakerName).toBe('Dr. Trần Văn B');
   });
+
+  it('toggles section visibility and resets to defaults', () => {
+    const store = useLandingPageStore.getState();
+    expect(store.sectionVisibility.agenda).toBe(true);
+
+    store.toggleSection('agenda');
+    expect(useLandingPageStore.getState().sectionVisibility.agenda).toBe(false);
+
+    store.setSectionVisibility({ agenda: true, speaker: false });
+    expect(useLandingPageStore.getState().sectionVisibility.agenda).toBe(true);
+    expect(useLandingPageStore.getState().sectionVisibility.speaker).toBe(false);
+
+    store.resetSectionVisibility();
+    expect(useLandingPageStore.getState().sectionVisibility.speaker).toBe(true);
+  });
+
+  it('updates, adds and removes testimonial items', () => {
+    const store = useLandingPageStore.getState();
+    store.addTestimonialItem({
+      name: 'Khách mời VIP',
+      role: 'CEO',
+      company: 'Tech Startup',
+      avatar: 'https://example.com/avatar.jpg',
+      quote: 'Sự kiện quá chất lượng!',
+      rating: 5,
+    });
+    expect(useLandingPageStore.getState().content?.testimonials?.length).toBe(1);
+
+    store.updateTestimonialItem(0, 'name', 'Khách mời VIP đã sửa');
+    expect(useLandingPageStore.getState().content?.testimonials?.[0].name).toBe('Khách mời VIP đã sửa');
+
+    store.removeTestimonialItem(0);
+    expect(useLandingPageStore.getState().content?.testimonials?.length).toBe(0);
+  });
 });

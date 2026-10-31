@@ -18,7 +18,7 @@ import { SocialProofTicker } from './SocialProofTicker';
 import { publishEvent } from '../../services/publishService';
 import { exportStandaloneHtml } from '../../utils/sourceExporter';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
-import { Sparkles, ArrowUp, Edit3, Palette, Send, X, Undo2, Redo2 } from 'lucide-react';
+import { Sparkles, ArrowUp, Edit3, Palette, Send, X, Undo2, Redo2, Sliders } from 'lucide-react';
 import { NumberTicker } from '../magicui';
 import type { UserProfile, PublishedPageRecord } from '../../types';
 import { useLandingPageStore } from '../../store/useLandingPageStore';
@@ -31,6 +31,7 @@ const TemplateCatalogModal = lazy(() => import('../TemplateCatalogModal'));
 const ExitIntentModal = lazy(() => import('./ExitIntentModal'));
 const PublishModal = lazy(() => import('./PublishModal'));
 const CustomDomainModal = lazy(() => import('../CustomDomainModal'));
+const SectionCustomizerModal = lazy(() => import('./SectionCustomizerModal'));
 
 // Code Splitting: Lazy-load 9 Category-specific Section Variants
 const MasterclassStatsSection = lazy(() => import('./sections/MasterclassStatsSection'));
@@ -232,6 +233,11 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
   // Sponsor Editor state
   const [isSponsorEditorOpen, setIsSponsorEditorOpen] = useState(false);
+  const sectionVisibility = useLandingPageStore((state) => state.sectionVisibility);
+  const toggleSection = useLandingPageStore((state) => state.toggleSection);
+  const setSectionVisibility = useLandingPageStore((state) => state.setSectionVisibility);
+  const resetSectionVisibility = useLandingPageStore((state) => state.resetSectionVisibility);
+  const [isSectionCustomizerOpen, setIsSectionCustomizerOpen] = useState(false);
 
   const theme = getThemeForCategory(currentCategory);
 
@@ -402,6 +408,18 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
         <div className="w-[1px] h-4 bg-slate-300 dark:bg-white/20 mx-0.5 shrink-0 hidden sm:block"></div>
 
+                {/* Section Visibility & Layout Customizer */}
+        <button
+          type="button"
+          onClick={() => setIsSectionCustomizerOpen(true)}
+          className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-transparent font-semibold cursor-pointer transition-all shrink-0"
+          title="Bật/Tắt các phần hiển thị trên trang"
+        >
+          <Sliders className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+          <span className="hidden sm:inline">Bố cục Section</span>
+          <span className="sm:hidden">Bố cục</span>
+        </button>
+
         {/* Visual CMS In-place Edit Toggle */}
         <button
           type="button"
@@ -500,303 +518,198 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
       {/* Main Landing Page Rendered Sections with Scroll Reveal Animations */}
       <main ref={previewContainerRef} className="flex-1">
-        {/* 1. Hero Section (Two-Column Split + Real Photo + Social Proof Avatars) */}
-        <HeroSection
-          input={{ ...input, category: currentCategory }}
-          content={content}
-          theme={theme}
-          headlineToDisplay={activeHeadline}
-          headlineVariant={headlineVariant}
-          onScrollToRegister={scrollToRegistration}
-          registeredCount={registeredCount}
-          onOpenHeroImagePicker={handleOpenHeroPicker}
-          onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
-          isEditMode={isEditMode}
-          onUpdateContentField={handleUpdateContentField}
-          onUpdateInputField={handleUpdateInputField}
-        />
-
-        {/* Universal Magic UI Velocity Sponsors & Trust Bar */}
-        <div data-reveal>
-          <TrustBarSection
-            theme={theme}
-            sponsors={input.sponsors}
-            onOpenSponsorEditor={() => setIsSponsorEditorOpen(true)}
-          />
-        </div>
-
-        {/* ========================================================
-            CATEGORY 1: AI & TECH (Cyber Summit 2026)
-            ======================================================== */}
-        {currentCategory === 'ai-tech' && (
-          <>
-            <div data-reveal data-reveal-delay="100">
-              <BenefitsSection
-                benefits={content.benefits}
-                theme={theme}
-                isEditMode={isEditMode}
-                onUpdateBenefit={handleUpdateBenefit}
-                onAddBenefit={handleAddBenefit}
-                onRemoveBenefit={handleRemoveBenefit}
-                category={currentCategory}
-              />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <SpeakerSection
-                input={{ ...input, category: currentCategory }}
-                theme={theme}
-                onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
-                isEditMode={isEditMode}
-                onUpdateInputField={handleUpdateInputField}
-                category={currentCategory}
-              />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <AgendaSection
-                agenda={content.agenda}
-                eventName={input.eventName}
-                theme={theme}
-                speakerName={input.speakerName}
-                speakerPhoto={speakerPhoto}
-                isEditMode={isEditMode}
-                onUpdateAgendaItem={handleUpdateAgendaItem}
-                onAddAgendaItem={handleAddAgendaItem}
-                onRemoveAgendaItem={handleRemoveAgendaItem}
-              />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <FaqSection
-                faqs={content.faqs}
-                theme={theme}
-                isEditMode={isEditMode}
-                onUpdateFaqItem={handleUpdateFaqItem}
-                onAddFaqItem={handleAddFaqItem}
-                onRemoveFaqItem={handleRemoveFaqItem}
-              />
-            </div>
-          </>
-        )}
-
-        {/* ========================================================
-            CATEGORY 2: MARKETING & GROWTH (High-Conversion Masterclass)
-            ======================================================== */}
-        {currentCategory === 'marketing' && (
-          <Suspense fallback={<SectionFallback />}>
-            <div data-reveal data-reveal-delay="100">
-              <MasterclassStatsSection theme={theme} />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <MarketingBeforeAfterSection
-                theme={theme}
-                onScrollToRegister={scrollToRegistration}
-              />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <TestimonialsSection
-                theme={theme}
-                targetAudience={input.targetAudience}
-                testimonials={content.testimonials}
-                isEditMode={isEditMode}
-                onUpdateTestimonial={handleUpdateTestimonial}
-                onAddTestimonial={handleAddTestimonial}
-                onRemoveTestimonial={handleRemoveTestimonial}
-              />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <FaqSection
-                faqs={content.faqs}
-                theme={theme}
-                isEditMode={isEditMode}
-                onUpdateFaqItem={handleUpdateFaqItem}
-                onAddFaqItem={handleAddFaqItem}
-                onRemoveFaqItem={handleRemoveFaqItem}
-              />
-            </div>
-          </Suspense>
-        )}
-
-        {/* ========================================================
-            CATEGORY 3: DEVELOPER (Terminal Broadsheet & Telemetry)
-            ======================================================== */}
-        {currentCategory === 'developer' && (
-          <Suspense fallback={<SectionFallback />}>
-            <div data-reveal data-reveal-delay="100">
-              <TerminalCodeSection theme={theme} />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <DeveloperCodeSandboxSection theme={theme} />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <SpeakerSection
-                input={{ ...input, category: currentCategory }}
-                theme={theme}
-                onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
-                isEditMode={isEditMode}
-                onUpdateInputField={handleUpdateInputField}
-                category={currentCategory}
-              />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <AgendaSection
-                agenda={content.agenda}
-                eventName={input.eventName}
-                theme={theme}
-                speakerName={input.speakerName}
-                speakerPhoto={speakerPhoto}
-                isEditMode={isEditMode}
-                onUpdateAgendaItem={handleUpdateAgendaItem}
-                onAddAgendaItem={handleAddAgendaItem}
-                onRemoveAgendaItem={handleRemoveAgendaItem}
-              />
-            </div>
-          </Suspense>
-        )}
-
-        {/* ========================================================
-            CATEGORY 4: STARTUP (Executive Dealflow & Pitching Roster)
-            ======================================================== */}
-        {currentCategory === 'startup' && (
-          <Suspense fallback={<SectionFallback />}>
-            <div data-reveal data-reveal-delay="100">
-              <ExecutivePitchesSection theme={theme} />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <StartupPitchingRosterSection
-                theme={theme}
-                onScrollToRegister={scrollToRegistration}
-              />
-            </div>
-          </Suspense>
-        )}
-
-        {/* ========================================================
-            CATEGORY 5: DESIGN (Creative Avant-Garde & Mood Canvas)
-            ======================================================== */}
-        {currentCategory === 'design' && (
-          <Suspense fallback={<SectionFallback />}>
-            <div data-reveal data-reveal-delay="100">
-              <CreativeMasonrySection theme={theme} />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <BenefitsSection
-                benefits={content.benefits}
-                theme={theme}
-                isEditMode={isEditMode}
-                onUpdateBenefit={handleUpdateBenefit}
-                onAddBenefit={handleAddBenefit}
-                onRemoveBenefit={handleRemoveBenefit}
-                category={currentCategory}
-              />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <SpeakerSection
-                input={{ ...input, category: currentCategory }}
-                theme={theme}
-                onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
-                isEditMode={isEditMode}
-                onUpdateInputField={handleUpdateInputField}
-                category={currentCategory}
-              />
-            </div>
-          </Suspense>
-        )}
-
-        {/* ========================================================
-            CATEGORY 6: EDUCATION (Academic Syllabus & ISO Accreditation)
-            ======================================================== */}
-        {currentCategory === 'education' && (
-          <Suspense fallback={<SectionFallback />}>
-            <div data-reveal data-reveal-delay="100">
-              <AcademySyllabusSection theme={theme} />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <BenefitsSection
-                benefits={content.benefits}
-                theme={theme}
-                isEditMode={isEditMode}
-                onUpdateBenefit={handleUpdateBenefit}
-                onAddBenefit={handleAddBenefit}
-                onRemoveBenefit={handleRemoveBenefit}
-                category={currentCategory}
-              />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <FaqSection
-                faqs={content.faqs}
-                theme={theme}
-                isEditMode={isEditMode}
-                onUpdateFaqItem={handleUpdateFaqItem}
-                onAddFaqItem={handleAddFaqItem}
-                onRemoveFaqItem={handleRemoveFaqItem}
-              />
-            </div>
-          </Suspense>
-        )}
-
-        {/* ========================================================
-            CATEGORY 7: STUDIO 3D (Cinematic 3D Studio & Experiential Showcase)
-            ======================================================== */}
-        {currentCategory === 'studio-3d' && (
-          <Suspense fallback={<SectionFallback />}>
-            <div data-reveal data-reveal-delay="100">
-              <CinematicShowcaseSection
-                theme={theme}
-                onScrollToRegister={scrollToRegistration}
-              />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <BenefitsSection
-                benefits={content.benefits}
-                theme={theme}
-                isEditMode={isEditMode}
-                onUpdateBenefit={handleUpdateBenefit}
-                onAddBenefit={handleAddBenefit}
-                onRemoveBenefit={handleRemoveBenefit}
-                category={currentCategory}
-              />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <SpeakerSection
-                input={{ ...input, category: currentCategory }}
-                theme={theme}
-                onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
-                isEditMode={isEditMode}
-                onUpdateInputField={handleUpdateInputField}
-                category={currentCategory}
-              />
-            </div>
-            <div data-reveal data-reveal-delay="100">
-              <FaqSection
-                faqs={content.faqs}
-                theme={theme}
-                isEditMode={isEditMode}
-                onUpdateFaqItem={handleUpdateFaqItem}
-                onAddFaqItem={handleAddFaqItem}
-                onRemoveFaqItem={handleRemoveFaqItem}
-              />
-            </div>
-          </Suspense>
-        )}
-
-        {/* Real Event Atmosphere Bento Gallery */}
-        <div data-reveal data-reveal-delay="100">
-          <EventGallerySection
-            theme={theme}
-            location={input.location || 'Địa điểm tổ chức'}
-          />
-        </div>
-
-        {/* 9. Registration Section */}
-        <div data-reveal data-reveal-delay="100">
-          <RegistrationSection
+        {/* 1. Hero Section */}
+        {sectionVisibility.hero && (
+          <HeroSection
             input={{ ...input, category: currentCategory }}
             content={content}
             theme={theme}
+            headlineToDisplay={activeHeadline}
+            headlineVariant={headlineVariant}
+            onScrollToRegister={scrollToRegistration}
             registeredCount={registeredCount}
-            onRegisterSuccess={onRegisterSuccess}
-            onOpenAttendeeList={onOpenAttendeeList}
+            onOpenHeroImagePicker={handleOpenHeroPicker}
+            onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
+            isEditMode={isEditMode}
+            onUpdateContentField={handleUpdateContentField}
+            onUpdateInputField={handleUpdateInputField}
           />
-        </div>
+        )}
+
+        {/* 2. Trust Bar / Sponsors Section */}
+        {sectionVisibility.trustBar && (
+          <div data-reveal>
+            <TrustBarSection
+              theme={theme}
+              sponsors={input.sponsors}
+              onOpenSponsorEditor={() => setIsSponsorEditorOpen(true)}
+            />
+          </div>
+        )}
+
+        {/* 3. Benefits Section (Editable Visual CMS) */}
+        {sectionVisibility.benefits && (
+          <div data-reveal data-reveal-delay="100">
+            <BenefitsSection
+              benefits={content.benefits}
+              theme={theme}
+              isEditMode={isEditMode}
+              onUpdateBenefit={handleUpdateBenefit}
+              onAddBenefit={handleAddBenefit}
+              onRemoveBenefit={handleRemoveBenefit}
+              category={currentCategory}
+            />
+          </div>
+        )}
+
+        {/* 4. Category-Specific Specialty Sections */}
+        {sectionVisibility.categorySection && (
+          <Suspense fallback={<SectionFallback />}>
+            {currentCategory === 'marketing' && (
+              <>
+                <div data-reveal data-reveal-delay="100">
+                  <MasterclassStatsSection theme={theme} />
+                </div>
+                <div data-reveal data-reveal-delay="100">
+                  <MarketingBeforeAfterSection
+                    theme={theme}
+                    onScrollToRegister={scrollToRegistration}
+                  />
+                </div>
+              </>
+            )}
+
+            {currentCategory === 'developer' && (
+              <>
+                <div data-reveal data-reveal-delay="100">
+                  <TerminalCodeSection theme={theme} />
+                </div>
+                <div data-reveal data-reveal-delay="100">
+                  <DeveloperCodeSandboxSection theme={theme} />
+                </div>
+              </>
+            )}
+
+            {currentCategory === 'startup' && (
+              <>
+                <div data-reveal data-reveal-delay="100">
+                  <ExecutivePitchesSection theme={theme} />
+                </div>
+                <div data-reveal data-reveal-delay="100">
+                  <StartupPitchingRosterSection
+                    theme={theme}
+                    onScrollToRegister={scrollToRegistration}
+                  />
+                </div>
+              </>
+            )}
+
+            {currentCategory === 'design' && (
+              <div data-reveal data-reveal-delay="100">
+                <CreativeMasonrySection theme={theme} />
+              </div>
+            )}
+
+            {currentCategory === 'education' && (
+              <div data-reveal data-reveal-delay="100">
+                <AcademySyllabusSection theme={theme} />
+              </div>
+            )}
+
+            {currentCategory === 'studio-3d' && (
+              <div data-reveal data-reveal-delay="100">
+                <CinematicShowcaseSection
+                  theme={theme}
+                  onScrollToRegister={scrollToRegistration}
+                />
+              </div>
+            )}
+          </Suspense>
+        )}
+
+        {/* 5. Speaker Section (Editable Bio & Name) */}
+        {sectionVisibility.speaker && (
+          <div data-reveal data-reveal-delay="100">
+            <SpeakerSection
+              input={{ ...input, category: currentCategory }}
+              theme={theme}
+              onOpenSpeakerImagePicker={handleOpenSpeakerPicker}
+              isEditMode={isEditMode}
+              onUpdateInputField={handleUpdateInputField}
+              category={currentCategory}
+            />
+          </div>
+        )}
+
+        {/* 6. Agenda Section (Interactive Laser Rail + Editable Milestones) */}
+        {sectionVisibility.agenda && (
+          <div data-reveal data-reveal-delay="100">
+            <AgendaSection
+              agenda={content.agenda}
+              eventName={input.eventName}
+              theme={theme}
+              speakerName={input.speakerName}
+              speakerPhoto={speakerPhoto}
+              isEditMode={isEditMode}
+              onUpdateAgendaItem={handleUpdateAgendaItem}
+              onAddAgendaItem={handleAddAgendaItem}
+              onRemoveAgendaItem={handleRemoveAgendaItem}
+            />
+          </div>
+        )}
+
+        {/* 7. Social Proof Testimonials Section (Domain-specific & Editable) */}
+        {sectionVisibility.testimonials && (
+          <div data-reveal data-reveal-delay="100">
+            <TestimonialsSection
+              theme={theme}
+              targetAudience={input.targetAudience}
+              testimonials={content.testimonials}
+              isEditMode={isEditMode}
+              onUpdateTestimonial={handleUpdateTestimonial}
+              onAddTestimonial={handleAddTestimonial}
+              onRemoveTestimonial={handleRemoveTestimonial}
+            />
+          </div>
+        )}
+
+        {/* 8. Real Event Atmosphere Bento Gallery */}
+        {sectionVisibility.gallery && (
+          <div data-reveal data-reveal-delay="100">
+            <EventGallerySection
+              theme={theme}
+              location={input.location || 'Địa điểm tổ chức'}
+            />
+          </div>
+        )}
+
+        {/* 9. FAQ Section */}
+        {sectionVisibility.faq && (
+          <div data-reveal data-reveal-delay="100">
+            <FaqSection
+              faqs={content.faqs}
+              theme={theme}
+              isEditMode={isEditMode}
+              onUpdateFaqItem={handleUpdateFaqItem}
+              onAddFaqItem={handleAddFaqItem}
+              onRemoveFaqItem={handleRemoveFaqItem}
+            />
+          </div>
+        )}
+
+        {/* 10. Registration Section */}
+        {sectionVisibility.registration && (
+          <div data-reveal data-reveal-delay="100">
+            <RegistrationSection
+              input={{ ...input, category: currentCategory }}
+              content={content}
+              theme={theme}
+              registeredCount={registeredCount}
+              onRegisterSuccess={onRegisterSuccess}
+              onOpenAttendeeList={onOpenAttendeeList}
+            />
+          </div>
+        )}
       </main>
 
       {/* Clean Client Event Footer */}
@@ -834,6 +747,32 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
                 : input.speakerAvatarUrl || theme.speakerImage
             }
             onSelectImage={handleSelectImage}
+          />
+        )}
+
+        
+        {/* Section Visibility & Layout Customizer Modal */}
+        {isSectionCustomizerOpen && (
+          <SectionCustomizerModal
+            isOpen={isSectionCustomizerOpen}
+            onClose={() => setIsSectionCustomizerOpen(false)}
+            visibility={sectionVisibility}
+            onToggleSection={toggleSection}
+            onSetAll={(enable) => {
+              setSectionVisibility({
+                hero: enable,
+                trustBar: enable,
+                benefits: enable,
+                categorySection: enable,
+                speaker: enable,
+                agenda: enable,
+                testimonials: enable,
+                gallery: enable,
+                faq: enable,
+                registration: enable,
+              });
+            }}
+            onResetDefaults={resetSectionVisibility}
           />
         )}
 

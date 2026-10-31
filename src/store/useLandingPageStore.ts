@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { EventInput, GeneratedContent, CROEvaluation, ThemeConfig, BenefitItem, AgendaItem, FaqItem, TestimonialItem } from '../types';
+import { EventInput, GeneratedContent, CROEvaluation, ThemeConfig, BenefitItem, AgendaItem, FaqItem, TestimonialItem, SectionVisibilityConfig, DEFAULT_SECTION_VISIBILITY } from '../types';
 import { saveCurrentEventState, getSavedEventState } from '../services/storageService';
 
 interface LandingPageState {
@@ -32,6 +32,10 @@ interface LandingPageState {
   updateTestimonialItem: (index: number, field: keyof TestimonialItem, val: any) => void;
   addTestimonialItem: (item?: TestimonialItem) => void;
   removeTestimonialItem: (index: number) => void;
+  sectionVisibility: SectionVisibilityConfig;
+  setSectionVisibility: (config: Partial<SectionVisibilityConfig>) => void;
+  toggleSection: (key: keyof SectionVisibilityConfig) => void;
+  resetSectionVisibility: () => void;
   setCroEvaluation: (cro: CROEvaluation) => void;
   setTheme: (theme: ThemeConfig) => void;
   toggleEditMode: () => void;
@@ -56,6 +60,17 @@ export const useLandingPageStore = create<LandingPageState>((set, get) => ({
   croEvaluation: null,
   theme: null,
   isEditMode: false,
+  sectionVisibility: DEFAULT_SECTION_VISIBILITY,
+  setSectionVisibility: (config) => set((state) => ({
+    sectionVisibility: { ...state.sectionVisibility, ...config }
+  })),
+  toggleSection: (key) => set((state) => ({
+    sectionVisibility: {
+      ...state.sectionVisibility,
+      [key]: !state.sectionVisibility[key]
+    }
+  })),
+  resetSectionVisibility: () => set({ sectionVisibility: DEFAULT_SECTION_VISIBILITY }),
   history: [],
   future: [],
 
@@ -225,7 +240,7 @@ export const useLandingPageStore = create<LandingPageState>((set, get) => ({
 
   removeTestimonialItem: (index) => {
     const { content, setContent } = get();
-    if (!content || !content.testimonials || content.testimonials.length <= 1) return;
+    if (!content || !content.testimonials || content.testimonials.length === 0) return;
     const current = content.testimonials.filter((_, i) => i !== index);
     setContent({ ...content, testimonials: current }, true);
   },
