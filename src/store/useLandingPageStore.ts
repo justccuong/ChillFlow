@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { EventInput, GeneratedContent, CROEvaluation, ThemeConfig } from '../types';
+import { EventInput, GeneratedContent, CROEvaluation, ThemeConfig, BenefitItem, AgendaItem, FaqItem } from '../types';
 import { saveCurrentEventState, getSavedEventState } from '../services/storageService';
 
 interface LandingPageState {
@@ -15,6 +15,20 @@ interface LandingPageState {
   setInput: (input: EventInput) => void;
   setContent: (content: GeneratedContent, trackHistory?: boolean) => void;
   updateContentField: (field: keyof GeneratedContent, val: unknown) => void;
+  updateInputField: (field: keyof EventInput, val: unknown) => void;
+
+  // Deep Item-level mutations for Visual CMS
+  updateBenefitItem: (index: number, field: keyof BenefitItem, val: any) => void;
+  addBenefitItem: (item?: BenefitItem) => void;
+  removeBenefitItem: (index: number) => void;
+
+  updateAgendaItem: (index: number, field: keyof AgendaItem, val: any) => void;
+  addAgendaItem: (item?: AgendaItem) => void;
+  removeAgendaItem: (index: number) => void;
+
+  updateFaqItem: (index: number, field: keyof FaqItem, val: any) => void;
+  addFaqItem: (item?: FaqItem) => void;
+  removeFaqItem: (index: number) => void;
   setCroEvaluation: (cro: CROEvaluation) => void;
   setTheme: (theme: ThemeConfig) => void;
   toggleEditMode: () => void;
@@ -81,6 +95,106 @@ export const useLandingPageStore = create<LandingPageState>((set, get) => ({
       [field]: val,
     };
     setContent(updated, true);
+  },
+
+  updateInputField: (field, val) => {
+    const { input, content, croEvaluation } = get();
+    if (!input) return;
+    const updated: EventInput = {
+      ...input,
+      [field]: val,
+    };
+    set({ input: updated });
+    if (content && croEvaluation) {
+      saveCurrentEventState(updated, content, croEvaluation);
+    }
+  },
+
+  updateBenefitItem: (index, field, val) => {
+    const { content, setContent } = get();
+    if (!content || !content.benefits[index]) return;
+    const newBenefits = [...content.benefits];
+    newBenefits[index] = {
+      ...newBenefits[index],
+      [field]: val,
+    };
+    setContent({ ...content, benefits: newBenefits }, true);
+  },
+
+  addBenefitItem: (item) => {
+    const { content, setContent } = get();
+    if (!content) return;
+    const newItem: BenefitItem = item || {
+      title: 'Giá trị nổi bật mới',
+      description: 'Mô tả chi tiết quyền lợi hoặc trải nghiệm thực tế nhận được.',
+      iconName: 'zap',
+    };
+    setContent({ ...content, benefits: [...content.benefits, newItem] }, true);
+  },
+
+  removeBenefitItem: (index) => {
+    const { content, setContent } = get();
+    if (!content || content.benefits.length <= 1) return;
+    const newBenefits = content.benefits.filter((_, i) => i !== index);
+    setContent({ ...content, benefits: newBenefits }, true);
+  },
+
+  updateAgendaItem: (index, field, val) => {
+    const { content, setContent } = get();
+    if (!content || !content.agenda[index]) return;
+    const newAgenda = [...content.agenda];
+    newAgenda[index] = {
+      ...newAgenda[index],
+      [field]: val,
+    };
+    setContent({ ...content, agenda: newAgenda }, true);
+  },
+
+  addAgendaItem: (item) => {
+    const { content, setContent } = get();
+    if (!content) return;
+    const newItem: AgendaItem = item || {
+      time: '10:00 - 11:30',
+      title: 'Phiên thảo luận & Thực hành mới',
+      description: 'Nội dung chi tiết hoạt động hoặc bài trình bày tiếp theo.',
+      tag: 'Workshop',
+    };
+    setContent({ ...content, agenda: [...content.agenda, newItem] }, true);
+  },
+
+  removeAgendaItem: (index) => {
+    const { content, setContent } = get();
+    if (!content || content.agenda.length <= 1) return;
+    const newAgenda = content.agenda.filter((_, i) => i !== index);
+    setContent({ ...content, agenda: newAgenda }, true);
+  },
+
+  updateFaqItem: (index, field, val) => {
+    const { content, setContent } = get();
+    if (!content || !content.faqs[index]) return;
+    const newFaqs = [...content.faqs];
+    newFaqs[index] = {
+      ...newFaqs[index],
+      [field]: val,
+    };
+    setContent({ ...content, faqs: newFaqs }, true);
+  },
+
+  addFaqItem: (item) => {
+    const { content, setContent } = get();
+    if (!content) return;
+    const newItem: FaqItem = item || {
+      question: 'Câu hỏi thắc mắc mới cần giải đáp?',
+      answer: 'Câu trả lời chi tiết và rõ ràng giải tỏa băn khoăn của người tham gia.',
+    };
+    setContent({ ...content, faqs: [...content.faqs, newItem] }, true);
+  },
+
+  removeFaqItem: (index) => {
+    const { content, setContent } = get();
+    if (!content || content.faqs.length <= 1) return;
+    const newFaqs = content.faqs.filter((_, i) => i !== index);
+    setContent({ ...content, faqs: newFaqs }, true);
   },
 
   setCroEvaluation: (croEvaluation) => {
