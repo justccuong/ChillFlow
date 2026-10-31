@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import type { AgendaItem, ThemeConfig } from '../../types';
-import { Clock } from 'lucide-react';
+import { Clock, Plus, Trash2 } from 'lucide-react';
+import { InlineEditable } from './InlineEditable';
 import './LaserScrollTimeline.css';
 
 interface AgendaSectionProps {
@@ -9,13 +10,21 @@ interface AgendaSectionProps {
   theme: ThemeConfig;
   speakerName: string;
   speakerPhoto: string;
+  isEditMode?: boolean;
+  onUpdateAgendaItem?: (index: number, field: keyof AgendaItem, value: string) => void;
+  onAddAgendaItem?: () => void;
+  onRemoveAgendaItem?: (index: number) => void;
 }
 
 export const AgendaSection: React.FC<AgendaSectionProps> = ({
-  agenda,
+  agenda = [],
   theme,
   speakerName,
   speakerPhoto,
+  isEditMode = false,
+  onUpdateAgendaItem,
+  onAddAgendaItem,
+  onRemoveAgendaItem,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const laserBeamRef = useRef<HTMLDivElement>(null);
@@ -37,6 +46,7 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
   };
 
   useEffect(() => {
+    if (!agenda || agenda.length === 0) return;
     let animId: number;
     let targetProgress = 0;
     let currentProgress = 0;
@@ -122,6 +132,8 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
     }
   };
 
+  if ((!agenda || agenda.length === 0) && !isEditMode) return null;
+
   return (
     <section id="agenda" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden transition-colors">
       <div className="hairline-divider absolute top-0 inset-x-0"></div>
@@ -170,7 +182,7 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
                   ref={(el) => {
                     itemRefs.current[index] = el;
                   }}
-                  className={`laser-milestone-item upcoming ${isLeft ? 'side-left' : 'side-right'}`}
+                  className={`laser-milestone-item upcoming ${isLeft ? 'side-left' : 'side-right'} relative group/item`}
                   onClick={() => handleMilestoneClick(index)}
                 >
                   {/* Node Anchor on the Rail */}
@@ -186,12 +198,31 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
                   <div className="node-branch-line" />
 
                   {/* Milestone Content */}
-                  <div className="milestone-content-flow space-y-3">
+                  <div className="milestone-content-flow space-y-3 relative">
+                    {/* Delete item button in edit mode */}
+                    {isEditMode && onRemoveAgendaItem && agenda.length > 1 && (
+                      <button
+                        type="button"
+                        title="Xóa phiên này"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onRemoveAgendaItem(index);
+                        }}
+                        className="absolute -top-1 -right-1 p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-500/10 transition-colors z-20 cursor-pointer"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+
                     {/* Time & Phase Badge */}
                     <div className="flex flex-wrap items-center gap-2.5">
-                      <span className="text-xl sm:text-2xl font-mono font-black text-slate-900 dark:text-white tracking-tight">
-                        {item.time}
-                      </span>
+                      <div className="text-xl sm:text-2xl font-mono font-black text-slate-900 dark:text-white tracking-tight">
+                        <InlineEditable
+                          value={item.time}
+                          isEditMode={isEditMode}
+                          onSave={(val) => onUpdateAgendaItem?.(index, 'time', val)}
+                        />
+                      </div>
                       <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${badge.color}`}>
                         {badge.label}
                       </span>
@@ -200,11 +231,20 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
                     {/* Title & Description */}
                     <div className="space-y-1.5">
                       <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 transition-colors">
-                        {item.title}
+                        <InlineEditable
+                          value={item.title}
+                          isEditMode={isEditMode}
+                          onSave={(val) => onUpdateAgendaItem?.(index, 'title', val)}
+                        />
                       </h3>
-                      <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed font-sans">
-                        {item.description}
-                      </p>
+                      <div className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed font-sans">
+                        <InlineEditable
+                          value={item.description}
+                          isEditMode={isEditMode}
+                          multiline
+                          onSave={(val) => onUpdateAgendaItem?.(index, 'description', val)}
+                        />
+                      </div>
                     </div>
 
                     {/* Speaker Pill */}
@@ -223,6 +263,20 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
               );
             })}
           </div>
+
+          {/* Add Agenda Item Button in Edit Mode */}
+          {isEditMode && onAddAgendaItem && (
+            <div className="pt-8 pb-4 text-center relative z-20">
+              <button
+                type="button"
+                onClick={onAddAgendaItem}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-dashed border-amber-500/40 text-amber-600 dark:text-amber-400 hover:text-amber-500 hover:border-amber-400 hover:bg-amber-500/10 font-semibold text-sm transition-all shadow-sm cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Thêm phiên lịch trình</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>

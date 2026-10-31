@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
-import type { EventInput, GeneratedContent, CROEvaluation, Attendee, EventCategory, SponsorItem } from '../../types';
+import type { EventInput, GeneratedContent, CROEvaluation, Attendee, EventCategory, SponsorItem, BenefitItem, AgendaItem, FaqItem } from '../../types';
 import { getThemeForCategory, CATEGORIES } from '../../services/themeEngine';
 import { saveCurrentEventState } from '../../services/storageService';
 import { HeroSection } from './HeroSection';
@@ -147,6 +147,48 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
   const handleRemoveBenefit = (index: number) => {
     useLandingPageStore.getState().removeBenefitItem(index);
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleUpdateAgendaItem = (index: number, field: keyof AgendaItem, val: string) => {
+    useLandingPageStore.getState().updateAgendaItem(index, field, val);
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleAddAgendaItem = () => {
+    useLandingPageStore.getState().addAgendaItem();
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleRemoveAgendaItem = (index: number) => {
+    useLandingPageStore.getState().removeAgendaItem(index);
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleUpdateFaqItem = (index: number, field: keyof FaqItem, val: string) => {
+    useLandingPageStore.getState().updateFaqItem(index, field, val);
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleAddFaqItem = () => {
+    useLandingPageStore.getState().addFaqItem();
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleRemoveFaqItem = (index: number) => {
+    useLandingPageStore.getState().removeFaqItem(index);
     const updated = useLandingPageStore.getState().content;
     if (updated && onUpdateContent) onUpdateContent(updated);
     if (updated) saveCurrentEventState(input, updated, cro);
@@ -495,10 +537,21 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
                 theme={theme}
                 speakerName={input.speakerName}
                 speakerPhoto={speakerPhoto}
+                isEditMode={isEditMode}
+                onUpdateAgendaItem={handleUpdateAgendaItem}
+                onAddAgendaItem={handleAddAgendaItem}
+                onRemoveAgendaItem={handleRemoveAgendaItem}
               />
             </div>
             <div data-reveal data-reveal-delay="100">
-              <FaqSection faqs={content.faqs} theme={theme} />
+              <FaqSection
+                faqs={content.faqs}
+                theme={theme}
+                isEditMode={isEditMode}
+                onUpdateFaqItem={handleUpdateFaqItem}
+                onAddFaqItem={handleAddFaqItem}
+                onRemoveFaqItem={handleRemoveFaqItem}
+              />
             </div>
           </>
         )}
@@ -521,7 +574,14 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               <TestimonialsSection theme={theme} targetAudience={input.targetAudience} />
             </div>
             <div data-reveal data-reveal-delay="100">
-              <FaqSection faqs={content.faqs} theme={theme} />
+              <FaqSection
+                faqs={content.faqs}
+                theme={theme}
+                isEditMode={isEditMode}
+                onUpdateFaqItem={handleUpdateFaqItem}
+                onAddFaqItem={handleAddFaqItem}
+                onRemoveFaqItem={handleRemoveFaqItem}
+              />
             </div>
           </Suspense>
         )}
@@ -554,6 +614,10 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
                 theme={theme}
                 speakerName={input.speakerName}
                 speakerPhoto={speakerPhoto}
+                isEditMode={isEditMode}
+                onUpdateAgendaItem={handleUpdateAgendaItem}
+                onAddAgendaItem={handleAddAgendaItem}
+                onRemoveAgendaItem={handleRemoveAgendaItem}
               />
             </div>
           </Suspense>
@@ -628,7 +692,14 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               />
             </div>
             <div data-reveal data-reveal-delay="100">
-              <FaqSection faqs={content.faqs} theme={theme} />
+              <FaqSection
+                faqs={content.faqs}
+                theme={theme}
+                isEditMode={isEditMode}
+                onUpdateFaqItem={handleUpdateFaqItem}
+                onAddFaqItem={handleAddFaqItem}
+                onRemoveFaqItem={handleRemoveFaqItem}
+              />
             </div>
           </Suspense>
         )}
@@ -666,7 +737,14 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               />
             </div>
             <div data-reveal data-reveal-delay="100">
-              <FaqSection faqs={content.faqs} theme={theme} />
+              <FaqSection
+                faqs={content.faqs}
+                theme={theme}
+                isEditMode={isEditMode}
+                onUpdateFaqItem={handleUpdateFaqItem}
+                onAddFaqItem={handleAddFaqItem}
+                onRemoveFaqItem={handleRemoveFaqItem}
+              />
             </div>
           </Suspense>
         )}

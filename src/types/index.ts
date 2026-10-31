@@ -130,6 +130,8 @@ export interface ThemeConfig {
   speakerImage: string;
   galleryPhotos: GalleryPhoto[]; // Rich real-life event photos
   trustLogos: string[];
+  primaryColor?: string;
+  secondaryColor?: string;
   // Archetype-specific features
   terminalSnippet?: {
     filename: string;
