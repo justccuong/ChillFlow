@@ -222,7 +222,7 @@ export const PRESETS: { label: string; iconType: 'ai' | 'marketing' | 'startup' 
       speakerName: 'Kenzo Vũ',
       speakerRole: 'Creative Director & Awwwards Judge',
       speakerBio: 'Hơn 12 năm dẫn dắt các dự án CGI/3D tương tác toàn cầu, từng đoạt 8 giải Awwwards Site of the Day và FWA.',
-      earlyBirdDiscount: 'Giảm 50% vé Studio Pass VIP + Bộ 3D Spline Asset Kit bản quyền trị giá $299',
+      earlyBirdDiscount: 'Bộ 3D Spline Asset Kit bản quyền tặng kèm cho người đăng ký sớm',
       targetAudience: '3D Artists, Motion Designers, Creative Directors & Visual Developers',
       maxCapacity: 60,
     },

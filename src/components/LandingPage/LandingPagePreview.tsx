@@ -12,7 +12,6 @@ import { FaqSection } from './FaqSection';
 import { RegistrationSection } from './RegistrationSection';
 import { EventGallerySection } from './EventGallerySection';
 import { EventFooterSection } from './EventFooterSection';
-import { StickyFomoBar } from './StickyFomoBar';
 import { CROScorecard } from '../CROScorecard';
 import { detectBestTemplate, getTemplateById } from '../../services/templateRegistry';
 import { SocialProofTicker } from './SocialProofTicker';
@@ -30,7 +29,6 @@ import { useUndoRedoKeyboard } from '../../hooks/useUndoRedoKeyboard';
 const ImagePickerModal = lazy(() => import('../ImagePickerModal'));
 const SponsorEditorModal = lazy(() => import('../SponsorEditorModal'));
 const TemplateCatalogModal = lazy(() => import('../TemplateCatalogModal'));
-const ExitIntentModal = lazy(() => import('./ExitIntentModal'));
 const PublishModal = lazy(() => import('./PublishModal'));
 const CustomDomainModal = lazy(() => import('../CustomDomainModal'));
 const SectionCustomizerModal = lazy(() => import('./SectionCustomizerModal'));
@@ -359,16 +357,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans pb-24 overflow-x-hidden">
-      {/* Sticky Urgency Countdown & FOMO Bar on scroll */}
-      {!isEditMode && (
-        <StickyFomoBar
-          targetDate={input.eventDate}
-          onCtaClick={scrollToRegistration}
-          earlyBirdBadge={content.earlyBirdBadge}
-          ticketsLeft={Math.max(1, (input.maxCapacity || 100) - registeredCount)}
-        />
-      )}
-
+      
       {/* Top AI Match Notification Bar */}
       <div className="max-w-7xl mx-auto px-4 pt-3 pb-1 flex flex-wrap items-center justify-between gap-3 text-xs w-full">
         <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/30 text-indigo-700 dark:text-indigo-300">
@@ -836,12 +825,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           />
         )}
 
-        {/* ConvertFlow Exit-Intent Retention Modal */}
-        <ExitIntentModal
-          eventName={input.eventName}
-          onClaimOffer={scrollToRegistration}
-        />
-
+        
         {/* 1-Click Publish Success & Share Modal */}
         {isPublishModalOpen && (
           <PublishModal

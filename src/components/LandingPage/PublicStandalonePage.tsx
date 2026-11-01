@@ -19,7 +19,6 @@ import { Zap, ArrowUp } from 'lucide-react';
 import { injectEventJsonLdAndMeta } from '../../utils/seo';
 
 // Code Splitting: Lazy-load Archetype Interactive Sections & Exit Intent
-const ExitIntentModal = lazy(() => import('./ExitIntentModal'));
 const MasterclassStatsSection = lazy(() => import('./sections/MasterclassStatsSection'));
 const TerminalCodeSection = lazy(() => import('./sections/TerminalCodeSection'));
 const ExecutivePitchesSection = lazy(() => import('./sections/ExecutivePitchesSection'));
@@ -217,14 +216,7 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
         <ArrowUp className="w-4 h-4" />
       </button>
 
-      {/* ConvertFlow Exit-Intent Retention Modal */}
-      <Suspense fallback={null}>
-        <ExitIntentModal
-          eventName={input.eventName}
-          onClaimOffer={scrollToRegistration}
-        />
-      </Suspense>
-
+      
       {/* ConvertFlow Social Proof Live Ticker */}
       <SocialProofTicker />
     </div>

@@ -299,24 +299,7 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
             />
           </div>
 
-          {/* Ưu đãi đăng ký sớm */}
-          <div className="md:col-span-2 space-y-1.5">
-            <label htmlFor="earlyBirdDiscount" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Gift className="w-3.5 h-3.5 text-amber-500" /> Ưu đãi đăng ký sớm (Early Bird) <span className="text-red-500 dark:text-red-400">*</span>
-            </label>
-            <input
-              id="earlyBirdDiscount"
-              name="earlyBirdDiscount"
-              type="text"
-              required
-              value={formData.earlyBirdDiscount}
-              onChange={handleChange}
-              placeholder="VD: Giảm 40% vé tham dự cho 50 người đăng ký đầu tiên"
-              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
-            />
-          </div>
-
-          {/* Đối tượng mục tiêu & Sức chứa */}
+                    {/* Đối tượng mục tiêu & Sức chứa */}
           <div className="space-y-1.5">
             <label htmlFor="targetAudience" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
               <Target className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" /> Khán giả mục tiêu
