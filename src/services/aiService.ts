@@ -310,6 +310,41 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
     altHeadline = `Tiêu chuẩn thiết kế & kỹ xảo điện ảnh đoạt giải Awwwards 2026`;
     subHeadline = `Khám phá quy trình sáng tạo thế giới 3D tương tác, kỹ xảo điện ảnh và trải nghiệm số đa giác quan từ ${input.speakerName}.`;
     description = `Được định hình theo phong cách MDX Studio danh giá: tích hợp canvas 360° siêu thực, âm thanh Web Audio và nghệ thuật tương tác chạm đến cảm xúc.`;
+  } else if (category === 'festival-music') {
+    headline = forceOptimized
+      ? `Đại nhạc hội bùng nổ giác quan: Thăng hoa cùng âm nhạc & ánh sáng đỉnh cao`
+      : cleanTitle('Live Music Festival', input.eventName);
+    altHeadline = `Sẵn sàng cháy hết mình trong không gian âm nhạc đa chiều cuồng nhiệt nhất năm`;
+    subHeadline = `Hòa mình vào bữa tiệc âm thanh sống động, hệ thống visual laser hoành tráng và dàn nghệ sĩ line-up đình đám cùng ${input.speakerName}.`;
+    description = `Trải nghiệm đại nhạc hội quy mô lớn với sân khấu đa giác quan 360°, dàn nghệ sĩ quốc tế và các set diễn bùng nổ cảm xúc từ hoàng hôn đến nửa đêm.`;
+  } else if (category === 'sports-marathon') {
+    headline = forceOptimized
+      ? `Chinh phục giới hạn bản thân: Đường chạy marathon & ngày hội thể thao bứt phá`
+      : cleanTitle('Championship Marathon', input.eventName);
+    altHeadline = `Khẳng định bản lĩnh trên cung đường chạy ven biển và đô thị đẹp nhất năm`;
+    subHeadline = `Tham gia giải chạy chuyên nghiệp với cự ly đa dạng 5km, 10km, 21km và 42km, hỗ trợ bởi đội ngũ pacer giàu kinh nghiệm và đại sứ ${input.speakerName}.`;
+    description = `Sự kiện thể thao đỉnh cao kết nối hàng ngàn runner đam mê, trang bị hệ thống tính giờ chiptiming tiêu chuẩn quốc tế và huy chương hoàn thành mạ vàng độc bản.`;
+  } else if (category === 'culinary-lifestyle') {
+    headline = forceOptimized
+      ? `Hành trình vị giác đỉnh cao: Tinh hoa ẩm thực đương đại & phong cách sống thượng lưu`
+      : cleanTitle('Culinary Gourmet Gala', input.eventName);
+    altHeadline = `Khám phá nghệ thuật kết hợp nguyên liệu bản địa và kỹ thuật ẩm thực Michelin`;
+    subHeadline = `Trải nghiệm thực đơn thử vị cao cấp gồm 7 món độc bản kết hợp rượu vang hảo hạng tuyển chọn bởi chuyên gia sommelier và bếp trưởng ${input.speakerName}.`;
+    description = `Không gian dạ tiệc sang trọng nơi nghệ thuật ẩm thực giao hòa cùng âm nhạc thính phòng, mang lại trải nghiệm thị giác và vị giác khó quên.`;
+  } else if (category === 'community-career') {
+    headline = forceOptimized
+      ? `Cầu nối sự nghiệp đỉnh cao: Kết nối 50+ doanh nghiệp hàng đầu & mở lối thăng tiến`
+      : cleanTitle('Career Expo & Networking', input.eventName);
+    altHeadline = `Khám phá hàng trăm cơ hội việc làm mơ ước với mức đãi ngộ vượt trội`;
+    subHeadline = `Gặp gỡ trực tiếp các nhà tuyển dụng hàng đầu, phỏng vấn thử 1-1, chỉnh sửa CV chuyên sâu và lắng nghe chiến lược phát triển sự nghiệp từ ${input.speakerName}.`;
+    description = `Sự kiện quy tụ các tập đoàn đa quốc gia, startup kỳ lân và các chuyên gia nhân sự kỳ cựu sẵn sàng đồng hành cùng bước chuyển mình nghề nghiệp của bạn.`;
+  } else if (category === 'universal-showcase') {
+    headline = forceOptimized
+      ? `Sự kiện kết nối & ra mắt toàn cầu: Hội tụ tinh hoa, mở lối tương lai`
+      : cleanTitle('Global Showcase Summit', input.eventName);
+    altHeadline = `Nơi những ý tưởng đột phá và giải pháp dẫn đầu thị trường được trình làng`;
+    subHeadline = `Hội tụ các chuyên gia đầu ngành, nhà đầu tư và cộng đồng tiên phong để cùng kiến tạo những bước tiến mới cùng ${input.speakerName}.`;
+    description = `Diễn đàn đa lĩnh vực toàn diện mang đến không gian triển lãm sống động, các phiên đối thoại sâu sắc và cơ hội kết nối giá trị cao.`;
   } else {
     headline = forceOptimized
       ? `Lộ trình tinh gọn để nâng tầm kỹ năng cùng ${input.speakerName}`
@@ -352,6 +387,96 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
       {
         title: 'Thư viện Shader 3D & Web Audio độc quyền',
         description: input.earlyBirdDiscount || 'Nhận trọn bộ source code tương tác, GLSL shaders và sound effects ambient bản quyền cao cấp.',
+        iconName: 'target' as const,
+      },
+    ];
+  } else if (category === 'festival-music') {
+    benefits = [
+      {
+        title: 'Hệ thống âm thanh L-Acoustics & Visual Laser 4D',
+        description: 'Công nghệ âm thanh chuẩn festival quốc tế kết hợp trình diễn visual mapping siêu thực tạo nên trải nghiệm bùng nổ.',
+        iconName: 'zap' as const,
+      },
+      {
+        title: 'Line-up nghệ sĩ & DJ hàng đầu',
+        description: `Quy tụ dàn nghệ sĩ headliner đình đám, ca sĩ khách mời và set diễn đặc biệt của ${input.speakerName || 'Headliner'}.`,
+        iconName: 'award' as const,
+      },
+      {
+        title: 'Khu vực F&B, Chill Zone & Merch độc quyền',
+        description: input.earlyBirdDiscount || 'Tận hưởng ẩm thực lễ hội đa dạng, quầy cocktail thủ công và bộ quà tặng vòng tay phát sáng LED sync nhịp điệu.',
+        iconName: 'target' as const,
+      },
+    ];
+  } else if (category === 'sports-marathon') {
+    benefits = [
+      {
+        title: 'Bộ Race Kit & Chiptiming tiêu chuẩn quốc tế',
+        description: 'Áo chạy thể thao cao cấp thoáng khí, BIB gắn chip tính giờ điện tử chính xác đến 1/100 giây và túi dù chống nước.',
+        iconName: 'target' as const,
+      },
+      {
+        title: 'Trạm tiếp nước & Y tế chuẩn y khoa thể thao',
+        description: 'Các trạm điện giải, trái cây năng lượng và xe cấp cứu chuyên dụng bố trí đều đặn mỗi 2.5km suốt toàn bộ đường chạy.',
+        iconName: 'zap' as const,
+      },
+      {
+        title: 'Huy chương Finisher Medal đúc nổi tinh xảo',
+        description: input.earlyBirdDiscount || 'Nhận huy chương vinh danh mạ kim loại cao cấp cùng chứng chỉ điện tử hoàn thành cự ly vinh danh nỗ lực bứt phá.',
+        iconName: 'award' as const,
+      },
+    ];
+  } else if (category === 'culinary-lifestyle') {
+    benefits = [
+      {
+        title: 'Thực đơn Fine Dining 7 món độc bản',
+        description: 'Nguyên liệu hữu cơ thượng hạng được chuẩn bị cầu kỳ bởi đầu bếp danh tiếng, tôn vinh hương vị tự nhiên tinh tế.',
+        iconName: 'award' as const,
+      },
+      {
+        title: 'Pairing Rượu Vang & Cocktail thủ công đỉnh cao',
+        description: 'Mỗi món ăn đi kèm một dòng vang danh giá do chuyên gia sommelier quốc tế trực tiếp thuyết minh câu chuyện di sản.',
+        iconName: 'target' as const,
+      },
+      {
+        title: 'Không gian dạ tiệc sang trọng & Trình diễn trực tiếp',
+        description: input.earlyBirdDiscount || `Tận mắt chứng kiến kỹ thuật nấu ăn đỉnh cao trên sân khấu mở Open Kitchen cùng bếp trưởng ${input.speakerName || 'Master Chef'}.`,
+        iconName: 'zap' as const,
+      },
+    ];
+  } else if (category === 'community-career') {
+    benefits = [
+      {
+        title: 'Phỏng vấn trực tiếp tại 50+ gian hàng doanh nghiệp',
+        description: 'Cơ hội nhận offer việc làm ngay tại sự kiện từ các tập đoàn công nghệ, tài chính và tập đoàn đa quốc gia hàng đầu.',
+        iconName: 'target' as const,
+      },
+      {
+        title: 'Review CV 1-1 & Tư vấn lộ trình thăng tiến',
+        description: 'Được các HR Director và chuyên gia săn đầu người giàu kinh nghiệm trực tiếp góp ý hoàn thiện hồ sơ ứng tuyển.',
+        iconName: 'zap' as const,
+      },
+      {
+        title: 'Chuỗi Workshop kỹ năng đàm phán & Phỏng vấn đỉnh cao',
+        description: input.earlyBirdDiscount || `Học hỏi kỹ năng đàm phán lương và bí quyết vượt qua phỏng vấn vòng cuối cùng chuyên gia ${input.speakerName || 'HR Lead'}.`,
+        iconName: 'award' as const,
+      },
+    ];
+  } else if (category === 'universal-showcase') {
+    benefits = [
+      {
+        title: 'Trưng bày giải pháp & sản phẩm đột phá',
+        description: 'Trải nghiệm trực quan các công nghệ và giải pháp mới nhất chuẩn bị định hình thị trường tương lai gần.',
+        iconName: 'zap' as const,
+      },
+      {
+        title: 'Mạng lưới kết nối đối tác quy mô lớn',
+        description: 'Gặp gỡ, thảo luận và mở rộng mạng lưới hợp tác chiến lược với các nhà lãnh đạo và chuyên gia đồng ngành.',
+        iconName: 'award' as const,
+      },
+      {
+        title: 'Báo cáo xu hướng & Dữ liệu độc quyền',
+        description: input.earlyBirdDiscount || 'Nhận toàn bộ tài liệu nghiên cứu thị trường, số liệu phân tích chuyên sâu và cẩm nang triển khai thực tế.',
         iconName: 'target' as const,
       },
     ];
@@ -405,6 +530,126 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
         description: 'Giao lưu cùng cộng đồng 3D Creator, nhận mã bản quyền bộ asset 3D độc quyền và vinh danh tác phẩm ấn tượng.',
       },
     ];
+  } else if (category === 'festival-music') {
+    agenda = [
+      {
+        time: '16:00 - 18:00',
+        title: 'Gate Open & Sunset Chill Vibes',
+        description: 'Check-in nhận wristband, tham quan khu vực nghệ thuật và thưởng thức set DJ warm-up hoàng hôn.',
+      },
+      {
+        time: '18:00 - 19:30',
+        title: 'Opening Acts: Khởi động làn sóng cuồng nhiệt',
+        description: 'Các nghệ sĩ Indie và ban nhạc trẻ thổi bùng bầu không khí với những bản hit mở màn.',
+      },
+      {
+        time: '19:30 - 21:30',
+        title: 'Main Stage Extravaganza: Headliner Showcase',
+        description: `Trình diễn bùng nổ của dàn headliner và ${input.speakerName} với hiệu ứng pháo hoa, laser đỉnh cao.`,
+        speaker: input.speakerName,
+      },
+      {
+        time: '21:30 - 23:00',
+        title: 'Grand Finale: Bữa tiệc EDM Afterparty',
+        description: 'Set nhạc điện tử cao trào khép lại đêm hội trong biển ánh sáng và âm thanh rực rỡ.',
+      },
+    ];
+  } else if (category === 'sports-marathon') {
+    agenda = [
+      {
+        time: '04:00 - 04:45',
+        title: 'Tập trung, gửi đồ & Khởi động toàn đoàn',
+        description: 'Vận động viên check-in, kiểm tra BIB, gửi đồ và khởi động làm nóng cơ bắp cùng các HLV chuyên nghiệp.',
+      },
+      {
+        time: '04:45 - 05:00',
+        title: 'Phát súng xuất phát Cự ly Marathon & Half-Marathon',
+        description: 'Xuất phát cự ly 42km và 21km trong không khí rực lửa trước bình minh.',
+        speaker: input.speakerName,
+      },
+      {
+        time: '06:00 - 07:30',
+        title: 'Xuất phát Cự ly 10km & 5km Khám phá',
+        description: 'Hàng ngàn runner cự ly ngắn sải bước chinh phục cung đường tràn đầy năng lượng buổi sớm.',
+      },
+      {
+        time: '08:30 - 10:00',
+        title: 'Về đích, trao giải & Trao huy chương Finisher',
+        description: 'Runner nhận huy chương hoàn thành, phục hồi giãn cơ tại Finish Zone và vinh danh nhà vô địch.',
+      },
+    ];
+  } else if (category === 'culinary-lifestyle') {
+    agenda = [
+      {
+        time: '18:00 - 18:45',
+        title: 'Welcome Cocktail & Finger Food Canapés',
+        description: 'Đón tiếp khách quý bằng ly vang sủi chào mừng, canapé thủ công và kết nối trong phòng chờ thanh lịch.',
+      },
+      {
+        time: '18:45 - 20:15',
+        title: 'Dạ tiệc 7 món tinh hoa & Trình diễn Open Kitchen',
+        description: `Thưởng thức các món ăn chính được bếp trưởng ${input.speakerName} đích thân giới thiệu câu chuyện nguyên liệu và phong vị.`,
+        speaker: input.speakerName,
+      },
+      {
+        time: '20:15 - 21:00',
+        title: 'Sommelier Pairing Workshop & Thử vị tráng miệng',
+        description: 'Trải nghiệm món tráng miệng kết hợp rượu vang ngọt ngào và thảo luận về văn hóa thưởng thức phong cách sống.',
+      },
+      {
+        time: '21:00 - 21:45',
+        title: 'Giao lưu Bếp trưởng & Trao quà tặng ẩm thực',
+        description: 'Chụp ảnh kỷ niệm, nhận cẩm nang công thức món ăn đặc biệt và quà tặng di sản từ bếp trưởng.',
+      },
+    ];
+  } else if (category === 'community-career') {
+    agenda = [
+      {
+        time: '08:30 - 09:30',
+        title: 'Check-in & Khai mạc Ngày hội tuyển dụng',
+        description: 'Đón tiếp ứng viên, phát cẩm nang việc làm và tham quan khu trưng bày 50+ gian hàng doanh nghiệp.',
+      },
+      {
+        time: '09:30 - 11:30',
+        title: 'Phiên phỏng vấn nhanh & Chỉnh sửa CV 1-1',
+        description: 'Ứng viên nộp hồ sơ, phỏng vấn trực tiếp tại quầy tuyển dụng và nhận tư vấn CV chuyên sâu từ HR Director.',
+      },
+      {
+        time: '13:30 - 15:30',
+        title: 'Tọa đàm: Chiến lược bứt phá thu nhập & Định vị bản thân',
+        description: `Diễn giả ${input.speakerName} và ban lãnh đạo các tập đoàn chia sẻ xu hướng thị trường lao động mới.`,
+        speaker: input.speakerName,
+      },
+      {
+        time: '15:30 - 17:00',
+        title: 'Speed Networking & Trao cơ hội nghề nghiệp',
+        description: 'Kết nối mở giữa ứng viên và quản lý cấp cao, bốc thăm may mắn các suất học bổng nghề nghiệp.',
+      },
+    ];
+  } else if (category === 'universal-showcase') {
+    agenda = [
+      {
+        time: '08:30 - 09:15',
+        title: 'Đón tiếp đại biểu & Khai mạc triển lãm',
+        description: 'Khách mời nhận tài liệu, tham quan khu vực trưng bày giải pháp và kết nối networking buổi sáng.',
+      },
+      {
+        time: '09:15 - 10:45',
+        title: 'Keynote: Định hình làn sóng chuyển dịch mới',
+        description: `${input.speakerName} công bố báo cáo độc quyền và phân tích các cơ hội chiến lược trọng tâm.`,
+        speaker: input.speakerName,
+      },
+      {
+        time: '11:00 - 12:00',
+        title: 'Phiên đối thoại bàn tròn cùng các nhà lãnh đạo',
+        description: 'Thảo luận mở về các rào cản thực thi, phương pháp tối ưu hóa và bài học thực tiễn.',
+      },
+      {
+        time: '13:30 - 16:30',
+        title: 'Showcase trình diễn sản phẩm & Lễ ký kết hợp tác',
+        description: 'Trình diễn thực tế các giải pháp công nghệ, lễ ký kết thỏa thuận hợp tác và tiệc kết nối mở.',
+      },
+    ];
   }
 
   let faqs: FaqItem[] = [
@@ -449,6 +694,101 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
         answer: 'Có! Mỗi học viên tham gia trọn vẹn sẽ được cấp Certificate of Creative Excellence với chữ ký số của Giám đốc Nghệ thuật và mã định danh quốc tế.',
       },
     ];
+  } else if (category === 'festival-music') {
+    faqs = [
+      {
+        question: 'Vé điện tử (E-ticket) đổi sang vòng tay vào cổng như thế nào?',
+        answer: 'Sau khi đăng ký thành công, bạn sẽ nhận mã QR qua email. Tại cổng check-in sự kiện, nhân viên sẽ quét mã QR và phát vòng tay vải RFID chính thức.',
+      },
+      {
+        question: 'Đại nhạc hội có quy định về độ tuổi và trang phục không?',
+        answer: 'Sự kiện mở cửa cho khán giả từ 16 tuổi trở lên. Khuyến khích trang phục festival cá tính, thoải mái để thuận tiện nhún nhảy suốt đêm nhạc.',
+      },
+      {
+        question: 'Nếu trời mưa thì sự kiện có diễn ra không?',
+        answer: 'Sự kiện được trang bị mái che khu vực khán đài chính và hệ thống thoát nước sân bãi tiêu chuẩn, đêm nhạc vẫn diễn ra bùng nổ trong mọi điều kiện thời tiết.',
+      },
+      {
+        question: 'Tôi có thể mang đồ ăn thức uống từ bên ngoài vào không?',
+        answer: 'Để đảm bảo an toàn và vệ sinh chung, ban tổ chức không cho phép mang thực phẩm từ ngoài vào. Bạn có thể thưởng thức đa dạng món ăn tại phố F&B ẩm thực lễ hội bên trong.',
+      },
+    ];
+  } else if (category === 'sports-marathon') {
+    faqs = [
+      {
+        question: 'Thời gian và địa điểm nhận Race Kit như thế nào?',
+        answer: 'Vận động viên có thể nhận Race Kit tại khu vực Expo trước ngày đua 2 ngày. Vui lòng mang theo CCCD và email xác nhận đăng ký chứa mã QR.',
+      },
+      {
+        question: 'Đường chạy có phân bổ pacer dẫn tốc độ không?',
+        answer: 'Có! Ban tổ chức bố trí đội ngũ pacer chuyên nghiệp cho các mốc thời gian tiêu chuẩn ở các cự ly 21km và 42km để giúp bạn đạt mục tiêu PR cá nhân.',
+      },
+      {
+        question: 'Hạn chót thời gian (Cut-off Time) cho từng cự ly là bao lâu?',
+        answer: 'Thời gian cut-off lần lượt là: 5km (1h15p), 10km (2h00p), 21km (3h30p) và 42km (6h30p) để đảm bảo an toàn tuyệt đối cho người chạy.',
+      },
+      {
+        question: 'Sau giải chạy tôi có thể tra cứu ảnh thi đấu ở đâu?',
+        answer: 'Ảnh cá nhân được hệ thống AI tự động nhận diện theo số BIB và cập nhật lên website trong vòng 6 giờ sau khi bạn cán đích.',
+      },
+    ];
+  } else if (category === 'culinary-lifestyle') {
+    faqs = [
+      {
+        question: 'Sự kiện có phục vụ thực đơn riêng cho người ăn chay hoặc dị ứng thực phẩm không?',
+        answer: 'Có! Vui lòng ghi chú yêu cầu ăn kiêng (ăn chay, gluten-free, dị ứng hải sản/hạt) khi điền thông tin để bếp trưởng chuẩn bị thực đơn thay thế chu đáo.',
+      },
+      {
+        question: 'Quy định về trang phục (Dress Code) của dạ tiệc như thế nào?',
+        answer: 'Dress Code của sự kiện là Smart Casual / Elegant Cocktail để giữ trọn vẹn không khí trang trọng và ấm cúng cho bữa tiệc tối.',
+      },
+      {
+        question: 'Tôi có thể dẫn theo trẻ em tham gia không?',
+        answer: 'Không gian sự kiện hướng tới trải nghiệm ẩm thực tinh tế và đối thoại sâu, do đó chỉ phù hợp cho khách mời từ 12 tuổi trở lên.',
+      },
+      {
+        question: 'Tôi có được hướng dẫn cách làm các món ăn sau sự kiện không?',
+        answer: 'Tất cả khách mời sẽ nhận được cuốn cẩm nang công thức và video ghi hình cận cảnh kỹ thuật chế biến được gửi về hòm thư điện tử.',
+      },
+    ];
+  } else if (category === 'community-career') {
+    faqs = [
+      {
+        question: 'Tôi cần chuẩn bị bao nhiêu bản CV khi đến tham gia?',
+        answer: 'Nên chuẩn bị sẵn 5-10 bản CV bản in sạch đẹp và lưu sẵn file PDF trên điện thoại để quét mã nộp trực tuyến tại các gian hàng doanh nghiệp.',
+      },
+      {
+        question: 'Sự kiện có thu phí vé vào cổng của người tìm việc không?',
+        answer: 'Ngày hội tuyển dụng hoàn toàn miễn phí vé vào cổng cho tất cả ứng viên và sinh viên đã đăng ký trước qua landing page.',
+      },
+      {
+        question: 'Những ngành nghề nào có nhiều chỉ tiêu tuyển dụng nhất tại ngày hội?',
+        answer: 'Sự kiện đa dạng ngành nghề gồm Công nghệ thông tin, Marketing & Digital, Tài chính - Ngân hàng, Bán hàng B2B, Nhân sự và Chuỗi cung ứng.',
+      },
+      {
+        question: 'Sau khi nộp hồ sơ tại ngày hội thì bao lâu sẽ có kết quả?',
+        answer: 'Các doanh nghiệp sẽ thông báo kết quả sơ tuyển trong vòng 3-5 ngày làm việc qua email hoặc số điện thoại ghi trên hồ sơ ứng tuyển.',
+      },
+    ];
+  } else if (category === 'universal-showcase') {
+    faqs = [
+      {
+        question: 'Tôi có thể đại diện công ty đăng ký tham dự theo đoàn không?',
+        answer: 'Hoàn toàn được! Bạn có thể chọn số lượng vé hoặc liên hệ ban tổ chức để nhận gói ưu đãi tham gia theo đoàn doanh nghiệp.',
+      },
+      {
+        question: 'Tài liệu sự kiện có được bảo mật hay cung cấp công khai?',
+        answer: 'Tất cả đại biểu đăng ký sẽ được cấp tài khoản truy cập cổng tài nguyên số bảo mật để tải slide, số liệu và tài liệu độc quyền.',
+      },
+      {
+        question: 'Có khu vực làm việc riêng cho khách VIP và phóng viên báo chí không?',
+        answer: 'Có! Sự kiện bố trí Media Hub và phòng VIP Lounge trang bị Internet tốc độ cao, đồ uống miễn phí và không gian đàm phán riêng tư.',
+      },
+      {
+        question: 'Sau sự kiện ban tổ chức có hỗ trợ kết nối đối tác tiếp theo không?',
+        answer: 'Ban tổ chức cung cấp hệ thống Business Matching để các đại biểu tiếp tục trao đổi và đặt lịch họp sau sự kiện trong 30 ngày.',
+      },
+    ];
   }
 
   const totalScore = forceOptimized ? 94 : 78;
@@ -490,8 +830,32 @@ function generateWithSmartEngine(input: EventInput, forceOptimized = false): {
     faqs,
     testimonials: getDomainTestimonials(category),
     earlyBirdBadge: input.earlyBirdDiscount || 'Ưu đãi Early Bird có hạn',
-    ctaButtonText: category === 'studio-3d' ? 'Trải nghiệm không gian 3D ngay' : 'Đăng ký tham gia ngay',
-    tagline: category === 'studio-3d' ? 'AWWWARDS SITE OF THE DAY • CINEMATIC EXPERIENCE' : 'Sự kiện chuyên sâu không thể bỏ lỡ',
+    ctaButtonText:
+      category === 'studio-3d'
+        ? 'Trải nghiệm không gian 3D ngay'
+        : category === 'festival-music'
+        ? 'Săn vé đại nhạc hội ngay'
+        : category === 'sports-marathon'
+        ? 'Đăng ký cự ly chạy ngay'
+        : category === 'culinary-lifestyle'
+        ? 'Đặt bàn dạ tiệc ngay'
+        : category === 'community-career'
+        ? 'Ứng tuyển & Nhận vé miễn phí'
+        : 'Đăng ký tham gia ngay',
+    tagline:
+      category === 'studio-3d'
+        ? 'AWWWARDS SITE OF THE DAY • CINEMATIC EXPERIENCE'
+        : category === 'festival-music'
+        ? 'LIVE MUSIC FESTIVAL • ĐẠI TIỆC ÂM THANH ÁNH SÁNG'
+        : category === 'sports-marathon'
+        ? 'OFFICIAL MARATHON RACE • BỨT PHÁ GIỚI HẠN'
+        : category === 'culinary-lifestyle'
+        ? 'EXCLUSIVE CHEF TASTING • FINE DINING EXPERIENCE'
+        : category === 'community-career'
+        ? 'NATIONAL CAREER EXPO • KẾT NỐI 50+ DOANH NGHIỆP'
+        : category === 'universal-showcase'
+        ? 'GLOBAL SHOWCASE & PARTNERSHIP SUMMIT'
+        : 'Sự kiện chuyên sâu không thể bỏ lỡ',
   };
 
   return { content, cro };
@@ -610,6 +974,15 @@ Thông tin sự kiện:
 QUY TẮC BẮT BUỘC VỀ VĂN PHONG TIẾNG VIỆT:
 - Dùng văn phong tự nhiên, viết hoa theo đúng quy tắc tiếng Việt (Sentence case cho câu, tiêu đề và lợi ích; CHỈ viết hoa chữ cái đầu câu hoặc danh từ riêng/từ viết tắt như AI, Google, FPT, VC).
 - TUYỆT ĐỐI KHÔNG viết hoa từng chữ cái đầu của mỗi từ (Title Case kiểu tiếng Anh) như "Đăng Ký Tham Gia Sự Kiện".
+
+HƯỚNG DẪN RIÊNG CHO TỪNG LOẠI SỰ KIỆN:
+- "festival-music": Không khí đại nhạc hội/concert cuồng nhiệt, từ vựng về âm nhạc, headliner, visual laser, hệ thống âm thanh, fanzone, vé tham dự. TUYỆT ĐỐI KHÔNG dùng từ ngữ giáo trình/lớp học.
+- "sports-marathon": Không khí giải chạy/marathon thể thao, từ vựng về cự ly (5k/10k/21k/42k), race kit, chiptiming, trạm tiếp nước, pacer, huy chương finisher. TUYỆT ĐỐI KHÔNG dùng từ ngữ giáo trình/lớp học.
+- "culinary-lifestyle": Không khí dạ tiệc ẩm thực/fine dining, từ vựng về thực đơn tasting, sommelier, pairing rượu vang, bếp trưởng Michelin, trải nghiệm vị giác sang trọng. TUYỆT ĐỐI KHÔNG dùng từ ngữ học thuật.
+- "community-career": Không khí ngày hội việc làm/tuyển dụng, từ vựng về 50+ doanh nghiệp, phỏng vấn tuyển dụng, review CV 1-1, cơ hội nghề nghiệp. TUYỆT ĐỐI KHÔNG dùng từ ngữ học thuật giáo trình.
+- "studio-3d": Không khí sáng tạo số 3D, CGI, canvas WebGL tương tác, đạo diễn nghệ thuật.
+- "education": Giáo trình đào tạo thực chiến, bài tập tình huống, giảng viên hướng dẫn.
+- "ai-tech" / "developer" / "startup" / "marketing" / "design" / "universal-showcase": Chuyên sâu theo đúng ngành nghề thực tế.
 
 Hãy trả về DUY NHẤT một chuỗi JSON hợp lệ (không kèm Markdown backticks):
 {
