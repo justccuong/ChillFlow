@@ -3,7 +3,7 @@ import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
 import { InlineEditable } from '../InlineEditable';
 import { formatEventDate } from '../../../utils/date';
-import { Calendar, MapPin, ArrowRight, Award, ShieldCheck, Box, RefreshCw } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, Award, ShieldCheck } from 'lucide-react';
 import { DirectionalButton } from '../../common/DirectionalButton';
 import { SoundWaveWidget } from '../../common/SoundWaveWidget';
 import { NumberTicker } from '../../magicui';
@@ -117,16 +117,16 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
       lastScrollY = currentScrollY;
 
       // Impart rotational momentum on scroll
-      scrollImpulseY += deltaY * 0.0035;
-      scrollImpulseX += deltaY * 0.0018;
+      scrollImpulseY += deltaY * 0.0012;
+      scrollImpulseX += deltaY * 0.0006;
     };
 
     window.addEventListener('scroll', handleWindowScroll, { passive: true });
 
     // Wheel event directly on canvas container for trackball scrub
     const handleCanvasWheel = (e: WheelEvent) => {
-      scrollImpulseY += e.deltaY * 0.003;
-      scrollImpulseX += (e.deltaX || e.deltaY * 0.4) * 0.0015;
+      scrollImpulseY += e.deltaY * 0.0010;
+      scrollImpulseX += (e.deltaX || e.deltaY * 0.4) * 0.0005;
     };
     canvas.addEventListener('wheel', handleCanvasWheel, { passive: true });
 
@@ -159,8 +159,8 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
       if (!isDragging) {
         currentRotX += velocity.current.x;
         currentRotY += velocity.current.y;
-        velocity.current.x = velocity.current.x * 0.96 + 0.0015 * 0.04;
-        velocity.current.y = velocity.current.y * 0.96 + 0.0035 * 0.04;
+        velocity.current.x = velocity.current.x * 0.96 + 0.0005 * 0.04;
+        velocity.current.y = velocity.current.y * 0.96 + 0.0012 * 0.04;
       }
 
       const w = bufferCanvas.width;
@@ -438,39 +438,20 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
           </div>
         </div>
 
-        {/* Right Column: 360-Degree Interactive Canvas Viewport */}
-        <div className="lg:col-span-5 relative flex flex-col items-center justify-center">
-          {/* Glass Viewport Container */}
+        {/* Right Column: 360-Degree Interactive Canvas Viewport (Minimalist Borderless Core) */}
+        <div className="lg:col-span-5 relative flex items-center justify-center">
           <div
-            className="relative w-full aspect-square max-w-[420px] rounded-3xl bg-slate-100/90 dark:bg-zinc-950/70 border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] backdrop-blur-2xl overflow-hidden cursor-grab active:cursor-grabbing group select-none transition-colors"
+            className="relative w-full aspect-square max-w-[420px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none"
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerLeave={handlePointerUp}
           >
-            {/* Top Viewport Header */}
-            <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between text-[11px] text-slate-600 dark:text-zinc-400 font-mono pointer-events-none">
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/80 dark:bg-black/50 border border-slate-200 dark:border-white/10 backdrop-blur-md shadow-sm">
-                <Box className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-                <span>SPATIAL_CORE_V3</span>
-              </div>
-              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-bold">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
-                <span>120 FPS</span>
-              </div>
-            </div>
-
             {/* The 3D Render Canvas */}
             <canvas
               ref={canvasRef}
               className="w-full h-full block"
             />
-
-            {/* Bottom Interaction Guide Pill */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 dark:bg-black/60 border border-slate-200 dark:border-white/15 text-[11px] text-slate-800 dark:text-zinc-300 backdrop-blur-md pointer-events-none shadow-md group-hover:border-amber-400/40 transition-colors">
-              <RefreshCw className="w-3 h-3 text-amber-500 dark:text-amber-400 animate-spin" style={{ animationDuration: '6s' }} />
-              <span>Lăn chuột hoặc kéo để xoay 360° • Scroll-Driven 3D</span>
-            </div>
           </div>
         </div>
       </div>
