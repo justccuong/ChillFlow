@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 /**
  * Hook to trigger smooth reveal-up animations on scroll.
  * Queries all elements with `[data-reveal]` and fades them in with upward translation when entering viewport.
- * Uses positive rootMargin (300px) and threshold: 0 so elements are pre-revealed before user reaches them,
- * completely preventing blank "black void" screens.
+ * Uses positive rootMargin (300px) and MutationObserver so dynamic and lazy-loaded components
+ * are automatically observed and revealed, completely preventing blank white screens on first load.
  */
 export function useScrollReveal(dependencies: unknown[] = []) {
   useEffect(() => {
@@ -41,22 +41,46 @@ export function useScrollReveal(dependencies: unknown[] = []) {
       }
     );
 
-    // Query all unrevealed elements
-    const elements = document.querySelectorAll('[data-reveal]:not(.reveal-active)');
-    const vh = window.innerHeight || document.documentElement.clientHeight || 800;
-
-    elements.forEach(el => {
+    const checkAndObserve = (el: Element) => {
+      if (el.classList.contains('reveal-active')) return;
       const rect = el.getBoundingClientRect();
-      // If already within or near the viewport (or above it), reveal immediately
+      const vh = window.innerHeight || document.documentElement.clientHeight || 800;
       if (rect.top <= vh * 1.5) {
         el.classList.add('reveal-active');
       } else {
         observer.observe(el);
       }
+    };
+
+    // Initial query
+    document.querySelectorAll('[data-reveal]:not(.reveal-active)').forEach(checkAndObserve);
+
+    // MutationObserver to watch for newly mounted Suspense/Lazy components
+    const mutationObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            const elem = node as HTMLElement;
+            if (elem.hasAttribute('data-reveal')) {
+              checkAndObserve(elem);
+            }
+            elem.querySelectorAll?.('[data-reveal]:not(.reveal-active)').forEach(checkAndObserve);
+          }
+        });
+      }
     });
 
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+    // Safeguard timer: ensure any delayed renders within viewport are revealed
+    const safetyTimer = setTimeout(() => {
+      document.querySelectorAll('[data-reveal]:not(.reveal-active)').forEach(checkAndObserve);
+    }, 400);
+
     return () => {
+      clearTimeout(safetyTimer);
       observer.disconnect();
+      mutationObserver.disconnect();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies);

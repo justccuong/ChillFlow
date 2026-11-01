@@ -3,6 +3,7 @@ import type { EventInput, GeneratedContent, CROEvaluation, Attendee, UserProfile
 import { Header } from './components/Header';
 import { EventInputForm } from './components/EventInputForm';
 import { LandingPagePreview } from './components/LandingPage/LandingPagePreview';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { PublicStandalonePage } from './components/LandingPage/PublicStandalonePage';
 import { Particles } from './components/magicui';
 import { generateLandingPageContent, PRESETS } from './services/aiService';
@@ -291,7 +292,8 @@ export function App() {
             />
           </div>
         ) : (
-          <LandingPagePreview
+          <ErrorBoundary sectionName="Bản xem trước">
+            <LandingPagePreview
             input={eventInput}
             content={content}
             cro={cro!}
@@ -315,6 +317,7 @@ export function App() {
               setIsPricingModalOpen(true);
             }}
           />
+          </ErrorBoundary>
         )}
       </div>
 

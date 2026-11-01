@@ -206,8 +206,21 @@ html {
 }
 
 [data-reveal].reveal-active {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  animation: none !important;
+}
+
+/* Fail-safe fallback: If an element is not revealed by JS within 1.2s, gracefully auto-reveal */
+@keyframes autoRevealFallback {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+[data-reveal]:not(.reveal-active) {
+  animation: autoRevealFallback 0.4s ease 1.2s forwards;
 }
 
 /* Light Mode Overrides for High-Contrast Clean Editorial Appearance */

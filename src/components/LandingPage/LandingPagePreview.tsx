@@ -22,6 +22,7 @@ import { Sparkles, ArrowUp, Edit3, Palette, Send, X, Undo2, Redo2, Sliders } fro
 import { NumberTicker } from '../magicui';
 import type { UserProfile, PublishedPageRecord } from '../../types';
 import { useLandingPageStore } from '../../store/useLandingPageStore';
+import { ErrorBoundary } from '../common/ErrorBoundary';
 import { useUndoRedoKeyboard } from '../../hooks/useUndoRedoKeyboard';
 
 // Code Splitting: Lazy-load Modals
@@ -517,6 +518,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
       )}
 
       {/* Main Landing Page Rendered Sections with Scroll Reveal Animations */}
+      <ErrorBoundary sectionName="Trang đích">
       <main ref={previewContainerRef} className="flex-1">
         {/* 1. Hero Section */}
         {sectionVisibility.hero && (
@@ -711,6 +713,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           </div>
         )}
       </main>
+      </ErrorBoundary>
 
       {/* Clean Client Event Footer */}
       <footer className="bg-slate-100 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-900 py-10 px-4 text-center text-xs text-slate-600 dark:text-slate-400 space-y-2 transition-colors">
