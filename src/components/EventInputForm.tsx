@@ -3,26 +3,54 @@ import type { EventInput, EventCategory } from '../types';
 import { PRESETS } from '../services/aiService';
 import { CATEGORIES } from '../services/themeEngine';
 import { detectBestTemplate } from '../services/templateRegistry';
-import { Calendar, MapPin, User, Gift, Target, Users, Sparkles, Layers, Cpu, TrendingUp, Rocket, Code2, Palette, GraduationCap, AlertCircle } from 'lucide-react';
+import { Calendar, MapPin, User, Target, Users, Sparkles, Layers, Cpu, TrendingUp, Rocket, Code2, Palette, GraduationCap, Box, Music, Activity, UtensilsCrossed, Globe, AlertCircle } from 'lucide-react';
 
 const renderCategoryIcon = (id: EventCategory, className = 'w-6 h-6') => {
   switch (id) {
     case 'ai-tech':
-      return <Cpu className={`${className} text-cyan-400`} />;
+      return <Cpu className={`${className} text-cyan-500`} />;
     case 'marketing':
-      return <TrendingUp className={`${className} text-amber-500 dark:text-amber-400`} />;
+      return <TrendingUp className={`${className} text-amber-500`} />;
     case 'startup':
-      return <Rocket className={`${className} text-purple-400`} />;
+      return <Rocket className={`${className} text-purple-500`} />;
     case 'developer':
-      return <Code2 className={`${className} text-emerald-400`} />;
+      return <Code2 className={`${className} text-emerald-500`} />;
     case 'design':
-      return <Palette className={`${className} text-pink-400`} />;
+      return <Palette className={`${className} text-pink-500`} />;
     case 'education':
-      return <GraduationCap className={`${className} text-blue-400`} />;
+      return <GraduationCap className={`${className} text-blue-500`} />;
     case 'studio-3d':
-      return <Sparkles className={`${className} text-amber-500 dark:text-amber-300`} />;
+      return <Box className={`${className} text-amber-500`} />;
+    case 'festival-music':
+      return <Music className={`${className} text-fuchsia-500`} />;
+    case 'sports-marathon':
+      return <Activity className={`${className} text-orange-500`} />;
+    case 'culinary-lifestyle':
+      return <UtensilsCrossed className={`${className} text-yellow-500`} />;
+    case 'community-career':
+      return <Users className={`${className} text-sky-500`} />;
+    case 'universal-showcase':
+      return <Globe className={`${className} text-indigo-500`} />;
     default:
       return <Sparkles className={`${className} text-indigo-400`} />;
+  }
+};
+
+const getCategoryMicroBadge = (id: EventCategory): string => {
+  switch (id) {
+    case 'ai-tech': return 'AI Summit';
+    case 'marketing': return 'CRO Funnel';
+    case 'startup': return 'Dealflow VC';
+    case 'developer': return 'CLI Native';
+    case 'design': return 'Awwwards Art';
+    case 'education': return 'Chứng chỉ ISO';
+    case 'studio-3d': return '3D WebGL';
+    case 'festival-music': return 'EDM & Live';
+    case 'sports-marathon': return 'Race & BIB';
+    case 'culinary-lifestyle': return 'Michelin Taste';
+    case 'community-career': return 'Job Fair';
+    case 'universal-showcase': return 'All-in-One';
+    default: return 'Tiêu chuẩn';
   }
 };
 
@@ -176,23 +204,32 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
             <Layers className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" /> Loại sự kiện & phong cách theme
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => handleCategorySelect(cat.id)}
-                className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between group ${
-                  formData.category === cat.id
-                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/15 text-indigo-900 dark:text-white ring-1 ring-indigo-500 shadow-md'
-                    : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
-                }`}
-              >
-                <div className="mb-2 group-hover:scale-110 transition-transform">
-                  {renderCategoryIcon(cat.id)}
-                </div>
-                <div className="text-xs font-bold leading-tight">{cat.label}</div>
-              </button>
-            ))}
+            {CATEGORIES.map(cat => {
+              const isSelected = formData.category === cat.id;
+              const badge = getCategoryMicroBadge(cat.id);
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => handleCategorySelect(cat.id)}
+                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between group relative overflow-hidden ${
+                    isSelected
+                      ? 'border-indigo-500 bg-indigo-50/80 dark:bg-indigo-500/20 text-indigo-900 dark:text-white ring-2 ring-indigo-500/40 shadow-md'
+                      : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:text-slate-900 dark:hover:text-slate-200'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="group-hover:scale-110 transition-transform">
+                      {renderCategoryIcon(cat.id)}
+                    </div>
+                    <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-black/5 dark:bg-white/10 text-slate-500 dark:text-slate-400">
+                      {badge}
+                    </span>
+                  </div>
+                  <div className="text-xs font-bold leading-tight line-clamp-1">{cat.label}</div>
+                </button>
+              );
+            })}
           </div>
 
           {/* AI Auto-Detection Helper */}
