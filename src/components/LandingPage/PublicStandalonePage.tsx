@@ -10,6 +10,7 @@ import { FaqSection } from './FaqSection';
 import { RegistrationSection } from './RegistrationSection';
 import { EventGallerySection } from './EventGallerySection';
 import { StickyBottomCta } from './StickyBottomCta';
+import { EventFooterSection } from './EventFooterSection';
 import { SocialProofTicker } from './SocialProofTicker';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { recordView, recordConversion } from '../../services/publishService';
@@ -199,18 +200,12 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
         maxSeats={input.maxCapacity || 100}
       />
 
-      {/* Clean Client Event Footer */}
-      <footer className="bg-slate-100 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-900 py-12 px-4 text-center text-xs text-slate-500 space-y-3 transition-colors pb-24 md:pb-12">
-        <div className="font-semibold text-slate-800 dark:text-slate-300 text-sm">
-          {input.eventName}
-        </div>
-        <p className="max-w-md mx-auto text-slate-400">
-          Trang đích sự kiện chính thức. Đăng ký để giữ chỗ và nhận tài liệu đào tạo sớm nhất.
-        </p>
-        <div className="pt-4 text-slate-400 text-[11px]">
-          Powered by <a href="/" className="text-indigo-500 hover:underline font-semibold">ConvertFlow AI</a>
-        </div>
-      </footer>
+      {/* Rich Detailed Client Event Footer */}
+      <EventFooterSection
+        input={input}
+        content={content}
+        theme={theme}
+      />
 
       {/* Back to top floating button */}
       <button

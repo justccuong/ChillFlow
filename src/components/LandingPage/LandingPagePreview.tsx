@@ -11,6 +11,7 @@ import { AgendaSection } from './AgendaSection';
 import { FaqSection } from './FaqSection';
 import { RegistrationSection } from './RegistrationSection';
 import { EventGallerySection } from './EventGallerySection';
+import { EventFooterSection } from './EventFooterSection';
 import { StickyFomoBar } from './StickyFomoBar';
 import { CROScorecard } from '../CROScorecard';
 import { detectBestTemplate, getTemplateById } from '../../services/templateRegistry';
@@ -753,15 +754,15 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
       </main>
       </ErrorBoundary>
 
-      {/* Clean Client Event Footer */}
-      <footer className="bg-slate-100 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-900 py-10 px-4 text-center text-xs text-slate-600 dark:text-slate-400 space-y-2 transition-colors">
-        <div className="font-semibold text-slate-900 dark:text-slate-200">
-          {input.eventName}
-        </div>
-        <p className="text-slate-500 dark:text-slate-400">
-          Mọi thắc mắc về sự kiện xin vui lòng liên hệ ban tổ chức.
-        </p>
-      </footer>
+      {/* Rich Detailed Client Event Footer with In-Place Visual CMS */}
+      <EventFooterSection
+        input={input}
+        content={content}
+        theme={theme}
+        isEditMode={isEditMode}
+        onUpdateInput={handleUpdateInputField}
+        onUpdateContent={handleUpdateContentField}
+      />
 
       {/* Back to top floating button */}
       <button
