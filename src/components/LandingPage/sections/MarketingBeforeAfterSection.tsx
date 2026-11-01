@@ -1,16 +1,15 @@
+import { InlineEditable } from '../InlineEditable';
 import React from 'react';
 import { XCircle, CheckCircle2, Zap } from 'lucide-react';
 import type { ThemeConfig } from '../../../types';
 
 interface MarketingBeforeAfterProps {
+  isEditMode?: boolean;
   theme: ThemeConfig;
   onScrollToRegister: () => void;
 }
 
-export const MarketingBeforeAfterSection: React.FC<MarketingBeforeAfterProps> = ({
-  theme,
-  onScrollToRegister,
-}) => {
+export const MarketingBeforeAfterSection: React.FC<MarketingBeforeAfterProps> = ({ theme, onScrollToRegister, isEditMode = false }) => {
   return (
     <section className="py-20 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden transition-colors border-t border-slate-200/60 dark:border-slate-850" data-reveal>
       <div className="max-w-6xl mx-auto px-4 md:px-8 space-y-16 relative z-10">
@@ -19,9 +18,9 @@ export const MarketingBeforeAfterSection: React.FC<MarketingBeforeAfterProps> = 
           <span className="text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 flex items-center justify-center gap-1.5">
             <Zap className="w-3.5 h-3.5" /> BỨT PHÁ TĂNG TRƯỞNG THỰC CHIẾN
           </span>
-          <h2 className="text-3xl sm:text-5xl font-black font-heading tracking-tight text-slate-900 dark:text-white">
+          <h2 className="text-3xl sm:text-5xl font-black font-heading tracking-tight text-slate-900 dark:text-white"><InlineEditable value="
             Sự khác biệt giữa cách làm cũ & framework mới
-          </h2>
+          " isEditMode={isEditMode} as="span" /></h2>
           <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Tại sao 90% chiến dịch marketing thất bại vì phụ thuộc vào ads, và cách các Unicorn scale doanh thu với ngân sách 0đ.
           </p>

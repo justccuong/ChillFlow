@@ -40,6 +40,6 @@ describe('EventFooterSection Utilities', () => {
       'utf-8'
     );
     const footerBlock = exporterContent.slice(exporterContent.indexOf('<footer'));
-    expect(footerBlock).not.toMatch(/[📅📍👤📧📞]/);
+    expect(footerBlock).not.toMatch(/[📅📍👤📧📞]/u);
   });
 });

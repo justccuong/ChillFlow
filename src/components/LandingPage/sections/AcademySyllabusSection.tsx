@@ -1,12 +1,14 @@
+import { InlineEditable } from '../InlineEditable';
 import React, { useState } from 'react';
 import type { ThemeConfig } from '../../../types';
 import { BookOpen, ChevronDown, ChevronUp, CheckCircle, Clock, GraduationCap } from 'lucide-react';
 
 interface AcademyProps {
+  isEditMode?: boolean;
   theme: ThemeConfig;
 }
 
-export const AcademySyllabusSection: React.FC<AcademyProps> = ({ theme }) => {
+export const AcademySyllabusSection: React.FC<AcademyProps> = ({ theme, isEditMode = false }) => {
   const [openIndex, setOpenIndex] = useState<number>(0);
 
   const modules = theme.curriculumModules || [
@@ -49,9 +51,9 @@ export const AcademySyllabusSection: React.FC<AcademyProps> = ({ theme }) => {
           <span className="text-xs uppercase font-bold tracking-widest text-blue-500 flex items-center justify-center gap-1.5">
             <BookOpen className="w-4 h-4 text-blue-500" /> KHUNG CHƯƠNG TRÌNH ĐÀO TẠO
           </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading"><InlineEditable value="
             Lộ trình học chi tiết & chuẩn đầu ra
-          </h2>
+          " isEditMode={isEditMode} as="span" /></h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             Chương trình được thiết kế cô đọng, cân bằng giữa 30% lý thuyết nền tảng và 70% thời lượng thực chiến trên dự án thật.
           </p>

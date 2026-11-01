@@ -1,9 +1,11 @@
+import { InlineEditable } from '../InlineEditable';
 import React, { useState } from 'react';
 import type { ThemeConfig } from '../../../types';
 import { Award, ArrowUpRight, Play, X, Eye, Sparkles } from 'lucide-react';
 import { DirectionalButton } from '../../common/DirectionalButton';
 
 interface CinematicShowcaseProps {
+  isEditMode?: boolean;
   theme: ThemeConfig;
   onScrollToRegister: () => void;
 }
@@ -20,9 +22,7 @@ interface ProjectCard {
   tags: string[];
 }
 
-export const CinematicShowcaseSection: React.FC<CinematicShowcaseProps> = ({
-  onScrollToRegister,
-}) => {
+export const CinematicShowcaseSection: React.FC<CinematicShowcaseProps> = ({ theme, onScrollToRegister, isEditMode = false }) => {
   const [activeModalProject, setActiveModalProject] = useState<ProjectCard | null>(null);
 
   const projects: ProjectCard[] = [
@@ -83,9 +83,9 @@ export const CinematicShowcaseSection: React.FC<CinematicShowcaseProps> = ({
                 EXPERIENTIAL SHOWCASE & CASE STUDIES
               </span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-black font-heading tracking-tight text-slate-900 dark:text-white leading-tight">
+            <h2 className="text-3xl sm:text-5xl font-black font-heading tracking-tight text-slate-900 dark:text-white leading-tight"><InlineEditable value="
               Tác phẩm 3D & trải nghiệm số đỉnh cao
-            </h2>
+            " isEditMode={isEditMode} as="span" /></h2>
             <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 font-sans leading-relaxed">
               Mỗi tác phẩm là sự giao thoa hoàn hảo giữa công nghệ đồ họa điện ảnh, thuật toán nạp mượt mà và âm học Web Audio tiên phong.
             </p>

@@ -1,12 +1,14 @@
+import { InlineEditable } from '../InlineEditable';
 import React from 'react';
 import type { ThemeConfig } from '../../../types';
 import { Terminal, Cpu, GitBranch, Layers, CheckCircle2, Box, Sparkles } from 'lucide-react';
 
 interface TerminalProps {
+  isEditMode?: boolean;
   theme: ThemeConfig;
 }
 
-export const TerminalCodeSection: React.FC<TerminalProps> = () => {
+export const TerminalCodeSection: React.FC<TerminalProps> = ({ isEditMode = false }) => {
   const techStack = [
     { name: 'Python 3.12', role: 'Runtime Core', tag: 'FastAPI / Async' },
     { name: 'LangChain & LlamaIndex', role: 'Agent Framework', tag: 'Tool Calling' },
@@ -23,9 +25,9 @@ export const TerminalCodeSection: React.FC<TerminalProps> = () => {
           <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 flex items-center justify-center gap-1.5 uppercase tracking-wider">
             <Cpu className="w-4 h-4" /> TECH_STACK // PREREQUISITES
           </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading"><InlineEditable value="
             Hệ sinh thái công nghệ sử dụng trong workshop
-          </h2>
+          " isEditMode={isEditMode} as="span" /></h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto font-sans">
             Toàn bộ mã nguồn, Dockerfile và pipeline mẫu sẽ được chia sẻ trực tiếp qua repository GitHub riêng tư.
           </p>

@@ -5,7 +5,7 @@ import { KineticText } from '../magicui';
 
 interface InlineEditableProps {
   value: string;
-  onSave: (newVal: string) => void;
+  onSave?: (newVal: string) => void;
   isEditMode: boolean;
   className?: string;
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'p' | 'span' | 'div';
@@ -17,7 +17,7 @@ interface InlineEditableProps {
 
 export const InlineEditable: React.FC<InlineEditableProps> = ({
   value,
-  onSave,
+  onSave = () => {},
   isEditMode,
   className = '',
   as: Component = 'span',

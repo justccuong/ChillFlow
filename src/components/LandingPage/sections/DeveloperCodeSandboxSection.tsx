@@ -1,12 +1,14 @@
+import { InlineEditable } from '../InlineEditable';
 import React, { useState } from 'react';
 import { Terminal, Copy, Check } from 'lucide-react';
 import type { ThemeConfig } from '../../../types';
 
 interface DevProps {
+  isEditMode?: boolean;
   theme: ThemeConfig;
 }
 
-export const DeveloperCodeSandboxSection: React.FC<DevProps> = ({ theme }) => {
+export const DeveloperCodeSandboxSection: React.FC<DevProps> = ({ theme, isEditMode = false }) => {
   const [copied, setCopied] = useState(false);
 
   const sampleSnippet = `// Production AI Agent Worker Pipeline
@@ -39,9 +41,9 @@ export async function bootstrapCluster() {
           <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 flex items-center justify-center gap-1.5">
             <Terminal className="w-3.5 h-3.5" /> SOURCE CODE & BENCHMARK ARCHITECTURE
           </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-mono">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-mono"><InlineEditable value="
             Học trực tiếp qua mã nguồn thực tế
-          </h2>
+          " isEditMode={isEditMode} as="span" /></h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto font-sans">
             Không slide lý thuyết. Cùng bẻ khóa kiến trúc distributed agents và live-debug trên bài toán production chịu tải.
           </p>

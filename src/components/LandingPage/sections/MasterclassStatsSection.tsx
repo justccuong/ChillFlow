@@ -1,3 +1,4 @@
+import { InlineEditable } from '../InlineEditable';
 import React from 'react';
 import type { ThemeConfig } from '../../../types';
 import { TrendingUp } from 'lucide-react';
@@ -21,10 +22,11 @@ function renderStatValue(rawVal: string) {
 }
 
 interface StatsProps {
+  isEditMode?: boolean;
   theme: ThemeConfig;
 }
 
-export const MasterclassStatsSection: React.FC<StatsProps> = ({ theme }) => {
+export const MasterclassStatsSection: React.FC<StatsProps> = ({ theme, isEditMode = false }) => {
   const stats = theme.statsHighlight || [
     { value: '+340%', label: 'Tăng trưởng ROI', subtext: 'Đo lường sau 30 ngày áp dụng funnel' },
     { value: '10,000+', label: 'Học viên & Leader', subtext: 'Đã tham gia chuỗi Masterclass' },
@@ -39,9 +41,9 @@ export const MasterclassStatsSection: React.FC<StatsProps> = ({ theme }) => {
           <span className="text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 flex items-center justify-center gap-1.5">
             <TrendingUp className="w-3.5 h-3.5" /> HIỆU QUẢ ĐO LƯỜNG THỰC TẾ
           </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading"><InlineEditable value="
             Con số biết nói từ các khóa masterclass trước
-          </h2>
+          " isEditMode={isEditMode} as="span" /></h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             Không lý thuyết suông. Mọi chiến lược đều được kiểm chứng qua dữ liệu thực chiến và case study thành công.
           </p>

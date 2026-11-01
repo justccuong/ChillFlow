@@ -1,16 +1,15 @@
+import { InlineEditable } from '../InlineEditable';
 import React from 'react';
 import { DollarSign, TrendingUp, Shield } from 'lucide-react';
 import type { ThemeConfig } from '../../../types';
 
 interface StartupPitchingProps {
+  isEditMode?: boolean;
   theme: ThemeConfig;
   onScrollToRegister: () => void;
 }
 
-export const StartupPitchingRosterSection: React.FC<StartupPitchingProps> = ({
-  theme,
-  onScrollToRegister,
-}) => {
+export const StartupPitchingRosterSection: React.FC<StartupPitchingProps> = ({ theme, onScrollToRegister, isEditMode = false }) => {
   const startups = [
     { name: 'OmniAgent.ai', sector: 'Enterprise AI & Automation', round: 'Seed ($1.2M)', traction: 'ARR $350K • 28 Khách hàng B2B' },
     { name: 'FinFlow Pay', sector: 'Cross-border B2B Payments', round: 'Pre-Series A ($2.0M)', traction: 'GMV $14M/tháng • Tăng trưởng 25% MoM' },
@@ -32,9 +31,9 @@ export const StartupPitchingRosterSection: React.FC<StartupPitchingProps> = ({
           <span className="text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-300 flex items-center justify-center gap-1.5">
             <DollarSign className="w-3.5 h-3.5" /> DEALFLOW & PITCHING PIPELINE
           </span>
-          <h2 className="text-3xl sm:text-5xl font-black font-heading tracking-tight text-slate-900 dark:text-white">
+          <h2 className="text-3xl sm:text-5xl font-black font-heading tracking-tight text-slate-900 dark:text-white"><InlineEditable value="
             Danh mục 6 doanh nghiệp pitching tiêu biểu
-          </h2>
+          " isEditMode={isEditMode} as="span" /></h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Được tuyển chọn khắt khe từ hơn 180 hồ sơ đăng ký tham gia vòng thẩm định deal kín.
           </p>

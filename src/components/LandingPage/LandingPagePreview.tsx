@@ -592,11 +592,12 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             {currentCategory === 'marketing' && (
               <>
                 <div data-reveal data-reveal-delay="100">
-                  <MasterclassStatsSection theme={theme} />
+                  <MasterclassStatsSection theme={theme} isEditMode={isEditMode} />
                 </div>
                 <div data-reveal data-reveal-delay="100">
                   <MarketingBeforeAfterSection
                     theme={theme}
+                    isEditMode={isEditMode}
                     onScrollToRegister={scrollToRegistration}
                   />
                 </div>
@@ -606,10 +607,10 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             {currentCategory === 'developer' && (
               <>
                 <div data-reveal data-reveal-delay="100">
-                  <TerminalCodeSection theme={theme} />
+                  <TerminalCodeSection theme={theme} isEditMode={isEditMode} />
                 </div>
                 <div data-reveal data-reveal-delay="100">
-                  <DeveloperCodeSandboxSection theme={theme} />
+                  <DeveloperCodeSandboxSection theme={theme} isEditMode={isEditMode} />
                 </div>
               </>
             )}
@@ -617,11 +618,12 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             {currentCategory === 'startup' && (
               <>
                 <div data-reveal data-reveal-delay="100">
-                  <ExecutivePitchesSection theme={theme} />
+                  <ExecutivePitchesSection theme={theme} isEditMode={isEditMode} />
                 </div>
                 <div data-reveal data-reveal-delay="100">
                   <StartupPitchingRosterSection
                     theme={theme}
+                    isEditMode={isEditMode}
                     onScrollToRegister={scrollToRegistration}
                   />
                 </div>
@@ -630,13 +632,13 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
             {currentCategory === 'design' && (
               <div data-reveal data-reveal-delay="100">
-                <CreativeMasonrySection theme={theme} />
+                <CreativeMasonrySection theme={theme} isEditMode={isEditMode} />
               </div>
             )}
 
             {currentCategory === 'education' && (
               <div data-reveal data-reveal-delay="100">
-                <AcademySyllabusSection theme={theme} />
+                <AcademySyllabusSection theme={theme} isEditMode={isEditMode} />
               </div>
             )}
 
@@ -644,6 +646,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               <div data-reveal data-reveal-delay="100">
                 <CinematicShowcaseSection
                   theme={theme}
+                  isEditMode={isEditMode}
                   onScrollToRegister={scrollToRegistration}
                 />
               </div>

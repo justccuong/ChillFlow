@@ -1,3 +1,4 @@
+import { InlineEditable } from './InlineEditable';
 import React, { useState } from 'react';
 import type { EventInput, GeneratedContent, Attendee, ThemeConfig } from '../../types';
 import confetti from 'canvas-confetti';
@@ -5,6 +6,7 @@ import { Sparkles, CheckCircle2, Flame, Users, Gift, ShieldCheck } from 'lucide-
 import { NumberTicker } from '../magicui';
 
 interface RegistrationSectionProps {
+  isEditMode?: boolean;
   input: EventInput;
   content: GeneratedContent;
   theme: ThemeConfig;
@@ -20,6 +22,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
   registeredCount,
   onRegisterSuccess,
   onOpenAttendeeList,
+  isEditMode = false,
 }) => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -87,7 +90,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="text-center space-y-2">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight font-heading text-slate-900 dark:text-white">
-            Đăng ký tham gia
+            <InlineEditable value="Đăng ký tham gia" isEditMode={isEditMode} as="span" />
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm max-w-md mx-auto">
             Điền thông tin để nhận vé mời và tài liệu sự kiện.

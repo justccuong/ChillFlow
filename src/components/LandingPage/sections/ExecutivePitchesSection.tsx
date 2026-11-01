@@ -1,12 +1,14 @@
+import { InlineEditable } from '../InlineEditable';
 import React from 'react';
 import type { ThemeConfig } from '../../../types';
 import { Briefcase, Building2, DollarSign, Handshake, Shield, Sparkles } from 'lucide-react';
 
 interface ExecutiveProps {
+  isEditMode?: boolean;
   theme: ThemeConfig;
 }
 
-export const ExecutivePitchesSection: React.FC<ExecutiveProps> = () => {
+export const ExecutivePitchesSection: React.FC<ExecutiveProps> = ({ isEditMode = false }) => {
   const tracks = [
     {
       num: '01',
@@ -35,9 +37,9 @@ export const ExecutivePitchesSection: React.FC<ExecutiveProps> = () => {
           <span className="text-xs uppercase font-bold tracking-widest text-amber-600 dark:text-amber-400 flex items-center justify-center gap-1.5">
             <Handshake className="w-4 h-4 text-amber-500 dark:text-amber-400" /> PITCH TRACK // ROADMAP
           </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading"><InlineEditable value="
             Lộ trình thẩm định & kết nối vốn đầu tư
-          </h2>
+          " isEditMode={isEditMode} as="span" /></h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             Quy trình chuẩn mực được thiết kế để tối ưu hóa thời gian thẩm định của quỹ và tối đa hóa khả năng chốt deal cho startup.
           </p>
