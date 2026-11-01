@@ -224,7 +224,12 @@ export const AgendaSection: React.FC<AgendaSectionProps> = ({
                         />
                       </div>
                       <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${badge.color}`}>
-                        {badge.label}
+                        <InlineEditable
+                          value={item.tag || badge.label}
+                          isEditMode={isEditMode}
+                          as="span"
+                          onSave={(val) => onUpdateAgendaItem?.(index, 'tag', val)}
+                        />
                       </span>
                     </div>
 

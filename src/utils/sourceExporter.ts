@@ -171,7 +171,10 @@ export function generateStandaloneHtml(
               ${a.time}
             </span>
             <div>
-              <h4 class="text-sm font-bold text-white">${a.title}</h4>
+              <div class="flex items-center gap-2">
+                <h4 class="text-sm font-bold text-white">${a.title}</h4>
+                ${a.tag ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">${a.tag}</span>` : ''}
+              </div>
               <p class="text-xs text-slate-400 mt-0.5">${a.description}</p>
             </div>
           </div>
