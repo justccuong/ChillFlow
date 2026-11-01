@@ -93,6 +93,7 @@ export interface GeneratedContent {
   agenda: AgendaItem[];
   faqs: FaqItem[];
   testimonials?: TestimonialItem[];
+  galleryPhotos?: GalleryPhoto[];
   earlyBirdBadge: string;
   ctaButtonText: string;
   tagline: string;

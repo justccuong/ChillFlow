@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
-import type { EventInput, GeneratedContent, CROEvaluation, Attendee, EventCategory, SponsorItem, BenefitItem, AgendaItem, FaqItem, TestimonialItem } from '../../types';
+import type { EventInput, GeneratedContent, CROEvaluation, Attendee, EventCategory, SponsorItem, BenefitItem, AgendaItem, FaqItem, TestimonialItem, GalleryPhoto } from '../../types';
 import { getThemeForCategory, CATEGORIES } from '../../services/themeEngine';
 import { saveCurrentEventState } from '../../services/storageService';
 import { HeroSection } from './HeroSection';
@@ -217,6 +217,27 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
     if (updated) saveCurrentEventState(input, updated, cro);
   };
 
+  const handleUpdateGalleryPhoto = (index: number, field: keyof GalleryPhoto, val: string) => {
+    useLandingPageStore.getState().updateGalleryPhoto(index, field, val);
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleAddGalleryPhoto = () => {
+    useLandingPageStore.getState().addGalleryPhoto();
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
+  const handleRemoveGalleryPhoto = (index: number) => {
+    useLandingPageStore.getState().removeGalleryPhoto(index);
+    const updated = useLandingPageStore.getState().content;
+    if (updated && onUpdateContent) onUpdateContent(updated);
+    if (updated) saveCurrentEventState(input, updated, cro);
+  };
+
   const handleUpdateInputField = (field: keyof EventInput, val: unknown) => {
     const updated: EventInput = { ...input, category: currentCategory, [field]: val };
     onUpdateInput(updated);
@@ -230,7 +251,14 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
   // Image Picker state
   const [isImagePickerOpen, setIsImagePickerOpen] = useState(false);
-  const [imagePickerType, setImagePickerType] = useState<'hero' | 'speaker'>('hero');
+  const [imagePickerType, setImagePickerType] = useState<'hero' | 'speaker' | 'gallery'>('hero');
+  const [selectedGalleryIndex, setSelectedGalleryIndex] = useState<number>(0);
+
+  const handleOpenGalleryImagePicker = (index: number) => {
+    setSelectedGalleryIndex(index);
+    setImagePickerType('gallery');
+    setIsImagePickerOpen(true);
+  };
 
   // Sponsor Editor state
   const [isSponsorEditorOpen, setIsSponsorEditorOpen] = useState(false);
@@ -303,6 +331,10 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   };
 
   const handleSelectImage = (newUrl: string) => {
+    if (imagePickerType === 'gallery') {
+      handleUpdateGalleryPhoto(selectedGalleryIndex, 'url', newUrl);
+      return;
+    }
     const updated: EventInput = {
       ...input,
       category: currentCategory,
@@ -681,6 +713,12 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             <EventGallerySection
               theme={theme}
               location={input.location || 'Địa điểm tổ chức'}
+              photos={content.galleryPhotos || theme.galleryPhotos}
+              isEditMode={isEditMode}
+              onUpdatePhoto={handleUpdateGalleryPhoto}
+              onOpenImagePicker={handleOpenGalleryImagePicker}
+              onAddPhoto={handleAddGalleryPhoto}
+              onRemovePhoto={handleRemoveGalleryPhoto}
             />
           </div>
         )}
@@ -742,12 +780,20 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           <ImagePickerModal
             isOpen={isImagePickerOpen}
             onClose={() => setIsImagePickerOpen(false)}
-            title={imagePickerType === 'hero' ? 'Thay đổi ảnh nền Hero' : 'Thay đổi ảnh chân dung diễn giả'}
-            presetType={imagePickerType}
+            title={
+              imagePickerType === 'hero'
+                ? 'Thay đổi ảnh nền Hero'
+                : imagePickerType === 'speaker'
+                ? 'Thay đổi ảnh chân dung diễn giả'
+                : 'Thay đổi ảnh Gallery thực tế'
+            }
+            presetType={imagePickerType === 'speaker' ? 'speaker' : 'hero'}
             currentImage={
               imagePickerType === 'hero'
                 ? input.heroImageUrl || theme.heroImage
-                : input.speakerAvatarUrl || theme.speakerImage
+                : imagePickerType === 'speaker'
+                ? input.speakerAvatarUrl || theme.speakerImage
+                : (content.galleryPhotos || theme.galleryPhotos)?.[selectedGalleryIndex]?.url || ''
             }
             onSelectImage={handleSelectImage}
           />

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { EventInput, GeneratedContent, CROEvaluation, ThemeConfig, BenefitItem, AgendaItem, FaqItem, TestimonialItem, SectionVisibilityConfig, DEFAULT_SECTION_VISIBILITY } from '../types';
+import { EventInput, GeneratedContent, CROEvaluation, ThemeConfig, BenefitItem, AgendaItem, FaqItem, TestimonialItem, GalleryPhoto, SectionVisibilityConfig, DEFAULT_SECTION_VISIBILITY } from '../types';
 import { saveCurrentEventState, getSavedEventState } from '../services/storageService';
 
 interface LandingPageState {
@@ -32,6 +32,10 @@ interface LandingPageState {
   updateTestimonialItem: (index: number, field: keyof TestimonialItem, val: any) => void;
   addTestimonialItem: (item?: TestimonialItem) => void;
   removeTestimonialItem: (index: number) => void;
+
+  updateGalleryPhoto: (index: number, field: keyof GalleryPhoto, val: string) => void;
+  addGalleryPhoto: (photo?: GalleryPhoto) => void;
+  removeGalleryPhoto: (index: number) => void;
   sectionVisibility: SectionVisibilityConfig;
   setSectionVisibility: (config: Partial<SectionVisibilityConfig>) => void;
   toggleSection: (key: keyof SectionVisibilityConfig) => void;
@@ -243,6 +247,42 @@ export const useLandingPageStore = create<LandingPageState>((set, get) => ({
     if (!content || !content.testimonials || content.testimonials.length === 0) return;
     const current = content.testimonials.filter((_, i) => i !== index);
     setContent({ ...content, testimonials: current }, true);
+  },
+
+  updateGalleryPhoto: (index, field, val) => {
+    const { content, theme, setContent } = get();
+    if (!content) return;
+    const current = content.galleryPhotos
+      ? [...content.galleryPhotos]
+      : (theme?.galleryPhotos ? [...theme.galleryPhotos] : []);
+    if (!current[index]) return;
+    current[index] = { ...current[index], [field]: val };
+    setContent({ ...content, galleryPhotos: current }, true);
+  },
+
+  addGalleryPhoto: (photo) => {
+    const { content, theme, setContent } = get();
+    if (!content) return;
+    const current = content.galleryPhotos
+      ? [...content.galleryPhotos]
+      : (theme?.galleryPhotos ? [...theme.galleryPhotos] : []);
+    const newPhoto: GalleryPhoto = photo || {
+      title: 'Khoảnh khắc sự kiện đáng nhớ',
+      tag: 'HIGHLIGHT',
+      url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80',
+    };
+    setContent({ ...content, galleryPhotos: [...current, newPhoto] }, true);
+  },
+
+  removeGalleryPhoto: (index) => {
+    const { content, theme, setContent } = get();
+    if (!content) return;
+    const current = content.galleryPhotos
+      ? [...content.galleryPhotos]
+      : (theme?.galleryPhotos ? [...theme.galleryPhotos] : []);
+    if (current.length <= 1) return;
+    const filtered = current.filter((_, i) => i !== index);
+    setContent({ ...content, galleryPhotos: filtered }, true);
   },
 
 

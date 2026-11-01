@@ -5,7 +5,7 @@ interface ImagePickerModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  presetType: 'hero' | 'speaker';
+  presetType: 'hero' | 'speaker' | 'gallery';
   currentImage: string;
   onSelectImage: (imageUrl: string) => void;
 }
@@ -84,9 +84,13 @@ export const ImagePickerModal: React.FC<ImagePickerModalProps> = ({
   const [customUrl, setCustomUrl] = useState('');
   const [selectedUrl, setSelectedUrl] = useState(currentImage);
 
+  React.useEffect(() => {
+    setSelectedUrl(currentImage);
+  }, [currentImage, isOpen]);
+
   if (!isOpen) return null;
 
-  const presets = presetType === 'hero' ? HERO_PRESETS : SPEAKER_PRESETS;
+  const presets = presetType === 'speaker' ? SPEAKER_PRESETS : HERO_PRESETS;
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

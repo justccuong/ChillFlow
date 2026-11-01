@@ -127,4 +127,38 @@ describe('Landing Page Zustand Store Item-Level Mutations (useLandingPageStore.t
     store.removeTestimonialItem(0);
     expect(useLandingPageStore.getState().content?.testimonials?.length).toBe(0);
   });
+  it('updates, adds and removes gallery photos and supports undo', () => {
+    const store = useLandingPageStore.getState();
+    store.addGalleryPhoto({
+      title: 'Không gian khán phòng',
+      tag: 'STAGE',
+      url: 'https://example.com/stage.jpg',
+    });
+
+    const photosAfterAdd = useLandingPageStore.getState().content?.galleryPhotos;
+    expect(photosAfterAdd).toBeDefined();
+    expect(photosAfterAdd?.length).toBe(1);
+    expect(photosAfterAdd?.[0].title).toBe('Không gian khán phòng');
+
+    // Update photo
+    store.updateGalleryPhoto(0, 'title', 'Sân khấu trung tâm siêu hoành tráng');
+    expect(useLandingPageStore.getState().content?.galleryPhotos?.[0].title).toBe('Sân khấu trung tâm siêu hoành tráng');
+
+    // Add another and remove
+    store.addGalleryPhoto({
+      title: 'Khu vực check-in',
+      tag: 'WELCOME',
+      url: 'https://example.com/checkin.jpg',
+    });
+    expect(useLandingPageStore.getState().content?.galleryPhotos?.length).toBe(2);
+
+    store.removeGalleryPhoto(0);
+    expect(useLandingPageStore.getState().content?.galleryPhotos?.length).toBe(1);
+    expect(useLandingPageStore.getState().content?.galleryPhotos?.[0].title).toBe('Khu vực check-in');
+
+    // Undo should restore previous state
+    expect(useLandingPageStore.getState().canUndo()).toBe(true);
+    useLandingPageStore.getState().undo();
+    expect(useLandingPageStore.getState().content?.galleryPhotos?.length).toBe(2);
+  });
 });
