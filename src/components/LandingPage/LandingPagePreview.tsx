@@ -373,7 +373,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold cursor-pointer transition-all shadow-sm"
         >
           <Palette className="w-3.5 h-3.5 text-cyan-500" />
-          <span>Kho 7 Templates Sự Kiện</span>
+          <span>Kho 12 Templates Sự Kiện</span>
         </button>
       </div>
 
@@ -394,7 +394,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           type="button"
           onClick={() => setIsTemplateModalOpen(true)}
           className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-500/20 dark:hover:bg-indigo-500/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/40 font-semibold cursor-pointer transition-all shrink-0"
-          title="Mở Kho 7 Templates Sự Kiện Độc Quyền"
+          title="Mở Kho 12 Templates Sự Kiện Độc Quyền"
         >
           <Palette className="w-3.5 h-3.5 text-indigo-600 dark:text-cyan-400 shrink-0" />
           <span className="hidden sm:inline">Kho Template</span>

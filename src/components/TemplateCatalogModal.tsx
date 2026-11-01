@@ -74,7 +74,7 @@ export const TemplateCatalogModal: React.FC<TemplateCatalogModalProps> = ({
         {/* Scrollable Template List */}
         <div className="p-5 sm:p-6 overflow-y-auto space-y-6 bg-slate-50/50 dark:bg-slate-950/40">
           
-          {/* 6 Standard Archetypes (Neat 3x2 Grid) */}
+          {/* 11 Archetypes (Neat 3x4 Grid) */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {standardTemplates.map((tpl) => {
               const isSelected = currentCategory === tpl.id;

@@ -3,7 +3,7 @@ import type { EventInput, GeneratedContent, ThemeConfig } from '../../types';
 import { Particles } from '../magicui';
 import { useThemeMode } from '../../hooks/useThemeMode';
 
-// Dynamic lazy imports for the 7 Hero Archetypes
+// Dynamic lazy imports for the 12 Hero Archetypes
 const ConferenceHero = lazy(() => import('./heroes/ConferenceHero').then((m) => ({ default: m.ConferenceHero })));
 const MasterclassHero = lazy(() => import('./heroes/MasterclassHero').then((m) => ({ default: m.MasterclassHero })));
 const TerminalHero = lazy(() => import('./heroes/TerminalHero').then((m) => ({ default: m.TerminalHero })));
