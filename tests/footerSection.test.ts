@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import fs from 'fs';
+import path from 'path';
 import { getEventSupportEmail, getFooterQuickLinks } from '../src/components/LandingPage/EventFooterSection';
 
 describe('EventFooterSection Utilities', () => {
@@ -22,5 +24,22 @@ describe('EventFooterSection Utilities', () => {
     expect(hrefs).toContain('#agenda');
     expect(hrefs).toContain('#faq');
     expect(hrefs).toContain('#registration');
+  });
+
+  it('ensures EventFooterSection does not contain raw unicode emojis', () => {
+    const footerContent = fs.readFileSync(
+      path.resolve(__dirname, '../src/components/LandingPage/EventFooterSection.tsx'),
+      'utf-8'
+    );
+    expect(footerContent).not.toMatch(/🛡️?/);
+  });
+
+  it('ensures sourceExporter.ts does not contain manual raw emojis in footer', () => {
+    const exporterContent = fs.readFileSync(
+      path.resolve(__dirname, '../src/utils/sourceExporter.ts'),
+      'utf-8'
+    );
+    const footerBlock = exporterContent.slice(exporterContent.indexOf('<footer'));
+    expect(footerBlock).not.toMatch(/[📅📍👤📧📞]/);
   });
 });

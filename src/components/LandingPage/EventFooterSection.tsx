@@ -204,8 +204,9 @@ export const EventFooterSection: React.FC<EventFooterSectionProps> = ({
               </li>
             </ul>
 
-            <div className="pt-2 text-[11px] text-slate-500 dark:text-slate-400 bg-slate-200/50 dark:bg-slate-900/60 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
-              🛡️ Đảm bảo giữ chỗ và hoàn tiền 100% nếu sự kiện thay đổi lịch trình bất khả kháng.
+            <div className="pt-2 text-[11px] text-slate-500 dark:text-slate-400 bg-slate-200/50 dark:bg-slate-900/60 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+              <span>Đảm bảo giữ chỗ và hoàn tiền 100% nếu sự kiện thay đổi lịch trình bất khả kháng.</span>
             </div>
           </div>
         </div>

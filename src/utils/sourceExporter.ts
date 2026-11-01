@@ -68,10 +68,10 @@ export function generateStandaloneHtml(
         <!-- Event Key Meta Tags -->
         <div class="flex flex-wrap items-center gap-4 text-xs font-medium text-slate-300 pt-2">
           <div class="flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
-            📅 <span>${input.eventDate || 'Sắp diễn ra'}</span>
+            <span class="text-indigo-400 font-semibold">•</span> <span>${input.eventDate || 'Sắp diễn ra'}</span>
           </div>
           <div class="flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
-            📍 <span>${input.location || 'Online / Offline'}</span>
+            <span class="text-emerald-400 font-semibold">•</span> <span>${input.location || 'Online / Offline'}</span>
           </div>
           <div class="flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
             🎟️ <span>Còn lại ${input.maxCapacity ? Math.round(input.maxCapacity * 0.18) : 18} vé</span>
@@ -298,9 +298,9 @@ export function generateStandaloneHtml(
       </div>
       <div class="space-y-2">
         <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Thời gian & Địa điểm</h4>
-        <p class="text-slate-300">📅 ${input.eventDate ? new Date(input.eventDate).toLocaleDateString('vi-VN') : 'Sắp diễn ra'}</p>
-        <p class="text-slate-300">📍 ${input.location || 'Địa điểm tổ chức'}</p>
-        ${input.speakerName ? `<p class="text-slate-400">👤 Chủ trì: ${input.speakerName} (${input.speakerRole || 'Diễn giả'})</p>` : ''}
+        <p class="text-slate-300"><span class="text-indigo-400 font-semibold">•</span> ${input.eventDate ? new Date(input.eventDate).toLocaleDateString('vi-VN') : 'Sắp diễn ra'}</p>
+        <p class="text-slate-300"><span class="text-emerald-400 font-semibold">•</span> ${input.location || 'Địa điểm tổ chức'}</p>
+        ${input.speakerName ? `<p class="text-slate-400"><span class="text-sky-400 font-semibold">•</span> Chủ trì: ${input.speakerName} (${input.speakerRole || 'Diễn giả'})</p>` : ''}
       </div>
       <div class="space-y-2">
         <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Điều hướng nhanh</h4>
@@ -311,8 +311,8 @@ export function generateStandaloneHtml(
       </div>
       <div class="space-y-2">
         <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Liên hệ Ban tổ chức</h4>
-        <p>📧 hotro@sukien.vn</p>
-        <p>📞 1900 6868 (08:30 - 18:00)</p>
+        <p><span class="text-indigo-400 font-semibold">•</span> Email: hotro@sukien.vn</p>
+        <p><span class="text-emerald-400 font-semibold">•</span> Hotline: 1900 6868 (08:30 - 18:00)</p>
         <p class="text-[11px] text-slate-500">Bảo mật thông tin & hoàn tiền 100% nếu có thay đổi bất khả kháng.</p>
       </div>
     </div>
