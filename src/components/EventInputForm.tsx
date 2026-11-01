@@ -379,7 +379,7 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
             {isLoading ? (
               <>
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Đang khởi tạo trang...
+                Đang phân tích thông tin & tối ưu CRO...
               </>
             ) : (
               <>

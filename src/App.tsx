@@ -152,11 +152,12 @@ export function App() {
 
     setIsLoading(true);
     try {
-      const result = await generateLandingPageContent(input, apiKey, false);
+      // Automated 2-phase pipeline: generate and instantly optimize CRO
+      const result = await generateLandingPageContent(input, apiKey, true);
       setEventInput(input);
       setContent(result.content);
       setCro(result.cro);
-      setIsAlreadyOptimized(false);
+      setIsAlreadyOptimized(true);
       setCurrentTab('preview');
       window.scrollTo(0, 0);
 
@@ -165,13 +166,13 @@ export function App() {
 
       saveCurrentEventState(input, result.content, result.cro);
       useLandingPageStore.getState().setInput(input);
-      useLandingPageStore.getState().setContent(result.content, false);
+      useLandingPageStore.getState().setContent(result.content, true);
       useLandingPageStore.getState().setCroEvaluation(result.cro);
 
       if (result.source === 'gemini-api') {
-        showToast('⚡ Google Gemini AI (3.5 Flash) đã sinh nội dung thành công!', 'success');
+        showToast('🚀 Google Gemini AI đã tạo trang & tối ưu hóa CRO tự động thành công!', 'success');
       } else {
-        showToast('💡 Đã khởi tạo nội dung qua Smart Offline Engine', 'info');
+        showToast('🚀 Smart Engine đã khởi tạo & tối ưu hóa tỷ lệ chuyển đổi (CRO) thành công!', 'success');
       }
     } catch (err) {
       console.error('Error generating landing page:', err);
