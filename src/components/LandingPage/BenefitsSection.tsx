@@ -15,6 +15,21 @@ interface BenefitsSectionProps {
   sectionSubtitle?: string;
 }
 
+
+export function getBenefitCardWidthClass(totalCount: number): string {
+  switch (totalCount) {
+    case 1:
+      return 'w-full max-w-xl';
+    case 2:
+      return 'w-full md:w-[calc(50%-1.25rem)] max-w-lg';
+    case 4:
+      return 'w-full md:w-[calc(50%-1.25rem)] max-w-lg';
+    case 3:
+    default:
+      return 'w-full md:w-[calc(50%-1.25rem)] lg:w-[calc(33.333%-1.7rem)] max-w-md';
+  }
+}
+
 export const BenefitsSection: React.FC<BenefitsSectionProps> = ({
   benefits,
   theme,
@@ -75,11 +90,11 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = ({
         </div>
 
         {/* Dynamic Responsive Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 relative">
+        <div className="flex flex-wrap justify-center gap-8 md:gap-10 relative">
           {displayBenefits.map((item, idx) => (
             <div
               key={idx}
-              className="relative group transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
+              className={`relative group transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between ${getBenefitCardWidthClass(displayBenefits.length)}`}
             >
               <div>
                 {/* Subtle top hairline */}
