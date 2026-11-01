@@ -127,4 +127,28 @@ describe('Source Exporter & SEO HTML Generator (sourceExporter.ts)', () => {
     expect(html).toContain('data-category="festival-music"');
     expect(html).toContain('Hanoi SoundFest 2026');
   });
+  it('renders rich 4-column event footer and real event gallery in exported HTML', () => {
+    const contentWithGallery: GeneratedContent = {
+      ...mockContent,
+      galleryPhotos: [
+        {
+          title: 'Khung cảnh khán phòng hoành tráng',
+          tag: 'STAGE 360',
+          url: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600',
+        },
+      ],
+    };
+    const html = generateStandaloneHtml(mockInput, contentWithGallery, theme, 'pro');
+
+    // Rich footer checks
+    expect(html).toContain('Liên hệ Ban tổ chức');
+    expect(html).toContain('Điều hướng nhanh');
+    expect(html).toContain('hotro@sukien.vn');
+    expect(html).toContain('Thời gian & Địa điểm');
+
+    // Gallery checks
+    expect(html).toContain('Không khí & trải nghiệm sự kiện');
+    expect(html).toContain('Khung cảnh khán phòng hoành tráng');
+    expect(html).toContain('STAGE 360');
+  });
 });

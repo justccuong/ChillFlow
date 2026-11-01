@@ -127,9 +127,9 @@ export function generateStandaloneHtml(
         <p class="text-sm text-slate-400">Trang bị kiến thức và kỹ năng thực chiến đón đầu làn sóng 2026</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="flex flex-wrap justify-center gap-6">
         ${content.benefits.map((b, i) => `
-          <div class="p-6 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-cyan-500/40 transition-all space-y-3">
+          <div class="p-6 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-cyan-500/40 transition-all space-y-3 w-full ${content.benefits.length === 1 ? 'max-w-xl' : (content.benefits.length === 2 || content.benefits.length === 4) ? 'md:w-[calc(50%-1rem)] max-w-lg' : 'md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] max-w-md'}">
             <span class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-mono font-bold text-xs">
               0${i + 1}
             </span>
@@ -227,6 +227,34 @@ export function generateStandaloneHtml(
   </section>
   ` : ''}
 
+  <!-- Real Event Gallery -->
+  ${(content.galleryPhotos || theme.galleryPhotos || []).length > 0 ? `
+  <section id="gallery" class="py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-900 bg-slate-950">
+    <div class="max-w-6xl mx-auto space-y-8">
+      <div class="text-center space-y-2">
+        <span class="inline-block px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 text-xs font-bold">
+          Hình ảnh thực tế
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">Không khí & trải nghiệm sự kiện</h2>
+        <p class="text-xs sm:text-sm text-slate-400">Không gian tổ chức chuyên nghiệp tại ${input.location || 'địa điểm chỉ định'}</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+        ${((content.galleryPhotos || theme.galleryPhotos) || []).map((photo, i) => `
+          <div class="${i === 0 ? 'md:col-span-7 h-72 md:h-96' : 'md:col-span-5 h-72 md:h-96'} rounded-3xl overflow-hidden border border-slate-800 relative group shadow-xl">
+            <img src="${photo.url}" alt="${photo.title}" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent p-6 flex flex-col justify-end">
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 w-max mb-2 border border-indigo-500/30">
+                ${photo.tag}
+              </span>
+              <h3 class="text-lg font-bold text-white">${photo.title}</h3>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </section>
+  ` : ''}
+
   <!-- Registration Section -->
   <section id="registration" class="py-20 px-4 sm:px-6 lg:px-8">
     <div class="max-w-xl mx-auto rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-cyan-500/30 p-8 sm:p-10 shadow-2xl text-center space-y-6">
@@ -258,11 +286,40 @@ export function generateStandaloneHtml(
     </div>
   </section>
 
-  <!-- Clean Footer -->
-  <footer class="mt-auto bg-slate-950 border-t border-slate-900 py-10 px-4 text-center text-xs text-slate-500">
-    <p class="font-bold text-slate-300">${input.eventName}</p>
-    <p class="mt-1">© 2026. Mọi quyền được bảo lưu.</p>
-    ${userTier === 'free' ? '<p class="mt-2 text-[11px] text-slate-600">Created with ConvertFlow AI Landing Page Generator</p>' : ''}
+  <!-- Rich Detailed Client Event Footer -->
+  <footer class="mt-auto bg-slate-950 border-t border-slate-900 py-16 px-4 sm:px-6 lg:px-8 text-slate-400 text-xs">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="space-y-3">
+        <h3 class="font-black text-base text-white tracking-tight">${input.eventName}</h3>
+        <p class="text-slate-400 leading-relaxed">${content.tagline || content.subHeadline || 'Sự kiện chuyên nghiệp hàng đầu đón đầu xu hướng.'}</p>
+        <span class="inline-block px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 text-[11px] font-semibold">
+          ${input.earlyBirdDiscount ? 'Ưu đãi: ' + input.earlyBirdDiscount : 'Đảm bảo quyền lợi tham gia'}
+        </span>
+      </div>
+      <div class="space-y-2">
+        <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Thời gian & Địa điểm</h4>
+        <p class="text-slate-300">📅 ${input.eventDate ? new Date(input.eventDate).toLocaleDateString('vi-VN') : 'Sắp diễn ra'}</p>
+        <p class="text-slate-300">📍 ${input.location || 'Địa điểm tổ chức'}</p>
+        ${input.speakerName ? `<p class="text-slate-400">👤 Chủ trì: ${input.speakerName} (${input.speakerRole || 'Diễn giả'})</p>` : ''}
+      </div>
+      <div class="space-y-2">
+        <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Điều hướng nhanh</h4>
+        <p><a href="#benefits" class="hover:text-indigo-400 transition-colors">Lợi ích sự kiện</a></p>
+        <p><a href="#agenda" class="hover:text-indigo-400 transition-colors">Lịch trình chi tiết</a></p>
+        <p><a href="#faq" class="hover:text-indigo-400 transition-colors">Hỏi đáp (FAQ)</a></p>
+        <p><a href="#registration" class="hover:text-indigo-400 transition-colors">Đăng ký tham gia</a></p>
+      </div>
+      <div class="space-y-2">
+        <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Liên hệ Ban tổ chức</h4>
+        <p>📧 hotro@sukien.vn</p>
+        <p>📞 1900 6868 (08:30 - 18:00)</p>
+        <p class="text-[11px] text-slate-500">Bảo mật thông tin & hoàn tiền 100% nếu có thay đổi bất khả kháng.</p>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto mt-12 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500 text-[11px]">
+      <p>© 2026 ${input.eventName}. Toàn bộ bản quyền thuộc Ban tổ chức.</p>
+      <p>${userTier === 'free' ? 'Được tạo bởi ConvertFlow AI Summit Generator' : 'ConvertFlow Enterprise Edition'}</p>
+    </div>
   </footer>
 
   <!-- Vanilla JS Countdown Script -->
