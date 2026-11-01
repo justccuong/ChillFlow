@@ -97,7 +97,7 @@ export const AttendeeListModal: React.FC<AttendeeListModalProps> = ({
         </div>
 
         {/* Attendee Table */}
-        <div className="overflow-y-auto flex-1 p-3">
+        <div data-lenis-prevent className="overflow-y-auto overscroll-contain flex-1 p-3">
           {filteredAttendees.length === 0 ? (
             <div className="text-center py-10 text-slate-500 text-xs">
               Chưa có người đăng ký nào.
