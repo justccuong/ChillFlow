@@ -815,6 +815,10 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               });
             }}
             onResetDefaults={resetSectionVisibility}
+            input={input}
+            content={content}
+            cro={cro}
+            registeredCount={registeredCount}
           />
         )}
 

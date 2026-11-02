@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import type { EventInput, GeneratedContent, CROEvaluation } from '../../types';
+import type { EventInput, GeneratedContent, CROEvaluation, SectionVisibilityConfig } from '../../types';
 import { getThemeForCategory } from '../../services/themeEngine';
 import { HeroSection } from './HeroSection';
 import { TrustBarSection } from './TrustBarSection';
@@ -17,10 +17,11 @@ const ESTIMATED_HEIGHT = 4800;
 interface MiniLivePreviewProps {
   input: EventInput;
   content: GeneratedContent;
-  cro: CROEvaluation;
+  cro?: CROEvaluation;
   registeredCount?: number;
   scale?: number;
   className?: string;
+  visibility?: SectionVisibilityConfig;
 }
 
 export const MiniLivePreview: React.FC<MiniLivePreviewProps> = ({
@@ -29,6 +30,7 @@ export const MiniLivePreview: React.FC<MiniLivePreviewProps> = ({
   registeredCount = 0,
   scale = 0.32,
   className = '',
+  visibility,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dynamicScale, setDynamicScale] = useState(scale);
@@ -45,6 +47,11 @@ export const MiniLivePreview: React.FC<MiniLivePreviewProps> = ({
   }, []);
 
   const displayHeight = Math.round(ESTIMATED_HEIGHT * dynamicScale);
+
+  const isVisible = (key: keyof SectionVisibilityConfig) => {
+    if (!visibility) return true;
+    return visibility[key] ?? true;
+  };
 
   return (
     <div
@@ -63,58 +70,74 @@ export const MiniLivePreview: React.FC<MiniLivePreviewProps> = ({
       >
         {/* Theme wrapper — matches LandingPagePreview's root section styles */}
         <div className="bg-white font-sans text-slate-900">
-          <HeroSection
-            input={input}
-            content={content}
-            theme={theme}
-            headlineToDisplay={content.headline}
-            onScrollToRegister={() => undefined}
-            registeredCount={registeredCount}
-            onOpenHeroImagePicker={() => undefined}
-            onOpenSpeakerImagePicker={() => undefined}
-            isEditMode={false}
-          />
-          <TrustBarSection
-            theme={theme}
-            sponsors={input.sponsors}
-          />
-          <BenefitsSection
-            benefits={content.benefits || []}
-            theme={theme}
-            isEditMode={false}
-            category={input.category}
-          />
-          <SpeakerSection
-            input={input}
-            theme={theme}
-            isEditMode={false}
-          />
-          <TestimonialsSection
-            testimonials={content.testimonials}
-            theme={theme}
-            isEditMode={false}
-          />
-          <AgendaSection
-            agenda={content.agenda || []}
-            eventName={input.eventName}
-            theme={theme}
-            speakerName={input.speakerName}
-            speakerPhoto={input.speakerAvatarUrl || theme.speakerImage}
-            isEditMode={false}
-          />
-          <FaqSection
-            faqs={content.faqs || []}
-            theme={theme}
-            isEditMode={false}
-          />
-          <RegistrationSection
-            input={input}
-            content={content}
-            theme={theme}
-            registeredCount={registeredCount}
-            onRegisterSuccess={() => undefined}
-            isEditMode={false}
-          />
+          {isVisible('hero') && (
+            <HeroSection
+              input={input}
+              content={content}
+              theme={theme}
+              headlineToDisplay={content.headline}
+              onScrollToRegister={() => undefined}
+              registeredCount={registeredCount}
+              onOpenHeroImagePicker={() => undefined}
+              onOpenSpeakerImagePicker={() => undefined}
+              isEditMode={false}
+            />
+          )}
+          {isVisible('trustBar') && (
+            <TrustBarSection
+              theme={theme}
+              sponsors={input.sponsors}
+            />
+          )}
+          {isVisible('benefits') && (
+            <BenefitsSection
+              benefits={content.benefits || []}
+              theme={theme}
+              isEditMode={false}
+              category={input.category}
+            />
+          )}
+          {isVisible('speaker') && (
+            <SpeakerSection
+              input={input}
+              theme={theme}
+              isEditMode={false}
+            />
+          )}
+          {isVisible('testimonials') && (
+            <TestimonialsSection
+              testimonials={content.testimonials}
+              theme={theme}
+              isEditMode={false}
+            />
+          )}
+          {isVisible('agenda') && (
+            <AgendaSection
+              agenda={content.agenda || []}
+              eventName={input.eventName}
+              theme={theme}
+              speakerName={input.speakerName}
+              speakerPhoto={input.speakerAvatarUrl || theme.speakerImage}
+              isEditMode={false}
+            />
+          )}
+          {isVisible('faq') && (
+            <FaqSection
+              faqs={content.faqs || []}
+              theme={theme}
+              isEditMode={false}
+            />
+          )}
+          {isVisible('registration') && (
+            <RegistrationSection
+              input={input}
+              content={content}
+              theme={theme}
+              registeredCount={registeredCount}
+              onRegisterSuccess={() => undefined}
+              isEditMode={false}
+            />
+          )}
           <EventFooterSection
             input={input}
             content={content}
