@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Plus, Users, Key, Eye, Edit3, Zap } from 'lucide-react';
+import { Plus, Users, Key, Eye, Edit3, Zap, FolderKanban, ShieldCheck } from 'lucide-react';
 import { UserProfile } from '../types';
 import { NumberTicker, AnimatedThemeToggler } from './magicui';
 
 interface HeaderProps {
-  currentTab: 'form' | 'preview';
-  onChangeTab: (tab: 'form' | 'preview') => void;
+  currentTab: 'form' | 'preview' | 'admin';
+  onChangeTab: (tab: 'form' | 'preview' | 'admin') => void;
   onResetNewEvent: () => void;
   onOpenAttendees: () => void;
   onOpenApiKeyModal: () => void;
+  onOpenProjects?: () => void;
+  savedProjectsCount?: number;
   registeredCount: number;
   hasGeneratedPage: boolean;
   apiKeyPresent: boolean;
@@ -25,6 +27,8 @@ export const Header: React.FC<HeaderProps> = ({
   onResetNewEvent,
   onOpenAttendees,
   onOpenApiKeyModal,
+  onOpenProjects,
+  savedProjectsCount = 0,
   registeredCount,
   hasGeneratedPage,
   apiKeyPresent,
@@ -138,17 +142,17 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-sm sm:text-base tracking-tight font-heading text-slate-900 dark:text-white">
-                ConvertFlow
+                ChillFlow
               </span>
               <span className="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
-                AI Summit
+                VibeCoding 2026
               </span>
             </div>
           </div>
 
           {/* View Switcher Tabs (Desktop/Tablet) */}
-          {hasGeneratedPage && (
-            <div className="hidden md:flex items-center p-1 bg-slate-100 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shrink-0">
+          <div className="hidden md:flex items-center p-1 bg-slate-100 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shrink-0">
+            {hasGeneratedPage && (
               <button
                 type="button"
                 onClick={() => onChangeTab('preview')}
@@ -161,35 +165,72 @@ export const Header: React.FC<HeaderProps> = ({
                 <Eye className="w-3.5 h-3.5" />
                 <span>Xem trang</span>
               </button>
+            )}
 
-              <button
-                type="button"
-                onClick={() => onChangeTab('form')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  currentTab === 'form'
-                    ? 'bg-indigo-600 text-white shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <Edit3 className="w-3.5 h-3.5" />
-                <span>Chỉnh sửa</span>
-              </button>
-            </div>
-          )}
+            <button
+              type="button"
+              onClick={() => onChangeTab('form')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                currentTab === 'form'
+                  ? 'bg-indigo-600 text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <Edit3 className="w-3.5 h-3.5" />
+              <span>Chỉnh sửa</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onChangeTab('admin')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                currentTab === 'admin'
+                  ? 'bg-indigo-600 text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Admin sự kiện</span>
+            </button>
+          </div>
 
           {/* Action Controls */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-            {/* Mobile View Toggle */}
-            {hasGeneratedPage && (
+            {/* My Projects Button */}
+            {onOpenProjects && (
               <button
                 type="button"
-                onClick={() => onChangeTab(currentTab === 'preview' ? 'form' : 'preview')}
-                className="md:hidden p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-xs shrink-0 cursor-pointer"
-                title={currentTab === 'preview' ? 'Chuyển sang sửa thông tin' : 'Xem trang'}
+                onClick={onOpenProjects}
+                className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-colors"
+                title="Dự án của tôi (Landing Pages đã lưu)"
               >
-                {currentTab === 'preview' ? <Edit3 className="w-4 h-4 text-indigo-500" /> : <Eye className="w-4 h-4 text-indigo-500" />}
+                <FolderKanban className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
+                <span className="hidden sm:inline">Dự án ({savedProjectsCount})</span>
+                <span className="sm:hidden font-mono">{savedProjectsCount}</span>
               </button>
             )}
+
+            {/* Mobile View Toggle */}
+            <div className="md:hidden flex items-center gap-1">
+              {hasGeneratedPage && (
+                <button
+                  type="button"
+                  onClick={() => onChangeTab(currentTab === 'preview' ? 'form' : 'preview')}
+                  className="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-xs shrink-0 cursor-pointer"
+                  title="Chuyển chế độ xem"
+                >
+                  {currentTab === 'preview' ? <Edit3 className="w-4 h-4 text-indigo-500" /> : <Eye className="w-4 h-4 text-indigo-500" />}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => onChangeTab(currentTab === 'admin' ? 'form' : 'admin')}
+                className="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-xs shrink-0 cursor-pointer"
+                title="Admin Quản trị"
+              >
+                <ShieldCheck className="w-4 h-4 text-indigo-500" />
+              </button>
+            </div>
 
             {/* Light / Dark Mode Animated View-Transition Toggle Button */}
             {onToggleTheme && (
@@ -252,3 +293,4 @@ export const Header: React.FC<HeaderProps> = ({
     </>
   );
 };
+export default Header;

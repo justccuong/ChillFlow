@@ -25,18 +25,26 @@ import {
   clearEventState,
   getSavedApiKey,
 } from './services/storageService';
+import {
+  getAllSavedProjects,
+  saveProject,
+  PROJECTS_CHANGE_EVENT,
+  type SavedProject,
+} from './services/projectStorageService';
 
-// Code Splitting: Lazy-load modals so they aren't included in the initial bundle
+// Code Splitting: Lazy-load modals and admin dashboard
 const AttendeeListModal = lazy(() => import('./components/AttendeeListModal'));
 const ApiKeyModal = lazy(() => import('./components/ApiKeyModal'));
 const AuthModal = lazy(() => import('./components/AuthModal'));
 const PricingModal = lazy(() => import('./components/PricingModal'));
+const MyProjectsModal = lazy(() => import('./components/MyProjectsModal'));
+const OrganizerDashboard = lazy(() => import('./components/Admin/OrganizerDashboard'));
 
 export function App() {
   const [eventInput, setEventInput] = useState<EventInput | null>(() => PRESETS[0].data);
   const [content, setContent] = useState<GeneratedContent | null>(null);
   const [cro, setCro] = useState<CROEvaluation | null>(null);
-  const [currentTab, setCurrentTab] = useState<'form' | 'preview'>('form');
+  const [currentTab, setCurrentTab] = useState<'form' | 'preview' | 'admin'>('form');
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOptimizing, setIsOptimizing] = useState(false);
@@ -45,6 +53,8 @@ export function App() {
   const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [isAttendeeModalOpen, setIsAttendeeModalOpen] = useState(false);
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
+  const [isProjectsModalOpen, setIsProjectsModalOpen] = useState(false);
+  const [savedProjectsCount, setSavedProjectsCount] = useState<number>(0);
   const [apiKey, setApiKey] = useState('');
 
   // Public Standalone Route State
@@ -82,7 +92,7 @@ export function App() {
     };
   }, []);
 
-  // Initial load from localStorage & subscribe to auth updates
+  // Initial load from localStorage & subscribe to auth & projects updates
   useEffect(() => {
     const unsubscribe = subscribeAuthChange((updatedUser) => {
       setUserProfile(updatedUser);
@@ -91,6 +101,12 @@ export function App() {
     const savedState = getSavedEventState();
     const loadedApiKey = getSavedApiKey();
     setApiKey(loadedApiKey);
+
+    setSavedProjectsCount(getAllSavedProjects().length);
+    const handleProjectsChanged = () => {
+      setSavedProjectsCount(getAllSavedProjects().length);
+    };
+    window.addEventListener(PROJECTS_CHANGE_EVENT, handleProjectsChanged);
 
     if (savedState.input && savedState.content && savedState.cro) {
       setEventInput(savedState.input);
@@ -107,7 +123,10 @@ export function App() {
       setAttendees(getStoredAttendees('default'));
     }
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      window.removeEventListener(PROJECTS_CHANGE_EVENT, handleProjectsChanged);
+    };
   }, []);
 
   // If viewing a public published standalone route (/p/:slug or #/p/:slug)
@@ -169,6 +188,20 @@ export function App() {
       useLandingPageStore.getState().setContent(result.content, true);
       useLandingPageStore.getState().setCroEvaluation(result.cro);
 
+      // Save to Multi-project Local Storage
+      const slug =
+        input.eventName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') ||
+        `event-${Date.now()}`;
+      saveProject({
+        slug,
+        name: input.eventName,
+        category: input.category,
+        input,
+        content: result.content,
+        cro: result.cro,
+        syncStatus: 'local',
+      });
+
       if (result.source === 'gemini-api') {
         showToast('🚀 Google Gemini AI đã tạo trang & tối ưu hóa CRO tự động thành công!', 'success');
       } else {
@@ -195,6 +228,21 @@ export function App() {
       saveCurrentEventState(eventInput, result.content, result.cro);
       useLandingPageStore.getState().setContent(result.content, true);
       useLandingPageStore.getState().setCroEvaluation(result.cro);
+
+      // Update multi-project store
+      const slug =
+        eventInput.eventName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') ||
+        `event-${Date.now()}`;
+      saveProject({
+        slug,
+        name: eventInput.eventName,
+        category: eventInput.category,
+        input: eventInput,
+        content: result.content,
+        cro: result.cro,
+        syncStatus: 'local',
+      });
+
       showToast('🚀 Đã tối ưu hóa tỷ lệ chuyển đổi (CRO) thành công!', 'success');
     } catch (err) {
       console.error('Error optimizing CRO:', err);
@@ -202,6 +250,20 @@ export function App() {
     } finally {
       setIsOptimizing(false);
     }
+  };
+
+  // Select project from MyProjectsModal
+  const handleSelectProject = (project: SavedProject) => {
+    setEventInput(project.input);
+    setContent(project.content);
+    setCro(project.cro);
+    setAttendees(getStoredAttendees(project.input.eventName));
+    setCurrentTab('preview');
+    saveCurrentEventState(project.input, project.content, project.cro);
+    useLandingPageStore.getState().setInput(project.input);
+    useLandingPageStore.getState().setContent(project.content, false);
+    useLandingPageStore.getState().setCroEvaluation(project.cro);
+    showToast(`Đã mở dự án "${project.name}"`, 'success');
   };
 
   // Nút "Tạo trang mới"
@@ -250,6 +312,8 @@ export function App() {
         onResetNewEvent={handleResetNewEvent}
         onOpenAttendees={() => setIsAttendeeModalOpen(true)}
         onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
+        onOpenProjects={() => setIsProjectsModalOpen(true)}
+        savedProjectsCount={savedProjectsCount}
         registeredCount={attendees.length}
         hasGeneratedPage={Boolean(content && eventInput)}
         apiKeyPresent={Boolean(apiKey && apiKey.trim() !== '')}
@@ -264,7 +328,33 @@ export function App() {
       />
 
       <div className="flex-1">
-        {currentTab === 'form' || !content || !eventInput ? (
+        {currentTab === 'admin' ? (
+          <ErrorBoundary sectionName="Admin Quản trị sự kiện">
+            <Suspense fallback={<div className="p-12 text-center text-sm text-slate-400">Đang tải Admin Dashboard...</div>}>
+              <OrganizerDashboard
+                eventInput={eventInput}
+                cro={cro}
+                attendees={attendees}
+                onBackToBuilder={() => setCurrentTab(content && eventInput ? 'preview' : 'form')}
+                onUpdateAttendees={(updated) => {
+                  setAttendees(updated);
+                  const eventId = eventInput?.eventName || 'default';
+                  localStorage.setItem(`convertflow_attendees_${eventId}`, JSON.stringify(updated));
+                  showToast('Đã cập nhật danh sách người tham dự', 'info');
+                }}
+                onCopyShareLink={() => {
+                  const slug =
+                    eventInput?.eventName
+                      ? eventInput.eventName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+                      : 'event';
+                  const url = `${window.location.origin}${window.location.pathname}#/p/${slug}`;
+                  navigator.clipboard.writeText(url);
+                  showToast('Đã sao chép liên kết trang sự kiện vào bộ nhớ tạm!', 'success');
+                }}
+              />
+            </Suspense>
+          </ErrorBoundary>
+        ) : currentTab === 'form' || !content || !eventInput ? (
           <div className="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-6">
             <div className="relative overflow-hidden rounded-3xl p-8 md:p-10 text-center space-y-3 border border-slate-200/80 dark:border-slate-800/80 bg-gradient-to-b from-white/80 via-white/40 to-white/90 dark:from-slate-900/90 dark:via-slate-900/50 dark:to-slate-950/90 backdrop-blur-xl shadow-xl shadow-slate-200/40 dark:shadow-black/40">
               <Particles
@@ -295,29 +385,29 @@ export function App() {
         ) : (
           <ErrorBoundary sectionName="Bản xem trước">
             <LandingPagePreview
-            input={eventInput}
-            content={content}
-            cro={cro!}
-            registeredCount={attendees.length}
-            onRegisterSuccess={handleRegisterSuccess}
-            onOpenAttendeeList={() => setIsAttendeeModalOpen(true)}
-            onOptimizeCRO={handleOptimizeCRO}
-            isOptimizing={isOptimizing}
-            isAlreadyOptimized={isAlreadyOptimized}
-            onEditForm={() => setCurrentTab('form')}
-            onUpdateInput={(updated) => {
-              setEventInput(updated);
-              useLandingPageStore.getState().setInput(updated);
-            }}
-            onUpdateContent={(updated) => {
-              setContent(updated);
-            }}
-            userProfile={userProfile}
-            onTriggerUpgrade={(reason) => {
-              setPricingReason(reason);
-              setIsPricingModalOpen(true);
-            }}
-          />
+              input={eventInput}
+              content={content}
+              cro={cro!}
+              registeredCount={attendees.length}
+              onRegisterSuccess={handleRegisterSuccess}
+              onOpenAttendeeList={() => setIsAttendeeModalOpen(true)}
+              onOptimizeCRO={handleOptimizeCRO}
+              isOptimizing={isOptimizing}
+              isAlreadyOptimized={isAlreadyOptimized}
+              onEditForm={() => setCurrentTab('form')}
+              onUpdateInput={(updated) => {
+                setEventInput(updated);
+                useLandingPageStore.getState().setInput(updated);
+              }}
+              onUpdateContent={(updated) => {
+                setContent(updated);
+              }}
+              userProfile={userProfile}
+              onTriggerUpgrade={(reason) => {
+                setPricingReason(reason);
+                setIsPricingModalOpen(true);
+              }}
+            />
           </ErrorBoundary>
         )}
       </div>
@@ -358,14 +448,26 @@ export function App() {
             onUpgraded={(updated) => setUserProfile(updated)}
           />
         )}
+
+        {isProjectsModalOpen && (
+          <MyProjectsModal
+            isOpen={isProjectsModalOpen}
+            onClose={() => setIsProjectsModalOpen(false)}
+            onSelectProject={handleSelectProject}
+            onNewProject={handleResetNewEvent}
+            userProfile={userProfile}
+          />
+        )}
       </Suspense>
 
       {/* Global Toast Notification */}
       {toast && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-2xl border backdrop-blur-md animate-fade-in transition-all bg-white/95 dark:bg-slate-900/95 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white">
-          <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${
-            toast.type === 'success' ? 'bg-emerald-500 animate-pulse' : toast.type === 'warning' ? 'bg-rose-500' : 'bg-indigo-500'
-          }`} />
+          <div
+            className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+              toast.type === 'success' ? 'bg-emerald-500 animate-pulse' : toast.type === 'warning' ? 'bg-rose-500' : 'bg-indigo-500'
+            }`}
+          />
           <span className="text-xs font-semibold">{toast.message}</span>
           <button
             type="button"
