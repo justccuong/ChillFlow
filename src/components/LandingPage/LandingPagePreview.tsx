@@ -356,7 +356,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   const speakerPhoto = input.speakerAvatarUrl || theme.speakerImage;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans pb-24 overflow-x-hidden">
+    <div data-lenis-prevent className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans pb-24 overflow-x-hidden">
       
       {/* Top AI Match Notification Bar */}
       <div className="max-w-7xl mx-auto px-4 pt-3 pb-1 flex flex-wrap items-center justify-between gap-3 text-xs w-full">
