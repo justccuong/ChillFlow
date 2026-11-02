@@ -15,7 +15,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   size = 'hero',
   align = 'center',
   label = 'SỰ KIỆN SẼ BẮT ĐẦU TRONG',
-  variant = 'card',
+  variant = 'transparent',
   showLabels = true,
 }) => {
   const [time, setTime] = useState<TimeRemaining>(() => calculateTimeRemaining(targetDate));
@@ -39,14 +39,10 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
     { label: 'GIÂY', value: String(time.seconds).padStart(2, '0'), isSeconds: true },
   ];
 
-  // Đồng bộ chiều cao giữa Hộp Chứa Số và Dấu Hai Chấm (Colon) để dấu : luôn luôn nằm chính giữa các con số
-  const digitBoxHeightClass = isTransparent
-    ? isCompact
-      ? 'h-8 sm:h-10'
-      : 'h-[44px] xs:h-[54px] sm:h-[76px] md:h-[92px] lg:h-[106px]'
-    : isCompact
-      ? 'h-14 sm:h-20'
-      : 'h-24 sm:h-32 md:h-36';
+  // Chiều cao khung chứa số để đồng bộ chuẩn xác với dấu phân cách (separator) ở chính giữa
+  const digitBoxHeightClass = isCompact
+    ? 'h-8 sm:h-10'
+    : 'h-12 xs:h-14 sm:h-20 md:h-24 lg:h-28';
 
   return (
     <div
@@ -68,7 +64,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
         </div>
       )}
 
-      {/* Countdown Grid (Glass Cards or Transparent Minimalist) */}
+      {/* Countdown Grid (Transparent Minimalist by default, borderless numbers) */}
       <div
         className={`flex items-start ${
           isLeft ? 'justify-start' : 'justify-center'
@@ -76,7 +72,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
       >
         {units.map((unit, idx) => (
           <React.Fragment key={unit.label}>
-            {/* Unit Column: Gồm cụm số phía trên và nhãn thời gian phía dưới */}
+            {/* Unit Column: Gồm cụm số phía trên và nhãn thời gian độc lập phía dưới */}
             <div
               className={`flex flex-col items-center justify-start ${
                 isTransparent
@@ -86,12 +82,12 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
                     : 'w-[62px] xs:w-[72px] sm:w-[102px] md:w-[124px] lg:w-[136px]'
               }`}
             >
-              {/* Digit Box: Khung chứa số */}
+              {/* Digit Box: Khung chứa số - Trong suốt, không viền */}
               <div
-                className={`relative flex items-center justify-center rounded-xl sm:rounded-2xl transition-all duration-300 w-full ${digitBoxHeightClass} ${
+                className={`relative flex items-center justify-center transition-all duration-300 w-full ${digitBoxHeightClass} ${
                   isTransparent
-                    ? 'bg-transparent border border-transparent shadow-none'
-                    : `flex-col py-2 sm:py-3 ${
+                    ? 'bg-transparent border-none shadow-none'
+                    : `flex-col py-2 sm:py-3 rounded-xl sm:rounded-2xl ${
                         unit.isSeconds
                           ? 'bg-white/95 dark:bg-slate-900/90 border border-cyan-500/40 dark:border-cyan-400/30 shadow-[0_4px_25px_-5px_rgba(6,182,212,0.25)] backdrop-blur-xl'
                           : 'bg-white/85 dark:bg-slate-900/75 border border-slate-200/80 dark:border-white/10 shadow-lg shadow-black/5 dark:shadow-black/30 backdrop-blur-xl'
@@ -111,34 +107,15 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
                   } ${
                     isCompact
                       ? 'text-xl sm:text-3xl md:text-4xl'
-                      : isTransparent
-                        ? 'text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-sm'
-                        : 'text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-sm'
+                      : 'text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-sm'
                   }`}
                 >
                   {unit.value}
                 </span>
-
-                {/* Khi là Card dạng khung cũ, nhãn nằm bên trong khung card */}
-                {!isTransparent && showLabels && (
-                  <span
-                    className={`font-bold tracking-[0.2em] uppercase ${
-                      unit.isSeconds
-                        ? 'text-cyan-700 dark:text-cyan-300/90'
-                        : 'text-slate-500 dark:text-slate-400'
-                    } ${
-                      isCompact
-                        ? 'text-[8px] sm:text-[10px] mt-1'
-                        : 'text-[9px] xs:text-[10px] sm:text-xs md:text-sm mt-1 sm:mt-2.5'
-                    }`}
-                  >
-                    {unit.label}
-                  </span>
-                )}
               </div>
 
-              {/* Dạng Trong suốt: Nhãn nằm RIÊNG BIỆT bên dưới khung số, hoàn toàn không làm kéo lệch dấu 2 chấm : */}
-              {isTransparent && showLabels && (
+              {/* Nhãn thời gian nằm RIÊNG BIỆT bên dưới khung số, không làm lệch tâm dấu phân cách */}
+              {showLabels && (
                 <span
                   className={`font-bold tracking-[0.2em] uppercase select-none ${
                     unit.isSeconds
@@ -155,22 +132,29 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
               )}
             </div>
 
-            {/* Dấu hai chấm (Colon) nằm trong khung có chiều cao CHÍNH XÁC bằng khung chứa số */}
+            {/* Dấu hai chấm (Separator) căn thẳng hàng với chiều cao khung số, nằm chính giữa các con số */}
             {idx < units.length - 1 && (
               <div
-                className={`flex items-center justify-center select-none ${digitBoxHeightClass}`}
+                data-testid="countdown-separator"
+                className={`countdown-separator flex flex-col items-center justify-center select-none ${digitBoxHeightClass} ${
+                  isCompact ? 'gap-1 px-0.5' : 'gap-1.5 sm:gap-2.5 md:gap-3 px-1 sm:px-2'
+                }`}
+                aria-hidden="true"
               >
                 <span
-                  className={`font-mono font-bold text-slate-400 dark:text-slate-600 leading-none -translate-y-[2px] sm:-translate-y-[4px] md:-translate-y-[6px] ${
+                  className={`rounded-full bg-slate-400 dark:bg-slate-500 transition-colors ${
                     isCompact
-                      ? 'text-base sm:text-xl'
-                      : isTransparent
-                        ? 'text-2xl xs:text-3xl sm:text-5xl md:text-6xl'
-                        : 'text-lg xs:text-xl sm:text-3xl md:text-4xl'
+                      ? 'w-1 h-1'
+                      : 'w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5'
                   } ${idx % 2 === 0 ? 'animate-pulse' : ''}`}
-                >
-                  :
-                </span>
+                />
+                <span
+                  className={`rounded-full bg-slate-400 dark:bg-slate-500 transition-colors ${
+                    isCompact
+                      ? 'w-1 h-1'
+                      : 'w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5'
+                  } ${idx % 2 === 0 ? 'animate-pulse' : ''}`}
+                />
               </div>
             )}
           </React.Fragment>
