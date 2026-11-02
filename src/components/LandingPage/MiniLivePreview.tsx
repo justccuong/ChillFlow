@@ -83,8 +83,6 @@ export const MiniLivePreview: React.FC<MiniLivePreviewProps> = ({
             theme={theme}
             isEditMode={false}
             category={input.category}
-            sectionTitle={content.benefitsTitle}
-            sectionSubtitle={content.benefitsSubtitle}
           />
           <SpeakerSection
             input={input}
@@ -97,7 +95,7 @@ export const MiniLivePreview: React.FC<MiniLivePreviewProps> = ({
             isEditMode={false}
           />
           <AgendaSection
-            agenda={content.agendaItems || []}
+            agenda={content.agenda || []}
             eventName={input.eventName}
             theme={theme}
             speakerName={input.speakerName}

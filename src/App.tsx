@@ -3,6 +3,7 @@ import type { EventInput, GeneratedContent, CROEvaluation, Attendee, UserProfile
 import { Header } from './components/Header';
 import { EventInputForm } from './components/EventInputForm';
 import { LandingPagePreview } from './components/LandingPage/LandingPagePreview';
+import { MiniLivePreview } from './components/LandingPage/MiniLivePreview';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { PublicStandalonePage } from './components/LandingPage/PublicStandalonePage';
 import { Particles } from './components/magicui';
@@ -45,6 +46,7 @@ export function App() {
   const [content, setContent] = useState<GeneratedContent | null>(null);
   const [cro, setCro] = useState<CROEvaluation | null>(null);
   const [currentTab, setCurrentTab] = useState<'form' | 'preview' | 'admin'>('form');
+  const [showMobilePreview, setShowMobilePreview] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOptimizing, setIsOptimizing] = useState(false);
@@ -384,30 +386,98 @@ export function App() {
           </div>
         ) : (
           <ErrorBoundary sectionName="Bản xem trước">
-            <LandingPagePreview
-              input={eventInput}
-              content={content}
-              cro={cro!}
-              registeredCount={attendees.length}
-              onRegisterSuccess={handleRegisterSuccess}
-              onOpenAttendeeList={() => setIsAttendeeModalOpen(true)}
-              onOptimizeCRO={handleOptimizeCRO}
-              isOptimizing={isOptimizing}
-              isAlreadyOptimized={isAlreadyOptimized}
-              onEditForm={() => setCurrentTab('form')}
-              onUpdateInput={(updated) => {
-                setEventInput(updated);
-                useLandingPageStore.getState().setInput(updated);
-              }}
-              onUpdateContent={(updated) => {
-                setContent(updated);
-              }}
-              userProfile={userProfile}
-              onTriggerUpgrade={(reason) => {
-                setPricingReason(reason);
-                setIsPricingModalOpen(true);
-              }}
-            />
+            {/* Mobile toggle bar — chỉ hiển thị trên màn hình nhỏ (<lg) */}
+            <div className="lg:hidden sticky top-14 z-30 flex border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md px-3 py-2 gap-2 shadow-sm">
+              <button
+                type="button"
+                onClick={() => setShowMobilePreview(false)}
+                className={`flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  !showMobilePreview
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
+              >
+                ✏️ Trình chỉnh sửa
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowMobilePreview(true)}
+                className={`flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  showMobilePreview
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>👁 Xem trước Live</span>
+              </button>
+            </div>
+
+            {/* Split Layout Container */}
+            <div className="flex flex-col lg:flex-row lg:items-start">
+              {/* Left Column: Full Interactive Editor / Preview */}
+              <div className={`flex-1 min-w-0 ${showMobilePreview ? 'hidden lg:block' : ''}`}>
+                <LandingPagePreview
+                  input={eventInput}
+                  content={content}
+                  cro={cro!}
+                  registeredCount={attendees.length}
+                  onRegisterSuccess={handleRegisterSuccess}
+                  onOpenAttendeeList={() => setIsAttendeeModalOpen(true)}
+                  onOptimizeCRO={handleOptimizeCRO}
+                  isOptimizing={isOptimizing}
+                  isAlreadyOptimized={isAlreadyOptimized}
+                  onEditForm={() => setCurrentTab('form')}
+                  onUpdateInput={(updated) => {
+                    setEventInput(updated);
+                    useLandingPageStore.getState().setInput(updated);
+                  }}
+                  onUpdateContent={(updated) => {
+                    setContent(updated);
+                  }}
+                  userProfile={userProfile}
+                  onTriggerUpgrade={(reason) => {
+                    setPricingReason(reason);
+                    setIsPricingModalOpen(true);
+                  }}
+                />
+              </div>
+
+              {/* Right Column: Scaled Live Mini-Preview */}
+              <div
+                data-lenis-prevent
+                className={`lg:w-[400px] xl:w-[440px] lg:shrink-0 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:overflow-y-auto lg:border-l lg:border-slate-200 lg:dark:border-slate-800 lg:flex lg:flex-col lg:p-4 lg:bg-slate-100/60 dark:lg:bg-slate-900/40 ${
+                  showMobilePreview
+                    ? 'flex flex-col p-4 min-h-screen bg-slate-100 dark:bg-slate-900'
+                    : 'hidden lg:flex'
+                }`}
+              >
+                <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-200/80 dark:border-slate-800/80">
+                  <div className="flex items-center gap-2">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                    </span>
+                    <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                      Bản thu nhỏ trực tiếp
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+                    Auto Live Sync
+                  </span>
+                </div>
+
+                <div className="flex-1 w-full flex justify-center">
+                  <MiniLivePreview
+                    input={eventInput}
+                    content={content}
+                    cro={cro!}
+                    registeredCount={attendees.length}
+                    className="w-full shadow-2xl"
+                  />
+                </div>
+              </div>
+            </div>
           </ErrorBoundary>
         )}
       </div>
