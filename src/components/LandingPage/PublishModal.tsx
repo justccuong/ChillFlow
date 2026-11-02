@@ -110,7 +110,7 @@ export const PublishModal: React.FC<PublishModalProps> = ({
               className="py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs transition-all shadow flex items-center justify-center gap-2"
             >
               <ExternalLink className="w-4 h-4 text-emerald-400 dark:text-emerald-600" />
-              <span>Mở trang trực tiếp</span>
+              <span>Xem trang sự kiện</span>
             </button>
 
             <button

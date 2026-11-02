@@ -151,7 +151,7 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
                 Tùy biến Bố cục & Section
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Đang bật {enabledCount}/{SECTION_DEFS.length} phần trên trang sự kiện • Bản thu nhỏ live cập nhật theo thao tác
+                Đang bật {enabledCount}/{SECTION_DEFS.length} phần trên trang sự kiện • Xem trước giao diện cập nhật theo thay đổi
               </p>
             </div>
           </div>
@@ -185,7 +185,7 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
             </button>
           </div>
           <span className="text-slate-500 dark:text-slate-400 text-[11px] hidden sm:inline">
-            Bật/tắt để thấy trang live cập nhật trực quan bên cạnh
+            Bật/tắt các phần để xem giao diện cập nhật ngay bên cạnh
           </span>
         </div>
 
@@ -293,7 +293,7 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
                     <div className="mt-3 pl-12 pr-2 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800 space-y-3 animate-in fade-in duration-150">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                          Bản xem trước wireframe bố cục:
+                          Bố cục mẫu:
                         </span>
                         <span className="text-[11px] text-amber-600 dark:text-amber-400 font-medium flex items-center gap-1">
                           <Lightbulb className="w-3 h-3" /> Chuẩn Awwwards & CRO
@@ -348,11 +348,11 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
                 <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                  Bản xem trước trực tiếp
+                  Xem trước giao diện
                 </span>
               </div>
               <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
-                Live Auto-sync
+                Tự động cập nhật
               </span>
             </div>
 

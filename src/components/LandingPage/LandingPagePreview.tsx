@@ -382,7 +382,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         <div className="sticky top-16 z-30 bg-emerald-600 text-white px-4 py-2 text-center text-xs font-medium flex items-center justify-center gap-2 shadow-sm animate-in fade-in duration-200">
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
           <span>
-            <strong>Chế độ Visual CMS đang hoạt động:</strong> Rê chuột vào các tiêu đề, địa điểm hoặc tên diễn giả để sửa chữ trực tiếp. Mọi thay đổi sẽ tự động lưu! (Hỗ trợ phím tắt <kbd className="px-1.5 py-0.5 rounded bg-black/30 font-mono text-[10px]">Ctrl+Z</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-black/30 font-mono text-[10px]">Ctrl+Y</kbd> để Hoàn tác / Làm lại).
+            <strong>Chế độ chỉnh sửa đang bật:</strong> Nhấp vào tiêu đề, văn bản hoặc ảnh để chỉnh sửa nội dung. Mọi thay đổi sẽ tự động lưu! (Hỗ trợ phím tắt <kbd className="px-1.5 py-0.5 rounded bg-black/30 font-mono text-[10px]">Ctrl+Z</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-black/30 font-mono text-[10px]">Ctrl+Y</kbd> để Hoàn tác / Làm lại).
           </span>
         </div>
       )}
@@ -452,10 +452,10 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 ring-2 ring-emerald-500/50 scale-105'
               : 'bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-transparent'
           }`}
-          title="Bật/Tắt chế độ Visual CMS sửa chữ trực tiếp và kích hoạt AI Viết lại"
+          title="Bật/Tắt chế độ chỉnh sửa nội dung trực tiếp trên trang"
         >
           <Edit3 className={`w-3.5 h-3.5 shrink-0 ${isEditMode ? 'text-white animate-pulse' : 'text-emerald-600 dark:text-emerald-400'}`} />
-          <span>{isEditMode ? 'Sửa chữ (Đang bật)' : 'Sửa chữ (Visual CMS)'}</span>
+          <span>{isEditMode ? 'Đang chỉnh sửa' : 'Chỉnh sửa nội dung'}</span>
         </button>
 
         {/* Undo Button (Ctrl+Z) */}
