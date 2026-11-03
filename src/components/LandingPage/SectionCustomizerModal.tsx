@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   X,
   Sliders,
@@ -123,9 +123,58 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
   cro,
   registeredCount = 0,
 }) => {
+  const [highlightedSection, setHighlightedSection] = useState<string | null>(null);
+  const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current);
+    };
+  }, []);
+
   if (!isOpen) return null;
 
   const enabledCount = Object.values(visibility).filter(Boolean).length;
+
+  const triggerHighlight = (key: string, durationMs = 600) => {
+    if (highlightTimerRef.current) {
+      clearTimeout(highlightTimerRef.current);
+    }
+    setHighlightedSection(key);
+    highlightTimerRef.current = setTimeout(() => {
+      setHighlightedSection(null);
+    }, durationMs);
+  };
+
+  const handleSectionRowClick = (key: keyof SectionVisibilityConfig) => {
+    const isCurrentlyEnabled = visibility[key] ?? true;
+    if (!isCurrentlyEnabled) {
+      onToggleSection(key);
+      triggerHighlight(key, 700);
+    } else {
+      triggerHighlight(key, 600);
+    }
+  };
+
+  const handleToggleClick = (e: React.MouseEvent, key: keyof SectionVisibilityConfig) => {
+    e.stopPropagation();
+    const willBeEnabled = !(visibility[key] ?? true);
+    onToggleSection(key);
+    if (willBeEnabled) {
+      triggerHighlight(key, 700);
+    } else {
+      if (highlightedSection === key) setHighlightedSection(null);
+    }
+  };
+
+  const handleMouseEnter = (key: string) => {
+    if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current);
+    setHighlightedSection(key);
+  };
+
+  const handleMouseLeave = () => {
+    setHighlightedSection(null);
+  };
 
   return (
     <div
@@ -150,7 +199,7 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
                 Tùy biến Bố cục & Section
               </h3>
               <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 hidden xs:block">
-                Bật/tắt section để xem trang cập nhật trực tiếp
+                Di chuột (laptop) hoặc chạm (điện thoại) để sáng vùng tương ứng trên trang
               </p>
             </div>
           </div>
@@ -195,30 +244,42 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
             <div className="space-y-1.5 flex-1">
               {SECTION_DEFS.map((def) => {
                 const isEnabled = visibility[def.key] ?? true;
+                const isHighlighted = highlightedSection === def.key;
                 const IconComponent = def.icon;
 
                 return (
-                  <button
+                  <div
                     key={def.key}
-                    type="button"
-                    role="switch"
-                    aria-checked={isEnabled}
-                    onClick={() => onToggleSection(def.key)}
-                    className={`w-full flex items-center justify-between gap-1 sm:gap-1.5 px-2 py-2 sm:px-2.5 sm:py-2.5 rounded-xl text-left transition-all cursor-pointer select-none group ${
-                      isEnabled
-                        ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-amber-500/40 shadow-xs hover:border-amber-500'
-                        : 'bg-slate-100/60 dark:bg-slate-900/40 text-slate-400 dark:text-slate-500 border border-slate-200/40 dark:border-slate-800/40 opacity-60 hover:opacity-100'
+                    onMouseEnter={() => handleMouseEnter(def.key)}
+                    onMouseLeave={handleMouseLeave}
+                    onClick={() => handleSectionRowClick(def.key)}
+                    className={`w-full flex items-center justify-between gap-1 sm:gap-1.5 px-2 py-2 sm:px-2.5 sm:py-2.5 rounded-xl text-left transition-all duration-200 cursor-pointer select-none group ${
+                      isHighlighted
+                        ? 'bg-amber-500/15 dark:bg-amber-500/25 border-amber-500 text-amber-900 dark:text-amber-200 ring-2 ring-amber-500/50 scale-[1.02] shadow-sm'
+                        : isEnabled
+                        ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200/80 dark:border-slate-700/80 hover:border-amber-400 hover:bg-slate-50 dark:hover:bg-slate-800/80 shadow-xs'
+                        : 'bg-slate-100/60 dark:bg-slate-900/40 text-slate-400 dark:text-slate-500 border border-slate-200/40 dark:border-slate-800/40 opacity-60 hover:opacity-90'
                     }`}
-                    aria-label={`Bật/tắt ${def.label}`}
+                    role="button"
+                    tabIndex={0}
+                    title={
+                      isEnabled
+                        ? "Bấm để sáng vùng trên bản xem trước (hover trên laptop, chạm trên điện thoại)"
+                        : "Bấm để bật section này"
+                    }
                   >
                     <div className="flex items-center gap-1.5 min-w-0 flex-1">
                       <IconComponent
                         className={`w-3.5 h-3.5 shrink-0 transition-colors ${
-                          isEnabled ? 'text-amber-500 dark:text-amber-400' : 'text-slate-400'
+                          isHighlighted
+                            ? 'text-amber-500 scale-110'
+                            : isEnabled
+                            ? 'text-amber-500/90 dark:text-amber-400'
+                            : 'text-slate-400'
                         }`}
                       />
                       <span
-                        className={`text-[11px] sm:text-xs font-semibold truncate ${
+                        className={`text-[11px] sm:text-xs font-semibold truncate transition-colors ${
                           !isEnabled ? 'line-through opacity-70' : ''
                         }`}
                       >
@@ -228,18 +289,23 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
                     </div>
 
                     {/* Sleek Mini Switch */}
-                    <div
-                      className={`w-6 h-3.5 sm:w-7 sm:h-4 rounded-full p-0.5 shrink-0 transition-colors ${
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={isEnabled}
+                      onClick={(e) => handleToggleClick(e, def.key)}
+                      className={`w-6 h-3.5 sm:w-7 sm:h-4 rounded-full p-0.5 shrink-0 transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-amber-500 ${
                         isEnabled ? 'bg-amber-500 dark:bg-amber-400' : 'bg-slate-300 dark:bg-slate-700'
                       }`}
+                      aria-label={`Bật/tắt ${def.label}`}
                     >
                       <div
                         className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-white shadow-xs transform transition-transform ${
                           isEnabled ? 'translate-x-2.5 sm:translate-x-3' : 'translate-x-0'
                         }`}
                       />
-                    </div>
-                  </button>
+                    </button>
+                  </div>
                 );
               })}
             </div>
@@ -248,7 +314,7 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
           {/* Right Column: Mini Live Preview of Full Landing Page */}
           <div
             data-lenis-prevent
-            className="flex-1 bg-slate-100/80 dark:bg-slate-950/60 p-2 sm:p-4 flex flex-col min-w-0 overflow-y-auto"
+            className="flex-1 bg-slate-100/80 dark:bg-slate-950/60 p-2 sm:p-4 flex flex-col min-w-0 overflow-y-auto scroll-smooth"
           >
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-200/80 dark:border-slate-800/80 shrink-0 text-xs">
               <div className="flex items-center gap-1.5 min-w-0">
@@ -261,7 +327,7 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
                 </span>
               </div>
               <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium shrink-0">
-                Tự động cập nhật
+                {highlightedSection ? 'Đang sáng vùng được chọn' : 'Tự động cập nhật'}
               </span>
             </div>
 
@@ -273,6 +339,7 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
                   cro={cro}
                   registeredCount={registeredCount}
                   visibility={visibility}
+                  highlightedSection={highlightedSection}
                   className="w-full shadow-lg"
                 />
               </div>

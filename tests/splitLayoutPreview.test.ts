@@ -27,6 +27,20 @@ describe('SectionCustomizerModal unified 2-column live preview modal', () => {
     expect(src).toContain('def.shortLabel');
   });
 
+  it('SectionCustomizerModal hỗ trợ sáng vùng tương ứng khi hover (laptop) hoặc bấm chạm ~0.6s rồi biến mất (điện thoại)', () => {
+    const src = readFileSync('src/components/LandingPage/SectionCustomizerModal.tsx', 'utf8');
+    expect(src).toContain('highlightedSection');
+    expect(src).toContain('triggerHighlight');
+    expect(src).toContain('handleMouseEnter');
+    expect(src).toContain('handleMouseLeave');
+    expect(src).toContain('highlightedSection={highlightedSection}');
+
+    const previewSrc = readFileSync('src/components/LandingPage/MiniLivePreview.tsx', 'utf8');
+    expect(previewSrc).toContain('highlightedSection');
+    expect(previewSrc).toContain('renderHighlightAura');
+    expect(previewSrc).toContain('scrollIntoView');
+  });
+
   it('SectionCustomizerModal đã loại bỏ icon mắt xem trước wireframe khó hiểu', () => {
     const src = readFileSync('src/components/LandingPage/SectionCustomizerModal.tsx', 'utf8');
     // Completely removed Eye icon and wireframe accordion
