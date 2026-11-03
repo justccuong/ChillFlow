@@ -209,12 +209,16 @@ export const MyProjectsModal: React.FC<MyProjectsModalProps> = ({
                       )}
                     </div>
 
-                    <div className="flex items-center gap-3 text-xs text-slate-400 dark:text-slate-500">
+                    <div className="flex items-center gap-3 text-xs text-slate-400 dark:text-slate-500 flex-wrap">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" /> {updatedAtStr}
                       </span>
                       <span>•</span>
                       <span className="font-mono text-[11px] truncate max-w-xs">/p/{proj.slug}</span>
+                      <span>•</span>
+                      <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700/60 text-slate-500 dark:text-slate-400">
+                        ID: {proj.id}
+                      </span>
                     </div>
                   </div>
 

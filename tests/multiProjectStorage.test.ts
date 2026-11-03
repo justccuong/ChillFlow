@@ -5,6 +5,7 @@ import {
   cloneProject,
   deleteProject,
   getProjectById,
+  extractProjectIdFromLocation,
 } from '../src/services/projectStorageService';
 
 describe('Guest-First Multi-Project Storage', () => {
@@ -103,5 +104,32 @@ describe('Guest-First Multi-Project Storage', () => {
     expect(success).toBe(true);
     expect(getProjectById(p1.id)).toBeUndefined();
     expect(getAllSavedProjects().length).toBe(0);
+  });
+
+  it('extractProjectIdFromLocation parses project id from hash and query routes', () => {
+    const originalWindow = (globalThis as any).window;
+    try {
+      (globalThis as any).window = {
+        location: {
+          hash: '#/project/proj_test_123',
+          search: '',
+          pathname: '/',
+        },
+      };
+      expect(extractProjectIdFromLocation()).toBe('proj_test_123');
+
+      (globalThis as any).window.location = {
+        hash: '',
+        search: '?project=proj_query_456',
+        pathname: '/',
+      };
+      expect(extractProjectIdFromLocation()).toBe('proj_query_456');
+    } finally {
+      if (originalWindow === undefined) {
+        delete (globalThis as any).window;
+      } else {
+        (globalThis as any).window = originalWindow;
+      }
+    }
   });
 });

@@ -53,6 +53,21 @@ export function getProjectById(id: string): SavedProject | undefined {
   return projects.find((p) => p.id === id);
 }
 
+export function extractProjectIdFromLocation(): string | null {
+  if (typeof window === 'undefined') return null;
+  // 1. Hash route: #/project/:id
+  const hash = window.location.hash;
+  const hashMatch = hash.match(/#\/project\/([a-zA-Z0-9_-]+)/);
+  if (hashMatch) return hashMatch[1];
+
+  // 2. Query param: ?project=:id or ?id=:id
+  const search = window.location.search;
+  const queryMatch = search.match(/[?&](?:project|id)=([a-zA-Z0-9_-]+)/);
+  if (queryMatch) return queryMatch[1];
+
+  return null;
+}
+
 function notifyProjectsChanged(projects: SavedProject[]) {
   if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
     window.dispatchEvent(new CustomEvent(PROJECTS_CHANGE_EVENT, { detail: projects }));

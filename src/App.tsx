@@ -27,10 +27,13 @@ import {
 } from './services/storageService';
 import {
   getAllSavedProjects,
+  getProjectById,
   saveProject,
+  extractProjectIdFromLocation,
   PROJECTS_CHANGE_EVENT,
   type SavedProject,
 } from './services/projectStorageService';
+import { getThemeForCategory } from './services/themeEngine';
 
 // Code Splitting: Lazy-load modals and admin dashboard
 const AttendeeListModal = lazy(() => import('./components/AttendeeListModal'));
@@ -57,7 +60,8 @@ export function App() {
   const [savedProjectsCount, setSavedProjectsCount] = useState<number>(0);
   const [apiKey, setApiKey] = useState('');
 
-  // Public Standalone Route State
+  // Project ID State & Public Standalone Route State
+  const [currentProjectId, setCurrentProjectId] = useState<string | null>(() => extractProjectIdFromLocation());
   const [publicSlug, setPublicSlug] = useState<string | null>(() => extractSlugFromLocation());
 
   // Auth & Pricing state
@@ -82,7 +86,27 @@ export function App() {
   // Listen to routing changes (hash, history popstate)
   useEffect(() => {
     const handleLocationChange = () => {
-      setPublicSlug(extractSlugFromLocation());
+      const slug = extractSlugFromLocation();
+      setPublicSlug(slug);
+
+      if (!slug) {
+        const routeProjectId = extractProjectIdFromLocation();
+        if (routeProjectId) {
+          const proj = getProjectById(routeProjectId);
+          if (proj) {
+            setCurrentProjectId(proj.id);
+            setEventInput(proj.input);
+            setContent(proj.content);
+            setCro(proj.cro);
+            setAttendees(getStoredAttendees(proj.input.eventName));
+            setCurrentTab('preview');
+            saveCurrentEventState(proj.input, proj.content, proj.cro);
+            useLandingPageStore.getState().setInput(proj.input);
+            useLandingPageStore.getState().setContent(proj.content, false);
+            useLandingPageStore.getState().setCroEvaluation(proj.cro);
+          }
+        }
+      }
     };
     window.addEventListener('hashchange', handleLocationChange);
     window.addEventListener('popstate', handleLocationChange);
@@ -98,7 +122,6 @@ export function App() {
       setUserProfile(updatedUser);
     });
 
-    const savedState = getSavedEventState();
     const loadedApiKey = getSavedApiKey();
     setApiKey(loadedApiKey);
 
@@ -108,6 +131,29 @@ export function App() {
     };
     window.addEventListener(PROJECTS_CHANGE_EVENT, handleProjectsChanged);
 
+    // 1. Check if there is an explicit project ID in URL route (#/project/:id or ?project=:id)
+    const routeProjectId = extractProjectIdFromLocation();
+    if (routeProjectId) {
+      const proj = getProjectById(routeProjectId);
+      if (proj) {
+        setCurrentProjectId(proj.id);
+        setEventInput(proj.input);
+        setContent(proj.content);
+        setCro(proj.cro);
+        setCurrentTab('preview');
+        setAttendees(getStoredAttendees(proj.input.eventName));
+        useLandingPageStore.getState().setInput(proj.input);
+        useLandingPageStore.getState().setContent(proj.content, false);
+        useLandingPageStore.getState().setCroEvaluation(proj.cro);
+        return () => {
+          unsubscribe();
+          window.removeEventListener(PROJECTS_CHANGE_EVENT, handleProjectsChanged);
+        };
+      }
+    }
+
+    // 2. Otherwise load last saved state from localStorage
+    const savedState = getSavedEventState();
     if (savedState.input && savedState.content && savedState.cro) {
       setEventInput(savedState.input);
       setContent(savedState.content);
@@ -118,6 +164,12 @@ export function App() {
       useLandingPageStore.getState().setInput(savedState.input);
       useLandingPageStore.getState().setContent(savedState.content, false);
       useLandingPageStore.getState().setCroEvaluation(savedState.cro);
+
+      // Find matching project ID if available
+      const match = getAllSavedProjects().find(p => p.name === savedState.input?.eventName);
+      if (match) {
+        setCurrentProjectId(match.id);
+      }
     } else {
       setEventInput(PRESETS[0].data);
       setAttendees(getStoredAttendees('default'));
@@ -131,7 +183,26 @@ export function App() {
 
   // If viewing a public published standalone route (/p/:slug or #/p/:slug)
   if (publicSlug) {
-    const published = getPublishedEvent(publicSlug);
+    let published = getPublishedEvent(publicSlug);
+    if (!published) {
+      // Auto-fallback: check saved projects by slug OR id
+      const savedProj = getAllSavedProjects().find(
+        (p) => p.slug === publicSlug || p.id === publicSlug
+      );
+      if (savedProj) {
+        published = {
+          slug: savedProj.slug,
+          eventName: savedProj.name,
+          publishedAt: savedProj.updatedAt,
+          input: savedProj.input,
+          content: savedProj.content,
+          theme: getThemeForCategory(savedProj.input.category),
+          userTier: 'free',
+          viewsCount: 0,
+          conversionsCount: 0,
+        };
+      }
+    }
     if (published) {
       return <PublicStandalonePage page={published} />;
     }
@@ -188,11 +259,11 @@ export function App() {
       useLandingPageStore.getState().setContent(result.content, true);
       useLandingPageStore.getState().setCroEvaluation(result.cro);
 
-      // Save to Multi-project Local Storage
+      // Save to Multi-project Local Storage with ID tracking
       const slug =
         input.eventName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') ||
         `event-${Date.now()}`;
-      saveProject({
+      const savedProj = saveProject({
         slug,
         name: input.eventName,
         category: input.category,
@@ -200,7 +271,12 @@ export function App() {
         content: result.content,
         cro: result.cro,
         syncStatus: 'local',
-      });
+      }, currentProjectId || undefined);
+
+      setCurrentProjectId(savedProj.id);
+      if (typeof window !== 'undefined') {
+        window.location.hash = `#/project/${savedProj.id}`;
+      }
 
       if (result.source === 'gemini-api') {
         showToast('🚀 Google Gemini AI đã tạo trang & tối ưu hóa CRO tự động thành công!', 'success');
@@ -229,11 +305,11 @@ export function App() {
       useLandingPageStore.getState().setContent(result.content, true);
       useLandingPageStore.getState().setCroEvaluation(result.cro);
 
-      // Update multi-project store
+      // Update multi-project store with ID tracking
       const slug =
         eventInput.eventName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') ||
         `event-${Date.now()}`;
-      saveProject({
+      const updatedProj = saveProject({
         slug,
         name: eventInput.eventName,
         category: eventInput.category,
@@ -241,7 +317,8 @@ export function App() {
         content: result.content,
         cro: result.cro,
         syncStatus: 'local',
-      });
+      }, currentProjectId || undefined);
+      setCurrentProjectId(updatedProj.id);
 
       showToast('🚀 Đã tối ưu hóa tỷ lệ chuyển đổi (CRO) thành công!', 'success');
     } catch (err) {
@@ -252,8 +329,9 @@ export function App() {
     }
   };
 
-  // Select project from MyProjectsModal
+  // Select project from MyProjectsModal (Routed & Loaded by ID)
   const handleSelectProject = (project: SavedProject) => {
+    setCurrentProjectId(project.id);
     setEventInput(project.input);
     setContent(project.content);
     setCro(project.cro);
@@ -263,12 +341,21 @@ export function App() {
     useLandingPageStore.getState().setInput(project.input);
     useLandingPageStore.getState().setContent(project.content, false);
     useLandingPageStore.getState().setCroEvaluation(project.cro);
+
+    // Sync to URL hash #/project/:id so it can be reloaded/shared anytime!
+    if (typeof window !== 'undefined') {
+      window.location.hash = `#/project/${project.id}`;
+    }
     showToast(`Đã mở dự án "${project.name}"`, 'success');
   };
 
   // Nút "Tạo trang mới"
   const handleResetNewEvent = () => {
     clearEventState();
+    setCurrentProjectId(null);
+    if (typeof window !== 'undefined') {
+      window.location.hash = '';
+    }
     const emptyInput: EventInput = {
       eventName: '',
       category: 'ai-tech',
@@ -385,6 +472,7 @@ export function App() {
         ) : (
           <ErrorBoundary sectionName="Bản xem trước">
             <LandingPagePreview
+              key={currentProjectId || eventInput?.eventName || 'preview'}
               input={eventInput}
               content={content}
               cro={cro!}
@@ -398,9 +486,31 @@ export function App() {
               onUpdateInput={(updated) => {
                 setEventInput(updated);
                 useLandingPageStore.getState().setInput(updated);
+                if (currentProjectId && content && cro) {
+                  saveProject({
+                    slug: updated.eventName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `event-${Date.now()}`,
+                    name: updated.eventName,
+                    category: updated.category,
+                    input: updated,
+                    content,
+                    cro,
+                    syncStatus: 'local',
+                  }, currentProjectId);
+                }
               }}
               onUpdateContent={(updated) => {
                 setContent(updated);
+                if (currentProjectId && eventInput && cro) {
+                  saveProject({
+                    slug: eventInput.eventName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `event-${Date.now()}`,
+                    name: eventInput.eventName,
+                    category: eventInput.category,
+                    input: eventInput,
+                    content: updated,
+                    cro,
+                    syncStatus: 'local',
+                  }, currentProjectId);
+                }
               }}
               userProfile={userProfile}
               onTriggerUpgrade={(reason) => {

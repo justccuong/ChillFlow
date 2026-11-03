@@ -90,6 +90,13 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   const [headlineVariant, setHeadlineVariant] = useState<'A' | 'B'>('A');
   const [showCRODrawer, setShowCRODrawer] = useState<boolean>(false);
   const [currentCategory, setCurrentCategory] = useState<EventCategory>(input.category || 'ai-tech');
+
+  // Sync category when input changes (e.g. switching between saved projects)
+  useEffect(() => {
+    if (input.category && input.category !== currentCategory) {
+      setCurrentCategory(input.category);
+    }
+  }, [input.category]);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState<boolean>(false);
   const [isMobileStudioOpen, setIsMobileStudioOpen] = useState<boolean>(false);
