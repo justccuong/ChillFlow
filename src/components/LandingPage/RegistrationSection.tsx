@@ -2,8 +2,12 @@ import { InlineEditable } from './InlineEditable';
 import React, { useState } from 'react';
 import type { EventInput, GeneratedContent, Attendee, ThemeConfig } from '../../types';
 import confetti from 'canvas-confetti';
-import { Sparkles, CheckCircle2, Flame, Users, Gift, ShieldCheck } from 'lucide-react';
+import { Sparkles, CheckCircle2, Flame, Users, Gift, ShieldCheck, AlertCircle, Lock } from 'lucide-react';
 import { NumberTicker } from '../magicui';
+import {
+  verifyRegistrationSubmission,
+  recordSubmissionTimestamp,
+} from '../../utils/antiSpam';
 
 interface RegistrationSectionProps {
   isEditMode?: boolean;
@@ -17,7 +21,7 @@ interface RegistrationSectionProps {
 
 export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
   input,
-  content,
+  content: _content,
   theme,
   registeredCount,
   onRegisterSuccess,
@@ -30,8 +34,11 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
     phone: '',
     ticketType: 'early-bird' as 'early-bird' | 'standard',
     notes: '',
+    honeypot: '',
   });
 
+  const [formMountTime, setFormMountTime] = useState<number>(() => Date.now());
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [lastTicketId, setLastTicketId] = useState<string>('');
 
@@ -41,15 +48,38 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
+
     if (remainingSeats <= 0) {
-      alert('Sự kiện đã đạt tối đa sức chứa (Hết vé). Không thể đăng ký thêm.');
-      return;
-    }
-    if (!formData.fullName || !formData.email || !formData.phone) {
-      alert('Vui lòng điền đầy đủ thông tin: Họ tên, Email và Số điện thoại');
+      setErrorMessage('Sự kiện đã đạt tối đa sức chứa (Hết vé). Không thể đăng ký thêm.');
       return;
     }
 
+    const verification = verifyRegistrationSubmission({
+      fullName: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      honeypot: formData.honeypot,
+      formMountTimestamp: formMountTime,
+      eventId: input.eventName || 'default',
+    });
+
+    if (verification.status === 'error') {
+      setErrorMessage(verification.message);
+      return;
+    }
+
+    // SILENT HONEY-TRAP FOR AUTOMATED BOTS:
+    // If the invisible honeypot was populated, pretend to succeed so the bot doesn't mutate or retry,
+    // but DO NOT invoke onRegisterSuccess, DO NOT save attendee, and PRESERVE seats!
+    if (verification.status === 'bot_honeypot') {
+      const fakeTicketId = 'TKT-' + Math.floor(100000 + Math.random() * 900000);
+      setLastTicketId(fakeTicketId);
+      setIsSubmitted(true);
+      return;
+    }
+
+    // LEGITIMATE SUBMISSION:
     try {
       confetti({
         particleCount: 80,
@@ -63,10 +93,13 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
     const ticketId = 'TKT-' + Math.floor(100000 + Math.random() * 900000);
     setLastTicketId(ticketId);
 
+    // Record submission timestamp for browser-level rate limiting
+    recordSubmissionTimestamp(input.eventName || 'default');
+
     onRegisterSuccess({
-      fullName: formData.fullName,
-      email: formData.email,
-      phone: formData.phone,
+      fullName: formData.fullName.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim(),
       ticketType: formData.ticketType,
       notes: formData.notes,
     });
@@ -81,7 +114,10 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
       phone: '',
       ticketType: 'early-bird',
       notes: '',
+      honeypot: '',
     });
+    setFormMountTime(Date.now());
+    setErrorMessage(null);
     setIsSubmitted(false);
   };
 
@@ -195,6 +231,43 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                 </div>
               )}
 
+              {/* Validation Error Banner */}
+              {errorMessage && (
+                <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2.5">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-rose-500" />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
+
+              {/* Anti-Bot Honeypot Field - Hidden from humans & screen readers, ignored by password autofillers */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  left: '-9999px',
+                  top: '-9999px',
+                  width: '1px',
+                  height: '1px',
+                  opacity: 0,
+                  pointerEvents: 'none',
+                  zIndex: -1,
+                  overflow: 'hidden',
+                }}
+              >
+                <label htmlFor="reg-cf-website-token">Do not fill this field</label>
+                <input
+                  id="reg-cf-website-token"
+                  type="text"
+                  name="reg_cf_website_token"
+                  tabIndex={-1}
+                  autoComplete="new-password"
+                  data-lpignore="true"
+                  data-form-type="other"
+                  value={formData.honeypot}
+                  onChange={e => setFormData({ ...formData, honeypot: e.target.value })}
+                />
+              </div>
+
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label htmlFor="reg-name" className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
@@ -287,9 +360,16 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                   <span>{remainingSeats <= 0 ? 'Sự kiện đã hết vé (Đạt tối đa sức chứa)' : 'Xác nhận đăng ký giữ chỗ'}</span>
                 </button>
 
-                <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500 mt-2.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>Vé mời sẽ được gửi tự động qua email.</span>
+                <div className="flex items-center justify-center gap-3 text-xs text-slate-500 mt-2.5 flex-wrap">
+                  <div className="flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                    <span>Vé mời sẽ được gửi tự động qua email.</span>
+                  </div>
+                  <span className="text-slate-300 dark:text-slate-700 hidden sm:inline">•</span>
+                  <div className="flex items-center gap-1 text-[11px] text-slate-400">
+                    <Lock className="w-3 h-3 text-indigo-400" />
+                    <span>Bảo vệ chống spam đa lớp</span>
+                  </div>
                 </div>
               </div>
             </form>

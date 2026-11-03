@@ -12,8 +12,8 @@
 | Demo online | https://chill-flow-xi.vercel.app/ |
 | Video demo (≤ 02 phút) | `<URL video demo YouTube hoặc Google Drive>` |
 | Source ZIP | `<URL tải gói mã nguồn ZIP hoặc đính kèm>` |
-| Minh chứng dùng AI | Kèm tại mục 10 và tài liệu chi tiết tại [`docs/VIBE_CODING_SHOWCASE.md`](docs/VIBE_CODING_SHOWCASE.md) |
-| Bảng kiểm thử | Kèm tại mục 11 (6 ca kiểm thử chi tiết theo chuẩn Bảng A) & 21 Unit Tests tự động |
+| Minh chứng dùng AI | Chi tiết tại [`docs/VIBE_CODING_SHOWCASE.md`](docs/VIBE_CODING_SHOWCASE.md) & kịch bản demo tại [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) |
+| Bảng kiểm thử | Kèm tại Mục 8 (6 ca kiểm thử chi tiết theo chuẩn Bảng A) & 146 Unit Tests tự động (30 test suites) |
 
 > Tiêu chí vòng loại: https://vibecoding.info.vn/tieu-chi-cham-thi  
 > Bảng A: ít nhất 6 ca kiểm thử; chỉ dùng Mock thì nhóm A3 tối đa 4/15 điểm.  
@@ -38,7 +38,7 @@
 | Giao diện | React (v19.3.1) + Tailwind CSS (v3.4.19) |
 | Thư viện | Lucide React (v1.61.0), Framer Motion (v14.6.0), Lenis (v1.3.27), Canvas-Confetti (v1.9.4), Clsx & Tailwind-Merge |
 | Quản lý State | Zustand (v5) với cơ chế History Stack Undo/Redo (`Ctrl+Z` / `Ctrl+Y`) |
-| Kiểm thử tự động | Vitest (v5.0.5) — 21 unit tests bao phủ 4 module cốt lõi |
+| Kiểm thử tự động | Vitest (v5.0.5) — 146 unit tests (30 test suites) bao phủ toàn diện từ AI Proxy, CRO Engine, Theme Archetypes, Visual CMS, Anti-Spam đến Single-File Exporter |
 | Linter & Typecheck | Oxlint (v1.88.0) + TypeScript (v6.0.3) Strict Mode |
 | Lưu trữ | localStorage (phía trình duyệt, kiến trúc Client-side Zero-Backend) |
 | Triển khai & AI Proxy | Vercel Serverless Functions (`api/ai-proxy.ts`) + SPA rewrites & Security Headers / Docker (Nginx Alpine Multi-stage) |
@@ -78,7 +78,7 @@ npm install
 # 2. Kiểm tra chất lượng code (Oxlint)
 npm run lint
 
-# 3. Chạy toàn bộ 21 Unit Tests tự động (Vitest)
+# 3. Chạy toàn bộ 146 Unit Tests tự động (Vitest)
 npm test
 
 # 4. Chạy môi trường phát triển (mặc định tại http://localhost:5173)
@@ -132,11 +132,13 @@ ChillFlow/
 │       ├── sourceExporter.ts   # Biên dịch Standalone HTML độc lập
 │       ├── croCalculator.ts    # Thuật toán tính điểm CRO [0, 100]
 │       └── date.ts             # Định dạng ngày giờ tiếng Việt & đếm ngược
-├── tests/                      # Bộ kiểm thử tự động (Vitest Suite - 21 tests)
+├── tests/                      # Bộ kiểm thử tự động (Vitest Suite - 146 tests, 30 test suites)
 │   ├── date.test.ts
 │   ├── themeEngine.test.ts
 │   ├── sourceExporter.test.ts
-│   └── croCalculator.test.ts
+│   ├── croCalculator.test.ts
+│   ├── antiSpamRegistration.test.ts # Bảo vệ Bot Honeypot & Rate Limiting
+│   └── ... (29 test suites bao phủ toàn bộ chức năng)
 ├── vercel.json                 # Cấu hình Vercel SPA rewrites, API proxy & headers
 ├── vitest.config.ts            # Cấu hình Vitest test runner
 └── vite.config.ts              # Cấu hình Rollup manual chunks code-splitting
@@ -152,7 +154,7 @@ Dự án thiết lập GitHub Actions Workflow tự động chạy tại `.githu
 flowchart LR
     A["git push"] --> B["Step 1: oxlint"]
     B --> C["Step 2: tsc -b"]
-    C --> D["Step 3: vitest (21 tests)"]
+    C --> D["Step 3: vitest (146 tests)"]
     D --> E["Step 4: vite build"]
     E --> F["Deploy Vercel / Docker"]
 ```

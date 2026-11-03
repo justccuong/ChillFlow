@@ -36,8 +36,8 @@ export function useScrollReveal(dependencies: unknown[] = []) {
         });
       },
       {
-        threshold: 0,
-        rootMargin: '300px 0px 300px 0px',
+        threshold: 0.05,
+        rootMargin: '0px 0px -40px 0px',
       }
     );
 
@@ -45,7 +45,7 @@ export function useScrollReveal(dependencies: unknown[] = []) {
       if (el.classList.contains('reveal-active')) return;
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight || 800;
-      if (rect.top <= vh * 1.5) {
+      if (rect.top < vh && rect.bottom > 0) {
         el.classList.add('reveal-active');
       } else {
         observer.observe(el);

@@ -18,8 +18,9 @@ import { SocialProofTicker } from './SocialProofTicker';
 import { publishEvent } from '../../services/publishService';
 import { exportStandaloneHtml } from '../../utils/sourceExporter';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
-import { Sparkles, ArrowUp, Edit3, Palette, Send, X, Undo2, Redo2, Sliders } from 'lucide-react';
-import { NumberTicker } from '../magicui';
+import { Sparkles, ArrowUp, Edit3, Palette, Send, X, Undo2, Redo2, Sliders, Wrench, HelpCircle, ArrowLeft, Layers } from 'lucide-react';
+import { QuickTourGuide, STORAGE_KEY_SEEN_TOUR } from './QuickTourGuide';
+// removed unused NumberTicker
 import type { UserProfile, PublishedPageRecord } from '../../types';
 import { useLandingPageStore } from '../../store/useLandingPageStore';
 import { ErrorBoundary } from '../common/ErrorBoundary';
@@ -91,6 +92,14 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   const [currentCategory, setCurrentCategory] = useState<EventCategory>(input.category || 'ai-tech');
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState<boolean>(false);
+  const [isMobileStudioOpen, setIsMobileStudioOpen] = useState<boolean>(false);
+  const [isTourOpen, setIsTourOpen] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem(STORAGE_KEY_SEEN_TOUR) !== 'true';
+    } catch {
+      return false;
+    }
+  });
   const previewContainerRef = useRef<HTMLElement>(null);
 
   // Undo / Redo Global Store Integration
@@ -387,129 +396,405 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         </div>
       )}
 
-      {/* Floating Modern Studio Dock */}
-      <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 sm:gap-2.5 p-1.5 sm:p-2 rounded-2xl bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border border-slate-200 dark:border-white/15 shadow-[0_12px_40px_-5px_rgba(0,0,0,0.18)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.85)] text-slate-800 dark:text-white text-xs max-w-[calc(100vw-1rem)] overflow-x-auto shrink-0 scrollbar-none transition-colors">
+      {/* DESKTOP/LAPTOP VERTICAL STUDIO DOCK (LEFT EDGE) */}
+      <aside
+        aria-label="Thanh công cụ Studio"
+        className="hidden md:flex fixed left-3 lg:left-4 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-1.5 p-2 rounded-2xl bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border border-slate-200 dark:border-white/15 shadow-[0_12px_40px_-5px_rgba(0,0,0,0.18)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.85)] text-slate-800 dark:text-white transition-all text-xs"
+      >
         {/* Kho Template Trigger Button */}
-        <button
-          type="button"
-          onClick={() => setIsTemplateModalOpen(true)}
-          className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-500/20 dark:hover:bg-indigo-500/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/40 font-semibold cursor-pointer transition-all shrink-0"
-          title="Mở Kho 12 Templates Sự Kiện Độc Quyền"
-        >
-          <Palette className="w-3.5 h-3.5 text-indigo-600 dark:text-cyan-400 shrink-0" />
-          <span className="hidden sm:inline">Kho Template</span>
-        </button>
+        <div className="relative group">
+          <button
+            type="button"
+            onClick={() => setIsTemplateModalOpen(true)}
+            className="w-10 h-10 rounded-xl flex items-center justify-center bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-500/20 dark:hover:bg-indigo-500/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/40 font-semibold cursor-pointer transition-all hover:scale-105"
+            aria-label="Kho 12 Templates Sự Kiện"
+          >
+            <Palette className="w-4 h-4 text-indigo-600 dark:text-cyan-400" />
+          </button>
+          <span className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
+            Kho 12 Templates Sự Kiện
+          </span>
+        </div>
 
         {/* Template Selector Quick Dropdown */}
-        <div className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/15 px-2 sm:px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-white/10 shrink-0 transition-colors">
-          <select
-            value={currentCategory}
-            onChange={e => setCurrentCategory(e.target.value as EventCategory)}
-            className="bg-transparent border-none text-slate-900 dark:text-white text-xs font-semibold focus:outline-none cursor-pointer pr-1 max-w-[110px] sm:max-w-none truncate"
-          >
-            {CATEGORIES.map(c => (
-              <option key={c.id} value={c.id} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-medium">
-                {c.label}
-              </option>
-            ))}
-          </select>
+        <div className="relative group">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/15 border border-slate-200 dark:border-white/10 transition-colors cursor-pointer relative overflow-hidden">
+            <select
+              value={currentCategory}
+              onChange={e => setCurrentCategory(e.target.value as EventCategory)}
+              className="opacity-0 absolute inset-0 w-full h-full cursor-pointer z-10"
+              title="Đổi ngành sự kiện"
+            >
+              {CATEGORIES.map(c => (
+                <option key={c.id} value={c.id} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-medium">
+                  {c.label}
+                </option>
+              ))}
+            </select>
+            <Layers className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+          </div>
+          <span className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
+            Đổi ngành ({currentTemplateDef.categoryLabel})
+          </span>
         </div>
 
         {/* CRO Score Pill Button */}
-        <button
-          type="button"
-          onClick={() => setShowCRODrawer(!showCRODrawer)}
-          className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-transparent font-semibold cursor-pointer transition-all shrink-0"
-          title="Bấm để xem phân tích CRO chi tiết"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
-          <span className="hidden sm:inline">CRO:</span>
-          <span className="font-bold text-slate-900 dark:text-white">
-            <NumberTicker value={cro.totalScore} />/100
+        <div className="relative group">
+          <button
+            type="button"
+            onClick={() => setShowCRODrawer(!showCRODrawer)}
+            className="w-10 h-10 rounded-xl flex flex-col items-center justify-center bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-transparent font-semibold cursor-pointer transition-all"
+            aria-label="Xem phân tích CRO chi tiết"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
+            <span className="text-[10px] font-extrabold text-slate-900 dark:text-white leading-none mt-0.5">
+              {cro.totalScore}
+            </span>
+          </button>
+          <span className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
+            Điểm CRO: {cro.totalScore}/100
           </span>
-        </button>
+        </div>
 
-        <div className="w-[1px] h-4 bg-slate-300 dark:bg-white/20 mx-0.5 shrink-0 hidden sm:block"></div>
-
-                {/* Section Visibility & Layout Customizer */}
-        <button
-          type="button"
-          onClick={() => setIsSectionCustomizerOpen(true)}
-          className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-transparent font-semibold cursor-pointer transition-all shrink-0"
-          title="Bật/Tắt các phần hiển thị trên trang"
-        >
-          <Sliders className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-          <span className="hidden sm:inline">Bố cục Section</span>
-          <span className="sm:hidden">Bố cục</span>
-        </button>
+        {/* Section Visibility & Layout Customizer */}
+        <div className="relative group">
+          <button
+            type="button"
+            onClick={() => setIsSectionCustomizerOpen(true)}
+            className="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-transparent font-semibold cursor-pointer transition-all"
+            aria-label="Bật/Tắt bố cục Section"
+          >
+            <Sliders className="w-4 h-4 text-amber-500" />
+          </button>
+          <span className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
+            Bố cục Section
+          </span>
+        </div>
 
         {/* Visual CMS In-place Edit Toggle */}
-        <button
-          type="button"
-          onClick={() => setIsEditMode(!isEditMode)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold cursor-pointer transition-all shrink-0 ${
-            isEditMode
-              ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 ring-2 ring-emerald-500/50 scale-105'
-              : 'bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-transparent'
-          }`}
-          title="Bật/Tắt chế độ chỉnh sửa nội dung trực tiếp trên trang"
-        >
-          <Edit3 className={`w-3.5 h-3.5 shrink-0 ${isEditMode ? 'text-white animate-pulse' : 'text-emerald-600 dark:text-emerald-400'}`} />
-          <span>{isEditMode ? 'Đang chỉnh sửa' : 'Chỉnh sửa nội dung'}</span>
-        </button>
+        <div className="relative group">
+          <button
+            type="button"
+            onClick={() => setIsEditMode(!isEditMode)}
+            className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+              isEditMode
+                ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 ring-2 ring-emerald-500/50 scale-105'
+                : 'bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-transparent'
+            }`}
+            aria-label="Chỉnh sửa nội dung trực tiếp"
+          >
+            <Edit3 className={`w-4 h-4 ${isEditMode ? 'text-white animate-pulse' : 'text-emerald-600 dark:text-emerald-400'}`} />
+          </button>
+          <span className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
+            {isEditMode ? 'Đang chỉnh sửa (Bấm tắt)' : 'Chỉnh sửa nội dung'}
+          </span>
+        </div>
+
+        <div className="w-6 h-[1px] bg-slate-200 dark:bg-white/15 my-1" />
 
         {/* Undo Button (Ctrl+Z) */}
-        <button
-          type="button"
-          onClick={handleUndo}
-          disabled={!canUndo}
-          className={`flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl font-semibold cursor-pointer transition-all shrink-0 ${
-            canUndo
-              ? 'bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white'
-              : 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-white/5 text-slate-400'
-          }`}
-          title="Hoàn tác chỉnh sửa (Ctrl+Z)"
-        >
-          <Undo2 className="w-3.5 h-3.5 shrink-0" />
-          <span className="hidden lg:inline text-[11px]">Undo</span>
-        </button>
+        <div className="relative group">
+          <button
+            type="button"
+            onClick={handleUndo}
+            disabled={!canUndo}
+            className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
+              canUndo
+                ? 'bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white cursor-pointer'
+                : 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-white/5 text-slate-400'
+            }`}
+            aria-label="Hoàn tác chỉnh sửa (Ctrl+Z)"
+          >
+            <Undo2 className="w-4 h-4" />
+          </button>
+          <span className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
+            Hoàn tác (Ctrl+Z)
+          </span>
+        </div>
 
         {/* Redo Button (Ctrl+Y) */}
-        <button
-          type="button"
-          onClick={handleRedo}
-          disabled={!canRedo}
-          className={`flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl font-semibold cursor-pointer transition-all shrink-0 ${
-            canRedo
-              ? 'bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white'
-              : 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-white/5 text-slate-400'
-          }`}
-          title="Làm lại chỉnh sửa (Ctrl+Y)"
-        >
-          <Redo2 className="w-3.5 h-3.5 shrink-0" />
-          <span className="hidden lg:inline text-[11px]">Redo</span>
-        </button>
+        <div className="relative group">
+          <button
+            type="button"
+            onClick={handleRedo}
+            disabled={!canRedo}
+            className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
+              canRedo
+                ? 'bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white cursor-pointer'
+                : 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-white/5 text-slate-400'
+            }`}
+            aria-label="Làm lại chỉnh sửa (Ctrl+Y)"
+          >
+            <Redo2 className="w-4 h-4" />
+          </button>
+          <span className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
+            Làm lại (Ctrl+Y)
+          </span>
+        </div>
 
         {/* Sửa form */}
-        <button
-          type="button"
-          onClick={onEditForm}
-          className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold cursor-pointer transition-all shrink-0"
-        >
-          <span>Sửa form</span>
-        </button>
+        <div className="relative group">
+          <button
+            type="button"
+            onClick={onEditForm}
+            className="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer"
+            aria-label="Quay lại sửa form"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <span className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
+            Quay lại sửa form
+          </span>
+        </div>
+
+        {/* Quick Tour Guide Button */}
+        <div className="relative group">
+          <button
+            type="button"
+            onClick={() => setIsTourOpen(true)}
+            className="w-10 h-10 rounded-xl flex items-center justify-center bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 transition-all cursor-pointer"
+            aria-label="Hướng dẫn nhanh (Tour)"
+          >
+            <HelpCircle className="w-4 h-4" />
+          </button>
+          <span className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
+            Hướng dẫn nhanh (Tour)
+          </span>
+        </div>
+
+        <div className="w-6 h-[1px] bg-slate-200 dark:bg-white/15 my-1" />
 
         {/* 1-Click Online Publishing Button */}
+        <div className="relative group">
+          <button
+            type="button"
+            onClick={handlePublishOnline}
+            className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold cursor-pointer shadow-lg shadow-emerald-600/30 hover:scale-105 transition-all"
+            aria-label="Xuất bản online và lấy link chia sẻ"
+          >
+            <Send className="w-4 h-4" />
+          </button>
+          <span className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
+            Xuất bản online
+          </span>
+        </div>
+      </aside>
+
+      {/* MOBILE FLOATING ACTION BUTTON (BOTTOM-LEFT CORNER) */}
+      <div className="md:hidden fixed bottom-5 left-4 z-50">
         <button
           type="button"
-          onClick={handlePublishOnline}
-          className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold cursor-pointer shadow-lg shadow-emerald-600/25 transition-all hover:scale-105 shrink-0"
-          title="Xuất bản online và lấy link chia sẻ"
+          onClick={() => setIsMobileStudioOpen(true)}
+          className="flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-slate-900/95 dark:bg-white text-white dark:text-slate-900 font-bold shadow-2xl border border-white/20 dark:border-slate-800/20 backdrop-blur-xl active:scale-95 transition-all text-xs"
+          aria-label="Mở công cụ Studio"
         >
-          <Send className="w-3.5 h-3.5 shrink-0" />
-          <span className="text-xs">Xuất bản</span>
+          <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-indigo-500 to-teal-400 flex items-center justify-center text-white">
+            <Wrench className="w-3 h-3" />
+          </div>
+          <span>Công cụ</span>
+          <span className="px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-400 dark:text-amber-800 font-extrabold text-[10px]">
+            {cro.totalScore} CRO
+          </span>
         </button>
       </div>
+
+      {/* MOBILE STUDIO BOTTOM SHEET DRAWER */}
+      {isMobileStudioOpen && (
+        <div className="md:hidden fixed inset-0 z-50 flex flex-col justify-end bg-slate-950/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div
+            className="fixed inset-0"
+            onClick={() => setIsMobileStudioOpen(false)}
+            aria-hidden="true"
+          />
+          <div className="relative bg-white dark:bg-slate-900 rounded-t-3xl border-t border-slate-200 dark:border-white/15 p-5 shadow-2xl animate-in slide-in-from-bottom duration-300 max-h-[85vh] overflow-y-auto z-10 text-slate-800 dark:text-white">
+            {/* Pull bar */}
+            <div className="w-12 h-1 rounded-full bg-slate-300 dark:bg-slate-700 mx-auto mb-4" />
+
+            {/* Header */}
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-indigo-500/10 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                  <Wrench className="w-4 h-4" />
+                </div>
+                <h4 className="font-bold text-sm font-heading">Công cụ Studio ChillFlow</h4>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsMobileStudioOpen(false)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Actions List */}
+            <div className="space-y-2.5 text-xs">
+              {/* Kho Template */}
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileStudioOpen(false);
+                  setIsTemplateModalOpen(true);
+                }}
+                className="w-full flex items-center justify-between p-3 rounded-2xl bg-indigo-50 dark:bg-indigo-500/15 border border-indigo-200 dark:border-indigo-500/30 text-indigo-700 dark:text-indigo-300 font-semibold"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Palette className="w-4 h-4 text-indigo-600 dark:text-cyan-400" />
+                  <span>Kho 12 Templates Sự Kiện</span>
+                </div>
+                <span className="text-[11px] opacity-75">Mở kho →</span>
+              </button>
+
+              {/* Change Category */}
+              <div className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-white/10">
+                <label className="block text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1.5">
+                  Đổi ngành sự kiện ({CATEGORIES.length} ngành)
+                </label>
+                <select
+                  value={currentCategory}
+                  onChange={e => {
+                    setCurrentCategory(e.target.value as EventCategory);
+                  }}
+                  className="w-full p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold focus:outline-none"
+                >
+                  {CATEGORIES.map(c => (
+                    <option key={c.id} value={c.id}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Visual CMS In-place Edit */}
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-white/10">
+                <div className="flex items-center gap-2.5">
+                  <Edit3 className={`w-4 h-4 ${isEditMode ? 'text-emerald-500' : 'text-slate-400'}`} />
+                  <div>
+                    <p className="font-semibold">Chỉnh sửa trực tiếp (Visual CMS)</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Click vào văn bản trên trang để sửa</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsEditMode(!isEditMode)}
+                  className={`px-3 py-1.5 rounded-xl font-bold transition-all ${
+                    isEditMode
+                      ? 'bg-emerald-600 text-white shadow-md'
+                      : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  {isEditMode ? 'Đang bật' : 'Bật sửa'}
+                </button>
+              </div>
+
+              {/* CRO Score */}
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileStudioOpen(false);
+                  setShowCRODrawer(true);
+                }}
+                className="w-full flex items-center justify-between p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-white/10 font-semibold"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  <span>Điểm chuyển đổi CRO</span>
+                </div>
+                <span className="font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-lg">
+                  {cro.totalScore}/100 →
+                </span>
+              </button>
+
+              {/* Section Layout */}
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileStudioOpen(false);
+                  setIsSectionCustomizerOpen(true);
+                }}
+                className="w-full flex items-center justify-between p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-white/10 font-semibold"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Sliders className="w-4 h-4 text-amber-500" />
+                  <span>Bố cục Section (Ẩn/Hiện mục)</span>
+                </div>
+                <span className="text-[11px] opacity-75">Tùy biến →</span>
+              </button>
+
+              {/* Undo / Redo */}
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={handleUndo}
+                  disabled={!canUndo}
+                  className={`p-2.5 rounded-xl font-semibold flex items-center justify-center gap-1.5 border border-slate-200 dark:border-white/10 ${
+                    canUndo
+                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white'
+                      : 'opacity-40 cursor-not-allowed bg-slate-50 dark:bg-slate-900 text-slate-400'
+                  }`}
+                >
+                  <Undo2 className="w-3.5 h-3.5" />
+                  <span>Hoàn tác (Undo)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleRedo}
+                  disabled={!canRedo}
+                  className={`p-2.5 rounded-xl font-semibold flex items-center justify-center gap-1.5 border border-slate-200 dark:border-white/10 ${
+                    canRedo
+                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white'
+                      : 'opacity-40 cursor-not-allowed bg-slate-50 dark:bg-slate-900 text-slate-400'
+                  }`}
+                >
+                  <Redo2 className="w-3.5 h-3.5" />
+                  <span>Làm lại (Redo)</span>
+                </button>
+              </div>
+
+              {/* Quick Tour Guide re-open */}
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileStudioOpen(false);
+                  setIsTourOpen(true);
+                }}
+                className="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 font-medium"
+              >
+                <HelpCircle className="w-4 h-4" />
+                <span>Xem lại Hướng dẫn nhanh (Quick Tour)</span>
+              </button>
+
+              {/* Return to form */}
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileStudioOpen(false);
+                  onEditForm();
+                }}
+                className="w-full flex items-center justify-center gap-1.5 p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Quay lại sửa thông tin form</span>
+              </button>
+
+              {/* Publish Big Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileStudioOpen(false);
+                  handlePublishOnline();
+                }}
+                className="w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-sm shadow-lg shadow-emerald-600/30 active:scale-98 transition-all flex items-center justify-center gap-2"
+              >
+                <Send className="w-4 h-4" />
+                <span>Xuất bản trang & Lấy liên kết</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Floating CRO Drawer Modal */}
       {showCRODrawer && (
@@ -871,6 +1156,11 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
       {/* ConvertFlow Social Proof Live Ticker */}
       <SocialProofTicker />
+      {/* Onboarding Quick Tour Guide */}
+      <QuickTourGuide
+        isOpen={isTourOpen}
+        onClose={() => setIsTourOpen(false)}
+      />
     </div>
   );
 };

@@ -199,9 +199,9 @@ html {
 /* Scroll Reveal Entrance Effect (Silky Smooth, Zero Lag, Never Blank) */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(22px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
@@ -220,7 +220,7 @@ html {
 }
 
 [data-reveal]:not(.reveal-active) {
-  animation: autoRevealFallback 0.4s ease 1.2s forwards;
+  animation: autoRevealFallback 0.4s ease 3s forwards;
 }
 
 /* Light Mode Overrides for High-Contrast Clean Editorial Appearance */
