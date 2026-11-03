@@ -93,13 +93,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState<boolean>(false);
   const [isMobileStudioOpen, setIsMobileStudioOpen] = useState<boolean>(false);
-  const [isTourOpen, setIsTourOpen] = useState<boolean>(() => {
-    try {
-      return localStorage.getItem(STORAGE_KEY_SEEN_TOUR) !== 'true';
-    } catch {
-      return false;
-    }
-  });
+  const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
   const previewContainerRef = useRef<HTMLElement>(null);
 
   // Undo / Redo Global Store Integration
@@ -551,7 +545,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
         <div className="relative group">
           <button
             type="button"
-            onClick={() => setIsTourOpen(true)}
+            onClick={() => setIsTourOpen(!isTourOpen)}
             className="w-10 h-10 rounded-xl flex items-center justify-center bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 transition-all cursor-pointer"
             aria-label="Hướng dẫn nhanh (Tour)"
           >
