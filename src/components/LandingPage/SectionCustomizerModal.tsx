@@ -138,19 +138,19 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
     >
       <div
         data-lenis-prevent
-        className="relative w-full max-w-5xl lg:max-w-6xl bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
+        className="relative w-full max-w-5xl lg:max-w-6xl bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col max-h-[92vh] sm:max-h-[90vh] overflow-hidden"
       >
         {/* Modal Header */}
-        <div className="px-6 py-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0 bg-slate-50/50 dark:bg-slate-900/50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 dark:bg-amber-400/10 flex items-center justify-center text-amber-600 dark:text-amber-400">
-              <Sliders className="w-5 h-5" />
+        <div className="px-4 sm:px-6 py-3.5 sm:py-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0 bg-white dark:bg-slate-900">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-amber-500/10 dark:bg-amber-400/10 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
+              <Sliders className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <h3 id="customizer-modal-title" className="text-lg font-bold text-slate-900 dark:text-white font-heading">
+              <h3 id="customizer-modal-title" className="text-base sm:text-lg font-bold text-slate-900 dark:text-white font-heading">
                 Tùy biến Bố cục & Section
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-1 sm:line-clamp-none">
                 Đang bật {enabledCount}/{SECTION_DEFS.length} phần trên trang sự kiện • Xem trước giao diện cập nhật theo thay đổi
               </p>
             </div>
@@ -166,7 +166,7 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
         </div>
 
         {/* Action Toolbar */}
-        <div className="px-6 py-3 bg-slate-100/60 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-xs shrink-0">
+        <div className="px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-xs shrink-0">
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -190,7 +190,7 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
         </div>
 
         {/* Mobile Tab Switcher */}
-        <div className="md:hidden flex border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90 px-4 py-2 gap-2 shrink-0">
+        <div className="md:hidden flex border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-3 sm:px-4 py-2 gap-2 shrink-0">
           <button
             type="button"
             onClick={() => setMobileTab('sections')}
@@ -221,7 +221,7 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
           {/* Left Column: Section List */}
           <div
             data-lenis-prevent
-            className={`p-6 overflow-y-auto space-y-3.5 flex-1 divide-y divide-slate-100 dark:divide-slate-800/60 ${
+            className={`p-4 sm:p-6 pb-6 overflow-y-auto space-y-3 sm:space-y-3.5 flex-1 divide-y divide-slate-100 dark:divide-slate-800/60 ${
               mobileTab === 'preview' ? 'hidden md:block' : 'block'
             }`}
           >
@@ -232,65 +232,88 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
               const layoutMeta = getSectionLayoutMetadata(def.key);
 
               return (
-                <div key={def.key} className="pt-3.5 first:pt-0 group">
-                  <div className="flex items-center justify-between gap-4">
+                <div key={def.key} className="pt-3 sm:pt-3.5 first:pt-0 group">
+                  <div className="flex items-center justify-between gap-3">
                     <div
                       onClick={() => toggleExpand(def.key)}
-                      className="flex items-start gap-3.5 min-w-0 cursor-pointer flex-1"
+                      className="flex items-center sm:items-start gap-3 min-w-0 cursor-pointer flex-1"
                     >
-                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                      {/* Square icon hidden on mobile, visible on sm+ */}
+                      <div className={`hidden sm:flex w-9 h-9 rounded-xl items-center justify-center shrink-0 transition-colors ${
                         isEnabled
                           ? 'bg-amber-500/10 dark:bg-amber-400/10 text-amber-600 dark:text-amber-400'
                           : 'bg-slate-100 dark:bg-slate-800 text-slate-400'
                       }`}>
                         <IconComponent className="w-4 h-4" />
                       </div>
+
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className={`text-sm font-bold transition-colors ${
+                          <span className={`text-sm font-bold transition-colors truncate ${
                             isEnabled ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 line-through'
                           }`}>
                             {def.label}
                           </span>
                           {isEnabled && (
-                            <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                            <span className="hidden sm:inline-flex text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                               Hiển thị
                             </span>
                           )}
-                          <span className="text-slate-400 dark:text-slate-500 hover:text-amber-500 text-xs flex items-center gap-0.5 ml-auto sm:ml-2">
+                          <span className="hidden sm:inline-flex items-center gap-0.5 text-slate-400 dark:text-slate-500 hover:text-amber-500 text-xs ml-2">
                             <Eye className="w-3 h-3" />
-                            <span className="text-[10px] font-medium hidden sm:inline">Chi tiết mẫu</span>
+                            <span className="text-[10px] font-medium">Chi tiết mẫu</span>
                             {isExpanded ? <ChevronUp className="w-3 h-3 ml-0.5" /> : <ChevronDown className="w-3 h-3 ml-0.5" />}
                           </span>
                         </div>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 leading-snug line-clamp-1 mt-0.5">
+                        <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 leading-snug line-clamp-1 mt-0.5">
                           {def.description}
                         </p>
                       </div>
                     </div>
 
-                    {/* Switch Toggle */}
-                    <button
-                      type="button"
-                      role="switch"
-                      aria-checked={isEnabled}
-                      onClick={() => onToggleSection(def.key)}
-                      className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors duration-200 ease-in-out cursor-pointer shrink-0 focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
-                        isEnabled ? 'bg-amber-500 dark:bg-amber-400' : 'bg-slate-200 dark:bg-slate-700'
-                      }`}
-                      aria-label={`Bật/tắt ${def.label}`}
-                    >
-                      <div
-                        className={`bg-white dark:bg-slate-900 w-4 h-4 rounded-full shadow-md transform transition-transform duration-200 ease-in-out ${
-                          isEnabled ? 'translate-x-5' : 'translate-x-0'
+                    {/* Right side: Mobile Eye preview button + Switch Toggle */}
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => toggleExpand(def.key)}
+                        className={`sm:hidden p-1.5 rounded-lg transition-colors flex items-center justify-center cursor-pointer ${
+                          isExpanded
+                            ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                            : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
                         }`}
-                      />
-                    </button>
+                        title="Xem trước mẫu wireframe"
+                        aria-label={`Xem trước mẫu ${def.label}`}
+                      >
+                        <Eye className="w-4 h-4" />
+                        {isExpanded ? (
+                          <ChevronUp className="w-3 h-3 ml-0.5" />
+                        ) : (
+                          <ChevronDown className="w-3 h-3 ml-0.5" />
+                        )}
+                      </button>
+
+                      <button
+                        type="button"
+                        role="switch"
+                        aria-checked={isEnabled}
+                        onClick={() => onToggleSection(def.key)}
+                        className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors duration-200 ease-in-out cursor-pointer shrink-0 focus:outline-none focus:ring-2 focus:ring-amber-500/40 ${
+                          isEnabled ? 'bg-amber-500 dark:bg-amber-400' : 'bg-slate-200 dark:bg-slate-700'
+                        }`}
+                        aria-label={`Bật/tắt ${def.label}`}
+                      >
+                        <div
+                          className={`bg-white dark:bg-slate-900 w-4 h-4 rounded-full shadow-md transform transition-transform duration-200 ease-in-out ${
+                            isEnabled ? 'translate-x-5' : 'translate-x-0'
+                          }`}
+                        />
+                      </button>
+                    </div>
                   </div>
 
                   {/* Visual Wireframe Preview Accordion Drawer */}
                   {isExpanded && (
-                    <div className="mt-3 pl-12 pr-2 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800 space-y-3 animate-in fade-in duration-150">
+                    <div className="mt-2.5 pl-3 sm:pl-12 pr-3 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800 space-y-3 animate-in fade-in duration-150">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                           Bố cục mẫu:
@@ -376,11 +399,11 @@ export const SectionCustomizerModal: React.FC<SectionCustomizerModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-end shrink-0">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-end shrink-0 z-10 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm hover:opacity-90 transition-opacity cursor-pointer shadow-md"
+            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm hover:opacity-90 transition-opacity cursor-pointer shadow-md text-center"
           >
             Hoàn tất
           </button>

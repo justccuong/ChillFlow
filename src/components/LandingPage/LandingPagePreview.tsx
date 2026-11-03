@@ -19,7 +19,7 @@ import { publishEvent } from '../../services/publishService';
 import { exportStandaloneHtml } from '../../utils/sourceExporter';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { Sparkles, ArrowUp, Edit3, Palette, Send, X, Undo2, Redo2, Sliders, Wrench, HelpCircle, ArrowLeft, Layers } from 'lucide-react';
-import { QuickTourGuide, STORAGE_KEY_SEEN_TOUR } from './QuickTourGuide';
+import { QuickTourGuide } from './QuickTourGuide';
 // removed unused NumberTicker
 import type { UserProfile, PublishedPageRecord } from '../../types';
 import { useLandingPageStore } from '../../store/useLandingPageStore';
@@ -370,14 +370,26 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           </span>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsTemplateModalOpen(true)}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold cursor-pointer transition-all shadow-sm"
-        >
-          <Palette className="w-3.5 h-3.5 text-cyan-500" />
-          <span>Kho 12 Templates Sự Kiện</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setIsTourOpen(prev => !prev)}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-500/20 dark:hover:bg-indigo-500/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/40 font-semibold cursor-pointer transition-all shadow-sm hover:scale-105 active:scale-95"
+            title="Xem lại hướng dẫn công cụ"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
+            <span>Hướng dẫn</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsTemplateModalOpen(true)}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold cursor-pointer transition-all shadow-sm hover:scale-105 active:scale-95"
+          >
+            <Palette className="w-3.5 h-3.5 text-cyan-500" />
+            <span>Kho 12 Templates Sự Kiện</span>
+          </button>
+        </div>
       </div>
 
       {/* Visual CMS Helper Banner */}

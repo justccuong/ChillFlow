@@ -38,6 +38,16 @@ describe('QuickTourGuide and Responsive Toolbar Layout', () => {
     expect(previewSrc).toContain('onClose={() => setIsTourOpen(false)}');
   });
 
+  it('LandingPagePreview top headbar has a quick guide button to re-open tour if skipped', () => {
+    const previewSrc = readFileSync(
+      path.resolve(__dirname, '../src/components/LandingPage/LandingPagePreview.tsx'),
+      'utf8'
+    );
+    expect(previewSrc).toContain('title="Xem lại hướng dẫn công cụ"');
+    expect(previewSrc).toContain('setIsTourOpen(prev => !prev)');
+    expect(previewSrc).toContain('<span>Hướng dẫn</span>');
+  });
+
   it('QuickTourGuide has 4 guided steps with skip and finish functionality', () => {
     const tourSrc = readFileSync(
       path.resolve(__dirname, '../src/components/LandingPage/QuickTourGuide.tsx'),

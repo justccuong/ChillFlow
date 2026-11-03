@@ -6,7 +6,6 @@ import {
   X,
   Sparkles,
   CheckCircle2,
-  Wrench,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
