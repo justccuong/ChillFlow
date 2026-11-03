@@ -16,10 +16,10 @@ describe('SectionCustomizerModal unified 2-column live preview modal', () => {
     expect(src).toContain('<MiniLivePreview');
   });
 
-  it('SectionCustomizerModal có cột nút section hẹp, nhỏ gọn hiển thị icon, tên và mini switch', () => {
+  it('SectionCustomizerModal có cột nút section gọn gàng, hiển thị icon, tên và mini switch', () => {
     const src = readFileSync('src/components/LandingPage/SectionCustomizerModal.tsx', 'utf8');
-    // Narrow button column
-    expect(src).toContain('w-[125px] xs:w-[145px] sm:w-[185px] md:w-[230px] shrink-0');
+    // Compact button column with comfortable width for labels
+    expect(src).toContain('w-[140px] xs:w-[160px] sm:w-[200px] md:w-[245px] shrink-0');
     // Has role="switch" for accessibility
     expect(src).toContain('role="switch"');
     // Has shortLabel for compact mobile display
@@ -27,18 +27,26 @@ describe('SectionCustomizerModal unified 2-column live preview modal', () => {
     expect(src).toContain('def.shortLabel');
   });
 
-  it('SectionCustomizerModal hỗ trợ sáng vùng tương ứng khi hover (laptop) hoặc bấm chạm ~0.6s rồi biến mất (điện thoại)', () => {
+  it('SectionCustomizerModal hỗ trợ sáng vàng khi bật/hover, và chớp đỏ rồi mới biến mất khi tắt', () => {
     const src = readFileSync('src/components/LandingPage/SectionCustomizerModal.tsx', 'utf8');
     expect(src).toContain('highlightedSection');
-    expect(src).toContain('triggerHighlight');
-    expect(src).toContain('handleMouseEnter');
-    expect(src).toContain('handleMouseLeave');
-    expect(src).toContain('highlightedSection={highlightedSection}');
+    expect(src).toContain('highlightColor');
+    expect(src).toContain('handleTurnOff');
+    expect(src).toContain('handleTurnOn');
+    expect(src).toContain('turningOffSectionKey');
+    expect(src).toContain('highlightColor={highlightColor}');
 
     const previewSrc = readFileSync('src/components/LandingPage/MiniLivePreview.tsx', 'utf8');
     expect(previewSrc).toContain('highlightedSection');
-    expect(previewSrc).toContain('renderHighlightAura');
+    expect(previewSrc).toContain('highlightColor');
+    expect(previewSrc).toContain('border-rose-500');
     expect(previewSrc).toContain('scrollIntoView');
+  });
+
+  it('MiniLivePreview có responsive viewport cho to hơn và tránh bị thu nhỏ như máy tính trên màn hình hẹp', () => {
+    const previewSrc = readFileSync('src/components/LandingPage/MiniLivePreview.tsx', 'utf8');
+    expect(previewSrc).toContain('targetInnerWidth');
+    expect(previewSrc).toContain('w < 420 ? 520');
   });
 
   it('SectionCustomizerModal đã loại bỏ icon mắt xem trước wireframe khó hiểu', () => {

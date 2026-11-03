@@ -12,7 +12,7 @@ import { RegistrationSection } from './RegistrationSection';
 import { EventGallerySection } from './EventGallerySection';
 import { EventFooterSection } from './EventFooterSection';
 
-const INNER_WIDTH = 1280;
+const DEFAULT_INNER_WIDTH = 1280;
 const ESTIMATED_HEIGHT = 4800;
 
 interface MiniLivePreviewProps {
@@ -24,6 +24,7 @@ interface MiniLivePreviewProps {
   className?: string;
   visibility?: SectionVisibilityConfig;
   highlightedSection?: string | null;
+  highlightColor?: 'amber' | 'red';
 }
 
 export const MiniLivePreview: React.FC<MiniLivePreviewProps> = ({
@@ -34,16 +35,24 @@ export const MiniLivePreview: React.FC<MiniLivePreviewProps> = ({
   className = '',
   visibility,
   highlightedSection,
+  highlightColor = 'amber',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dynamicScale, setDynamicScale] = useState(scale);
+  const [innerWidth, setInnerWidth] = useState(DEFAULT_INNER_WIDTH);
   const theme = getThemeForCategory(input.category);
 
   useEffect(() => {
     if (!containerRef.current) return;
     const obs = new ResizeObserver(([entry]) => {
       const w = entry.contentRect.width;
-      if (w > 0) setDynamicScale(w / INNER_WIDTH);
+      if (w > 0) {
+        // Cho to hơn và tránh "bị máy tính quá" trên khung hẹp:
+        // Khung hẹp (< 420px) giả lập viewport mobile 500px để layout dạng 1 cột to rõ, chữ dễ đọc
+        const targetInnerWidth = w < 420 ? 520 : w < 650 ? 768 : 1100;
+        setInnerWidth(targetInnerWidth);
+        setDynamicScale(w / targetInnerWidth);
+      }
     });
     obs.observe(containerRef.current);
     return () => obs.disconnect();
@@ -67,10 +76,16 @@ export const MiniLivePreview: React.FC<MiniLivePreviewProps> = ({
 
   const renderHighlightAura = (key: string) => {
     if (highlightedSection !== key) return null;
+    const isRed = highlightColor === 'red';
+
     return (
       <div
         aria-hidden="true"
-        className="absolute -inset-2 sm:-inset-4 bg-amber-400/20 dark:bg-amber-400/30 border-4 sm:border-8 border-amber-500 rounded-3xl pointer-events-none z-30 shadow-[0_0_80px_rgba(245,158,11,0.8)] animate-pulse"
+        className={`absolute -inset-2 sm:-inset-4 border-4 sm:border-8 rounded-3xl pointer-events-none z-30 transition-all duration-300 animate-pulse ${
+          isRed
+            ? 'border-rose-500 bg-rose-500/25 shadow-[0_0_80px_rgba(244,63,94,0.85)]'
+            : 'border-amber-500 bg-amber-400/20 dark:bg-amber-400/30 shadow-[0_0_80px_rgba(245,158,11,0.8)]'
+        }`}
       />
     );
   };
@@ -84,7 +99,7 @@ export const MiniLivePreview: React.FC<MiniLivePreviewProps> = ({
       <div
         className="mini-live-preview-inner absolute top-0 left-0"
         style={{
-          width: INNER_WIDTH,
+          width: innerWidth,
           transform: `scale(${dynamicScale})`,
           transformOrigin: 'top left',
           pointerEvents: 'none',
