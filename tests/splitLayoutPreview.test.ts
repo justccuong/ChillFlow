@@ -2,20 +2,36 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'fs';
 
-describe('SectionCustomizerModal live mini-preview panel', () => {
+describe('SectionCustomizerModal unified 2-column live preview modal', () => {
   it('SectionCustomizerModal phải import MiniLivePreview', () => {
     const src = readFileSync('src/components/LandingPage/SectionCustomizerModal.tsx', 'utf8');
     expect(src).toContain('MiniLivePreview');
   });
 
-  it('SectionCustomizerModal phải có mobileTab state để chuyển đổi trên mobile', () => {
+  it('SectionCustomizerModal gộp 2 tab thành 1 màn hình chia cột thống nhất (Unified Split View)', () => {
     const src = readFileSync('src/components/LandingPage/SectionCustomizerModal.tsx', 'utf8');
-    expect(src).toContain('mobileTab');
+    // Unified flex-row layout without tab switching
+    expect(src).toContain('flex flex-row min-h-0 overflow-hidden');
+    // MiniLivePreview is always visible on right column
+    expect(src).toContain('<MiniLivePreview');
   });
 
-  it('SectionCustomizerModal phải có breakpoint md: cho layout chia cột', () => {
+  it('SectionCustomizerModal có cột nút section hẹp, nhỏ gọn hiển thị icon, tên và mini switch', () => {
     const src = readFileSync('src/components/LandingPage/SectionCustomizerModal.tsx', 'utf8');
-    expect(src).toMatch(/md:flex|md:block|md:w-/);
+    // Narrow button column
+    expect(src).toContain('w-[125px] xs:w-[145px] sm:w-[185px] md:w-[230px] shrink-0');
+    // Has role="switch" for accessibility
+    expect(src).toContain('role="switch"');
+    // Has shortLabel for compact mobile display
+    expect(src).toContain('shortLabel');
+    expect(src).toContain('def.shortLabel');
+  });
+
+  it('SectionCustomizerModal đã loại bỏ icon mắt xem trước wireframe khó hiểu', () => {
+    const src = readFileSync('src/components/LandingPage/SectionCustomizerModal.tsx', 'utf8');
+    // Completely removed Eye icon and wireframe accordion
+    expect(src).not.toContain('<Eye');
+    expect(src).not.toContain('SectionWireframePreview');
   });
 
   it('SectionCustomizerModal phải có data-lenis-prevent để cho phép lăn chuột mượt mà', () => {
@@ -23,17 +39,9 @@ describe('SectionCustomizerModal live mini-preview panel', () => {
     expect(src).toContain('data-lenis-prevent');
   });
 
-  it('SectionCustomizerModal tối ưu hóa hàng section trên di động: ẩn icon cồng kềnh, canh trái tên và mô tả, đặt xem trước và công tắc ở bên phải', () => {
+  it('SectionCustomizerModal có footer nền đặc z-10 để tránh chữ cuộn lộ qua', () => {
     const src = readFileSync('src/components/LandingPage/SectionCustomizerModal.tsx', 'utf8');
-    // Hide bulky square icon on mobile
-    expect(src).toContain('hidden sm:flex w-9 h-9 rounded-xl items-center justify-center');
-    // Hide Hiển thị badge on mobile
-    expect(src).toContain('hidden sm:inline-flex text-[10px] font-semibold uppercase');
-    // Mobile eye preview button
-    expect(src).toContain('sm:hidden p-1.5 rounded-lg');
-    expect(src).toContain('title="Xem trước mẫu wireframe"');
-    // Solid footer to prevent text bleeding through
-    expect(src).toContain('bg-white dark:bg-slate-900 flex items-center justify-end shrink-0 z-10');
+    expect(src).toContain('bg-white dark:bg-slate-900 flex items-center justify-between shrink-0 z-10');
   });
 
   it('App.tsx không chứa split layout bên ngoài mà hiển thị toàn màn hình', () => {
