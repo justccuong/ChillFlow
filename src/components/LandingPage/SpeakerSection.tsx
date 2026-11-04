@@ -32,10 +32,18 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
       <div className="max-w-5xl mx-auto space-y-12 relative z-10">
         <div className="text-center space-y-2">
           <span className="text-xs uppercase tracking-[0.25em] text-slate-500 font-bold">
-            CHUYÊN GIA DẪN DẮT
+            <InlineEditable
+              value="CHUYÊN GIA DẪN DẮT"
+              isEditMode={isEditMode}
+              as="span"
+            />
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
-            Gặp gỡ diễn giả & chuyên gia chính
+            <InlineEditable
+              value="Gặp gỡ diễn giả & chuyên gia chính"
+              isEditMode={isEditMode}
+              as="span"
+            />
           </h2>
         </div>
 

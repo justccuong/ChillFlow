@@ -67,13 +67,26 @@ export const BenefitsSection: React.FC<BenefitsSectionProps> = ({
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <div className="text-xs uppercase tracking-[0.25em] text-slate-500 font-bold">
-              GIÁ TRỊ CỐT LÕI
+              <InlineEditable
+                value="GIÁ TRỊ CỐT LÕI"
+                isEditMode={isEditMode}
+                as="span"
+              />
             </div>
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
-              Vì sao bạn không thể bỏ lỡ sự kiện này?
+              <InlineEditable
+                value="Vì sao bạn không thể bỏ lỡ sự kiện này?"
+                isEditMode={isEditMode}
+                as="span"
+              />
             </h2>
             <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
-              Chương trình được thiết kế cô đọng, tập trung giải quyết trực tiếp những thách thức lớn nhất của bạn.
+              <InlineEditable
+                value="Chương trình được thiết kế cô đọng, tập trung giải quyết trực tiếp những thách thức lớn nhất của bạn."
+                isEditMode={isEditMode}
+                as="span"
+                multiline
+              />
             </p>
           </div>
 

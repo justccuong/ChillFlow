@@ -38,38 +38,45 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
   };
 
   return (
-    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-left space-y-7 font-sans">
-      {/* Top Section: Full-Width Grand Executive Typography */}
-      <div className="space-y-4 max-w-4xl">
+    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center space-y-7 font-sans">
+      {/* Top Section: Centered Grand Executive Typography */}
+      <div className="space-y-4 max-w-5xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-300">
           <Briefcase className="w-3.5 h-3.5 text-amber-500" />
-          <span>SERIES A & SEED DEMO DAY // PRIVATE VENTURE SUMMIT</span>
+          <InlineEditable
+            value={content.earlyBirdBadge || 'SERIES A & SEED DEMO DAY // PRIVATE VENTURE SUMMIT'}
+            onSave={(val) => onUpdateContentField?.('earlyBirdBadge', val)}
+            isEditMode={isEditMode}
+            as="span"
+            category={input.category}
+          />
         </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white leading-[1.16]">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white leading-[1.12] text-center max-w-5xl mx-auto">
           <InlineEditable
             value={headlineToDisplay}
             onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
             isEditMode={isEditMode}
-            as="span"
+            as="h1"
             category={input.category}
-            useKineticText
+            className="text-center"
           />
         </h1>
 
-        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl">
+        <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl mx-auto text-center">
           <InlineEditable
             value={content.subHeadline}
             onSave={(val) => onUpdateContentField?.('subHeadline', val)}
             isEditMode={isEditMode}
-            as="span"
+            as="p"
             multiline
             category={input.category}
+            className="text-center"
           />
         </p>
 
-        {/* Date & Location & NDA Pills */}
-        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-700 dark:text-slate-300 pt-1">
+        {/* Date & Location & NDA Pills - Centered */}
+        <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-slate-700 dark:text-slate-300 pt-1">
           <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
             <Calendar className="w-4 h-4 text-amber-500" />
             <span className="font-semibold">{formatEventDate(input.eventDate)}</span>
@@ -91,9 +98,9 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
           </div>
         </div>
 
-        {/* Prominent Executive Countdown */}
-        <div className="pt-2">
-          <CountdownTimer targetDate={input.eventDate} size="hero" align="left" />
+        {/* Prominent Executive Countdown - Centered */}
+        <div className="pt-2 flex justify-center">
+          <CountdownTimer targetDate={input.eventDate} size="hero" align="center" />
         </div>
       </div>
 

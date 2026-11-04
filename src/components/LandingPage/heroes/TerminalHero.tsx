@@ -42,7 +42,7 @@ export const TerminalHero: React.FC<HeroProps> = ({
   };
 
   return (
-    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-left space-y-7 font-sans">
+    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center space-y-7 font-sans">
       {/* Top Telemetry Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3 font-mono text-xs">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
@@ -57,40 +57,41 @@ export const TerminalHero: React.FC<HeroProps> = ({
         </div>
       </div>
 
-      {/* Broad, Un-cramped Developer Headline */}
-      <div className="space-y-4 max-w-4xl">
-        <div className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+      {/* Broad, Un-cramped Developer Headline - Centered & Large */}
+      <div className="space-y-4 max-w-5xl mx-auto text-center">
+        <div className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center justify-center gap-1.5">
           <span>// KEYNOTE INAUGURATION</span>
           <span className="inline-block w-2 h-4 bg-emerald-500 animate-pulse"></span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-mono text-slate-900 dark:text-white leading-[1.16]">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight font-mono text-slate-900 dark:text-white leading-[1.12] text-center max-w-5xl mx-auto">
           <InlineEditable
             value={headlineToDisplay}
             onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
             isEditMode={isEditMode}
-            as="span"
+            as="h1"
             category={input.category}
-            useKineticText
+            className="text-center"
           />
         </h1>
 
-        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl">
+        <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl mx-auto text-center">
           <InlineEditable
             value={content.subHeadline}
             onSave={(val) => onUpdateContentField?.('subHeadline', val)}
             isEditMode={isEditMode}
-            as="span"
+            as="p"
             multiline
             category={input.category}
+            className="text-center"
           />
         </p>
       </div>
 
-      {/* 1-Click Interactive CLI Command Pill */}
-      <div className="max-w-3xl flex items-center gap-3 bg-slate-900 dark:bg-black/90 p-3.5 rounded-xl border border-emerald-500/30 shadow-lg text-xs font-mono text-emerald-400">
+      {/* 1-Click Interactive CLI Command Pill - Centered */}
+      <div className="max-w-2xl mx-auto flex items-center gap-3 bg-slate-900 dark:bg-black/90 p-3.5 rounded-xl border border-emerald-500/30 shadow-lg text-xs font-mono text-emerald-400">
         <span className="text-slate-500 select-none">$</span>
-        <span className="flex-1 truncate select-all">{runCommand}</span>
+        <span className="flex-1 truncate select-all text-left">{runCommand}</span>
         <button
           type="button"
           onClick={handleCopy}
@@ -111,9 +112,9 @@ export const TerminalHero: React.FC<HeroProps> = ({
         </button>
       </div>
 
-      {/* Event Details: Date, Location, CTA & Compact Countdown */}
-      <div className="space-y-4 max-w-4xl pt-1">
-        <div className="flex flex-wrap items-center gap-3 font-mono text-xs">
+      {/* Event Details: Date, Location, CTA & Centered Countdown */}
+      <div className="space-y-4 max-w-4xl mx-auto pt-1">
+        <div className="flex flex-wrap items-center justify-center gap-3 font-mono text-xs">
           <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm text-slate-700 dark:text-slate-300">
             <Calendar className="w-4 h-4 text-emerald-500" />
             <span>{formatEventDate(input.eventDate)}</span>
@@ -131,7 +132,7 @@ export const TerminalHero: React.FC<HeroProps> = ({
         </div>
 
         {/* CTA & Registered Engineer Count */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             type="button"
             onClick={onScrollToRegister}
@@ -155,8 +156,8 @@ export const TerminalHero: React.FC<HeroProps> = ({
         </div>
 
         {/* Prominent Developer Countdown */}
-        <div className="pt-3">
-          <CountdownTimer targetDate={input.eventDate} size="hero" align="left" />
+        <div className="pt-3 flex justify-center">
+          <CountdownTimer targetDate={input.eventDate} size="hero" align="center" />
         </div>
       </div>
 

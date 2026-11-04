@@ -129,7 +129,12 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
             <InlineEditable value="Đăng ký tham gia" isEditMode={isEditMode} as="span" />
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm max-w-md mx-auto">
-            Điền thông tin để nhận vé mời và tài liệu sự kiện.
+            <InlineEditable
+              value="Điền thông tin để nhận vé mời và tài liệu sự kiện."
+              isEditMode={isEditMode}
+              as="span"
+              multiline
+            />
           </p>
         </div>
 

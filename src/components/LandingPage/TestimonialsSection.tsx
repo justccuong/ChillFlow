@@ -62,13 +62,26 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
         <div className="text-center space-y-3">
           <div className="text-xs uppercase tracking-[0.25em] text-slate-500 font-bold flex items-center justify-center gap-2">
             <Award className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-            <span>ĐÁNH GIÁ TỪ CỘNG ĐỒNG</span>
+            <InlineEditable
+              value="ĐÁNH GIÁ TỪ CỘNG ĐỒNG"
+              isEditMode={isEditMode}
+              as="span"
+            />
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
-            Cảm nhận từ người tham gia
+            <InlineEditable
+              value="Cảm nhận từ người tham gia"
+              isEditMode={isEditMode}
+              as="span"
+            />
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-lg mx-auto">
-            Hơn 98% người tham dự đánh giá chương trình vượt mong đợi và sẵn sàng giới thiệu cho đồng nghiệp.
+            <InlineEditable
+              value="Hơn 98% người tham dự đánh giá chương trình vượt mong đợi và sẵn sàng giới thiệu cho đồng nghiệp."
+              isEditMode={isEditMode}
+              as="span"
+              multiline
+            />
           </p>
         </div>
 

@@ -342,24 +342,28 @@ export const CinematicStudioHero: React.FC<HeroProps> = ({
             {/* Awwwards Winner Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-400/30 text-xs font-semibold backdrop-blur-xl shadow-sm">
               <Award className="w-3.5 h-3.5 text-amber-500 dark:text-amber-300 animate-pulse" />
-              <span className="text-amber-700 dark:text-amber-200 tracking-wider uppercase text-[10px] font-bold">
-                Awwwards Site of the Day • Studio Edition
-              </span>
+              <InlineEditable
+                value={content.earlyBirdBadge || 'Awwwards Site of the Day • Studio Edition'}
+                onSave={(val) => onUpdateContentField?.('earlyBirdBadge', val)}
+                isEditMode={isEditMode}
+                as="span"
+                category={input.category}
+                className="text-amber-700 dark:text-amber-200 tracking-wider uppercase text-[10px] font-bold"
+              />
             </div>
 
             {/* Sound Wave Widget */}
             <SoundWaveWidget />
           </div>
 
-          {/* Main Headline */}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black font-heading tracking-tight leading-[1.12] text-slate-900 dark:text-white max-w-3xl drop-shadow-sm">
+          {/* Main Headline (Large & Impactful, Zero Kinetic Jitter) */}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black font-heading tracking-tight leading-[1.12] text-slate-900 dark:text-white max-w-4xl drop-shadow-sm">
             <InlineEditable
               value={headlineToDisplay}
               onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
               isEditMode={isEditMode}
-              as="span"
+              as="h1"
               category={input.category}
-              useKineticText
             />
           </h1>
 

@@ -36,13 +36,26 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
         <div className="text-center space-y-3">
           <div className="text-xs uppercase tracking-[0.25em] text-slate-500 font-bold flex items-center justify-center gap-2">
             <HelpCircle className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-            <span>HỖ TRỢ & THẮC MẮC</span>
+            <InlineEditable
+              value="HỖ TRỢ & THẮC MẮC"
+              isEditMode={isEditMode}
+              as="span"
+            />
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading text-slate-900 dark:text-white">
-            Câu hỏi thường gặp
+            <InlineEditable
+              value="Câu hỏi thường gặp"
+              isEditMode={isEditMode}
+              as="span"
+            />
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-md mx-auto">
-            Mọi thông tin cần thiết về lịch trình, tài liệu và hình thức tham gia.
+            <InlineEditable
+              value="Mọi thông tin cần thiết về lịch trình, tài liệu và hình thức tham gia."
+              isEditMode={isEditMode}
+              as="span"
+              multiline
+            />
           </p>
         </div>
 

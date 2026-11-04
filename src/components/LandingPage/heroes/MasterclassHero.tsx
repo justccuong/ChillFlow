@@ -51,15 +51,14 @@ export const MasterclassHero: React.FC<HeroProps> = ({
       </div>
 
       {/* Majestic Panoramic Headline */}
-      <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight font-heading leading-[1.15] text-slate-900 dark:text-white max-w-4xl mx-auto drop-shadow-sm text-center flex flex-col items-center justify-center">
+      <h1 className="text-4xl sm:text-6xl lg:text-7xl xl:text-[5rem] font-black tracking-tight font-heading leading-[1.1] text-slate-900 dark:text-white max-w-5xl mx-auto drop-shadow-sm text-center">
         <InlineEditable
           value={headlineToDisplay}
           onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
           isEditMode={isEditMode}
-          as="span"
+          as="h1"
           category={input.category}
-          useKineticText
-          className="w-full flex flex-wrap justify-center text-center items-center"
+          className="text-center"
         />
       </h1>
 

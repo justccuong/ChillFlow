@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Pencil, Sparkles } from 'lucide-react';
 import { FloatingAiToolbar } from './FloatingAiToolbar';
-import { KineticText } from '../magicui';
 
 interface InlineEditableProps {
   value: string;
@@ -24,7 +23,7 @@ export const InlineEditable: React.FC<InlineEditableProps> = ({
   multiline = false,
   placeholder = 'Nhấp để sửa...',
   category,
-  useKineticText = false,
+  useKineticText: _useKineticText = false, // Kinetic removed per user request
 }) => {
   const [currentText, setCurrentText] = useState(value);
   const [originalText, setOriginalText] = useState(value);
@@ -40,17 +39,6 @@ export const InlineEditable: React.FC<InlineEditableProps> = ({
   }, [value, isEditing]);
 
   if (!isEditMode) {
-    if (useKineticText) {
-      return (
-        <KineticText
-          text={value}
-          as={Component}
-          className={className}
-          baseWeight={800}
-          hoverWeight={950}
-        />
-      );
-    }
     return <Component className={className}>{value}</Component>;
   }
 
@@ -114,9 +102,13 @@ export const InlineEditable: React.FC<InlineEditableProps> = ({
     onSave(originalText);
   };
 
+  const isBlock = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'div'].includes(Component);
+  const isCentered = className.includes('justify-center') || className.includes('text-center');
+  const WrapperTag = isBlock ? 'div' : 'span';
+
   return (
-    <span
-      className={`relative group/inline-edit inline-block max-w-full ${className.includes('justify-center') || className.includes('text-center') ? 'text-center w-full' : ''}`}
+    <WrapperTag
+      className={`relative group/inline-edit ${isBlock ? 'block w-full' : 'inline-block max-w-full'} ${isCentered ? 'text-center mx-auto' : ''}`}
       onClick={(e) => {
         // Prevent clicking parent button/link when in Visual CMS mode
         e.stopPropagation();
@@ -137,7 +129,7 @@ export const InlineEditable: React.FC<InlineEditableProps> = ({
         />
       )}
 
-      {/* Editable Component */}
+      {/* Editable Component with generous padding & refined focus ring */}
       <Component
         ref={elementRef as any}
         contentEditable
@@ -147,8 +139,8 @@ export const InlineEditable: React.FC<InlineEditableProps> = ({
         onKeyDown={handleKeyDown}
         className={`${className} outline-none transition-all ${
           isEditing
-            ? 'ring-2 ring-indigo-500 rounded px-1.5 py-0.5 bg-indigo-50/70 dark:bg-indigo-950/60 shadow-lg cursor-text'
-            : 'outline-dashed outline-1 outline-indigo-500/50 hover:outline-2 hover:outline-indigo-400 rounded px-1 py-0.5 bg-indigo-500/5 hover:bg-indigo-500/10 cursor-text'
+            ? 'ring-2 ring-indigo-500 rounded-lg px-2.5 py-1 bg-indigo-50/80 dark:bg-indigo-950/70 shadow-lg cursor-text'
+            : 'outline-dashed outline-1 outline-indigo-500/40 hover:outline-2 hover:outline-indigo-500 rounded-lg px-2 py-0.5 bg-indigo-500/5 hover:bg-indigo-500/15 cursor-text'
         }`}
         data-placeholder={placeholder}
       >
@@ -157,12 +149,12 @@ export const InlineEditable: React.FC<InlineEditableProps> = ({
 
       {/* Hover visual cue when not actively editing */}
       {!isEditing && (
-        <span className="opacity-0 group-hover/inline-edit:opacity-100 transition-opacity absolute -top-5 right-0 bg-indigo-600/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow pointer-events-none flex items-center gap-1 z-20 whitespace-nowrap backdrop-blur-sm">
+        <span className="opacity-0 group-hover/inline-edit:opacity-100 transition-opacity absolute -top-5.5 right-0 bg-indigo-600/95 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-md pointer-events-none flex items-center gap-1 z-20 whitespace-nowrap backdrop-blur-sm">
           <Pencil className="w-2.5 h-2.5" />
           <span>Sửa chữ</span>
           <Sparkles className="w-2.5 h-2.5 text-amber-300" />
         </span>
       )}
-    </span>
+    </WrapperTag>
   );
 };

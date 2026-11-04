@@ -3,17 +3,20 @@ import type { ThemeConfig, SponsorItem } from '../../types';
 import { ShieldCheck, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { SPONSOR_PRESET_LIBRARY } from '../../constants/sponsors';
 import { ScrollBasedVelocity } from '../magicui';
+import { InlineEditable } from './InlineEditable';
 
 interface TrustBarSectionProps {
   theme: ThemeConfig;
   sponsors?: SponsorItem[];
   onOpenSponsorEditor?: () => void;
+  isEditMode?: boolean;
 }
 
 export const TrustBarSection: React.FC<TrustBarSectionProps> = ({
   theme,
   sponsors = SPONSOR_PRESET_LIBRARY.slice(0, 8),
   onOpenSponsorEditor,
+  isEditMode = false,
 }) => {
   const activeSponsors = sponsors && sponsors.length > 0 ? sponsors : SPONSOR_PRESET_LIBRARY.slice(0, 8);
 
@@ -32,7 +35,11 @@ export const TrustBarSection: React.FC<TrustBarSectionProps> = ({
         <div className="flex flex-wrap items-center justify-center gap-3">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-[11px] font-bold uppercase tracking-[0.25em] text-slate-700 dark:text-slate-300 shadow-sm transition-colors">
             <ShieldCheck className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-            <span>ĐỒNG HÀNH & BẢO TRỢ CHUYÊN MÔN BỞI CÁC ĐỐI TÁC CÔNG NGHỆ</span>
+            <InlineEditable
+              value="ĐỒNG HÀNH & BẢO TRỢ CHUYÊN MÔN BỞI CÁC ĐỐI TÁC CÔNG NGHỆ"
+              isEditMode={isEditMode}
+              as="span"
+            />
           </div>
 
           {onOpenSponsorEditor && (

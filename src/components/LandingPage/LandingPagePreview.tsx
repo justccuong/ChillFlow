@@ -18,7 +18,7 @@ import { SocialProofTicker } from './SocialProofTicker';
 import { publishEvent } from '../../services/publishService';
 import { exportStandaloneHtml } from '../../utils/sourceExporter';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
-import { Sparkles, ArrowUp, Edit3, Palette, Send, X, Undo2, Redo2, Sliders, Wrench, HelpCircle, ArrowLeft, Layers } from 'lucide-react';
+import { Sparkles, ArrowUp, Edit3, Palette, Send, X, Undo2, Redo2, Sliders, Wrench, HelpCircle, ArrowLeft, Layers, ChevronLeft, ChevronRight } from 'lucide-react';
 import { QuickTourGuide } from './QuickTourGuide';
 // removed unused NumberTicker
 import type { UserProfile, PublishedPageRecord } from '../../types';
@@ -101,6 +101,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState<boolean>(false);
   const [isMobileStudioOpen, setIsMobileStudioOpen] = useState<boolean>(false);
   const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
+  const [isDockCollapsed, setIsDockCollapsed] = useState<boolean>(false);
   const previewContainerRef = useRef<HTMLElement>(null);
 
   // Undo / Redo Global Store Integration
@@ -412,8 +413,25 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
       {/* DESKTOP/LAPTOP VERTICAL STUDIO DOCK (LEFT EDGE) */}
       <aside
         aria-label="Thanh công cụ Studio"
-        className="hidden md:flex fixed left-3 lg:left-4 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-1.5 p-2 rounded-2xl bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border border-slate-200 dark:border-white/15 shadow-[0_12px_40px_-5px_rgba(0,0,0,0.18)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.85)] text-slate-800 dark:text-white transition-all text-xs"
+        className={`hidden md:flex fixed left-3 lg:left-4 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-1.5 p-2 rounded-2xl bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border border-slate-200 dark:border-white/15 shadow-[0_12px_40px_-5px_rgba(0,0,0,0.18)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.85)] text-slate-800 dark:text-white text-xs transition-all duration-300 ease-in-out ${
+          isDockCollapsed ? '-translate-x-[calc(100%+32px)] opacity-0 pointer-events-none' : 'translate-x-0 opacity-100'
+        }`}
       >
+        {/* Collapse Button (Thu gọn sang trái) */}
+        <div className="relative group pb-1 mb-0.5 border-b border-slate-200 dark:border-white/10 w-full flex justify-center">
+          <button
+            type="button"
+            onClick={() => setIsDockCollapsed(true)}
+            className="w-10 h-7 rounded-lg flex items-center justify-center bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-all cursor-pointer"
+            aria-label="Thu gọn thanh công cụ sang trái"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <span className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
+            Thu gọn sang trái
+          </span>
+        </div>
+
         {/* Kho Template Trigger Button */}
         <div className="relative group">
           <button
@@ -592,6 +610,22 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           </span>
         </div>
       </aside>
+
+      {/* Sleek Floating Expand Tab when Studio Dock is Collapsed */}
+      {isDockCollapsed && (
+        <button
+          type="button"
+          onClick={() => setIsDockCollapsed(false)}
+          className="hidden md:flex fixed left-0 top-1/2 -translate-y-1/2 z-50 items-center gap-1 pl-2 pr-3 py-3 rounded-r-2xl bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border-y border-r border-indigo-500/40 dark:border-cyan-400/40 shadow-[4px_0_25px_rgba(0,0,0,0.25)] text-indigo-600 dark:text-cyan-400 hover:text-indigo-700 dark:hover:text-cyan-300 hover:pl-3 transition-all duration-200 cursor-pointer group animate-in fade-in slide-in-from-left duration-200"
+          title="Mở thanh công cụ Studio"
+          aria-label="Mở thanh công cụ Studio"
+        >
+          <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+          <span className="text-[10px] font-extrabold uppercase tracking-widest [writing-mode:vertical-lr] rotate-180 py-1">
+            Studio
+          </span>
+        </button>
+      )}
 
       {/* MOBILE FLOATING ACTION BUTTON (BOTTOM-LEFT CORNER) */}
       <div className="md:hidden fixed bottom-5 left-4 z-50">
@@ -865,6 +899,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               theme={theme}
               sponsors={input.sponsors}
               onOpenSponsorEditor={() => setIsSponsorEditorOpen(true)}
+              isEditMode={isEditMode}
             />
           </div>
         )}

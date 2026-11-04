@@ -34,12 +34,18 @@ export const CreativeHero: React.FC<HeroProps> = ({
   const tags = theme.creativeTags || ['Design Systems', 'Micro-Interactions', 'Spline 3D', 'Spatial UI'];
 
   return (
-    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-left space-y-7 font-sans">
-      {/* Avant-Garde Sticker Header */}
-      <div className="flex flex-wrap items-center gap-3">
+    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center space-y-7 font-sans">
+      {/* Avant-Garde Sticker Header - Centered */}
+      <div className="flex flex-wrap items-center justify-center gap-3">
         <span className="-rotate-2 inline-flex items-center gap-1.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black px-3.5 py-1.5 rounded-lg text-xs uppercase tracking-wider shadow-lg">
           <Palette className="w-3.5 h-3.5" />
-          DESIGN & CREATIVE FEST 2026
+          <InlineEditable
+            value={content.earlyBirdBadge || 'DESIGN & CREATIVE FEST 2026'}
+            onSave={(val) => onUpdateContentField?.('earlyBirdBadge', val)}
+            isEditMode={isEditMode}
+            as="span"
+            category={input.category}
+          />
         </span>
         <span className="rotate-1 inline-flex items-center gap-1 bg-purple-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider shadow-md">
           <Sparkles className="w-3 h-3 text-amber-300" />
@@ -47,32 +53,33 @@ export const CreativeHero: React.FC<HeroProps> = ({
         </span>
       </div>
 
-      {/* Bold, Un-cramped Neo-Brutalist Headline */}
-      <div className="space-y-4 max-w-4xl">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight font-heading leading-[1.22] text-slate-900 dark:text-white drop-shadow-sm">
+      {/* Bold, Un-cramped Neo-Brutalist Headline - Centered & Large */}
+      <div className="space-y-4 max-w-5xl mx-auto text-center">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight font-heading leading-[1.12] text-slate-900 dark:text-white drop-shadow-sm text-center">
           <InlineEditable
             value={headlineToDisplay}
             onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
             isEditMode={isEditMode}
-            as="span"
+            as="h1"
             category={input.category}
-            useKineticText
+            className="text-center"
           />
         </h1>
 
-        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl">
+        <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl mx-auto text-center">
           <InlineEditable
             value={content.subHeadline}
             onSave={(val) => onUpdateContentField?.('subHeadline', val)}
             isEditMode={isEditMode}
-            as="span"
+            as="p"
             multiline
             category={input.category}
+            className="text-center"
           />
         </p>
 
-        {/* Creative Discipline Tags */}
-        <div className="flex flex-wrap items-center gap-2 pt-1">
+        {/* Creative Discipline Tags - Centered */}
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
           {tags.map((tag, i) => (
             <span
               key={i}

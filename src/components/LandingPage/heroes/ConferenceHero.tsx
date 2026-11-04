@@ -47,68 +47,73 @@ export const ConferenceHero: React.FC<HeroProps> = ({
   ];
 
   return (
-    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-6">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-        {/* Left Column: Un-cramped Editorial Headline & Copy (Matches User Sketch 'text' with 66% width) */}
-        <div className="lg:col-span-8 text-left space-y-5">
-          {/* Early bird pill with Shimmer effect */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/30 text-xs font-semibold backdrop-blur-sm shadow-sm animate-shimmer">
-            <Flame className="w-4 h-4 text-amber-500 animate-bounce" />
+    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-8">
+      {/* Top Panoramic Editorial Header: Centered & Majestic */}
+      <div className="max-w-5xl mx-auto text-center space-y-5">
+        {/* Early bird pill with Shimmer effect */}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/30 text-xs font-semibold backdrop-blur-sm shadow-sm animate-shimmer">
+          <Flame className="w-4 h-4 text-amber-500 animate-bounce" />
+          <InlineEditable
+            value={content.earlyBirdBadge || 'Ưu đãi đăng ký sớm'}
+            onSave={(val) => onUpdateContentField?.('earlyBirdBadge', val)}
+            isEditMode={isEditMode}
+            as="span"
+            className="text-indigo-700 dark:text-indigo-300 font-bold"
+            category={input.category}
+          />
+        </div>
+
+        {/* Majestic Centered Headline (Large & Impactful, Zero Kinetic Jitter) */}
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight font-heading leading-[1.12] text-slate-900 dark:text-white max-w-5xl mx-auto drop-shadow-sm text-center">
+          <InlineEditable
+            value={headlineToDisplay}
+            onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
+            isEditMode={isEditMode}
+            as="h1"
+            category={input.category}
+            className="text-center"
+          />
+        </h1>
+
+        {/* Sub-headline */}
+        <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl mx-auto text-center">
+          <InlineEditable
+            value={content.subHeadline}
+            onSave={(val) => onUpdateContentField?.('subHeadline', val)}
+            isEditMode={isEditMode}
+            as="p"
+            multiline
+            category={input.category}
+            className="text-center"
+          />
+        </p>
+
+        {/* Event Key Badges: Date & Location - Centered */}
+        <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-slate-700 dark:text-slate-300 pt-1">
+          <div className="flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
+            <Calendar className={`w-4 h-4 ${theme.accentColor}`} />
+            <span className="font-semibold">{formatEventDate(input.eventDate)}</span>
+          </div>
+          <div className="flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
+            <MapPin className={`w-4 h-4 ${theme.accentColor}`} />
             <InlineEditable
-              value={content.earlyBirdBadge || 'Ưu đãi đăng ký sớm'}
-              onSave={(val) => onUpdateContentField?.('earlyBirdBadge', val)}
+              value={input.location}
+              onSave={(val) => onUpdateInputField?.('location', val)}
               isEditMode={isEditMode}
               as="span"
-              className="text-indigo-700 dark:text-indigo-300 font-bold"
-              category={input.category}
+              className="font-semibold"
             />
           </div>
+        </div>
+      </div>
 
-          {/* Majestic, Un-cramped Headline */}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.25rem] font-extrabold tracking-tight font-heading leading-[1.18] text-slate-900 dark:text-white max-w-4xl drop-shadow-sm">
-            <InlineEditable
-              value={headlineToDisplay}
-              onSave={(val) => (onSaveHeadline ? onSaveHeadline(val) : onUpdateContentField?.('headline', val))}
-              isEditMode={isEditMode}
-              as="span"
-              category={input.category}
-              useKineticText
-            />
-          </h1>
-
-          {/* Sub-headline */}
-          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-sans leading-relaxed max-w-3xl">
-            <InlineEditable
-              value={content.subHeadline}
-              onSave={(val) => onUpdateContentField?.('subHeadline', val)}
-              isEditMode={isEditMode}
-              as="span"
-              multiline
-              category={input.category}
-            />
-          </p>
-
-          {/* Event Key Badges: Date & Location */}
-          <div className="flex flex-wrap items-center gap-3 text-xs text-slate-700 dark:text-slate-300">
-            <div className="flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
-              <Calendar className={`w-4 h-4 ${theme.accentColor}`} />
-              <span className="font-semibold">{formatEventDate(input.eventDate)}</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-xl shadow-sm">
-              <MapPin className={`w-4 h-4 ${theme.accentColor}`} />
-              <InlineEditable
-                value={input.location}
-                onSave={(val) => onUpdateInputField?.('location', val)}
-                isEditMode={isEditMode}
-                as="span"
-                className="font-semibold"
-              />
-            </div>
-          </div>
-
-          {/* CTA Button & Social Proof - Placed Above Countdown for High Conversion */}
-          <div className="space-y-3.5 pt-1">
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+      {/* Main Action & Visual Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center max-w-5xl mx-auto pt-2">
+        {/* Left Column: CTA, Social Proof & Countdown (lg:col-span-7) */}
+        <div className="lg:col-span-7 space-y-6 text-center sm:text-left">
+          {/* CTA Button & Guarantees */}
+          <div className="space-y-3.5">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 justify-center sm:justify-start">
               <button
                 type="button"
                 onClick={onScrollToRegister}
@@ -122,14 +127,14 @@ export const ConferenceHero: React.FC<HeroProps> = ({
                 />
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 px-2">
+              <div className="flex items-center justify-center sm:justify-start gap-1.5 text-xs text-slate-500 dark:text-slate-400 px-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-500" />
                 <span>Vé chính hãng & Hỗ trợ xuất VAT</span>
               </div>
             </div>
 
             {/* Live Social Proof Badge */}
-            <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 text-xs text-slate-500 dark:text-slate-400">
               <div className="flex -space-x-2">
                 {attendeeAvatars.map((src, i) => (
                   <img
@@ -159,13 +164,13 @@ export const ConferenceHero: React.FC<HeroProps> = ({
           </div>
 
           {/* Prominent High-Impact Hero Countdown Timer */}
-          <div className="pt-4">
+          <div className="flex justify-center sm:justify-start pt-2">
             <CountdownTimer targetDate={input.eventDate} size="hero" align="left" />
           </div>
         </div>
 
-        {/* Right Column: Organic Cutout Visual (Matches User Sketch 'ảnh' with 33% width) */}
-        <div className="lg:col-span-4 relative flex justify-center items-center">
+        {/* Right Column: Organic Cutout Visual (lg:col-span-5) */}
+        <div className="lg:col-span-5 relative flex justify-center items-center">
           {/* Atmospheric Glow */}
           <div className="absolute -inset-4 bg-gradient-to-tr from-indigo-500/25 via-cyan-500/20 to-purple-500/20 rounded-[3rem] blur-3xl opacity-75 pointer-events-none"></div>
 
