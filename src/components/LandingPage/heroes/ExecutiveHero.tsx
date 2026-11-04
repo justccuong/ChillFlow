@@ -187,7 +187,13 @@ export const ExecutiveHero: React.FC<HeroProps> = ({
           <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60 text-center text-xs">
             <span className="text-slate-400">Xác nhận giữ chỗ: </span>
             <strong className="text-amber-300">
-              <NumberTicker value={registeredCount > 0 ? registeredCount : 42} /> nhà đầu tư
+              {registeredCount > 0 ? (
+                <>
+                  <NumberTicker value={registeredCount} /> nhà đầu tư
+                </>
+              ) : (
+                'Đang mở đăng ký giới hạn'
+              )}
             </strong>
           </div>
         </div>

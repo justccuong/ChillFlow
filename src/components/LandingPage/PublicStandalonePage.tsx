@@ -14,7 +14,7 @@ import { EventFooterSection } from './EventFooterSection';
 import { SocialProofTicker } from './SocialProofTicker';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { recordView, recordConversion } from '../../services/publishService';
-import { saveAttendee } from '../../services/storageService';
+import { saveAttendee, getStoredAttendees } from '../../services/storageService';
 import { Zap, ArrowUp } from 'lucide-react';
 import { injectEventJsonLdAndMeta } from '../../utils/seo';
 
@@ -31,7 +31,8 @@ interface PublicStandalonePageProps {
 
 export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page }) => {
   const { input, content, theme, userTier, slug } = page;
-  const [registeredCount, setRegisteredCount] = useState(128);
+  const [attendees, setAttendees] = useState<Attendee[]>(() => getStoredAttendees(page.input.eventName));
+  const registeredCount = attendees.length;
 
   useEffect(() => {
     // Record page view for analytics
@@ -62,7 +63,7 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
   const handleRegisterSuccess = (attendee: Omit<Attendee, 'id' | 'registeredAt'>) => {
     saveAttendee(attendee, input.eventName);
     recordConversion(slug);
-    setRegisteredCount(prev => prev + 1);
+    setAttendees(getStoredAttendees(input.eventName));
   };
 
   return (
@@ -218,7 +219,7 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
 
       
       {/* ConvertFlow Social Proof Live Ticker */}
-      <SocialProofTicker />
+      <SocialProofTicker attendees={attendees} />
     </div>
   );
 };

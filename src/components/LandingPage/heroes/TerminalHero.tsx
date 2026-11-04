@@ -150,7 +150,13 @@ export const TerminalHero: React.FC<HeroProps> = ({
           <div className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
             <span>
-              Đã cấp vé tham dự cho <NumberTicker value={registeredCount > 0 ? registeredCount : 96} />+ kỹ sư
+              {registeredCount > 0 ? (
+                <>
+                  Đã cấp vé tham dự cho <NumberTicker value={registeredCount} /> kỹ sư
+                </>
+              ) : (
+                'Đang mở đợt đăng ký Early Access'
+              )}
             </span>
           </div>
         </div>
