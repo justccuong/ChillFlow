@@ -251,58 +251,50 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
 
         </div>
 
-        {/* Category / Theme Selector */}
-        <div className="space-y-2">
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" /> Loại sự kiện & phong cách theme
-          </label>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
+        {/* Category / Theme Selector - Option A: Compact Icon Chips */}
+        <div className="space-y-2.5 pt-1">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" /> Loại sự kiện & phong cách theme
+            </label>
+
+            {/* Muted Inline AI Recommendation */}
+            {formData.eventName && formData.category !== detectBestTemplate(formData.eventName, formData.targetAudience).id && (
+              <div className="inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 bg-indigo-500/10 dark:bg-indigo-500/15 border border-indigo-500/20 px-2.5 py-1 rounded-lg animate-in fade-in">
+                <Sparkles className="w-3 h-3 text-amber-500 shrink-0 animate-pulse" />
+                <span>AI đề xuất: <strong className="text-indigo-600 dark:text-indigo-300">{detectBestTemplate(formData.eventName, formData.targetAudience).name}</strong></span>
+                <button
+                  type="button"
+                  onClick={() => setFormData(p => ({ ...p, category: detectBestTemplate(formData.eventName, formData.targetAudience).id }))}
+                  className="text-indigo-600 dark:text-cyan-400 hover:underline font-bold text-[11px] cursor-pointer ml-0.5"
+                >
+                  Áp dụng
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Compact Icon Chips (Option A) */}
+          <div className="flex flex-wrap gap-2">
             {CATEGORIES.map(cat => {
               const isSelected = formData.category === cat.id;
-              const badge = getCategoryMicroBadge(cat.id);
               return (
                 <button
                   key={cat.id}
                   type="button"
                   onClick={() => handleCategorySelect(cat.id)}
-                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between group relative overflow-hidden ${
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
                     isSelected
-                      ? 'border-indigo-500 bg-indigo-50/80 dark:bg-indigo-500/20 text-indigo-900 dark:text-white ring-2 ring-indigo-500/40 shadow-md'
-                      : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:text-slate-900 dark:hover:text-slate-200'
+                      ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm shadow-indigo-500/25 ring-2 ring-indigo-500/20'
+                      : 'bg-slate-100/80 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-800/80 hover:bg-slate-200/80 dark:hover:bg-slate-700/60 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="group-hover:scale-110 transition-transform">
-                      {renderCategoryIcon(cat.id)}
-                    </div>
-                    <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-black/5 dark:bg-white/10 text-slate-500 dark:text-slate-400">
-                      {badge}
-                    </span>
-                  </div>
-                  <div className="text-xs font-bold leading-tight line-clamp-1">{cat.label}</div>
+                  {renderCategoryIcon(cat.id, 'w-3.5 h-3.5')}
+                  <span>{cat.label}</span>
                 </button>
               );
             })}
           </div>
-
-          {/* AI Auto-Detection Helper */}
-          {formData.eventName && formData.category !== detectBestTemplate(formData.eventName, formData.targetAudience).id && (
-            <div className="flex items-center justify-between p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-xs text-indigo-700 dark:text-indigo-300 animate-in fade-in">
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                <span>
-                  AI phân tích chủ đề hợp nhất với Template: <strong>{detectBestTemplate(formData.eventName, formData.targetAudience).name}</strong> ({detectBestTemplate(formData.eventName, formData.targetAudience).categoryLabel})
-                </span>
-              </span>
-              <button
-                type="button"
-                onClick={() => setFormData(p => ({ ...p, category: detectBestTemplate(formData.eventName, formData.targetAudience).id }))}
-                className="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[11px] transition-colors shrink-0 ml-2 cursor-pointer"
-              >
-                Tự động áp dụng
-              </button>
-            </div>
-          )}
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">
