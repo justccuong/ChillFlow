@@ -16,7 +16,7 @@ export interface EventGallerySectionProps {
 
 export function getGalleryGridColSpan(index: number, totalCount: number): string {
   if (totalCount === 1) return 'md:col-span-12';
-  if (totalCount === 2) return 'md:col-span-6';
+  if (totalCount === 2 || totalCount === 4) return 'md:col-span-6';
   if (index === 0) return 'md:col-span-7';
   return 'md:col-span-5';
 }
@@ -74,15 +74,15 @@ export const EventGallerySection: React.FC<EventGallerySectionProps> = ({
         </div>
 
         {/* Gallery Bento Grid Layout */}
-        {totalCount <= 2 ? (
-          // 1 or 2 photos layout
+        {totalCount <= 2 || totalCount === 4 ? (
+          // 1, 2, or 4 photos symmetrical grid layout
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
             {effectivePhotos.map((photo, idx) => {
               const spanClass = getGalleryGridColSpan(idx, totalCount);
               return (
                 <div
                   key={idx}
-                  className={`${spanClass} rounded-none overflow-hidden border border-slate-200 dark:border-slate-800 relative group ${totalCount === 1 ? 'h-80 md:h-[400px]' : 'h-72 md:h-96'} shadow-xl bg-slate-900`}
+                  className={`${spanClass} rounded-none overflow-hidden border border-slate-200 dark:border-slate-800 relative group ${totalCount === 1 ? 'h-80 md:h-[400px]' : totalCount === 4 ? 'h-64 md:h-80' : 'h-72 md:h-96'} shadow-xl bg-slate-900`}
                 >
                   <img
                     src={photo.url}
