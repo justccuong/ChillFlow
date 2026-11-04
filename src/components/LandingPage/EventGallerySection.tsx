@@ -16,7 +16,7 @@ export interface EventGallerySectionProps {
 
 export function getGalleryGridColSpan(index: number, totalCount: number): string {
   if (totalCount === 1) return 'md:col-span-12';
-  if (totalCount === 2 || totalCount === 4) return 'md:col-span-6';
+  if (totalCount === 2) return 'md:col-span-6';
   if (index === 0) return 'md:col-span-7';
   return 'md:col-span-5';
 }
@@ -74,8 +74,8 @@ export const EventGallerySection: React.FC<EventGallerySectionProps> = ({
         </div>
 
         {/* Gallery Bento Grid Layout */}
-        {totalCount <= 2 || totalCount === 4 ? (
-          // 1, 2, or 4 photos symmetrical grid layout
+        {totalCount <= 2 ? (
+          // 1 or 2 photos layout
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
             {effectivePhotos.map((photo, idx) => {
               const spanClass = getGalleryGridColSpan(idx, totalCount);
@@ -285,16 +285,16 @@ export const EventGallerySection: React.FC<EventGallerySectionProps> = ({
               </div>
             </div>
 
-            {/* Additional Photos Grid for 4+ items */}
-            {effectivePhotos.length > 3 && (
+            {/* Additional Photos Grid: full rows of 3 in view mode to ensure symmetry, or visible in edit mode */}
+            {((!isEditMode && effectivePhotos.length >= 6) || (isEditMode && effectivePhotos.length > 3)) && (
               <div className={`grid gap-4 pt-2 ${
                 effectivePhotos.length - 3 === 1
-                  ? 'grid-cols-1'
+                  ? 'grid-cols-1 md:grid-cols-3'
                   : effectivePhotos.length - 3 === 2
                   ? 'grid-cols-1 md:grid-cols-2'
                   : 'grid-cols-1 md:grid-cols-3'
               }`}>
-                {effectivePhotos.slice(3).map((photo, sliceIdx) => {
+                {effectivePhotos.slice(3, !isEditMode ? 3 + Math.floor((effectivePhotos.length - 3) / 3) * 3 : undefined).map((photo, sliceIdx) => {
                   const actualIdx = sliceIdx + 3;
                   return (
                     <div

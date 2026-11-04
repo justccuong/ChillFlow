@@ -46,12 +46,11 @@ describe('UI Polish & Visual Feedback Refinements', () => {
     expect(content).not.toContain('rounded-3xl');
   });
 
-  it('6. ensures EventGallerySection provides balanced 2x2 grid when totalCount is 4', async () => {
+  it('6. ensures EventGallerySection preserves iconic Bento Grid spans (7 and 5)', async () => {
     const { getGalleryGridColSpan } = await import('../src/components/LandingPage/EventGallerySection');
-    expect(getGalleryGridColSpan(0, 4)).toBe('md:col-span-6');
-    expect(getGalleryGridColSpan(1, 4)).toBe('md:col-span-6');
-    expect(getGalleryGridColSpan(2, 4)).toBe('md:col-span-6');
-    expect(getGalleryGridColSpan(3, 4)).toBe('md:col-span-6');
+    expect(getGalleryGridColSpan(0, 3)).toBe('md:col-span-7');
+    expect(getGalleryGridColSpan(1, 3)).toBe('md:col-span-5');
+    expect(getGalleryGridColSpan(2, 3)).toBe('md:col-span-5');
   });
 
   it('7. ensures all 12 preset themes have exactly 3 curated gallery photos for Bento harmony', async () => {
