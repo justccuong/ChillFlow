@@ -1,3 +1,10 @@
+export function generate12CharId(): string {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const block = (len: number) =>
+    Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  return `${block(4)}-${block(4)}-${block(4)}`;
+}
+
 import type { EventInput, GeneratedContent, CROEvaluation } from '../types';
 
 export interface SavedProject {
@@ -55,12 +62,17 @@ export function getProjectById(id: string): SavedProject | undefined {
 
 export function extractProjectIdFromLocation(): string | null {
   if (typeof window === 'undefined') return null;
-  // 1. Hash route: #/project/:id
+  // 1. Hash route: #/p/:id or #/project/:id
   const hash = window.location.hash;
-  const hashMatch = hash.match(/#\/project\/([a-zA-Z0-9_-]+)/);
+  const hashMatch = hash.match(/#\/(?:project|p)\/([a-zA-Z0-9_-]+)/);
   if (hashMatch) return hashMatch[1];
 
-  // 2. Query param: ?project=:id or ?id=:id
+  // 2. Path route: /p/:id or /project/:id
+  const pathname = window.location.pathname;
+  const pathMatch = pathname.match(/\/(?:project|p)\/([a-zA-Z0-9_-]+)/);
+  if (pathMatch) return pathMatch[1];
+
+  // 3. Query param: ?project=:id or ?id=:id
   const search = window.location.search;
   const queryMatch = search.match(/[?&](?:project|id)=([a-zA-Z0-9_-]+)/);
   if (queryMatch) return queryMatch[1];
@@ -98,10 +110,10 @@ export function saveProject(
     }
   }
 
-  // Create new project
+  // Create new project with 12-char ID
   const newProject: SavedProject = {
     ...data,
-    id: `proj_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+    id: generate12CharId(),
     updatedAt: now,
   };
 

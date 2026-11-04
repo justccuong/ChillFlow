@@ -190,6 +190,7 @@ export interface UserProfile {
 }
 
 export interface PublishedPageRecord {
+  id?: string;
   slug: string;
   eventName: string;
   input: EventInput;

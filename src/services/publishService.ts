@@ -1,3 +1,5 @@
+import { getProjectById } from './projectStorageService';
+import { getThemeForCategory } from './themeEngine';
 import { EventInput, GeneratedContent, ThemeConfig, UserTier, PublishedPageRecord } from '../types';
 import { canPublishOrSavePage, recordPublishedPage } from './authService';
 
@@ -26,9 +28,29 @@ function saveRegistry(registry: Record<string, PublishedPageRecord>): void {
   localStorage.setItem(PUBLISHED_PAGES_KEY, JSON.stringify(registry));
 }
 
-export function getPublishedEvent(slug: string): PublishedPageRecord | null {
+export function getPublishedEvent(slugOrId: string): PublishedPageRecord | null {
   const reg = getRegistry();
-  return reg[slug] || null;
+  if (reg[slugOrId]) return reg[slugOrId];
+  const byId = Object.values(reg).find((r) => r.id === slugOrId || r.slug === slugOrId);
+  if (byId) return byId;
+
+  const project = getProjectById(slugOrId);
+  if (project) {
+    const theme = getThemeForCategory(project.input.category || 'ai-tech');
+    return {
+      id: project.id,
+      slug: project.slug,
+      eventName: project.name,
+      input: project.input,
+      content: project.content,
+      theme,
+      userTier: 'free',
+      publishedAt: project.updatedAt,
+      viewsCount: 1,
+      conversionsCount: 0,
+    };
+  }
+  return null;
 }
 
 export function getAllPublishedEvents(): PublishedPageRecord[] {
@@ -46,14 +68,16 @@ export function publishEvent(
   input: EventInput,
   content: GeneratedContent,
   theme: ThemeConfig,
-  userTier: UserTier
+  userTier: UserTier,
+  projectId?: string
 ): { success: boolean; record?: PublishedPageRecord; error?: string } {
   const slug = slugify(input.eventName);
 
   const registry = getRegistry();
-  const existing = registry[slug];
+  const existing = registry[slug] || (projectId ? registry[projectId] : undefined);
 
   const record: PublishedPageRecord = {
+    id: projectId || existing?.id,
     slug,
     eventName: input.eventName,
     input,
@@ -67,6 +91,9 @@ export function publishEvent(
   };
 
   registry[slug] = record;
+  if (projectId) {
+    registry[projectId] = record;
+  }
   saveRegistry(registry);
   recordPublishedPage(slug);
 
