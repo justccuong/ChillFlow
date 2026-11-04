@@ -1,6 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import type { EventInput, GeneratedContent, CROEvaluation, Attendee, UserProfile } from './types';
 import { Header } from './components/Header';
+import { GenerationProgressModal } from './components/GenerationProgressModal';
 import { EventInputForm } from './components/EventInputForm';
 import { LandingPagePreview } from './components/LandingPage/LandingPagePreview';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
@@ -50,6 +51,7 @@ export function App() {
   const [currentTab, setCurrentTab] = useState<'form' | 'preview' | 'admin'>('form');
 
   const [isLoading, setIsLoading] = useState(false);
+  const [generationStep, setGenerationStep] = useState(1);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [isAlreadyOptimized, setIsAlreadyOptimized] = useState(false);
 
@@ -241,6 +243,7 @@ export function App() {
     }
 
     setIsLoading(true);
+    setGenerationStep(1);
     try {
       // Automated 2-phase pipeline: generate and instantly optimize CRO
       const result = await generateLandingPageContent(input, apiKey, true);
@@ -569,6 +572,13 @@ export function App() {
           />
         )}
       </Suspense>
+
+      {/* Interactive AI Generation Progress Modal */}
+      <GenerationProgressModal
+        isOpen={isLoading}
+        currentStep={generationStep}
+        eventName={eventInput?.eventName || ''}
+      />
 
       {/* Global Toast Notification */}
       {toast && (

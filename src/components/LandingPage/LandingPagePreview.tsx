@@ -12,7 +12,6 @@ import { FaqSection } from './FaqSection';
 import { RegistrationSection } from './RegistrationSection';
 import { EventGallerySection } from './EventGallerySection';
 import { EventFooterSection } from './EventFooterSection';
-import { CROScorecard } from '../CROScorecard';
 import { detectBestTemplate, getTemplateById } from '../../services/templateRegistry';
 import { SocialProofTicker } from './SocialProofTicker';
 import { publishEvent } from '../../services/publishService';
@@ -91,7 +90,6 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 }) => {
   const currentAttendees = attendees ?? getStoredAttendees(input.eventName);
   const [headlineVariant, setHeadlineVariant] = useState<'A' | 'B'>('A');
-  const [showCRODrawer, setShowCRODrawer] = useState<boolean>(false);
   const [currentCategory, setCurrentCategory] = useState<EventCategory>(input.category || 'ai-tech');
 
   // Sync category when input changes (e.g. switching between saved projects)
@@ -472,24 +470,6 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
           </span>
         </div>
 
-        {/* CRO Score Pill Button */}
-        <div className="relative group">
-          <button
-            type="button"
-            onClick={() => setShowCRODrawer(!showCRODrawer)}
-            className="w-10 h-10 rounded-xl flex flex-col items-center justify-center bg-slate-100 hover:bg-slate-200/80 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-transparent font-semibold cursor-pointer transition-all"
-            aria-label="Xem phân tích CRO chi tiết"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-            <span className="text-[10px] font-extrabold text-slate-900 dark:text-white leading-none mt-0.5">
-              {cro.totalScore}
-            </span>
-          </button>
-          <span className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
-            Điểm CRO: {cro.totalScore}/100
-          </span>
-        </div>
-
         {/* Section Visibility & Layout Customizer */}
         <div className="relative group">
           <button
@@ -738,24 +718,6 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
                 </button>
               </div>
 
-              {/* CRO Score */}
-              <button
-                type="button"
-                onClick={() => {
-                  setIsMobileStudioOpen(false);
-                  setShowCRODrawer(true);
-                }}
-                className="w-full flex items-center justify-between p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-white/10 font-semibold"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Sparkles className="w-4 h-4 text-amber-500" />
-                  <span>Điểm chuyển đổi CRO</span>
-                </div>
-                <span className="font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-lg">
-                  {cro.totalScore}/100 →
-                </span>
-              </button>
-
               {/* Section Layout */}
               <button
                 type="button"
@@ -842,34 +804,6 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
                 <span>Xuất bản trang & Lấy liên kết</span>
               </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* Floating CRO Drawer Modal */}
-      {showCRODrawer && (
-        <div className="fixed inset-x-0 bottom-24 z-50 max-w-4xl mx-auto px-4 animate-in slide-in-from-bottom-6 duration-300">
-          <div className="bg-slate-900/95 text-white backdrop-blur-2xl p-6 rounded-3xl border border-white/20 shadow-2xl relative max-h-[75vh] overflow-y-auto">
-            <button
-              onClick={() => setShowCRODrawer(false)}
-              className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <CROScorecard
-              cro={cro}
-              onOptimize={onOptimizeCRO}
-              isOptimizing={isOptimizing}
-              isAlreadyOptimized={isAlreadyOptimized}
-              activeHeadlineVariant={headlineVariant}
-              onToggleHeadlineVariant={() => setHeadlineVariant(v => (v === 'A' ? 'B' : 'A'))}
-              primaryHeadline={content.headline}
-              alternativeHeadline={content.alternativeHeadline}
-              onApplyHeadline={(newHeadline) => handleUpdateContentField('headline', newHeadline)}
-              theme={theme}
-              category={currentCategory}
-              previewContainerRef={previewContainerRef}
-            />
           </div>
         </div>
       )}
