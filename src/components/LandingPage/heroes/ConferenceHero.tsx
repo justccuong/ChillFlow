@@ -43,15 +43,15 @@ export const ConferenceHero: React.FC<HeroProps> = ({
     <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-8">
       {/* Top Panoramic Editorial Header: Centered & Majestic */}
       <div className="max-w-5xl mx-auto text-center space-y-5">
-        {/* Early bird pill with Shimmer effect */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/30 text-xs font-semibold backdrop-blur-sm shadow-sm animate-shimmer">
+        {/* Early bird text badge - clean without heavy background pill */}
+        <div className="inline-flex items-center gap-2 text-xs font-bold text-indigo-600 dark:text-cyan-400">
           <Flame className="w-4 h-4 text-amber-500 animate-bounce" />
           <InlineEditable
             value={content.earlyBirdBadge || 'Ưu đãi đăng ký sớm'}
             onSave={(val) => onUpdateContentField?.('earlyBirdBadge', val)}
             isEditMode={isEditMode}
             as="span"
-            className="text-indigo-700 dark:text-indigo-300 font-bold"
+            className="text-indigo-700 dark:text-cyan-300 font-bold"
             category={input.category}
           />
         </div>

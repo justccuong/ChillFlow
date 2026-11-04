@@ -56,7 +56,8 @@ export const FloatingAiToolbar: React.FC<FloatingAiToolbarProps> = ({
         e.preventDefault();
         e.stopPropagation();
       }}
-      className="absolute -top-12 left-0 z-50 flex items-center gap-1.5 p-1 rounded-xl bg-slate-900/95 backdrop-blur-xl border border-indigo-500/40 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.6),0_0_15px_rgba(99,102,241,0.25)] text-white text-xs select-none animate-in fade-in zoom-in-95 duration-150"
+      className="absolute -top-12 left-0 z-50 flex items-center gap-1.5 p-1 rounded-xl bg-slate-950 border border-indigo-500/50 shadow-[0_10px_30px_rgba(0,0,0,0.8),0_0_20px_rgba(99,102,241,0.3)] text-white text-xs select-none animate-in fade-in zoom-in-95 duration-150"
+      style={{ backgroundColor: '#090d16' }}
     >
       {/* AI Rewrite Main Pill */}
       <div className="relative">
@@ -83,7 +84,10 @@ export const FloatingAiToolbar: React.FC<FloatingAiToolbarProps> = ({
 
         {/* 3 Quick Presets Dropdown */}
         {isOpenMenu && !isLoading && (
-          <div className="absolute top-full left-0 mt-1.5 w-52 p-1.5 rounded-xl bg-slate-900/98 backdrop-blur-2xl border border-white/20 shadow-2xl z-50 space-y-1 animate-in fade-in slide-in-from-top-1 duration-150">
+          <div
+            className="absolute top-full left-0 mt-2 w-56 p-2 rounded-xl bg-slate-950 border border-slate-700/80 shadow-[0_20px_50px_rgba(0,0,0,0.9)] z-50 space-y-1.5 animate-in fade-in slide-in-from-top-1 duration-150 ring-1 ring-white/15"
+            style={{ backgroundColor: '#090d16' }}
+          >
             <div className="text-[10px] uppercase font-bold text-slate-400 px-2 py-0.5 tracking-wider">
               Chọn kiểu biến đổi:
             </div>

@@ -17,6 +17,7 @@ interface RegistrationSectionProps {
   registeredCount: number;
   onRegisterSuccess: (attendee: Omit<Attendee, 'id' | 'registeredAt'>) => void;
   onOpenAttendeeList?: () => void;
+  onUpdateInput?: (field: keyof EventInput, val: unknown) => void;
 }
 
 export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
@@ -27,6 +28,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
   onRegisterSuccess,
   onOpenAttendeeList,
   isEditMode = false,
+  onUpdateInput,
 }) => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -231,7 +233,14 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                 <div className={`p-3.5 rounded-xl ${theme.badgeBg} border ${theme.accentBorder} flex items-center gap-2.5 ${theme.badgeText} text-xs`}>
                   <Gift className="w-4 h-4 shrink-0" />
                   <span>
-                    <strong>Ưu đãi Early Bird:</strong> {input.earlyBirdDiscount}
+                    <strong>Ưu đãi Early Bird:</strong>{' '}
+                    <InlineEditable
+                      value={input.earlyBirdDiscount}
+                      onSave={(val) => onUpdateInput?.('earlyBirdDiscount', val)}
+                      isEditMode={isEditMode}
+                      as="span"
+                      category={input.category}
+                    />
                   </span>
                 </div>
               )}

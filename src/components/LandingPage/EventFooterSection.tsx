@@ -2,7 +2,6 @@ import React from 'react';
 import type { EventInput, GeneratedContent, ThemeConfig } from '../../types';
 import { formatEventDate } from '../../utils/date';
 import { Calendar, MapPin, User, Mail, Phone, ShieldCheck, ArrowUpRight, Sparkles } from 'lucide-react';
-import { InlineEditable } from './InlineEditable';
 
 export interface EventFooterSectionProps {
   input: EventInput;
@@ -76,31 +75,12 @@ export const EventFooterSection: React.FC<EventFooterSectionProps> = ({
                 <Sparkles className={`w-4 h-4 ${theme.badgeText}`} />
               </div>
               <h3 className="font-extrabold text-lg text-slate-900 dark:text-white tracking-tight">
-                {isEditMode ? (
-                  <InlineEditable
-                    value={input.eventName}
-                    onSave={(val) => onUpdateInput?.('eventName', val)}
-                    isEditMode={isEditMode}
-                    placeholder="Tên sự kiện..."
-                  />
-                ) : (
-                  input.eventName
-                )}
+                {input.eventName}
               </h3>
             </div>
 
             <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-              {isEditMode ? (
-                <InlineEditable
-                  value={content.tagline || content.subHeadline || 'Sự kiện chất lượng cao hàng đầu dành cho cộng đồng.'}
-                  onSave={(val) => onUpdateContent?.('tagline', val)}
-                  isEditMode={isEditMode}
-                  multiline
-                  placeholder="Mô tả tóm tắt sự kiện..."
-                />
-              ) : (
-                content.tagline || content.subHeadline || 'Sự kiện chất lượng cao hàng đầu dành cho cộng đồng.'
-              )}
+              {content.tagline || content.subHeadline || 'Sự kiện chất lượng cao hàng đầu dành cho cộng đồng.'}
             </p>
 
             <div className="pt-2 flex flex-wrap gap-2">
@@ -130,16 +110,7 @@ export const EventFooterSection: React.FC<EventFooterSectionProps> = ({
                 <MapPin className="w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-medium text-slate-900 dark:text-slate-200 block">Địa điểm tổ chức:</span>
-                  {isEditMode ? (
-                    <InlineEditable
-                      value={input.location}
-                      onSave={(val) => onUpdateInput?.('location', val)}
-                      isEditMode={isEditMode}
-                      placeholder="Địa điểm..."
-                    />
-                  ) : (
-                    <span>{input.location || 'Địa điểm tổ chức sự kiện'}</span>
-                  )}
+                  <span>{input.location || 'Địa điểm tổ chức sự kiện'}</span>
                 </div>
               </li>
 

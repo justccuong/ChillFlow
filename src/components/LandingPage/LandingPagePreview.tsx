@@ -1010,6 +1010,8 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
               registeredCount={registeredCount}
               onRegisterSuccess={onRegisterSuccess}
               onOpenAttendeeList={onOpenAttendeeList}
+              isEditMode={isEditMode}
+              onUpdateInput={handleUpdateInputField}
             />
           </div>
         )}

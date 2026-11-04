@@ -82,7 +82,7 @@ export const EventGallerySection: React.FC<EventGallerySectionProps> = ({
               return (
                 <div
                   key={idx}
-                  className={`${spanClass} rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 relative group ${totalCount === 1 ? 'h-80 md:h-[400px]' : 'h-72 md:h-96'} shadow-xl bg-slate-900`}
+                  className={`${spanClass} rounded-none overflow-hidden border border-slate-200 dark:border-slate-800 relative group ${totalCount === 1 ? 'h-80 md:h-[400px]' : 'h-72 md:h-96'} shadow-xl bg-slate-900`}
                 >
                   <img
                     src={photo.url}
@@ -152,7 +152,7 @@ export const EventGallerySection: React.FC<EventGallerySectionProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
               {/* Primary Bento Photo (Span 7) */}
               {effectivePhotos[0] && (
-                <div className="md:col-span-7 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 relative group h-72 md:h-96 shadow-xl bg-slate-900">
+                <div className="md:col-span-7 rounded-none overflow-hidden border border-slate-200 dark:border-slate-800 relative group h-72 md:h-96 shadow-xl bg-slate-900">
                   <img
                     src={effectivePhotos[0].url}
                     alt={effectivePhotos[0].title}
@@ -220,7 +220,7 @@ export const EventGallerySection: React.FC<EventGallerySectionProps> = ({
                   return (
                     <div
                       key={actualIdx}
-                      className="rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 relative group h-36 md:h-[184px] shadow-lg bg-slate-900"
+                      className="rounded-none overflow-hidden border border-slate-200 dark:border-slate-800 relative group h-36 md:h-[184px] shadow-lg bg-slate-900"
                     >
                       <img
                         src={photo.url}
@@ -287,13 +287,19 @@ export const EventGallerySection: React.FC<EventGallerySectionProps> = ({
 
             {/* Additional Photos Grid for 4+ items */}
             {effectivePhotos.length > 3 && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+              <div className={`grid gap-4 pt-2 ${
+                effectivePhotos.length - 3 === 1
+                  ? 'grid-cols-1'
+                  : effectivePhotos.length - 3 === 2
+                  ? 'grid-cols-1 md:grid-cols-2'
+                  : 'grid-cols-1 md:grid-cols-3'
+              }`}>
                 {effectivePhotos.slice(3).map((photo, sliceIdx) => {
                   const actualIdx = sliceIdx + 3;
                   return (
                     <div
                       key={actualIdx}
-                      className="rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 relative group h-56 shadow-lg bg-slate-900"
+                      className="rounded-none overflow-hidden border border-slate-200 dark:border-slate-800 relative group h-56 shadow-lg bg-slate-900"
                     >
                       <img
                         src={photo.url}

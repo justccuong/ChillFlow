@@ -106,11 +106,6 @@ export const THEME_CONFIGS: Record<EventCategory, ThemeConfig> = {
         tag: 'Q&A Chuyên sâu',
         url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80',
       },
-      {
-        title: 'Networking & kết nối tuyển dụng công nghệ',
-        tag: 'Networking',
-        url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80',
-      },
     ],
     trustLogos: ['Google Cloud', 'OpenAI Ecosystem', 'FPT Software', 'NVIDIA Inception', 'VNG Tech'],
   },
