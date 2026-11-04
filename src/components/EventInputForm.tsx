@@ -168,10 +168,10 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
               key={idx}
               type="button"
               onClick={() => handleApplyPreset(idx)}
-              className={`text-xs px-3 py-1.5 rounded-lg border transition-colors cursor-pointer flex items-center gap-1.5 ${
+              className={`text-xs px-2.5 py-1 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
                 activePresetIndex === idx
-                  ? 'bg-indigo-600 text-white border-indigo-500 font-medium shadow-sm'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  ? 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border-indigo-500/30 font-semibold'
+                  : 'bg-slate-100/70 dark:bg-slate-800/40 text-slate-500 dark:text-slate-400 border-slate-200/60 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
             >
               {renderPresetIcon(p.iconType)}
@@ -198,6 +198,59 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
             </button>
           </div>
         )}
+        <div className="grid md:grid-cols-2 gap-5">
+          {/* Tên sự kiện */}
+          <div className="md:col-span-2 space-y-1.5">
+            <label htmlFor="eventName" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+              Tên sự kiện <span className="text-red-500 dark:text-red-400">*</span>
+            </label>
+            <input
+              id="eventName"
+              name="eventName"
+              type="text"
+              required
+              value={formData.eventName}
+              onChange={handleChange}
+              placeholder="VD: Hội thảo Công nghệ & AI Summit 2026"
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+
+          {/* Thời gian */}
+          <div className="space-y-1.5">
+            <label htmlFor="eventDate" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" /> Thời gian tổ chức <span className="text-red-500 dark:text-red-400">*</span>
+            </label>
+            <input
+              id="eventDate"
+              name="eventDate"
+              type="datetime-local"
+              required
+              value={formData.eventDate}
+              onChange={handleChange}
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+
+          {/* Địa điểm */}
+          <div className="space-y-1.5">
+            <label htmlFor="location" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" /> Địa điểm <span className="text-red-500 dark:text-red-400">*</span>
+            </label>
+            <input
+              id="location"
+              name="location"
+              type="text"
+              required
+              value={formData.location}
+              onChange={handleChange}
+              placeholder="VD: Toà nhà Innovation, Cầu Giấy hoặc Online qua Zoom"
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+
+        </div>
+
         {/* Category / Theme Selector */}
         <div className="space-y-2">
           <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
@@ -253,56 +306,6 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">
-          {/* Tên sự kiện */}
-          <div className="md:col-span-2 space-y-1.5">
-            <label htmlFor="eventName" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-              Tên sự kiện <span className="text-red-500 dark:text-red-400">*</span>
-            </label>
-            <input
-              id="eventName"
-              name="eventName"
-              type="text"
-              required
-              value={formData.eventName}
-              onChange={handleChange}
-              placeholder="VD: Hội thảo Công nghệ & AI Summit 2026"
-              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
-
-          {/* Thời gian */}
-          <div className="space-y-1.5">
-            <label htmlFor="eventDate" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" /> Thời gian tổ chức <span className="text-red-500 dark:text-red-400">*</span>
-            </label>
-            <input
-              id="eventDate"
-              name="eventDate"
-              type="datetime-local"
-              required
-              value={formData.eventDate}
-              onChange={handleChange}
-              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
-
-          {/* Địa điểm */}
-          <div className="space-y-1.5">
-            <label htmlFor="location" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" /> Địa điểm <span className="text-red-500 dark:text-red-400">*</span>
-            </label>
-            <input
-              id="location"
-              name="location"
-              type="text"
-              required
-              value={formData.location}
-              onChange={handleChange}
-              placeholder="VD: Toà nhà Innovation, Cầu Giấy hoặc Online qua Zoom"
-              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
-
           {/* Diễn giả */}
           <div className="space-y-1.5">
             <label htmlFor="speakerName" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
