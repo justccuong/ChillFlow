@@ -43,6 +43,8 @@ export const MyProjectsModal: React.FC<MyProjectsModalProps> = ({
   useEffect(() => {
     if (!isOpen) return;
 
+    if ((window as any).__lenis) (window as any).__lenis.stop();
+
     setProjects(getAllSavedProjects());
 
     const handleProjectsChanged = () => {
@@ -51,6 +53,7 @@ export const MyProjectsModal: React.FC<MyProjectsModalProps> = ({
 
     window.addEventListener(PROJECTS_CHANGE_EVENT, handleProjectsChanged);
     return () => {
+      if ((window as any).__lenis) (window as any).__lenis.start();
       window.removeEventListener(PROJECTS_CHANGE_EVENT, handleProjectsChanged);
     };
   }, [isOpen]);
@@ -91,9 +94,13 @@ export const MyProjectsModal: React.FC<MyProjectsModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="my-projects-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-md animate-in fade-in duration-200"
+      data-lenis-prevent
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-md animate-in fade-in duration-200 overscroll-contain"
     >
-      <div className="relative w-full max-w-3xl bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+      <div
+        data-lenis-prevent
+        className="relative w-full max-w-3xl bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col max-h-[85vh] overflow-hidden overscroll-contain"
+      >
         {/* Header */}
         <div className="px-6 py-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0 bg-slate-50/50 dark:bg-slate-900/50">
           <div className="flex items-center gap-3">
@@ -155,7 +162,7 @@ export const MyProjectsModal: React.FC<MyProjectsModalProps> = ({
         )}
 
         {/* Project List */}
-        <div className="p-6 overflow-y-auto space-y-3.5 flex-1">
+        <div className="p-6 overflow-y-auto space-y-3.5 flex-1 min-h-0 overscroll-contain" data-lenis-prevent>
           {projects.length === 0 ? (
             <div className="py-12 text-center space-y-3">
               <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto text-slate-400">

@@ -35,4 +35,17 @@ describe('Task 4: Mouse wheel scrolling in Template Catalog and Modals with Leni
     );
     expect(pricingModal).toContain('data-lenis-prevent');
   });
+
+  it('ensures MyProjectsModal scroll container has data-lenis-prevent, min-h-0, and Lenis pause/resume', () => {
+    const modalContent = fs.readFileSync(
+      path.resolve(__dirname, '../src/components/MyProjectsModal.tsx'),
+      'utf-8'
+    );
+    expect(modalContent).toContain('data-lenis-prevent');
+    expect(modalContent).toContain('overscroll-contain');
+    expect(modalContent).toContain('min-h-0');
+    expect(modalContent).toContain('__lenis');
+    expect(modalContent).toContain('.stop()');
+    expect(modalContent).toContain('.start()');
+  });
 });
