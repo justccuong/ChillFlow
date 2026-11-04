@@ -22,7 +22,7 @@ export const TrustBarSection: React.FC<TrustBarSectionProps> = ({
 
   return (
     <section
-      className="py-12 sm:py-16 bg-white dark:bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden group/trust transition-colors border-y border-slate-200/70 dark:border-slate-800/80"
+      className="py-12 sm:py-16 bg-white dark:bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden group/trust transition-colors"
       data-reveal
     >
       {/* Ambient background glow */}
@@ -33,7 +33,7 @@ export const TrustBarSection: React.FC<TrustBarSectionProps> = ({
       <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 text-center relative z-10 px-4">
         {/* Title & Edit Button Header */}
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-[11px] font-bold uppercase tracking-[0.25em] text-slate-700 dark:text-slate-300 shadow-sm transition-colors">
+          <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] text-slate-600 dark:text-slate-400">
             <ShieldCheck className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
             <InlineEditable
               value="ĐỒNG HÀNH & BẢO TRỢ CHUYÊN MÔN BỞI CÁC ĐỐI TÁC CÔNG NGHỆ"

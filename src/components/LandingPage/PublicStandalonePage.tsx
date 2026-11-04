@@ -12,9 +12,12 @@ import { EventGallerySection } from './EventGallerySection';
 import { StickyBottomCta } from './StickyBottomCta';
 import { EventFooterSection } from './EventFooterSection';
 import { SocialProofTicker } from './SocialProofTicker';
+import { PublicEventNavbar } from './PublicEventNavbar';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { useThemeMode } from '../../hooks/useThemeMode';
 import { recordView, recordConversion } from '../../services/publishService';
 import { saveAttendee, getStoredAttendees } from '../../services/storageService';
+import { getAllSavedProjects } from '../../services/projectStorageService';
 import { Zap, ArrowUp } from 'lucide-react';
 import { injectEventJsonLdAndMeta } from '../../utils/seo';
 
@@ -33,6 +36,12 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
   const { input, content, theme, userTier, slug } = page;
   const [attendees, setAttendees] = useState<Attendee[]>(() => getStoredAttendees(page.input.eventName));
   const registeredCount = attendees.length;
+
+  const { mode: themeMode, toggleMode } = useThemeMode();
+  const matchingProject = getAllSavedProjects().find(
+    (p) => p.slug === slug || p.id === slug || p.name === input.eventName
+  );
+  const isOwner = Boolean(matchingProject);
 
   useEffect(() => {
     // Record page view for analytics
@@ -68,22 +77,33 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans overflow-x-hidden selection:bg-indigo-500 selection:text-white">
-      {/* 1. Sticky ConvertFlow Badge for Free Tier */}
+      {/* 1. Free Tier Attribution Bar (if applicable) */}
       {userTier === 'free' && (
-        <aside className="fixed top-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md text-slate-300 text-xs py-2 px-4 border-b border-slate-800 flex items-center justify-between shadow-sm">
+        <aside className="bg-slate-950 text-slate-300 text-xs py-1.5 px-4 border-b border-slate-800 flex items-center justify-between shadow-sm z-50">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span>Trang sự kiện tạo tự động bằng <strong>ConvertFlow AI</strong></span>
           </div>
           <a
             href="/"
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-600/30 text-indigo-400 hover:bg-indigo-600 hover:text-white transition-all font-semibold"
+            className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-600/30 text-indigo-400 hover:bg-indigo-600 hover:text-white transition-all font-semibold"
           >
             <Zap className="w-3.5 h-3.5" />
             <span>Tự tạo trang miễn phí</span>
           </a>
         </aside>
       )}
+
+      {/* 2. Public Event Attendee Header with Theme Toggle & Permission Separation */}
+      <PublicEventNavbar
+        eventName={input.eventName}
+        theme={theme}
+        onScrollToRegister={scrollToRegistration}
+        isOwner={isOwner}
+        matchingProjectId={matchingProject?.id}
+        themeMode={themeMode}
+        onToggleTheme={toggleMode}
+      />
 
       <main className="flex-1">
         {/* 2. Hero Section */}
