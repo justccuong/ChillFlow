@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import type { EventInput, GeneratedContent, CROEvaluation, Attendee, EventCategory, SponsorItem, BenefitItem, AgendaItem, FaqItem, TestimonialItem, GalleryPhoto } from '../../types';
 import { getThemeForCategory, CATEGORIES } from '../../services/themeEngine';
-import { saveCurrentEventState } from '../../services/storageService';
+import { saveCurrentEventState, getStoredAttendees } from '../../services/storageService';
 import { HeroSection } from './HeroSection';
 import { TrustBarSection } from './TrustBarSection';
 import { BenefitsSection } from './BenefitsSection';
@@ -59,6 +59,7 @@ interface LandingPagePreviewProps {
   content: GeneratedContent;
   cro: CROEvaluation;
   registeredCount: number;
+  attendees?: Attendee[];
   onRegisterSuccess: (attendee: Omit<Attendee, 'id' | 'registeredAt'>) => void;
   onOpenAttendeeList: () => void;
   onOptimizeCRO: () => void;
@@ -76,6 +77,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   content,
   cro,
   registeredCount,
+  attendees,
   onRegisterSuccess,
   onOpenAttendeeList,
   onOptimizeCRO,
@@ -87,6 +89,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   userProfile,
   onTriggerUpgrade,
 }) => {
+  const currentAttendees = attendees ?? getStoredAttendees(input.eventName);
   const [headlineVariant, setHeadlineVariant] = useState<'A' | 'B'>('A');
   const [showCRODrawer, setShowCRODrawer] = useState<boolean>(false);
   const [currentCategory, setCurrentCategory] = useState<EventCategory>(input.category || 'ai-tech');
@@ -1203,7 +1206,7 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
       </Suspense>
 
       {/* ConvertFlow Social Proof Live Ticker */}
-      <SocialProofTicker />
+      <SocialProofTicker attendees={currentAttendees} />
       {/* Onboarding Quick Tour Guide */}
       <QuickTourGuide
         isOpen={isTourOpen}

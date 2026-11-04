@@ -1,63 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle2, X } from 'lucide-react';
+import type { Attendee } from '../../types';
 
-interface SocialProofItem {
-  name: string;
-  location: string;
-  ticketType: string;
-  timeAgo: string;
-  avatar: string;
+interface SocialProofTickerProps {
+  attendees?: Attendee[];
 }
 
-const SAMPLE_EVENTS: SocialProofItem[] = [
-  {
-    name: 'Nguyễn Hải Đăng',
-    location: 'Hà Nội',
-    ticketType: 'Vé Early Bird',
-    timeAgo: '2 phút trước',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80',
-  },
-  {
-    name: 'Hoàng Thu Trang',
-    location: 'TP. Hồ Chí Minh',
-    ticketType: 'Vé VIP Pass',
-    timeAgo: '5 phút trước',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
-  },
-  {
-    name: 'Lê Minh Tuấn',
-    location: 'Đà Nẵng',
-    ticketType: 'Vé Standard',
-    timeAgo: '11 phút trước',
-    avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100&auto=format&fit=crop&q=80',
-  },
-  {
-    name: 'Vũ Thùy Linh',
-    location: 'Cần Thơ',
-    ticketType: 'Vé Nhóm 3 người',
-    timeAgo: '18 phút trước',
-    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&auto=format&fit=crop&q=80',
-  },
-];
+function formatTimeAgo(timeStr?: string): string {
+  if (!timeStr) return 'Vừa xong';
+  try {
+    const time = new Date(timeStr).getTime();
+    if (isNaN(time)) return 'Vừa xong';
+    const diffSec = Math.floor((Date.now() - time) / 1000);
+    if (diffSec < 60) return 'Vừa xong';
+    if (diffSec < 3600) return `${Math.floor(diffSec / 60)} phút trước`;
+    if (diffSec < 86400) return `${Math.floor(diffSec / 3600)} giờ trước`;
+    return `${Math.floor(diffSec / 86400)} ngày trước`;
+  } catch {
+    return 'Vừa xong';
+  }
+}
 
-export const SocialProofTicker: React.FC = () => {
+const ActiveSocialProofTicker: React.FC<{ attendees: Attendee[] }> = ({ attendees }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
-    if (isDismissed) return;
+    if (isDismissed || attendees.length === 0) return;
 
     // Show after initial 4 seconds
     const initialTimer = setTimeout(() => {
       setIsVisible(true);
     }, 4000);
 
-    // Loop interval: show for 6s, hide for 14s
+    // Loop interval: show for 6s, hide for 10s
     const loopInterval = setInterval(() => {
       setIsVisible(false);
       setTimeout(() => {
-        setCurrentIndex(prev => (prev + 1) % SAMPLE_EVENTS.length);
+        setCurrentIndex(prev => (prev + 1) % attendees.length);
         setIsVisible(true);
       }, 10000);
     }, 18000);
@@ -66,21 +47,22 @@ export const SocialProofTicker: React.FC = () => {
       clearTimeout(initialTimer);
       clearInterval(loopInterval);
     };
-  }, [isDismissed]);
+  }, [isDismissed, attendees.length]);
 
-  if (isDismissed || !isVisible) return null;
+  if (isDismissed || !isVisible || attendees.length === 0) return null;
 
-  const item = SAMPLE_EVENTS[currentIndex];
+  const item = attendees[currentIndex % attendees.length];
+  const ticketLabel = item.ticketType === 'early-bird' ? 'Vé Early Bird' : 'Vé Tiêu chuẩn';
 
   return (
     <div className="fixed bottom-6 left-6 z-40 max-w-sm animate-in fade-in slide-in-from-bottom-5 duration-300">
       <div className="p-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl flex items-center gap-3">
         <div className="relative shrink-0">
-          <img
-            src={item.avatar}
-            alt={item.name}
-            className="w-10 h-10 rounded-full object-cover border-2 border-indigo-500/50"
-          />
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500/20 via-cyan-500/20 to-indigo-600/30 border-2 border-indigo-500/40 flex items-center justify-center text-indigo-600 dark:text-cyan-400">
+            <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+            </svg>
+          </div>
           <div className="absolute -bottom-1 -right-1 bg-emerald-500 text-white rounded-full p-0.5">
             <CheckCircle2 className="w-3 h-3" />
           </div>
@@ -89,14 +71,13 @@ export const SocialProofTicker: React.FC = () => {
         <div className="flex-1 min-w-0 pr-2">
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-bold text-slate-900 dark:text-white truncate">
-              {item.name}
+              {item.fullName}
             </span>
-            <span className="text-[10px] text-slate-400">({item.location})</span>
           </div>
           <p className="text-[11px] text-slate-600 dark:text-slate-300 truncate">
-            Vừa đăng ký <strong className="text-indigo-600 dark:text-indigo-400 font-semibold">{item.ticketType}</strong>
+            Vừa đăng ký <strong className="text-indigo-600 dark:text-indigo-400 font-semibold">{ticketLabel}</strong>
           </p>
-          <span className="text-[10px] text-slate-400 block">{item.timeAgo}</span>
+          <span className="text-[10px] text-slate-400 block">{formatTimeAgo(item.registeredAt)}</span>
         </div>
 
         <button
@@ -110,4 +91,11 @@ export const SocialProofTicker: React.FC = () => {
       </div>
     </div>
   );
+};
+
+export const SocialProofTicker: React.FC<SocialProofTickerProps> = ({ attendees }) => {
+  if (!attendees || attendees.length === 0) {
+    return null;
+  }
+  return <ActiveSocialProofTicker attendees={attendees} />;
 };

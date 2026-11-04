@@ -7,54 +7,19 @@ const CURRENT_CONTENT_KEY = `${STORAGE_KEY_PREFIX}current_content`;
 const CURRENT_CRO_KEY = `${STORAGE_KEY_PREFIX}current_cro`;
 const API_KEY_STORAGE = `${STORAGE_KEY_PREFIX}gemini_api_key`;
 
-// Default seed attendees so the landing page already looks active and high-converting!
-const DEFAULT_ATTENDEES: Attendee[] = [
-  {
-    id: 'att-1',
-    fullName: 'Trần Minh Hoàng',
-    email: 'hoang.tm@gmail.com',
-    phone: '0912***456',
-    registeredAt: '2026-10-21 08:30',
-    ticketType: 'early-bird',
-  },
-  {
-    id: 'att-2',
-    fullName: 'Nguyễn Thị Thuỳ Dương',
-    email: 'duong.ntt@techfirm.vn',
-    phone: '0988***123',
-    registeredAt: '2026-10-21 09:15',
-    ticketType: 'early-bird',
-  },
-  {
-    id: 'att-3',
-    fullName: 'Lê Quang Huy',
-    email: 'quanghuy.dev@gmail.com',
-    phone: '0903***789',
-    registeredAt: '2026-10-21 11:40',
-    ticketType: 'early-bird',
-  },
-  {
-    id: 'att-4',
-    fullName: 'Phạm Đức Thắng',
-    email: 'thang.pd@startup.io',
-    phone: '0971***666',
-    registeredAt: '2026-10-21 14:05',
-    ticketType: 'standard',
-  },
-];
+// Default seed attendees: start at 0 for real zero-mock state
+const DEFAULT_ATTENDEES: Attendee[] = [];
 
 export function getStoredAttendees(eventIdentifier = 'default'): Attendee[] {
   try {
     const raw = localStorage.getItem(`${ATTENDEES_KEY}_${eventIdentifier}`);
     if (!raw) {
-      // Initialize with seed data
-      localStorage.setItem(`${ATTENDEES_KEY}_${eventIdentifier}`, JSON.stringify(DEFAULT_ATTENDEES));
-      return DEFAULT_ATTENDEES;
+      return [];
     }
     return JSON.parse(raw);
   } catch (e) {
     console.error('Failed to read attendees from localStorage', e);
-    return DEFAULT_ATTENDEES;
+    return [];
   }
 }
 

@@ -34,9 +34,15 @@ export const AnalyticsSummaryCards: React.FC<AnalyticsSummaryCardsProps> = ({
           <div className="text-2xl font-extrabold text-slate-900 dark:text-white font-heading">
             {pageViews.toLocaleString('vi-VN')}
           </div>
-          <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">
-            +18.4% so với trung bình tuần
-          </p>
+          {pageViews === 0 ? (
+            <p className="text-[11px] text-slate-400 font-medium mt-0.5">
+              Chưa có lượt truy cập
+            </p>
+          ) : (
+            <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">
+              +18.4% so với trung bình tuần
+            </p>
+          )}
         </div>
       </div>
 
@@ -78,9 +84,15 @@ export const AnalyticsSummaryCards: React.FC<AnalyticsSummaryCardsProps> = ({
           <div className="text-2xl font-extrabold text-slate-900 dark:text-white font-heading">
             {conversionRate}%
           </div>
-          <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">
-            Cao gấp 1.8x mốc chuẩn sự kiện (3.5%)
-          </p>
+          {conversionRate === 0 ? (
+            <p className="text-[11px] text-slate-400 font-medium mt-0.5">
+              Đang chờ lượt đăng ký đầu tiên
+            </p>
+          ) : (
+            <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">
+              Cao gấp 1.8x mốc chuẩn sự kiện (3.5%)
+            </p>
+          )}
         </div>
       </div>
 

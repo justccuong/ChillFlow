@@ -39,13 +39,6 @@ export const ConferenceHero: React.FC<HeroProps> = ({
     theme.speakerImage ||
     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80';
 
-  const attendeeAvatars = [
-    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80',
-    'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80',
-    'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=100&q=80',
-  ];
-
   return (
     <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-8">
       {/* Top Panoramic Editorial Header: Centered & Majestic */}
@@ -134,33 +127,31 @@ export const ConferenceHero: React.FC<HeroProps> = ({
             </div>
 
             {/* Live Social Proof Badge */}
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 text-xs text-slate-500 dark:text-slate-400">
-              <div className="flex -space-x-2">
-                {attendeeAvatars.map((src, i) => (
-                  <img
-                    key={i}
-                    src={src}
-                    alt="Attendee"
-                    className="w-6 h-6 rounded-full border-2 border-white dark:border-slate-900 object-cover"
-                  />
-                ))}
+            {registeredCount > 0 ? (
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 text-xs text-slate-500 dark:text-slate-400">
+                <div className="flex -space-x-2">
+                  {Array.from({ length: Math.min(registeredCount, 4) }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-6 h-6 rounded-full bg-gradient-to-tr from-indigo-500 to-cyan-400 border-2 border-white dark:border-slate-900 flex items-center justify-center text-[10px] font-bold text-white shadow-xs"
+                      title="Người tham dự"
+                    >
+                      <svg className="w-3.5 h-3.5 text-white/90" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  ))}
+                </div>
+                <span className="font-semibold text-slate-700 dark:text-slate-300">
+                  <NumberTicker value={registeredCount} /> người đã đăng ký
+                </span>
               </div>
-              <span className="font-semibold text-slate-700 dark:text-slate-300">
-                {registeredCount > 0 ? (
-                  <>
-                    <NumberTicker value={registeredCount} /> người đã đăng ký
-                  </>
-                ) : (
-                  <>
-                    Hơn <NumberTicker value={120} /> người đã giữ chỗ
-                  </>
-                )}
-              </span>
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-              <span className="text-emerald-600 dark:text-emerald-400 font-medium">
-                Chỉ còn <NumberTicker value={38} /> vé Early Bird
-              </span>
-            </div>
+            ) : (
+              <div className="flex items-center justify-center sm:justify-start gap-2 text-xs text-indigo-600 dark:text-indigo-400 font-semibold bg-indigo-500/10 px-3 py-1.5 rounded-full border border-indigo-500/20 w-fit mx-auto sm:mx-0">
+                <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+                <span>Hãy là người đầu tiên đăng ký vé Early Bird!</span>
+              </div>
+            )}
           </div>
 
           {/* Prominent High-Impact Hero Countdown Timer */}

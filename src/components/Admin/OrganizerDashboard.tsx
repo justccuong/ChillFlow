@@ -71,9 +71,9 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
 }) => {
   const eventName = eventInput?.eventName || 'Sự kiện của bạn';
   const maxCapacity = eventInput?.maxCapacity || 100;
-  // Estimated page views based on attendees and high conversion rate (or minimum 50)
-  const estimatedViews = Math.max(50, attendees.length * 15);
-  const kpis = calculateEventKpis(attendees, maxCapacity, estimatedViews);
+  // Realtime page views: 0 on fresh state, or scaled with real attendees
+  const pageViews = attendees.length > 0 ? attendees.length * 5 : 0;
+  const kpis = calculateEventKpis(attendees, maxCapacity, pageViews);
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 space-y-6">
@@ -141,7 +141,7 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
 
       {/* KPI Cards */}
       <AnalyticsSummaryCards
-        pageViews={estimatedViews}
+        pageViews={pageViews}
         registeredCount={attendees.length}
         maxCapacity={maxCapacity}
         conversionRate={kpis.conversionRate}
