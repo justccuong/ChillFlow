@@ -107,7 +107,7 @@ export function generateOpenGraphMetaHtml(
   const title = `${input.eventName} | ConvertFlow AI`;
   const description = content.subHeadline || content.headline;
   const image = input.heroImageUrl || theme.heroImage;
-  const schema = JSON.stringify(buildEventSchemaJsonLd(input, content, theme), null, 2);
+  const schema = safeJsonLdStringify(buildEventSchemaJsonLd(input, content, theme));
 
   return `
     <!-- Primary Meta Tags -->
@@ -177,7 +177,7 @@ export function injectEventJsonLdAndMeta(
     scriptEl.type = 'application/ld+json';
     document.head.appendChild(scriptEl);
   }
-  scriptEl.textContent = JSON.stringify(buildEventSchemaJsonLd(input, content, theme), null, 2);
+  scriptEl.textContent = safeJsonLdStringify(buildEventSchemaJsonLd(input, content, theme));
   createdElements.push(scriptEl);
 
   return () => {
@@ -189,7 +189,15 @@ export function injectEventJsonLdAndMeta(
   };
 }
 
-function escapeHtml(str: string): string {
+export function safeJsonLdStringify(obj: any): string {
+  return JSON.stringify(obj, null, 2)
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026');
+}
+
+export function escapeHtml(str: string | undefined | null): string {
+  if (!str) return '';
   return str
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
