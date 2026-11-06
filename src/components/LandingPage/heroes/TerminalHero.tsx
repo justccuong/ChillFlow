@@ -3,7 +3,7 @@ import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
 import { formatEventDate } from '../../../utils/date';
 import { InlineEditable } from '../InlineEditable';
-import { Calendar, MapPin, ArrowRight, Terminal, Copy, Check, Code2, Cpu, GitBranch, Layers, CheckCircle2 } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, Terminal, Copy, Check, Code2, Cpu, GitBranch, Layers, CheckCircle2, Play, Loader2 } from 'lucide-react';
 import { NumberTicker } from '../../magicui';
 
 interface HeroProps {
@@ -31,14 +31,20 @@ export const TerminalHero: React.FC<HeroProps> = ({
   onUpdateInputField,
   onSaveHeadline,
 }) => {
-  const [copied, setCopied] = useState(false);
+  const [runState, setRunState] = useState<'idle' | 'running' | 'success'>('idle');
 
   const runCommand = `npx create-vibe-event@2026 --register --session=${encodeURIComponent(input.eventName || 'devcon')}`;
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(runCommand);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleRun = () => {
+    if (runState === 'running') return;
+    setRunState('running');
+    setTimeout(() => {
+      setRunState('success');
+      onScrollToRegister();
+      setTimeout(() => {
+        setRunState('idle');
+      }, 3500);
+    }, 300);
   };
 
   return (
@@ -94,19 +100,33 @@ export const TerminalHero: React.FC<HeroProps> = ({
         <span className="flex-1 truncate select-all text-left">{runCommand}</span>
         <button
           type="button"
-          onClick={handleCopy}
-          className="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 font-semibold flex items-center gap-1.5 transition-all cursor-pointer hover:scale-105"
-          title="Sao chép lệnh cài đặt"
+          onClick={handleRun}
+          disabled={runState === 'running'}
+          className={`px-3.5 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+            runState === 'success'
+              ? 'bg-emerald-500/30 text-emerald-300 border border-emerald-400/60 shadow-md shadow-emerald-500/20'
+              : runState === 'running'
+              ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 cursor-wait'
+              : 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 hover:scale-105 active:scale-95'
+          }`}
+          title="Chạy lệnh đăng ký vé"
         >
-          {copied ? (
+          {runState === 'running' && (
             <>
-              <Check className="w-3.5 h-3.5 text-emerald-400" />
-              <span>COPIED!</span>
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-emerald-400" />
+              <span>Đang chạy...</span>
             </>
-          ) : (
+          )}
+          {runState === 'success' && (
             <>
-              <Copy className="w-3.5 h-3.5" />
-              <span>COPY</span>
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Chạy thành công!</span>
+            </>
+          )}
+          {runState === 'idle' && (
+            <>
+              <Play className="w-3.5 h-3.5 fill-current text-emerald-400" />
+              <span>RUN</span>
             </>
           )}
         </button>

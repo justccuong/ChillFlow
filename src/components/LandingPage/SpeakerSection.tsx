@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import type { EventInput, ThemeConfig } from '../../types';
-import { Camera, Award, CheckCircle } from 'lucide-react';
+import { Camera, Award, CheckCircle, Plus, X } from 'lucide-react';
 import { InlineEditable } from './InlineEditable';
 
 interface SpeakerSectionProps {
@@ -12,6 +12,11 @@ interface SpeakerSectionProps {
   category?: string;
 }
 
+const DEFAULT_SPEAKER_EXPERIENCE = [
+  '10+ năm kinh nghiệm thực chiến',
+  'Cố vấn cho hàng chục dự án lớn',
+];
+
 export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
   input,
   theme,
@@ -21,6 +26,36 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
   category = 'ai-tech',
 }) => {
   const speakerPhoto = input.speakerAvatarUrl || theme.speakerImage;
+
+  const [experiences, setExperiences] = useState<string[]>(
+    input.speakerExperience && input.speakerExperience.length > 0
+      ? input.speakerExperience
+      : DEFAULT_SPEAKER_EXPERIENCE
+  );
+
+  useEffect(() => {
+    if (input.speakerExperience && input.speakerExperience.length > 0) {
+      setExperiences(input.speakerExperience);
+    }
+  }, [input.speakerExperience]);
+
+  const handleUpdateExperience = (idx: number, newVal: string) => {
+    const updated = experiences.map((exp, i) => (i === idx ? newVal : exp));
+    setExperiences(updated);
+    onUpdateInputField?.('speakerExperience', updated);
+  };
+
+  const handleAddExperience = () => {
+    const updated = [...experiences, 'Kinh nghiệm & chuyên môn'];
+    setExperiences(updated);
+    onUpdateInputField?.('speakerExperience', updated);
+  };
+
+  const handleDeleteExperience = (idx: number) => {
+    const updated = experiences.filter((_, i) => i !== idx);
+    setExperiences(updated);
+    onUpdateInputField?.('speakerExperience', updated);
+  };
 
   return (
     <section className="py-24 px-4 md:px-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden transition-colors border-t border-slate-200/60 dark:border-slate-850">
@@ -99,16 +134,45 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
               />
             </div>
 
-            {/* Credibility Checklist */}
-            <div className="pt-2 flex flex-wrap gap-4 justify-center md:justify-start text-xs text-slate-700 dark:text-slate-300">
-              <div className="flex items-center gap-1.5">
-                <CheckCircle className="w-4 h-4 text-emerald-500" />
-                <span>10+ năm kinh nghiệm thực chiến</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Award className="w-4 h-4 text-amber-500" />
-                <span>Cố vấn cho hàng chục dự án lớn</span>
-              </div>
+            {/* Credibility Checklist - Editable in Visual CMS */}
+            <div className="pt-2 flex flex-wrap gap-4 justify-center md:justify-start text-xs sm:text-sm text-slate-700 dark:text-slate-300 items-center">
+              {experiences.map((exp, idx) => (
+                <div key={idx} className="flex items-center gap-1.5 group/exp relative">
+                  {idx % 2 === 0 ? (
+                    <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
+                  ) : (
+                    <Award className="w-4 h-4 text-amber-500 shrink-0" />
+                  )}
+                  <InlineEditable
+                    value={exp}
+                    onSave={(val) => handleUpdateExperience(idx, val)}
+                    isEditMode={isEditMode}
+                    as="span"
+                    category={category}
+                  />
+                  {isEditMode && (
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteExperience(idx)}
+                      className="ml-1 p-0.5 rounded text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                      title="Xóa mục kinh nghiệm này"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  )}
+                </div>
+              ))}
+
+              {isEditMode && (
+                <button
+                  type="button"
+                  onClick={handleAddExperience}
+                  className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1 transition-all cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Thêm kinh nghiệm</span>
+                </button>
+              )}
             </div>
           </div>
         </div>

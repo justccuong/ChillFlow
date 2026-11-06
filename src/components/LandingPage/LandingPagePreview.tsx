@@ -877,10 +877,20 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
             {currentCategory === 'developer' && (
               <>
                 <div data-reveal data-reveal-delay="100">
-                  <TerminalCodeSection theme={theme} isEditMode={isEditMode} />
+                  <TerminalCodeSection
+                    theme={theme}
+                    isEditMode={isEditMode}
+                    techStack={content.techStack}
+                    onUpdateTechStack={(newTech) => handleUpdateContentField('techStack', newTech)}
+                  />
                 </div>
                 <div data-reveal data-reveal-delay="100">
-                  <DeveloperCodeSandboxSection theme={theme} isEditMode={isEditMode} />
+                  <DeveloperCodeSandboxSection
+                    theme={theme}
+                    isEditMode={isEditMode}
+                    sandboxConfig={content.developerSandbox}
+                    onUpdateSandbox={(newSandbox) => handleUpdateContentField('developerSandbox', newSandbox)}
+                  />
                 </div>
               </>
             )}
@@ -902,7 +912,12 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
 
             {currentCategory === 'design' && (
               <div data-reveal data-reveal-delay="100">
-                <CreativeMasonrySection theme={theme} isEditMode={isEditMode} />
+                <CreativeMasonrySection
+                  theme={theme}
+                  isEditMode={isEditMode}
+                  steps={content.creativeProcessSteps}
+                  onUpdateSteps={(newSteps) => handleUpdateContentField('creativeProcessSteps', newSteps)}
+                />
               </div>
             )}
 

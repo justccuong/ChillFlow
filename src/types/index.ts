@@ -53,6 +53,7 @@ export interface EventInput {
   earlyBirdDiscount: string;
   targetAudience?: string;
   maxCapacity?: number;
+  speakerExperience?: string[];
 }
 
 export interface BenefitItem {
@@ -84,6 +85,25 @@ export interface TestimonialItem {
   rating: number;
 }
 
+export interface TechStackItem {
+  name: string;
+  role: string;
+  tag: string;
+}
+
+export interface TechStackConfig {
+  title?: string;
+  subTitle?: string;
+  items?: TechStackItem[];
+}
+
+export interface DeveloperSandboxConfig {
+  title?: string;
+  subTitle?: string;
+  filename?: string;
+  code?: string;
+}
+
 export interface GeneratedContent {
   headline: string;
   alternativeHeadline: string;
@@ -97,6 +117,10 @@ export interface GeneratedContent {
   earlyBirdBadge: string;
   ctaButtonText: string;
   tagline: string;
+  techStack?: TechStackConfig;
+  developerSandbox?: DeveloperSandboxConfig;
+  creativeTags?: string[];
+  creativeProcessSteps?: { step: string; title: string; desc: string }[];
 }
 
 export interface SemanticPageSchema extends GeneratedContent {

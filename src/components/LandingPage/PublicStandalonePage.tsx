@@ -24,6 +24,7 @@ import { injectEventJsonLdAndMeta } from '../../utils/seo';
 // Code Splitting: Lazy-load Archetype Interactive Sections & Exit Intent
 const MasterclassStatsSection = lazy(() => import('./sections/MasterclassStatsSection'));
 const TerminalCodeSection = lazy(() => import('./sections/TerminalCodeSection'));
+const DeveloperCodeSandboxSection = lazy(() => import('./sections/DeveloperCodeSandboxSection'));
 const ExecutivePitchesSection = lazy(() => import('./sections/ExecutivePitchesSection'));
 const CreativeMasonrySection = lazy(() => import('./sections/CreativeMasonrySection'));
 const AcademySyllabusSection = lazy(() => import('./sections/AcademySyllabusSection'));
@@ -140,9 +141,14 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
           )}
 
           {theme.layout === 'terminal' && (
-            <div data-reveal data-reveal-delay="100">
-              <TerminalCodeSection theme={theme} />
-            </div>
+            <>
+              <div data-reveal data-reveal-delay="100">
+                <TerminalCodeSection theme={theme} techStack={content.techStack} />
+              </div>
+              <div data-reveal data-reveal-delay="100">
+                <DeveloperCodeSandboxSection theme={theme} sandboxConfig={content.developerSandbox} />
+              </div>
+            </>
           )}
 
           {theme.layout === 'executive' && (
@@ -153,7 +159,7 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
 
           {theme.layout === 'creative' && (
             <div data-reveal data-reveal-delay="100">
-              <CreativeMasonrySection theme={theme} />
+              <CreativeMasonrySection theme={theme} steps={content.creativeProcessSteps} />
             </div>
           )}
 
