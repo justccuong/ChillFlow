@@ -1,7 +1,7 @@
 import { InlineEditable } from '../InlineEditable';
 import React, { useState } from 'react';
 import type { ThemeConfig } from '../../../types';
-import { BookOpen, ChevronDown, ChevronUp, CheckCircle, Clock, GraduationCap } from 'lucide-react';
+import { BookOpen, ChevronDown, ChevronUp, CheckCircle, Clock } from 'lucide-react';
 
 interface AcademyProps {
   isEditMode?: boolean;

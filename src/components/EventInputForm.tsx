@@ -36,6 +36,24 @@ const renderCategoryIcon = (id: EventCategory, className = 'w-6 h-6') => {
   }
 };
 
+const getCategoryMicroBadge = (id: EventCategory): string => {
+  switch (id) {
+    case 'ai-tech': return 'AI Summit';
+    case 'marketing': return 'CRO Funnel';
+    case 'startup': return 'Dealflow VC';
+    case 'developer': return 'CLI Native';
+    case 'design': return 'Awwwards Art';
+    case 'education': return 'Chứng chỉ ISO';
+    case 'studio-3d': return '3D WebGL';
+    case 'festival-music': return 'EDM & Live';
+    case 'sports-marathon': return 'Race & BIB';
+    case 'culinary-lifestyle': return 'Michelin Taste';
+    case 'community-career': return 'Job Fair';
+    case 'universal-showcase': return 'All-in-One';
+    default: return 'Tiêu chuẩn';
+  }
+};
+
 const renderPresetIcon = (iconType: string) => {
   switch (iconType) {
     case 'ai': return <Cpu className="w-3.5 h-3.5 text-cyan-400" />;
@@ -273,6 +291,13 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
                 >
                   {renderCategoryIcon(cat.id, 'w-3.5 h-3.5')}
                   <span>{cat.label}</span>
+                  <span className={`text-[10px] font-normal px-1.5 py-0.2 rounded-md ${
+                    isSelected
+                      ? 'bg-indigo-700/80 text-indigo-100'
+                      : 'bg-slate-200/70 dark:bg-slate-700/60 text-slate-500 dark:text-slate-400'
+                  }`}>
+                    {getCategoryMicroBadge(cat.id)}
+                  </span>
                 </button>
               );
             })}
