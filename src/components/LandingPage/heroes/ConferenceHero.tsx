@@ -178,8 +178,8 @@ export const ConferenceHero: React.FC<HeroProps> = ({
               {/* Smooth Bottom Gradient Fade */}
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
 
-              {/* Floating Change Photo Pill */}
-              {onOpenSpeakerImagePicker && (
+              {/* Floating Change Photo Pill (Only in Organizer Edit Mode) */}
+              {isEditMode && onOpenSpeakerImagePicker && (
                 <button
                   type="button"
                   onClick={onOpenSpeakerImagePicker}

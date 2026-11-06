@@ -19,8 +19,8 @@ interface HeroSectionProps {
   headlineToDisplay: string;
   onScrollToRegister: () => void;
   registeredCount: number;
-  onOpenHeroImagePicker: () => void;
-  onOpenSpeakerImagePicker: () => void;
+  onOpenHeroImagePicker?: () => void;
+  onOpenSpeakerImagePicker?: () => void;
   isEditMode?: boolean;
   onUpdateContentField?: (field: keyof GeneratedContent, val: unknown) => void;
   onUpdateInputField?: (field: keyof EventInput, val: unknown) => void;

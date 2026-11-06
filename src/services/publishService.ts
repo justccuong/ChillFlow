@@ -69,8 +69,9 @@ export function publishEvent(
   const registry = getRegistry();
   const existing = registry[slug] || (projectId ? registry[projectId] : undefined);
 
+  const generatedId = projectId || existing?.id || 'ev-' + Math.random().toString(36).substring(2, 9);
   const record: PublishedPageRecord = {
-    id: projectId || existing?.id,
+    id: generatedId,
     slug,
     eventName: input.eventName,
     input,
@@ -83,10 +84,10 @@ export function publishEvent(
     conversionsCount: existing?.conversionsCount || 0,
   };
 
-  registry[slug] = record;
-  if (projectId) {
-    registry[projectId] = record;
+  if (record.id) {
+    registry[record.id] = record;
   }
+  registry[slug] = record;
   saveRegistry(registry);
   recordPublishedPage(slug);
 

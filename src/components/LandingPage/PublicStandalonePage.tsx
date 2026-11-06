@@ -115,8 +115,7 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
           headlineToDisplay={content.headline}
           onScrollToRegister={scrollToRegistration}
           registeredCount={registeredCount}
-          onOpenHeroImagePicker={() => {}}
-          onOpenSpeakerImagePicker={() => {}}
+          isEditMode={false}
         />
 
         {/* 3. Social Proof Trust Bar */}

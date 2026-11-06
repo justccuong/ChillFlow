@@ -225,6 +225,8 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
               name="eventDate"
               type="datetime-local"
               required
+              min="2024-01-01T00:00"
+              max="2035-12-31T23:59"
               value={formData.eventDate}
               onChange={handleChange}
               className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"

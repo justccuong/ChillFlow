@@ -86,19 +86,25 @@ export const SpeakerSection: React.FC<SpeakerSectionProps> = ({
           {/* Speaker Portrait with Ambient Floating Ring */}
           <div className="relative shrink-0">
             <div
-              onClick={onOpenSpeakerImagePicker}
-              className="w-44 h-44 sm:w-52 sm:h-52 rounded-full p-1.5 bg-gradient-to-tr from-slate-300 via-slate-400 to-amber-500/50 dark:from-slate-700 dark:via-slate-600 dark:to-amber-500/50 shadow-2xl cursor-pointer relative group/avatar overflow-hidden"
-              title="Nhấp để đổi ảnh chân dung diễn giả"
+              onClick={isEditMode ? onOpenSpeakerImagePicker : undefined}
+              className={`w-44 h-44 sm:w-52 sm:h-52 rounded-full p-1.5 bg-gradient-to-tr from-slate-300 via-slate-400 to-amber-500/50 dark:from-slate-700 dark:via-slate-600 dark:to-amber-500/50 shadow-2xl relative overflow-hidden ${
+                isEditMode && onOpenSpeakerImagePicker ? 'cursor-pointer group/avatar' : ''
+              }`}
+              title={isEditMode && onOpenSpeakerImagePicker ? "Nhấp để đổi ảnh chân dung diễn giả" : undefined}
             >
               <img
                 src={speakerPhoto}
                 alt={input.speakerName || 'Diễn giả'}
-                className="w-full h-full object-cover rounded-full group-hover/avatar:scale-105 transition-transform duration-500"
+                className={`w-full h-full object-cover rounded-full ${
+                  isEditMode ? 'group-hover/avatar:scale-105' : ''
+                } transition-transform duration-500`}
               />
-              <div className="absolute inset-0 rounded-full bg-slate-950/60 opacity-0 group-hover/avatar:opacity-100 flex flex-col items-center justify-center transition-opacity text-xs font-bold text-white gap-1">
-                <Camera className="w-5 h-5 text-amber-400" />
-                <span>Đổi ảnh</span>
-              </div>
+              {isEditMode && onOpenSpeakerImagePicker && (
+                <div className="absolute inset-0 rounded-full bg-slate-950/60 opacity-0 group-hover/avatar:opacity-100 flex flex-col items-center justify-center transition-opacity text-xs font-bold text-white gap-1">
+                  <Camera className="w-5 h-5 text-amber-400" />
+                  <span>Đổi ảnh</span>
+                </div>
+              )}
             </div>
           </div>
 

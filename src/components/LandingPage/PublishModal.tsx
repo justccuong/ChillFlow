@@ -23,7 +23,7 @@ export const PublishModal: React.FC<PublishModalProps> = ({
 
   if (!isOpen || !record) return null;
 
-  const publicUrl = getPublicShareUrl(record.slug);
+  const publicUrl = getPublicShareUrl(record.id || record.slug);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(publicUrl);

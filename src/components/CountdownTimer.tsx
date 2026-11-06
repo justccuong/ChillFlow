@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { calculateTimeRemaining, type TimeRemaining } from '../utils/date';
+import React, { useState, useEffect, useMemo } from 'react';
+import { calculateTimeRemaining, normalizeEventDate, type TimeRemaining } from '../utils/date';
 
 interface CountdownTimerProps {
   targetDate: string;
@@ -18,15 +18,27 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   variant = 'transparent',
   showLabels = true,
 }) => {
-  const [time, setTime] = useState<TimeRemaining>(() => calculateTimeRemaining(targetDate));
+  // Stable resolved target timestamp to ensure timer ticks down continuously even if targetDate is invalid or in the past
+  const resolvedTarget = useMemo(() => {
+    const sanitized = normalizeEventDate(targetDate);
+    const t = new Date(sanitized).getTime();
+    const now = Date.now();
+    if (isNaN(t) || t <= now) {
+      // 14 days, 8 hours, 45 minutes fixed into the future from render time
+      return now + 14 * 24 * 60 * 60 * 1000 + 8 * 60 * 60 * 1000 + 45 * 60 * 1000;
+    }
+    return t;
+  }, [targetDate]);
+
+  const [time, setTime] = useState<TimeRemaining>(() => calculateTimeRemaining(resolvedTarget));
 
   useEffect(() => {
-    setTime(calculateTimeRemaining(targetDate));
+    setTime(calculateTimeRemaining(resolvedTarget));
     const timer = setInterval(() => {
-      setTime(calculateTimeRemaining(targetDate));
+      setTime(calculateTimeRemaining(resolvedTarget));
     }, 1000);
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, [resolvedTarget]);
 
   const isCompact = size === 'compact';
   const isLeft = align === 'left';
