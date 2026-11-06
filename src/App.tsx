@@ -11,6 +11,7 @@ import { generateLandingPageContent, PRESETS } from './services/aiService';
 import { useThemeMode } from './hooks/useThemeMode';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { extractSlugFromLocation, getPublishedEvent } from './services/publishService';
+import { slugify } from './utils/slug';
 import { Globe } from 'lucide-react';
 import { useLandingPageStore } from './store/useLandingPageStore';
 import {
@@ -433,10 +434,7 @@ export function App() {
                   showToast('Đã cập nhật danh sách người tham dự', 'info');
                 }}
                 onCopyShareLink={() => {
-                  const slug =
-                    eventInput?.eventName
-                      ? eventInput.eventName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-                      : 'event';
+                  const slug = slugify(eventInput?.eventName || '');
                   const url = `${window.location.origin}${window.location.pathname}#/p/${slug}`;
                   navigator.clipboard.writeText(url);
                   showToast('Đã sao chép liên kết trang sự kiện vào bộ nhớ tạm!', 'success');

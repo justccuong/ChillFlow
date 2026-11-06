@@ -1,19 +1,12 @@
 import { getProjectById } from './projectStorageService';
 import { getThemeForCategory } from './themeEngine';
 import { EventInput, GeneratedContent, ThemeConfig, UserTier, PublishedPageRecord } from '../types';
-import { canPublishOrSavePage, recordPublishedPage } from './authService';
+import { recordPublishedPage } from './authService';
+import { slugify } from '../utils/slug';
+
+export { slugify };
 
 const PUBLISHED_PAGES_KEY = 'eventflow_published_pages';
-
-export function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[đĐ]/g, 'd')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '') || 'event';
-}
 
 function getRegistry(): Record<string, PublishedPageRecord> {
   try {

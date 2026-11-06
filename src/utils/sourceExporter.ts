@@ -1,5 +1,5 @@
 import { EventInput, GeneratedContent, ThemeConfig, UserTier } from '../types';
-import { slugify } from '../services/publishService';
+import { slugify } from './slug';
 import { generateOpenGraphMetaHtml, escapeHtml } from './seo';
 
 export function generateStandaloneHtml(
