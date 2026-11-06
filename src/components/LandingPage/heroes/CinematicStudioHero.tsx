@@ -26,7 +26,7 @@ interface HeroProps {
 export const CinematicStudioHero: React.FC<HeroProps> = ({
   input,
   content,
-  theme,
+  theme: _theme,
   headlineToDisplay,
   onScrollToRegister,
   registeredCount,

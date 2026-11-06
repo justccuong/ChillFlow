@@ -1,6 +1,6 @@
 import React from 'react';
 import type { BenefitItem, ThemeConfig } from '../../types';
-import { Zap, Award, Target, ArrowRight, Plus, Trash2 } from 'lucide-react';
+import { Zap, ArrowRight, Plus, Trash2 } from 'lucide-react';
 import { InlineEditable } from './InlineEditable';
 
 interface BenefitsSectionProps {

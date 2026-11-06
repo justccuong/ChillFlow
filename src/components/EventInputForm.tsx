@@ -36,24 +36,6 @@ const renderCategoryIcon = (id: EventCategory, className = 'w-6 h-6') => {
   }
 };
 
-const getCategoryMicroBadge = (id: EventCategory): string => {
-  switch (id) {
-    case 'ai-tech': return 'AI Summit';
-    case 'marketing': return 'CRO Funnel';
-    case 'startup': return 'Dealflow VC';
-    case 'developer': return 'CLI Native';
-    case 'design': return 'Awwwards Art';
-    case 'education': return 'Chứng chỉ ISO';
-    case 'studio-3d': return '3D WebGL';
-    case 'festival-music': return 'EDM & Live';
-    case 'sports-marathon': return 'Race & BIB';
-    case 'culinary-lifestyle': return 'Michelin Taste';
-    case 'community-career': return 'Job Fair';
-    case 'universal-showcase': return 'All-in-One';
-    default: return 'Tiêu chuẩn';
-  }
-};
-
 const renderPresetIcon = (iconType: string) => {
   switch (iconType) {
     case 'ai': return <Cpu className="w-3.5 h-3.5 text-cyan-400" />;

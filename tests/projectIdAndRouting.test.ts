@@ -3,10 +3,9 @@ import {
   generate12CharId,
   saveProject,
   getProjectById,
-  getAllSavedProjects,
   extractProjectIdFromLocation,
 } from '../src/services/projectStorageService';
-import { extractSlugFromLocation, getPublicShareUrl, getPublishedEvent } from '../src/services/publishService';
+import { extractSlugFromLocation, getPublishedEvent } from '../src/services/publishService';
 
 // Mock localStorage for test environment
 const storageMap = new Map<string, string>();

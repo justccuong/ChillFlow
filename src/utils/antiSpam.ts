@@ -112,7 +112,7 @@ export function isDisposableEmail(email: string): boolean {
  */
 export function normalizeVietnamesePhone(phone: string): string {
   if (!phone || typeof phone !== 'string') return '';
-  let cleaned = phone.replace(/[\s\-\.]/g, '');
+  let cleaned = phone.replace(/[\s\-.]/g, '');
   if (cleaned.startsWith('+84')) {
     cleaned = '0' + cleaned.slice(3);
   } else if (cleaned.startsWith('84') && cleaned.length === 11) {

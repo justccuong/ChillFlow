@@ -79,9 +79,9 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   attendees,
   onRegisterSuccess,
   onOpenAttendeeList,
-  onOptimizeCRO,
-  isOptimizing,
-  isAlreadyOptimized,
+  onOptimizeCRO: _onOptimizeCRO,
+  isOptimizing: _isOptimizing,
+  isAlreadyOptimized: _isAlreadyOptimized,
   onEditForm,
   onUpdateInput,
   onUpdateContent,
@@ -89,13 +89,13 @@ export const LandingPagePreview: React.FC<LandingPagePreviewProps> = ({
   onTriggerUpgrade,
 }) => {
   const currentAttendees = attendees ?? getStoredAttendees(input.eventName);
-  const [headlineVariant, setHeadlineVariant] = useState<'A' | 'B'>('A');
+  const [headlineVariant] = useState<'A' | 'B'>('A');
   const [currentCategory, setCurrentCategory] = useState<EventCategory>(input.category || 'ai-tech');
 
   // Sync category when input changes (e.g. switching between saved projects)
   useEffect(() => {
-    if (input.category && input.category !== currentCategory) {
-      setCurrentCategory(input.category);
+    if (input.category) {
+      setCurrentCategory((prev) => (prev !== input.category ? input.category! : prev));
     }
   }, [input.category]);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);

@@ -22,7 +22,7 @@ interface ProjectCard {
   tags: string[];
 }
 
-export const CinematicShowcaseSection: React.FC<CinematicShowcaseProps> = ({ theme, onScrollToRegister, isEditMode = false }) => {
+export const CinematicShowcaseSection: React.FC<CinematicShowcaseProps> = ({ theme: _theme, onScrollToRegister, isEditMode = false }) => {
   const [activeModalProject, setActiveModalProject] = useState<ProjectCard | null>(null);
 
   const projects: ProjectCard[] = [

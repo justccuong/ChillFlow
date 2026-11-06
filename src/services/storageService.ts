@@ -7,9 +7,7 @@ const CURRENT_CONTENT_KEY = `${STORAGE_KEY_PREFIX}current_content`;
 const CURRENT_CRO_KEY = `${STORAGE_KEY_PREFIX}current_cro`;
 const API_KEY_STORAGE = `${STORAGE_KEY_PREFIX}gemini_api_key`;
 
-// Default seed attendees: start at 0 for real zero-mock state
-const DEFAULT_ATTENDEES: Attendee[] = [];
-
+// Attendees storage functions
 export function getStoredAttendees(eventIdentifier = 'default'): Attendee[] {
   try {
     const raw = localStorage.getItem(`${ATTENDEES_KEY}_${eventIdentifier}`);
@@ -64,7 +62,7 @@ export function getSavedEventState(): {
       content: contentRaw ? JSON.parse(contentRaw) : null,
       cro: croRaw ? JSON.parse(croRaw) : null,
     };
-  } catch (e) {
+  } catch {
     return { input: null, content: null, cro: null };
   }
 }

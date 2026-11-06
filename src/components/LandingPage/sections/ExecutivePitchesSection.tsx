@@ -1,7 +1,7 @@
 import { InlineEditable } from '../InlineEditable';
 import React from 'react';
 import type { ThemeConfig } from '../../../types';
-import { Briefcase, Building2, DollarSign, Handshake, Shield, Sparkles } from 'lucide-react';
+import { Handshake } from 'lucide-react';
 
 interface ExecutiveProps {
   isEditMode?: boolean;

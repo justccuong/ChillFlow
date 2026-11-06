@@ -3,7 +3,7 @@ import type { EventInput, GeneratedContent, ThemeConfig } from '../../../types';
 import { CountdownTimer } from '../../CountdownTimer';
 import { InlineEditable } from '../InlineEditable';
 import { formatEventDate } from '../../../utils/date';
-import { Calendar, MapPin, ArrowRight, Users, Flame, Award, TrendingUp, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, Users, Flame, Award, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { NumberTicker } from '../../magicui';
 
 interface HeroProps {

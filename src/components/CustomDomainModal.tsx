@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Globe, Check, Copy, ArrowRight, ShieldCheck, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
+import { X, Globe, Check, Copy, ShieldCheck, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface CustomDomainModalProps {

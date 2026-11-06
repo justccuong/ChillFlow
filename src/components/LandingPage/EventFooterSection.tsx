@@ -40,9 +40,9 @@ export const EventFooterSection: React.FC<EventFooterSectionProps> = ({
   input,
   content,
   theme,
-  isEditMode = false,
-  onUpdateInput,
-  onUpdateContent,
+  isEditMode: _isEditMode = false,
+  onUpdateInput: _onUpdateInput,
+  onUpdateContent: _onUpdateContent,
   onScrollToSection,
 }) => {
   const currentYear = new Date().getFullYear();
