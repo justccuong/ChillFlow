@@ -19,14 +19,14 @@ describe('Form UX Hierarchy & Visual Noise Reduction', () => {
     expect(content).not.toContain('bg-indigo-600 text-white border-indigo-500 font-medium shadow-sm');
   });
 
-  it('implements compact icon chips (Option A) instead of bulky card grid', () => {
-    // Must use flex-wrap gap-2 instead of 6-col card grid
-    expect(content).toContain('flex flex-wrap gap-2');
+  it('implements clean select dropdown for categories instead of bulky card grid', () => {
+    // Must use select dropdown instead of 6-col card grid
+    expect(content).toContain('select');
+    expect(content).toContain('id="eventCategory"');
     expect(content).not.toContain('grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6');
   });
 
-  it('displays AI template recommendation as a subtle inline badge instead of a full-width purple banner', () => {
+  it('does not display heavy purple recommendation banners in category header', () => {
     expect(content).not.toContain('p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-xs text-indigo-700 dark:text-indigo-300 animate-in fade-in');
-    expect(content).toContain('AI đề xuất');
   });
 });

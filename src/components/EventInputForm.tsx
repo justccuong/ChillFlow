@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import type { EventInput, EventCategory } from '../types';
 import { PRESETS } from '../services/aiService';
 import { CATEGORIES } from '../services/themeEngine';
-import { detectBestTemplate } from '../services/templateRegistry';
-import { Calendar, MapPin, User, Target, Users, Sparkles, Layers, Cpu, TrendingUp, Rocket, Code2, Palette, GraduationCap, Box, Music, Activity, UtensilsCrossed, Globe, AlertCircle } from 'lucide-react';
+import { Calendar, MapPin, User, Target, Users, Sparkles, Layers, Cpu, TrendingUp, Rocket, Code2, Palette, GraduationCap, Box, Music, Activity, UtensilsCrossed, Globe, AlertCircle, ChevronDown } from 'lucide-react';
 
 const renderCategoryIcon = (id: EventCategory, className = 'w-6 h-6') => {
   switch (id) {
@@ -161,21 +160,21 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
         </div>
 
         {/* Quick presets */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-slate-500 dark:text-slate-400">Gợi ý mẫu:</span>
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 max-w-full -mx-1 px-1">
+          <span className="text-xs text-slate-500 dark:text-slate-400 shrink-0 font-medium">Gợi ý mẫu:</span>
           {PRESETS.map((p, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => handleApplyPreset(idx)}
-              className={`text-xs px-2.5 py-1 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`text-xs px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
                 activePresetIndex === idx
-                  ? 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border-indigo-500/30 font-semibold'
-                  : 'bg-slate-100/70 dark:bg-slate-800/40 text-slate-500 dark:text-slate-400 border-slate-200/60 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  ? 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border-indigo-500/30 font-semibold shadow-sm'
+                  : 'bg-slate-100/70 dark:bg-slate-800/40 text-slate-600 dark:text-slate-400 border-slate-200/60 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {renderPresetIcon(p.iconType)}
-              <span>{p.label}</span>
+              <span className="whitespace-nowrap">{p.label}</span>
             </button>
           ))}
         </div>
@@ -251,56 +250,31 @@ export const EventInputForm: React.FC<EventInputFormProps> = ({
 
         </div>
 
-        {/* Category / Theme Selector - Option A: Compact Icon Chips */}
-        <div className="space-y-2.5 pt-1">
-          <div className="flex items-center justify-between flex-wrap gap-2">
-            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Layers className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" /> Loại sự kiện & phong cách theme
-            </label>
-
-            {/* Muted Inline AI Recommendation */}
-            {formData.eventName && formData.category !== detectBestTemplate(formData.eventName, formData.targetAudience).id && (
-              <div className="inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 bg-indigo-500/10 dark:bg-indigo-500/15 border border-indigo-500/20 px-2.5 py-1 rounded-lg animate-in fade-in">
-                <Sparkles className="w-3 h-3 text-amber-500 shrink-0 animate-pulse" />
-                <span>AI đề xuất: <strong className="text-indigo-600 dark:text-indigo-300">{detectBestTemplate(formData.eventName, formData.targetAudience).name}</strong></span>
-                <button
-                  type="button"
-                  onClick={() => setFormData(p => ({ ...p, category: detectBestTemplate(formData.eventName, formData.targetAudience).id }))}
-                  className="text-indigo-600 dark:text-cyan-400 hover:underline font-bold text-[11px] cursor-pointer ml-0.5"
-                >
-                  Áp dụng
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Compact Icon Chips (Option A) */}
-          <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map(cat => {
-              const isSelected = formData.category === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  type="button"
-                  onClick={() => handleCategorySelect(cat.id)}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
-                    isSelected
-                      ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm shadow-indigo-500/25 ring-2 ring-indigo-500/20'
-                      : 'bg-slate-100/80 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-800/80 hover:bg-slate-200/80 dark:hover:bg-slate-700/60 hover:text-slate-900 dark:hover:text-white'
-                  }`}
-                >
-                  {renderCategoryIcon(cat.id, 'w-3.5 h-3.5')}
-                  <span>{cat.label}</span>
-                  <span className={`text-[10px] font-normal px-1.5 py-0.2 rounded-md ${
-                    isSelected
-                      ? 'bg-indigo-700/80 text-indigo-100'
-                      : 'bg-slate-200/70 dark:bg-slate-700/60 text-slate-500 dark:text-slate-400'
-                  }`}>
-                    {getCategoryMicroBadge(cat.id)}
-                  </span>
-                </button>
-              );
-            })}
+        {/* Category / Theme Selector - Dropdown Menu */}
+        <div className="space-y-1.5 pt-1">
+          <label htmlFor="eventCategory" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" /> Loại sự kiện & phong cách theme
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+              {renderCategoryIcon(formData.category || 'ai-tech', 'w-4 h-4 text-indigo-500 dark:text-indigo-400')}
+            </div>
+            <select
+              id="eventCategory"
+              name="category"
+              value={formData.category}
+              onChange={(e) => handleCategorySelect(e.target.value as EventCategory)}
+              className="w-full pl-10 pr-10 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 appearance-none cursor-pointer"
+            >
+              {CATEGORIES.map((cat) => (
+                <option key={cat.id} value={cat.id} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white py-1">
+                  {cat.label} ({getCategoryMicroBadge(cat.id)})
+                </option>
+              ))}
+            </select>
+            <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-slate-400">
+              <ChevronDown className="w-4 h-4" />
+            </div>
           </div>
         </div>
 

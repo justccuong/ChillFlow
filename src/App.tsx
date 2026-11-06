@@ -443,8 +443,8 @@ export function App() {
             </Suspense>
           </ErrorBoundary>
         ) : currentTab === 'form' || !content || !eventInput ? (
-          <div className="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-6">
-            <div className="relative overflow-hidden rounded-3xl p-8 md:p-10 text-center space-y-3 border border-slate-200/80 dark:border-slate-800/80 bg-gradient-to-b from-white/80 via-white/40 to-white/90 dark:from-slate-900/90 dark:via-slate-900/50 dark:to-slate-950/90 backdrop-blur-xl shadow-xl shadow-slate-200/40 dark:shadow-black/40">
+          <div className="max-w-4xl mx-auto px-3 sm:px-4 py-6 sm:py-8 md:py-12 space-y-5 sm:space-y-6">
+            <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl p-5 sm:p-7 md:p-10 text-center space-y-3 border border-slate-200/80 dark:border-slate-800/80 bg-gradient-to-b from-white/80 via-white/40 to-white/90 dark:from-slate-900/90 dark:via-slate-900/50 dark:to-slate-950/90 backdrop-blur-xl shadow-xl shadow-slate-200/40 dark:shadow-black/40">
               <Particles
                 className="absolute inset-0 z-0"
                 quantity={60}
@@ -455,10 +455,10 @@ export function App() {
                 refresh
               />
               <div className="relative z-10 space-y-2">
-                <h1 className="text-2xl md:text-4xl font-bold font-heading text-slate-900 dark:text-white tracking-tight">
+                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-heading text-slate-900 dark:text-white tracking-tight text-balance">
                   Tạo Trang Đích Sự Kiện & Tối Ưu Chuyển Đổi
                 </h1>
-                <p className="text-slate-600 dark:text-slate-400 text-sm max-w-xl mx-auto">
+                <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm max-w-xl mx-auto text-balance">
                   Điền thông tin để tạo landing page chuẩn chuyển đổi kèm phân tích CRO tự động.
                 </p>
               </div>

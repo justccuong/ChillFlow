@@ -134,9 +134,9 @@ export const Header: React.FC<HeaderProps> = ({
             : 'bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800'
         } text-slate-900 dark:text-white`}
       >
-        <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 h-16 flex items-center justify-between gap-2 sm:gap-4">
           {/* Brand */}
-          <div className="flex items-center gap-2.5 cursor-pointer" onClick={onResetNewEvent} title="ChillFlow - Tạo sự kiện mới">
+          <div className="flex items-center gap-2 sm:gap-2.5 cursor-pointer shrink-0" onClick={onResetNewEvent} title="ChillFlow - Tạo sự kiện mới">
             <img
               src="/logo.png"
               alt="ChillFlow Logo"
@@ -146,14 +146,14 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="font-extrabold text-sm sm:text-base tracking-tight font-heading text-slate-900 dark:text-white">
                 ChillFlow
               </span>
-              <span className="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+              <span className="hidden lg:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
                 VibeCoding 2026
               </span>
             </div>
           </div>
 
-          {/* View Switcher Tabs (Desktop/Tablet) */}
-          <div className="hidden md:flex items-center p-1 bg-slate-100 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shrink-0">
+          {/* View Switcher Tabs (Desktop only: lg and above) */}
+          <div className="hidden lg:flex items-center p-1 bg-slate-100 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shrink-0">
             {hasGeneratedPage && (
               <button
                 type="button"
@@ -197,40 +197,60 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Action Controls */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             {/* My Projects Button */}
             {onOpenProjects && (
               <button
                 type="button"
                 onClick={onOpenProjects}
-                className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-colors"
+                className="hidden sm:flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-colors"
                 title="Dự án của tôi (Landing Pages đã lưu)"
               >
                 <FolderKanban className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
-                <span className="hidden sm:inline">Dự án ({savedProjectsCount})</span>
-                <span className="sm:hidden font-mono">{savedProjectsCount}</span>
+                <span className="hidden md:inline">Dự án ({savedProjectsCount})</span>
+                <span className="md:hidden font-mono">{savedProjectsCount}</span>
               </button>
             )}
 
-            {/* Mobile View Toggle */}
-            <div className="md:hidden flex items-center gap-1">
+            {/* Tablet & Mobile View Switcher Pill (< lg) */}
+            <div className="lg:hidden flex items-center p-0.5 bg-slate-100 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+              <button
+                type="button"
+                onClick={() => onChangeTab('form')}
+                className={`p-1.5 rounded-lg text-xs transition-all cursor-pointer ${
+                  currentTab === 'form'
+                    ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                }`}
+                title="Chỉnh sửa form"
+              >
+                <Edit3 className="w-3.5 h-3.5" />
+              </button>
               {hasGeneratedPage && (
                 <button
                   type="button"
-                  onClick={() => onChangeTab(currentTab === 'preview' ? 'form' : 'preview')}
-                  className="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-xs shrink-0 cursor-pointer"
-                  title="Chuyển chế độ xem"
+                  onClick={() => onChangeTab('preview')}
+                  className={`p-1.5 rounded-lg text-xs transition-all cursor-pointer ${
+                    currentTab === 'preview'
+                      ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm'
+                      : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                  title="Xem trang đích"
                 >
-                  {currentTab === 'preview' ? <Edit3 className="w-4 h-4 text-indigo-500" /> : <Eye className="w-4 h-4 text-indigo-500" />}
+                  <Eye className="w-3.5 h-3.5" />
                 </button>
               )}
               <button
                 type="button"
-                onClick={() => onChangeTab(currentTab === 'admin' ? 'form' : 'admin')}
-                className="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-xs shrink-0 cursor-pointer"
+                onClick={() => onChangeTab('admin')}
+                className={`p-1.5 rounded-lg text-xs transition-all cursor-pointer ${
+                  currentTab === 'admin'
+                    ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                }`}
                 title="Admin Quản trị"
               >
-                <ShieldCheck className="w-4 h-4 text-indigo-500" />
+                <ShieldCheck className="w-3.5 h-3.5" />
               </button>
             </div>
 
@@ -246,12 +266,12 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               type="button"
               onClick={onOpenAttendees}
-              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-colors"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-colors"
               title="Danh sách người đăng ký"
             >
               <Users className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
               <span className="hidden sm:inline"><NumberTicker value={registeredCount} /> đăng ký</span>
-              <span className="sm:hidden"><NumberTicker value={registeredCount} /></span>
+              <span className="sm:hidden text-xs"><NumberTicker value={registeredCount} /></span>
             </button>
 
             <button
@@ -268,12 +288,12 @@ export const Header: React.FC<HeaderProps> = ({
                 <>
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   <Key className="w-3.5 h-3.5" />
-                  <span className="hidden lg:inline text-[11px]">AI Thật: Gemini 3.5 Flash</span>
+                  <span className="hidden xl:inline text-[11px]">AI Thật: Gemini 3.5 Flash</span>
                 </>
               ) : (
                 <>
                   <Key className="w-3.5 h-3.5" />
-                  <span className="hidden lg:inline text-[11px]">Mô phỏng AI</span>
+                  <span className="hidden xl:inline text-[11px]">Mô phỏng AI</span>
                 </>
               )}
             </button>
@@ -281,7 +301,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               type="button"
               onClick={onResetNewEvent}
-              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-sm cursor-pointer transition-colors shrink-0"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-sm cursor-pointer transition-colors shrink-0"
               title="Tạo sự kiện mới"
             >
               <Plus className="w-3.5 h-3.5" />
