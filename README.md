@@ -10,9 +10,9 @@
 | Bảng thi | Bảng A - Công nghệ |
 | Đề bài bốc thăm | Đề số `08` — `Tạo landing page sự kiện trong 5 phút` |
 | Demo online | https://chill-flow-xi.vercel.app/ |
-| Video demo (≤ 02 phút) | `<URL video demo YouTube hoặc Google Drive>` |
-| Source ZIP | `<URL tải gói mã nguồn ZIP hoặc tệp đính kèm>` |
-| Minh chứng dùng AI | Kèm tại Mục 10 và chi tiết tại [`docs/VIBE_CODING_SHOWCASE.md`](docs/VIBE_CODING_SHOWCASE.md) |
+| Video demo (≤ 02 phút) | https://drive.google.com/file/d/1xvklg1BP6tnraiuy1uX2ZzFhy8Eaj4IL/view?usp=drive_link |
+| Source ZIP | Kèm tệp `Chillandcode_De08_ChillFlow_Source.zip` (hoặc liên kết Drive trên cổng nộp bài) |
+| Minh chứng dùng AI | https://drive.google.com/file/d/1rjAoFdo8IIARpwUkMlSGKgPr5n7cp3Mp/view?usp=drive_link (Kèm tại Mục 10 & docs) |
 | Bảng kiểm thử | Kèm tại Mục 11 (6 ca kiểm thử chuẩn Bảng A) & 198 Unit Tests tự động (41 test suites) |
 
 > Tiêu chí vòng loại: https://vibecoding.info.vn/tieu-chi-cham-thi  
