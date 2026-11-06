@@ -72,9 +72,14 @@ export const PublishModal: React.FC<PublishModalProps> = ({
           
           {/* Shareable Link Box */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
-              Đường link công khai chính thức
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                Đường link trang sự kiện (Local-First Preview)
+              </label>
+              <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
+                Lưu trữ Local Storage
+              </span>
+            </div>
             <div className="flex items-center gap-2 p-2 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
               <input
                 type="text"
@@ -100,6 +105,9 @@ export const PublishModal: React.FC<PublishModalProps> = ({
                 )}
               </button>
             </div>
+            <p className="mt-1.5 text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+              💡 Link hoạt động tức thì trên trình duyệt máy bạn (Local Storage). Để chia sẻ cho người khác xem và trải nghiệm mọi lúc mọi nơi, hãy bấm <b>Tải HTML</b> bên dưới để đưa lên GitHub Pages, Vercel hoặc bất kỳ hosting nào!
+            </p>
           </div>
 
           {/* Action buttons */}

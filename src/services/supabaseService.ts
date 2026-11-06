@@ -71,9 +71,9 @@ export async function syncProjectsToCloud(
   } catch (err: any) {
     console.warn('Supabase cloud sync notice:', err?.message || err);
     return {
-      success: true,
-      syncedCount: projects.length,
-      message: 'Đã lưu trữ cục bộ an toàn. Đám mây sẽ tự động đồng bộ khi kết nối mạng hoàn tất.',
+      success: false,
+      syncedCount: 0,
+      message: 'Không thể kết nối đến Supabase Cloud. Dữ liệu của bạn vẫn an toàn tuyệt đối trong Local Storage (Offline-first).',
     };
   }
 }

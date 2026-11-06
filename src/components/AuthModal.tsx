@@ -53,11 +53,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                  Tài khoản ConvertFlow AI
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <span>Tài khoản ConvertFlow AI</span>
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                    Local Demo
+                  </span>
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Quản lý landing page & gói thành viên
+                  Mô phỏng phân quyền & gói thành viên (Local-First)
                 </p>
               </div>
             </div>
@@ -69,8 +72,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             </button>
           </div>
 
+          {/* Local Demo Disclaimer */}
+          <div className="mt-4 p-2.5 rounded-xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 text-[11px] text-indigo-700 dark:text-indigo-300 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 shrink-0 text-indigo-500" />
+            <span>Chế độ <strong>Local Demo</strong>: Lưu trữ an toàn trong trình duyệt (Local Storage), sẵn sàng trải nghiệm nhanh không cần cấu hình database server.</span>
+          </div>
+
           {/* Current User Card */}
-          <div className="my-5 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700/60 flex items-center justify-between">
+          <div className="my-4 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700/60 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img
                 src={currentUser.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}
@@ -133,7 +142,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
               />
             </svg>
-            <span>Đăng nhập 1-Click bằng Google</span>
+            <span>Đăng nhập 1-Click bằng Google (Demo)</span>
           </button>
 
           <div className="relative my-4">
