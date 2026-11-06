@@ -136,10 +136,12 @@ export const Header: React.FC<HeaderProps> = ({
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between gap-4">
           {/* Brand */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 shrink-0">
-              <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-white fill-white" />
-            </div>
+          <div className="flex items-center gap-2.5 cursor-pointer" onClick={onResetNewEvent} title="ChillFlow - Tạo sự kiện mới">
+            <img
+              src="/logo.png"
+              alt="ChillFlow Logo"
+              className="w-8 h-8 sm:w-9 sm:h-9 object-contain shrink-0 transition-transform hover:scale-105"
+            />
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-sm sm:text-base tracking-tight font-heading text-slate-900 dark:text-white">
                 ChillFlow

@@ -75,9 +75,9 @@ describe('Source Exporter & SEO HTML Generator (sourceExporter.ts)', () => {
     expect(html).toContain('"performer"');
   });
 
-  it('includes ConvertFlow AI badge on free tier and omits watermark on pro tier', () => {
+  it('includes ChillFlow AI badge on free tier and omits watermark on pro tier', () => {
     const freeHtml = generateStandaloneHtml(mockInput, mockContent, theme, 'free');
-    expect(freeHtml).toContain('ConvertFlow AI');
+    expect(freeHtml).toContain('ChillFlow AI');
 
     const proHtml = generateStandaloneHtml(mockInput, mockContent, theme, 'pro');
     expect(proHtml).not.toContain('Free Tier Watermark Badge');

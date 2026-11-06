@@ -37,5 +37,9 @@ web-audit-mvp/
 screenshots/
 scripts/
 *.png
+!public/*.png
+!public/**/*.png
+public/*cần*.png
+public/*can*.png
 .superpowers/
 eventflow-ai/

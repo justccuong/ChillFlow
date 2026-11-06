@@ -45,7 +45,7 @@ export function generateStandaloneHtml(
   ${userTier === 'free' ? `
   <!-- Free Tier Watermark Badge -->
   <div class="bg-indigo-950/80 border-b border-indigo-800/40 text-indigo-300 text-xs py-1.5 px-4 text-center font-medium">
-    ⚡ Trang sự kiện tạo tự động bằng <strong class="text-white">ConvertFlow AI</strong>.
+    ⚡ Trang sự kiện tạo tự động bằng <strong class="text-white">ChillFlow AI</strong>.
   </div>
   ` : ''}
 
@@ -333,7 +333,7 @@ export function generateStandaloneHtml(
     </div>
     <div class="max-w-7xl mx-auto mt-12 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500 text-[11px]">
       <p>© 2026 ${safeEventName}. Toàn bộ bản quyền thuộc Ban tổ chức.</p>
-      <p>${userTier === 'free' ? 'Được tạo bởi ConvertFlow AI Summit Generator' : 'ConvertFlow Enterprise Edition'}</p>
+      <p>${userTier === 'free' ? 'Được tạo bởi ChillFlow AI Event Generator' : 'ChillFlow Enterprise Edition'}</p>
     </div>
   </footer>
 

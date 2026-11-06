@@ -48,7 +48,7 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
     // Record page view for analytics
     recordView(slug);
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.title = `${input.eventName} | ConvertFlow Event`;
+    document.title = `${input.eventName} | ChillFlow Event`;
 
     // Inject OpenGraph Meta & JSON-LD Event Schema
     const cleanupSeo = injectEventJsonLdAndMeta(input, content, theme);
@@ -82,8 +82,8 @@ export const PublicStandalonePage: React.FC<PublicStandalonePageProps> = ({ page
       {userTier === 'free' && (
         <aside className="bg-slate-950 text-slate-300 text-xs py-1.5 px-4 border-b border-slate-800 flex items-center justify-between shadow-sm z-50">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>Trang sự kiện tạo tự động bằng <strong>ConvertFlow AI</strong></span>
+            <img src="/logo.png" alt="ChillFlow" className="w-4 h-4 object-contain inline-block" />
+            <span>Trang sự kiện tạo tự động bằng <strong>ChillFlow AI</strong></span>
           </div>
           <a
             href="/"

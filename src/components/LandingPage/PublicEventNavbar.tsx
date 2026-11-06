@@ -86,7 +86,7 @@ export const PublicEventNavbar: React.FC<PublicEventNavbarProps> = ({
             <Sparkles className="w-4 h-4" />
           </div>
           <span className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white tracking-tight truncate">
-            {eventName || 'ConvertFlow Event'}
+            {eventName || 'ChillFlow Event'}
           </span>
         </button>
 
