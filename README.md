@@ -2,13 +2,13 @@
 
 > Nền tảng tạo và tối ưu hóa Event Landing Page tự động bằng AI, ứng dụng kiến trúc Template-First chuẩn Awwwards, Hybrid AI Proxy và tâm lý học chuyển đổi (CRO).
 > 
-> **Top 16 Chung kết Vibe Coding 2026** (Top 8 Bảng Công nghệ / 122 đội thi).
+> **🏆 Top 16 Chung kết Vibe Coding 2026** (Top 8 Bảng Công nghệ / 122 đội thi).
 
 ## 1. Thông tin chung
 
 | Hạng mục | Nội dung |
 |---|---|
-| Kết quả vòng loại | **Top 16 Chung kết toàn quốc** (Top 8 Bảng Công nghệ) |
+| Kết quả vòng loại | **🏆 Top 16 Chung kết toàn quốc** (Top 8 Bảng Công nghệ) |
 | Tên đội thi | Chillandcode (Chilandcode) |
 | Bảng thi | Bảng A - Công nghệ |
 | Đề bài bốc thăm | Đề số `08` — `Tạo landing page sự kiện trong 5 phút` |
